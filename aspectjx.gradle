@@ -1,0 +1,13 @@
+apply plugin: 'com.hujiang.android-aspectjx'
+
+aspectjx {
+    /**
+     * kotlin 1.4.10及以上里加了个META-INF/versions/9/module-info.class,将下面这个文件一处,否则apk编译不过
+     * 如果工程中没有用到kotlin1.4.10及以上,可以忽略这个配置,错误说明链接${https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx/issues/287}
+     */
+    exclude 'versions.9.module-info.class'
+    /**
+     * gson-2.8.6版本中有module-info.class文件,需要忽略这个文件,否则编译不过
+     */
+    exclude 'module-info.class'
+}

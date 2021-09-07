@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">kotlin-mvvm</string>
+    <string name="child_title">子页面</string>
+    <string name="more">更多</string>
+    <string name="detail">详情</string>
+    <string name="download_install_apk">下载并安装apk</string>
+</resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.catchpig.kotlin_mvvm">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <application
+        android:name="com.catchpig.kotlin_mvvm.app.KotlinMvpApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        android:label="@string/app_name"
+        android:maxAspectRatio="2.4"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.catchpig.kotlin_mvvm.mvp.recycle.RecycleActivity"></activity>
+        <activity android:name="com.catchpig.kotlin_mvvm.mvp.fullscreen.FullScreenActivity" />
+        <activity android:name="com.catchpig.kotlin_mvvm.mvp.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
+        <activity
+            android:name="com.catchpig.kotlin_mvvm.mvp.main.view.MainActivity"
+            android:theme="@style/MainTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- 适配小米（xiaomi）刘海屏 -->
+        <activity android:name="com.catchpig.kotlin_mvvm.mvp.child.ChildActivity" />
+        <activity android:name="com.catchpig.kotlin_mvvm.mvp.apk.view.InstallApkActivity"/>
+
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+    </application>
+
+    <dist:module dist:instant="true" />
+
+</manifest>

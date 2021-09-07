@@ -1,0 +1,101 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
+
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.catch-pig'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    api 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api project(path: ':annotation')
+    api project(path: ':aop')
+    //koin
+    // Koin for Android
+//    api "org.koin:koin-android:$koin_version"
+    // Koin AndroidX Scope features
+    api "org.koin:koin-androidx-scope:$koin_version"
+    // Koin AndroidX ViewModel features
+//    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    // Koin AndroidX Fragment features
+//    api "org.koin:koin-androidx-fragment:$koin_version"
+    // Koin AndroidX WorkManager
+//    api "org.koin:koin-androidx-workmanager:$koin_version"
+    // Koin AndroidX Jetpack Compose
+//    api "org.koin:koin-androidx-compose:$koin_version"
+    // Koin AndroidX Experimental features
+//    api "org.koin:koin-androidx-ext:$koin_version"
+
+    //okhttp3
+    api "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    api "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+
+    //retrofit2
+    api "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    api "com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version"
+    api "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+
+    //rxjava3
+    api "io.reactivex.rxjava3:rxjava:$rxjava_version"
+    api "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+
+
+
+    api "com.github.catch-pig:LoadingView:$loading_version"
+
+    // 基础依赖包，必须要依赖
+    api "com.gyf.immersionbar:immersionbar:$immersionbar_version"
+    // fragment快速实现（可选）
+//    api "com.gyf.immersionbar:immersionbar-components:$immersionbar_version"
+    // kotlin扩展（可选）
+    api "com.gyf.immersionbar:immersionbar-ktx:$immersionbar_version"
+    //刷新
+    api "com.scwang.smart:refresh-layout-kernel:$SmartRefreshLayout_version"
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
