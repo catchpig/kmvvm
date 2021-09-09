@@ -9,7 +9,7 @@ import com.catchpig.utils.ext.logd
  */
 object KotlinMvpCompiler {
     private const val TAG = "KotlinMvpCompiler"
-    fun inject(baseActivity: BaseActivity){
+    fun inject(baseActivity: BaseActivity<*>){
         val className = baseActivity.javaClass.name
         try {
             val compilerClass = Class.forName(className+"_MvpCompiler")

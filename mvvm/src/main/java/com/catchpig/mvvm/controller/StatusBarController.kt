@@ -15,7 +15,7 @@ import com.gyf.immersionbar.ktx.immersionBar
  * @author catchpig
  * @date 2019/8/18 00:18
  */
-class StatusBarController(private val baseActivity: BaseActivity, private val title: TitleParam?, private val statusBar: StatusBarParam?) {
+class StatusBarController(private val baseActivity: BaseActivity<*>, private val title: TitleParam?, private val statusBar: StatusBarParam?) {
 
     fun checkStatusBar() {
         //状态栏注解设置为不可用

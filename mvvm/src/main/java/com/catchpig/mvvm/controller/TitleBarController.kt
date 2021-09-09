@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.layout_title_bar.view.*
  * @author catchpig
  * @date 2019/8/18 00:18
  */
-class TitleBarController(private val baseActivity: BaseActivity, private val title: TitleParam) : View.OnClickListener {
+class TitleBarController(private val baseActivity: BaseActivity<*>, private val title: TitleParam) : View.OnClickListener {
 
     fun initTitleBar() {
         baseActivity.title_bar.visibility = View.VISIBLE

@@ -8,64 +8,39 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
+import java.lang.reflect.ParameterizedType
 
 /**
  * Fragment封装基类
  * @author catchpig
  * @date 2019/4/4 23:14
  */
-abstract class BaseFragment : Fragment() {
-    fun baseActivity(): BaseActivity? {
-        if (activity is BaseActivity) {
-            return activity as BaseActivity
+open class BaseFragment<VB : ViewBinding> : Fragment() {
+    val bodyBinding: VB by lazy {
+        var type = javaClass.genericSuperclass
+        var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        method.invoke(this, layoutInflater) as VB
+    }
+
+    fun baseActivity(): BaseActivity<*>? {
+        if (activity is BaseActivity<*>) {
+            return activity as BaseActivity<*>
         }
         return null
     }
 
     @CallSuper
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
-    @CallSuper
     @Nullable
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutId(), container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return bodyBinding.root
     }
-
-    @CallSuper
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    @CallSuper
-    override fun onStart() {
-        super.onStart()
-    }
-
-    @CallSuper
-    override fun onPause() {
-        super.onPause()
-    }
-
-    @CallSuper
-    override fun onStop() {
-        super.onStop()
-    }
-
-    @CallSuper
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    @CallSuper
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    @LayoutRes
-    protected abstract fun layoutId(): Int
 
     fun loadingView(isDialog: Boolean) {
         baseActivity()?.let {

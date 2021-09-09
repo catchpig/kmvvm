@@ -10,6 +10,6 @@ interface MvpCompiler {
     /**
      * 初始化标题栏
      */
-    fun inject(activity: BaseActivity)
+    fun inject(activity: BaseActivity<*>)
 
 }

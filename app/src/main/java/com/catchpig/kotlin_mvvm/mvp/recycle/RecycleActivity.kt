@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.catchpig.annotation.StatusBar
 import com.catchpig.annotation.TimeLog
 import com.catchpig.kotlin_mvvm.R
+import com.catchpig.kotlin_mvvm.databinding.ActivityRecycleBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.widget.refresh.OnRefreshListener
 import com.catchpig.utils.ext.logd
@@ -21,10 +22,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 @StatusBar(enabled = true)
-class RecycleActivity : BaseActivity() {
-    override fun layoutId(): Int {
-        return R.layout.activity_recycle
-    }
+class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
 
     @TimeLog
     override fun onCreate(savedInstanceState: Bundle?) {

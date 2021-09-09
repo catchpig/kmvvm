@@ -2,17 +2,20 @@ package com.catchpig.mvvm.base.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.KotlinMvpCompiler
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.utils.ext.longToast
 import com.catchpig.utils.ext.toast
 import kotlinx.android.synthetic.main.view_root.*
+import java.lang.reflect.ParameterizedType
 
 /**
  * --------------状态栏----------------
@@ -41,11 +44,17 @@ import kotlinx.android.synthetic.main.view_root.*
  * @author catchpig
  * @date 2019/4/4 00:09
  */
-abstract class BaseActivity: AppCompatActivity(){
-    private var loadingViewController: LoadingViewController? = null
-    private val rootBinding:ViewRootBinding by lazy {
+open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
+    val bodyBinding: VB by lazy {
+        var type = javaClass.genericSuperclass
+        var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        method.invoke(this, layoutInflater) as VB
+    }
+    private val rootBinding: ViewRootBinding by lazy {
         ViewRootBinding.inflate(layoutInflater)
     }
+    private var loadingViewController: LoadingViewController? = null
 
     @CallSuper
     override fun onNewIntent(intent: Intent?) {
@@ -56,53 +65,23 @@ abstract class BaseActivity: AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.setContentView(rootBinding.root)
         super.onCreate(savedInstanceState)
-        setContentView(layoutId())
+        setContentView(bodyBinding.root)
         KotlinMvpCompiler.inject(this)
     }
 
-    @CallSuper
-    override fun onStart() {
-        super.onStart()
-    }
-
-    @CallSuper
-    override fun onRestart() {
-        super.onRestart()
-    }
-
-    @CallSuper
-    override fun onPause() {
-        super.onPause()
-    }
-
-    @CallSuper
-    override fun onStop() {
-        super.onStop()
-    }
-
-    @CallSuper
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    @CallSuper
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
     override fun setContentView(view: View?) {
-        layout_body?.let {
-            it.addView(view, 0, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        rootBinding.layoutBody.let {
+            it.addView(
+                view,
+                0,
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            )
             loadingViewController = LoadingViewController(this, it)
         }
     }
-
-    override fun setContentView(layoutResID: Int) {
-        setContentView(View.inflate(this, layoutResID, null))
-    }
-
-    @LayoutRes
-    protected abstract fun layoutId(): Int
 
     fun loadingView(isDialog: Boolean) {
         loadingViewController?.let {

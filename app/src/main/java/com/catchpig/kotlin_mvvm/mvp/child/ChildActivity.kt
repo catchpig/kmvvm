@@ -3,6 +3,7 @@ package com.catchpig.kotlin_mvvm.mvp.child
 import android.view.View
 import com.catchpig.annotation.*
 import com.catchpig.kotlin_mvvm.R
+import com.catchpig.kotlin_mvvm.databinding.ActivityChildBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.utils.ext.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 @Title(R.string.child_title)
 @StatusBar
-class ChildActivity : BaseActivity(){
+class ChildActivity : BaseActivity<ActivityChildBinding>(){
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
         toast(" 第一个图标按钮点击生效")
@@ -41,8 +42,5 @@ class ChildActivity : BaseActivity(){
         Flowable.timer(5,TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
             hideLoadingView()
         }
-    }
-    override fun layoutId(): Int {
-        return R.layout.activity_child
     }
 }

@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.view_root.view.*
  *
  * @author TLi2
  **/
-class LoadingViewController(private val baseActivity: BaseActivity,private val layoutBody:FrameLayout) {
+class LoadingViewController(private val baseActivity: BaseActivity<*>,private val layoutBody:FrameLayout) {
     private var dialog:Dialog? = null
     private var isLoadingInflate = false
     fun loadingView(){

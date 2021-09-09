@@ -1,36 +1,36 @@
-package com.catchpig.mvvm.base.activity
+package com.catchpig.mvvm.base.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
-import org.koin.androidx.scope.activityScope
-import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.Scope
 import java.lang.reflect.ParameterizedType
 
 /**
  * @author catchpig
- * @date 2019/4/6 11:07
+ * @date 2019/4/6 11:25
  */
-abstract class BaseViewModelActivity<VM : BaseViewModel> : BaseActivity() {
-
-    val viewModel:VM by lazy {
+abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragment<VB>() {
+    val viewModel: VM by lazy {
         var type = javaClass.genericSuperclass
-        var modelClass:Class<VM> = (type as ParameterizedType).actualTypeArguments[0] as Class<VM>
+        var modelClass: Class<VM> = (type as ParameterizedType).actualTypeArguments[1] as Class<VM>
         ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(modelClass)
     }
 
     @CallSuper
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initParam()
         lifecycle.addObserver(viewModel)
         initView()
     }
 
+
     protected abstract fun initParam()
+
+
     protected abstract fun initView()
 }
