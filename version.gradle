@@ -19,7 +19,7 @@ ext {
     immersionbar_version = '3.0.0'
     loading_version = '1.0.2'
     SmartRefreshLayout_version = '2.0.0'
-    aspectj_version = '1.9.6'
+    aspectj_version = '1.8.13'
     auto_service_version = '1.0-rc6'
     kotlinpoet_version = '1.4.0'
     rxpermissions_version = "0.12"

@@ -15,8 +15,6 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
-import kotlinx.android.synthetic.main.activity_recycle.*
-import kotlinx.android.synthetic.main.layout_header.view.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -29,24 +27,24 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
         super.onCreate(savedInstanceState)
         initToolBar()
         initAdapter()
-        Glide.with(this).load(getPic()).placeholder(R.drawable.fullscreen).into(image)
+        Glide.with(this).load(getPic()).placeholder(R.drawable.fullscreen).into(bodyBinding.image)
     }
 
     private fun initAdapter(){
-        var userAdapter = UserAdapter(refresh)
+        var userAdapter = UserAdapter(bodyBinding.refresh)
         userAdapter.onItemClickListener { _, m, _ ->
             "${m.name}".logd("adsd")
         }
         var linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        recycle_view.layoutManager = linearLayoutManager
-        recycle_view.adapter = userAdapter
+        bodyBinding.recycleView.layoutManager = linearLayoutManager
+        bodyBinding.recycleView.adapter = userAdapter
         userAdapter.addHeaderView(R.layout.layout_header)
-        userAdapter.headerView {
-            header_name.text = "我是头部"
-        }
+//        userAdapter.headerView {
+//            header_name.text = "我是头部"
+//        }
 
-        refresh.setOnRefreshLoadMoreListener(object :OnRefreshListener(){
+        bodyBinding.refresh.setOnRefreshLoadMoreListener(object :OnRefreshListener(){
             override fun update(refreshLayout: RefreshLayout) {
                 Flowable.timer(3,TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
@@ -58,7 +56,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
                             override fun onNext(t: Long?) {
                                 "onNext".logd()
                                 var data:MutableList<User> = ArrayList()
-                                var count = if (refresh.nextPageIndex==3) {
+                                var count = if (bodyBinding.refresh.nextPageIndex==3) {
                                     15
                                 }else{
                                     16
@@ -71,18 +69,18 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
 
                             override fun onError(t: Throwable?) {
                                 "onError".logd()
-                                refresh.updateError()
+                                bodyBinding.refresh.updateError()
                             }
                         })
             }
         })
-        refresh.autoRefresh()
+        bodyBinding.refresh.autoRefresh()
     }
     private fun initToolBar(){
         immersionBar {
-            titleBar(detail_toolbar)
+            titleBar(bodyBinding.detailToolbar)
         }
-        setSupportActionBar(detail_toolbar)
+        setSupportActionBar(bodyBinding.detailToolbar)
     }
 
     private fun getPic(): String {

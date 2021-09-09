@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.KotlinMvpCompiler
@@ -14,7 +13,6 @@ import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.utils.ext.longToast
 import com.catchpig.utils.ext.toast
-import kotlinx.android.synthetic.main.view_root.*
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -51,7 +49,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(this, layoutInflater) as VB
     }
-    private val rootBinding: ViewRootBinding by lazy {
+    val rootBinding: ViewRootBinding by lazy {
         ViewRootBinding.inflate(layoutInflater)
     }
     private var loadingViewController: LoadingViewController? = null
@@ -79,7 +77,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
             )
-            loadingViewController = LoadingViewController(this, it)
+            loadingViewController = LoadingViewController(this, rootBinding)
         }
     }
 

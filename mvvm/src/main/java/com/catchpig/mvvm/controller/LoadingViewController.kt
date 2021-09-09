@@ -1,39 +1,43 @@
 package com.catchpig.mvvm.controller
 
 import android.app.Dialog
-import android.view.*
+import android.view.View
+import android.view.WindowManager
 import android.widget.FrameLayout
+import com.catchpig.loading.view.LoadingView
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.activity.BaseActivity
-import com.catchpig.mvvm.ext.getLoadingViewBackground
+import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.ext.getLoadingColor
+import com.catchpig.mvvm.ext.getLoadingViewBackground
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.layout_loading.*
-import kotlinx.android.synthetic.main.layout_loading.view.*
-import kotlinx.android.synthetic.main.view_root.view.*
 
 /**
  *
  * @author TLi2
  **/
-class LoadingViewController(private val baseActivity: BaseActivity<*>,private val layoutBody:FrameLayout) {
+class LoadingViewController(private val baseActivity: BaseActivity<*>,private val rootBinding: ViewRootBinding) {
     private var dialog:Dialog? = null
     private var isLoadingInflate = false
+    private lateinit var loadingFrame:FrameLayout
+    private lateinit var loadingView:LoadingView
     fun loadingView(){
-        layoutBody.run {
+        rootBinding.layoutBody.run {
             if (isLoadingInflate) {
-                loading_frame.visibility = View.VISIBLE
-                loading_frame.setBackgroundResource(baseActivity.getLoadingViewBackground())
-                loading_view.setLoadColor(baseActivity.getLoadingColor())
+                loadingFrame.visibility = View.VISIBLE
+                loadingFrame.setBackgroundResource(baseActivity.getLoadingViewBackground())
+                loadingView.setLoadColor(baseActivity.getLoadingColor())
             }else{
                 //setOnInflateListener监听器一定要在inflate()之前,不然会报空指针
-                loading_view_stub.setOnInflateListener { _, _ ->
+                rootBinding.loadingViewStub.setOnInflateListener { _, view ->
                     isLoadingInflate = true
-                    loading_frame.visibility = View.VISIBLE
-                    loading_frame.setBackgroundResource(baseActivity.getLoadingViewBackground())
-                    loading_view.setLoadColor(baseActivity.getLoadingColor())
+                    loadingFrame = view.findViewById(R.id.loading_frame);
+                    loadingFrame.visibility = View.VISIBLE
+                    loadingFrame.setBackgroundResource(baseActivity.getLoadingViewBackground())
+                    loadingView = view.findViewById(R.id.loading_view)
+                    loadingView.setLoadColor(baseActivity.getLoadingColor())
                 }
-                loading_view_stub.inflate()
+                rootBinding.loadingViewStub.inflate()
             }
         }
     }
@@ -43,8 +47,10 @@ class LoadingViewController(private val baseActivity: BaseActivity<*>,private va
         dialog?.run {
             setCancelable(false)
             setContentView(R.layout.layout_loading)
-            loading_frame.visibility = View.VISIBLE
-            loading_view.setLoadColor(baseActivity.getLoadingColor())
+            val loadingFrame = findViewById<FrameLayout>(R.id.loading_frame);
+            val loadingView = findViewById<LoadingView>(R.id.loading_view)
+            loadingFrame.visibility = View.VISIBLE
+            loadingView.setLoadColor(baseActivity.getLoadingColor())
             ImmersionBar.with(baseActivity,this).transparentBar().init()
             show()
             window?.run {
@@ -62,7 +68,7 @@ class LoadingViewController(private val baseActivity: BaseActivity<*>,private va
             it.dismiss()
         }
         if (isLoadingInflate) {
-            layoutBody.loading_frame.visibility = View.GONE
+            loadingFrame.visibility = View.GONE
         }
     }
 }

@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 apply plugin: 'com.github.dcendents.android-maven'

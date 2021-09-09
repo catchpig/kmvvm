@@ -1,21 +1,23 @@
 package com.catchpig.kotlin_mvvm.mvp.recycle
 
-import com.catchpig.kotlin_mvvm.R
+import android.view.LayoutInflater
+import com.catchpig.kotlin_mvvm.databinding.ItemUserBinding
 import com.catchpig.mvvm.base.adapter.CommonViewHolder
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.widget.refresh.IPageControl
-import kotlinx.android.synthetic.main.item_user.*
 
 /**
  *
  * @author TLi2
  **/
-class UserAdapter(iPageControl: IPageControl):RecyclerAdapter<User>(iPageControl) {
-    override fun layoutId(): Int {
-        return R.layout.item_user
+class UserAdapter(iPageControl: IPageControl):RecyclerAdapter<User,ItemUserBinding>(iPageControl) {
+    override fun getViewBanding(layoutInflater: LayoutInflater): ItemUserBinding {
+        return ItemUserBinding.inflate(layoutInflater)
     }
 
-    override fun bindViewHolder(holder: CommonViewHolder, m: User, position: Int) {
-        holder.name.text = m.name
+    override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
+        holder.itemViewBinding?.run {
+            name.text = m.name
+        }
     }
 }

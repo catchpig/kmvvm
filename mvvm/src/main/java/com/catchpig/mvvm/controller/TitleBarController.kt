@@ -3,16 +3,16 @@ package com.catchpig.mvvm.controller
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.config.Config
+import com.catchpig.mvvm.databinding.LayoutTitleBarBinding
 import com.catchpig.mvvm.entity.TitleMenuParam
 import com.catchpig.mvvm.entity.TitleParam
 import com.catchpig.mvvm.ext.*
-import kotlinx.android.synthetic.main.layout_title_bar.*
-import kotlinx.android.synthetic.main.layout_title_bar.view.*
 
 /**
  * 标题栏处理器
@@ -22,19 +22,20 @@ import kotlinx.android.synthetic.main.layout_title_bar.view.*
 class TitleBarController(private val baseActivity: BaseActivity<*>, private val title: TitleParam) : View.OnClickListener {
 
     fun initTitleBar() {
-        baseActivity.title_bar.visibility = View.VISIBLE
-        initListener()
-        baseActivity.title_bar.run {
+        val titleBarBinding = LayoutTitleBarBinding.inflate(baseActivity.layoutInflater)
+        titleBarBinding.titleBar.visibility = View.VISIBLE
+        initListener(titleBarBinding)
+        titleBarBinding.titleBar.run {
             //设置背景色
             drawBackground(this)
             //设置文字颜色
-            drawTextColor(this)
+            drawTextColor(titleBarBinding)
             //设置返回按钮图标
-            drawBackIcon(back_icon)
-            title_text.setText(title.value)
+            drawBackIcon(titleBarBinding.backIcon)
+            titleBarBinding.titleText.setText(title.value)
 
         }
-        drawLine(baseActivity.line)
+        drawLine(titleBarBinding.line)
     }
 
     private fun drawLine(line: View) {
@@ -54,7 +55,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
      */
     private fun drawTitleMenu(titleBar: FrameLayout, titleMenu: TitleMenuParam) {
         //右边第一个文字按钮
-        titleBar.rightFirstText.run {
+        titleBar.findViewById<TextView>(R.id.rightFirstText).run {
             if (titleMenu.rightFirstText != Config.NO_ASSIGNMENT) {
                 visibility = View.VISIBLE
                 setText(titleMenu.rightFirstText)
@@ -63,7 +64,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
             }
         }
         //右边第二个文字按钮
-        titleBar.rightSecondText.run {
+        titleBar.findViewById<TextView>(R.id.rightSecondText).run {
             if (titleMenu.rightSecondText != Config.NO_ASSIGNMENT) {
                 visibility = View.VISIBLE
                 setText(titleMenu.rightSecondText)
@@ -72,7 +73,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
             }
         }
         //右边第一个图标按钮
-        titleBar.rightFirstDrawable.run {
+        titleBar.findViewById<ImageView>(R.id.rightFirstDrawable).run {
             if (titleMenu.rightFirstDrawable != Config.NO_ASSIGNMENT) {
                 visibility = View.VISIBLE
                 setImageResource(titleMenu.rightFirstDrawable)
@@ -81,7 +82,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
             }
         }
         //右边第二个图标按钮
-        titleBar.rightSecondDrawable.run {
+        titleBar.findViewById<ImageView>(R.id.rightSecondDrawable).run {
             if (titleMenu.rightSecondDrawable != Config.NO_ASSIGNMENT) {
                 visibility = View.VISIBLE
                 setImageResource(titleMenu.rightSecondDrawable)
@@ -94,8 +95,8 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
     /**
      * 初始化监听器
      */
-    private fun initListener() {
-        baseActivity.title_bar.back_icon.setOnClickListener(this)
+    private fun initListener(titleBarBinding: LayoutTitleBarBinding) {
+        titleBarBinding.backIcon.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -127,15 +128,15 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
     /**
      * 设置文字颜色
      */
-    private fun drawTextColor(titleBar: FrameLayout) {
+    private fun drawTextColor(titleBarBinding: LayoutTitleBarBinding) {
         var textColor = if (title!!.textColor == Config.NO_ASSIGNMENT) {
             baseActivity.getTitleTextColor()
         } else {
             getColorInt(title.textColor)
         }
-        titleBar.title_text.setTextColor(textColor)
-        titleBar.rightFirstText.setTextColor(textColor)
-        titleBar.rightSecondText.setTextColor(textColor)
+        titleBarBinding.titleText.setTextColor(textColor)
+        titleBarBinding.rightFirstText.setTextColor(textColor)
+        titleBarBinding.rightSecondText.setTextColor(textColor)
     }
 
     /**

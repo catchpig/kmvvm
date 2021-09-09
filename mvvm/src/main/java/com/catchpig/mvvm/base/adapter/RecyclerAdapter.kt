@@ -10,11 +10,14 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.*
+import com.catchpig.mvvm.databinding.ViewLoadEmptyBinding
 import com.catchpig.mvvm.ext.getEmptyLayout
 import com.catchpig.mvvm.widget.refresh.IPageControl
 import com.scwang.smart.refresh.layout.constant.RefreshState
+import java.lang.reflect.ParameterizedType
 import java.util.*
 
 
@@ -24,7 +27,8 @@ import java.util.*
  * @date 2017年12月22日13:43:56
  */
 
-abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null) : RecyclerView.Adapter<CommonViewHolder>(), IAdapterListControl<M> {
+abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IPageControl? = null) :
+    RecyclerView.Adapter<CommonViewHolder<VB>>(), IAdapterListControl<M> {
     /**
      * item的类型
      */
@@ -33,14 +37,17 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
          * 头部类型
          */
         TYPE_HEADER(-0x01),
+
         /**
          * 底部类型
          */
         TYPE_FOOTER(-0x02),
+
         /**
          * 无数据类型
          */
         TYPE_EMPTY(-0x03),
+
         /**
          * 正常的item
          */
@@ -84,10 +91,12 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
      * 是否展示空页面
      */
     private var showEmpty: Boolean = false
+
     /**
      * 空页面layout
      */
     private var emptyLayout = R.layout.view_load_empty
+
     /**
      * 是否是第一次加载数据
      */
@@ -95,38 +104,40 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
 
     var onItemClickListener: OnItemClickListener<M>? = null
 
-    fun onItemClickListener(listener:(id: Int, m: M, position: Int)->Unit){
+    fun onItemClickListener(listener: (id: Int, m: M, position: Int) -> Unit) {
         onItemClickListener = object : OnItemClickListener<M> {
             override fun itemClick(id: Int, m: M, position: Int) {
-                listener(id,m,position)
+                listener(id, m, position)
             }
 
         }
     }
 
-    fun addHeaderView(@LayoutRes layoutId: Int){
-        check(recyclerView!=null){
+    fun addHeaderView(@LayoutRes layoutId: Int) {
+        check(recyclerView != null) {
             "请在adapter被RecyclerView初始化之后调用"
         }
-        headerView = LayoutInflater.from(recyclerView?.context).inflate(layoutId,recyclerView,false)
+        headerView =
+            LayoutInflater.from(recyclerView?.context).inflate(layoutId, recyclerView, false)
         notifyDataSetChanged()
     }
 
-    fun headerView(header:View.()->Unit){
+    fun headerView(header: View.() -> Unit) {
         headerView?.let {
             header(it)
         }
     }
 
-    fun addFooterView(@LayoutRes layoutId: Int){
-        check(recyclerView!=null){
+    fun addFooterView(@LayoutRes layoutId: Int) {
+        check(recyclerView != null) {
             "请在adapter被RecyclerView初始化之后调用"
         }
-        footerView = LayoutInflater.from(recyclerView?.context).inflate(layoutId,recyclerView,false)
+        footerView =
+            LayoutInflater.from(recyclerView?.context).inflate(layoutId, recyclerView, false)
         notifyDataSetChanged()
     }
 
-    fun footerView(footer:View.()->Unit){
+    fun footerView(footer: View.() -> Unit) {
         footerView?.let {
             footer(it)
         }
@@ -267,7 +278,7 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
         return TYPE_NORMAL.value
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder<VB> {
         val view = when (ItemViewType.enumOfValue(viewType)) {
             TYPE_HEADER -> {
                 headerView!!
@@ -284,13 +295,13 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
                 inflate(emptyLayout, parent)
             }
             else -> {
-                inflate(layoutId(), parent)
+                return CommonViewHolder(getViewBanding(LayoutInflater.from(parent.context)))
             }
         }
         return CommonViewHolder(view)
     }
 
-    protected abstract fun layoutId(): Int
+    abstract fun getViewBanding(layoutInflater: LayoutInflater): VB
 
     /**
      * 获取需要viewHolder的view
@@ -302,7 +313,7 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
         return inflater.inflate(layoutId, group, false)
     }
 
-    override fun onBindViewHolder(holder: CommonViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CommonViewHolder<VB>, position: Int) {
         var index = position
         when (ItemViewType.enumOfValue(getItemViewType(position))) {
             TYPE_HEADER, TYPE_FOOTER -> {
@@ -343,7 +354,7 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
     /**
      * 绑定viewHolder的数据
      */
-    abstract fun bindViewHolder(holder: CommonViewHolder, m: M, position: Int)
+    abstract fun bindViewHolder(holder: CommonViewHolder<VB>, m: M, position: Int)
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -365,11 +376,11 @@ abstract class RecyclerAdapter<M>(private val iPageControl: IPageControl? = null
         }
     }
 
-    override fun onViewAttachedToWindow(holder: CommonViewHolder) {
+    override fun onViewAttachedToWindow(holder: CommonViewHolder<VB>) {
         super.onViewAttachedToWindow(holder)
         val lp = holder.itemView.layoutParams
         if (lp is StaggeredGridLayoutManager.LayoutParams
-                && holder.layoutPosition === 0
+            && holder.layoutPosition === 0
         ) {
             lp.isFullSpan = true
         }

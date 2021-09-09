@@ -2,11 +2,7 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
-
-apply from: '../aspectjx.gradle'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -28,9 +24,6 @@ android {
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
-    }
-    androidExtensions {
-        experimental = true
     }
     buildFeatures {
         viewBinding = true
@@ -62,3 +55,4 @@ dependencies {
     //权限
     implementation "com.github.tbruyelle:rxpermissions:$rxpermissions_version"
 }
+apply from: '../app_aspectj.gradle'
