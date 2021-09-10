@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.apt.KotlinMvpCompiler
+import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.utils.ext.longToast
@@ -64,7 +64,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         super.setContentView(rootBinding.root)
         super.onCreate(savedInstanceState)
         setContentView(bodyBinding.root)
-        KotlinMvpCompiler.inject(this)
+        KotlinMvvmCompiler.inject(this)
     }
 
     override fun setContentView(view: View?) {

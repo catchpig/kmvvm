@@ -3,6 +3,7 @@ package com.catchpig.compiler
 import com.catchpig.annotation.*
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedSourceVersion
@@ -12,16 +13,17 @@ import javax.lang.model.element.TypeElement
 
 @AutoService(Processor::class)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-class KotlinMvpProcessor : BaseProcessor() {
+class KotlinMvvmProcessor : BaseProcessor() {
     companion object {
-        private val CLASS_NAME_TITLE_PARAM = ClassName("com.catchpig.mvp.entity", "TitleParam")
-        private val CLASS_NAME_STATUS_BAR_PARAM = ClassName("com.catchpig.mvp.entity", "StatusBarParam")
-        private val CLASS_NAME_MVP_COMPILER = ClassName("com.catchpig.mvp.apt", "MvpCompiler")
-        private val CLASS_NAME_BASE_ACTIVITY = ClassName("com.catchpig.mvp.base.activity", "BaseActivity")
+        private val CLASS_NAME_TITLE_PARAM = ClassName("com.catchpig.mvvm.entity", "TitleParam")
+        private val CLASS_NAME_STATUS_BAR_PARAM = ClassName("com.catchpig.mvvm.entity", "StatusBarParam")
+        private val CLASS_NAME_MVP_COMPILER = ClassName("com.catchpig.mvvm.apt", "MvvmCompiler")
+        private val CLASS_NAME_BASE_ACTIVITY = ClassName("com.catchpig.mvvm.base.activity", "BaseActivity")
+        private val CLASS_NAME_ACTIVITY = ClassName("android.app", "Activity")
 
         private val TYPE_VIEW_STUB = Class.forName("android.view.ViewStub")
-        private val TYPE_TITLE_BAR_CONTROLLER = Class.forName("com.catchpig.mvp.controller.TitleBarController")
-        private val TYPE_STATUS_BAR_CONTROLLER = Class.forName("com.catchpig.mvp.controller.StatusBarController")
+        private val TYPE_TITLE_BAR_CONTROLLER = Class.forName("com.catchpig.mvvm.controller.TitleBarController")
+        private val TYPE_STATUS_BAR_CONTROLLER = Class.forName("com.catchpig.mvvm.controller.StatusBarController")
         private val TYPE_TEXT_VIEW = Class.forName("android.widget.TextView")
         private val TYPE_IMAGE_VIEW = Class.forName("android.widget.ImageView")
         private val TYPE_VIEW = Class.forName("android.view.View")
@@ -60,7 +62,7 @@ class KotlinMvpProcessor : BaseProcessor() {
             val className = it.simpleName.toString()
             val fullPackageName = elementUtils.getPackageOf(it).qualifiedName.toString()
             val typeSpecBuilder = TypeSpec
-                    .classBuilder(className + "_MvpCompiler")
+                    .classBuilder(className + "_MvvmCompiler")
                     .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
                     .addSuperinterface(CLASS_NAME_MVP_COMPILER)
                     .addProperty(initTitleProperty(title, className))
@@ -69,13 +71,13 @@ class KotlinMvpProcessor : BaseProcessor() {
             funSpec?.let { fsc ->
                 typeSpecBuilder.addFunction(fsc)
             }
-            typeSpecBuilder.addFunction(injectFun(className,funSpec!=null))
+            typeSpecBuilder.addFunction(injectFun(className, funSpec != null))
 
             val typeSpec = typeSpecBuilder.build()
             FileSpec
                     .builder(fullPackageName, typeSpec.name!!)
                     .addType(typeSpec)
-                    .addImport("com.catchpig.mvp", "R")
+                    .addImport("com.catchpig.mvvm", "R")
                     .build()
                     .writeTo(filer)
         }
@@ -87,6 +89,7 @@ class KotlinMvpProcessor : BaseProcessor() {
      */
     private fun initTitleMenuOnClick(element: TypeElement, title: Title?): FunSpec? {
         val elements = elementUtils.getAllMembers(element)
+
         /**
          * OnClickFirstText,OnClickFirstDrawable,OnClickSecondText,OnClickSecondDrawable是否有注解
          *
@@ -245,26 +248,27 @@ class KotlinMvpProcessor : BaseProcessor() {
 
     }
 
-    private fun injectFun(className: String,isInitMenuFun:Boolean): FunSpec {
+    private fun injectFun(className: String, isInitMenuFun: Boolean): FunSpec {
         var funSpecBuilder = FunSpec
                 .builder("inject")
                 .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
-                .addParameter("activity", CLASS_NAME_BASE_ACTIVITY)
+                .addParameter("activity", CLASS_NAME_ACTIVITY)
                 .addStatement("//加载标题栏")
+                .addStatement("val baseActivity = activity as %T<*>", CLASS_NAME_BASE_ACTIVITY)
                 .addStatement("title?.let{")
-                .addStatement("  val titleBarViewStub = activity.findViewById<%T>(R.id.title_bar_view_stub)", TYPE_VIEW_STUB)
+                .addStatement("  val titleBarViewStub = baseActivity.findViewById<%T>(R.id.title_bar_view_stub)", TYPE_VIEW_STUB)
                 .addStatement("  titleBarViewStub.setOnInflateListener { _, _ ->")
-                .addStatement("    val titleBarController = %T(activity,it)", TYPE_TITLE_BAR_CONTROLLER)
+                .addStatement("    val titleBarController = %T(baseActivity,it)", TYPE_TITLE_BAR_CONTROLLER)
                 .addStatement("    titleBarController.initTitleBar()")
         if (isInitMenuFun) {
-            funSpecBuilder.addStatement("    initTitleMenuOnClick(activity as $className)")
+            funSpecBuilder.addStatement("    initTitleMenuOnClick(baseActivity as $className)")
         }
         return funSpecBuilder
                 .addStatement("  }")
                 .addStatement("  titleBarViewStub.inflate()")
                 .addStatement("}")
                 .addStatement("//加载状态栏")
-                .addStatement("val statusBarController = %T(activity,title,statusBar)", TYPE_STATUS_BAR_CONTROLLER)
+                .addStatement("val statusBarController = %T(baseActivity,title,statusBar)", TYPE_STATUS_BAR_CONTROLLER)
                 .addStatement("statusBarController.checkStatusBar()")
                 .build()
     }
@@ -312,7 +316,7 @@ class KotlinMvpProcessor : BaseProcessor() {
      */
     private fun superClassIsBaseActivity(typeElement: TypeElement): Boolean {
         val className = typeElement.superclass.toString()
-        if (className.contains("com.catchpig.mvp.base.activity")) {
+        if (className.contains("com.catchpig.mvvm.base.activity")) {
             return true
         }
         return false
