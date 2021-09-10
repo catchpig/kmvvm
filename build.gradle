@@ -8,6 +8,7 @@ buildscript {
     ext.koin_version = '2.2.1'
 
     repositories {
+        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
         maven{
             url 'https://maven.aliyun.com/repository/public'
         }
@@ -17,9 +18,9 @@ buildscript {
         maven{
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
+        maven { url 'https://jitpack.io' }
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
@@ -33,9 +34,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
+        maven { url 'https://jitpack.io' }
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
     }
 }
 

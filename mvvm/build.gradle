@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
 
+apply plugin: 'kotlin-parcelize'
+
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 apply plugin: 'com.github.dcendents.android-maven'
@@ -91,6 +93,8 @@ dependencies {
     api "com.gyf.immersionbar:immersionbar-ktx:$immersionbar_version"
     //刷新
     api "com.scwang.smart:refresh-layout-kernel:$SmartRefreshLayout_version"
+    //aop
+    api "org.aspectj:aspectjrt:$aspectj_version"
 }
 
 task androidSourcesJar(type: Jar) {

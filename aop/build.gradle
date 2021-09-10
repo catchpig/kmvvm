@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../lib_aspectj.gradle'
 
@@ -51,9 +50,4 @@ dependencies {
 task androidSourcesJar(type: Jar) {
     classifier = 'sources'
     from android.sourceSets.main.java.srcDirs
-}
-
-task asd(){
-    def plugins = project.plugins
-    println("asd:"+plugins)
 }

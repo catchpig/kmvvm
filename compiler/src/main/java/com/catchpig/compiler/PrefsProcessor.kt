@@ -6,6 +6,8 @@ import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
+import javax.annotation.processing.SupportedSourceVersion
+import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.TypeKind
@@ -16,6 +18,7 @@ import javax.lang.model.type.TypeKind
  * @date 2019/10/29 00:29
  */
 @AutoService(Processor::class)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 class PrefsProcessor : BaseProcessor() {
     companion object {
         private val CLASS_NAME_SHARED_PREFERENCES_EDITOR = ClassName("android.content.SharedPreferences", "Editor")
@@ -72,7 +75,7 @@ class PrefsProcessor : BaseProcessor() {
                     prefsField.value
                 }
 
-                val funName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1)
+                val funName = fieldName.substring(0, 1).uppercase() + fieldName.substring(1)
                 if (isCreateMethod(it)) {
                     //set方法
                     funSpecs.add(createSetFunction(it,funName,fieldName,prefsKey))

@@ -24,6 +24,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
 
     @MethodLog(LEVEL.I)
     override fun initView() {
+        bodyBinding.fullScreen.translationX
     }
 
     @MethodLog(LEVEL.V)
