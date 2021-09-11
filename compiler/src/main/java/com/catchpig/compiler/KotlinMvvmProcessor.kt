@@ -257,9 +257,9 @@ class KotlinMvvmProcessor : BaseProcessor() {
                 .addStatement("val baseActivity = activity as %T<*>", CLASS_NAME_BASE_ACTIVITY)
                 .addStatement("title?.let{")
                 .addStatement("  val titleBarViewStub = baseActivity.findViewById<%T>(R.id.title_bar_view_stub)", TYPE_VIEW_STUB)
-                .addStatement("  titleBarViewStub.setOnInflateListener { _, _ ->")
+                .addStatement("  titleBarViewStub.setOnInflateListener { _, view ->")
                 .addStatement("    val titleBarController = %T(baseActivity,it)", TYPE_TITLE_BAR_CONTROLLER)
-                .addStatement("    titleBarController.initTitleBar()")
+                .addStatement("    titleBarController.initTitleBar(view)")
         if (isInitMenuFun) {
             funSpecBuilder.addStatement("    initTitleMenuOnClick(baseActivity as $className)")
         }

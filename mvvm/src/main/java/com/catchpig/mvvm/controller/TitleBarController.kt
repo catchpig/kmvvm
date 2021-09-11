@@ -21,8 +21,8 @@ import com.catchpig.mvvm.ext.*
  */
 class TitleBarController(private val baseActivity: BaseActivity<*>, private val title: TitleParam) : View.OnClickListener {
 
-    fun initTitleBar() {
-        val titleBarBinding = LayoutTitleBarBinding.inflate(baseActivity.layoutInflater)
+    fun initTitleBar(view:View) {
+        val titleBarBinding = LayoutTitleBarBinding.bind(view)
         titleBarBinding.titleBar.visibility = View.VISIBLE
         initListener(titleBarBinding)
         titleBarBinding.titleBar.run {
