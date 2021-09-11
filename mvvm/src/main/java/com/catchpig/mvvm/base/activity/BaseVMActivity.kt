@@ -2,14 +2,9 @@ package com.catchpig.mvvm.base.activity
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
-import org.koin.androidx.scope.activityScope
-import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.Scope
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -30,8 +25,18 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
         initParam()
         lifecycle.addObserver(viewModel)
         initView()
+        observerLoading()
     }
 
     protected abstract fun initParam()
     protected abstract fun initView()
+
+    private fun observerLoading() {
+        viewModel.showLoadingLiveData.observe(this, {
+            loadingView(it)
+        })
+        viewModel.hideLoadingLiveData.observe(this, {
+            hideLoadingView()
+        })
+    }
 }

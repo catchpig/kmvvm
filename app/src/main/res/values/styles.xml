@@ -24,7 +24,7 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowFullscreen">true</item>
     </style>
-    <style name="MainTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="MainTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
