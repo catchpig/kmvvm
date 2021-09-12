@@ -15,7 +15,7 @@ annotation class Title(
         /**
          * 标题内容
          */
-        @StringRes val value: Int,
+        @StringRes val value: Int = -1,
         /**
          * 标题背景色
          */

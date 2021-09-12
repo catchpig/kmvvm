@@ -16,12 +16,12 @@ class ChildActivity : BaseActivity<ActivityChildBinding>(){
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
         toast(" 第一个图标按钮点击生效")
-
+        updateTitle("nihao")
     }
     @OnClickFirstText(R.string.more)
     fun clickFirstText() {
         toast("第一个文字按钮点击生效")
-
+        updateTitle("12354")
     }
 
     /**

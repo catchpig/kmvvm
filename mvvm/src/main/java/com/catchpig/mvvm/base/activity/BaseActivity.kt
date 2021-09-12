@@ -5,11 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.annotation.CallSuper
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.controller.LoadingViewController
+import com.catchpig.mvvm.databinding.LayoutTitleBarBinding
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.utils.ext.longToast
 import com.catchpig.utils.ext.toast
@@ -49,9 +54,10 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(this, layoutInflater) as VB
     }
-    val rootBinding: ViewRootBinding by lazy {
+    private val rootBinding: ViewRootBinding by lazy {
         ViewRootBinding.inflate(layoutInflater)
     }
+
     private var loadingViewController: LoadingViewController? = null
 
     @CallSuper
@@ -79,6 +85,21 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             )
             loadingViewController = LoadingViewController(this, rootBinding)
         }
+    }
+
+    /**
+     * 改变title文字
+     */
+    fun updateTitle(title: String) {
+        var titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
+        titleText.text = title
+    }
+
+    /**
+     * 改变title文字
+     */
+    fun updateTitle(@StringRes title: Int) {
+        updateTitle(getString(title))
     }
 
     fun loadingView(isDialog: Boolean) {
