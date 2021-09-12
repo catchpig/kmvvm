@@ -10,14 +10,15 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import java.util.concurrent.TimeUnit
 
-@Title(R.string.child_title)
+@Title
 @StatusBar
-class ChildActivity : BaseActivity<ActivityChildBinding>(){
+class ChildActivity : BaseActivity<ActivityChildBinding>() {
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
         toast(" 第一个图标按钮点击生效")
         updateTitle("nihao")
     }
+
     @OnClickFirstText(R.string.more)
     fun clickFirstText() {
         toast("第一个文字按钮点击生效")
@@ -27,9 +28,9 @@ class ChildActivity : BaseActivity<ActivityChildBinding>(){
     /**
      * dialog形式的loading
      */
-    fun loadingDialog(v: View){
+    fun loadingDialog(v: View) {
         loadingView(true)
-        Flowable.timer(5,TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+        Flowable.timer(5, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
             hideLoadingView()
         }
     }
@@ -37,9 +38,9 @@ class ChildActivity : BaseActivity<ActivityChildBinding>(){
     /**
      * 标题栏以下的loading
      */
-    fun loadingExtTitle(v: View){
+    fun loadingExtTitle(v: View) {
         loadingView(false)
-        Flowable.timer(5,TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+        Flowable.timer(5, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
             hideLoadingView()
         }
     }

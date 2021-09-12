@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
@@ -14,7 +13,6 @@ import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.controller.LoadingViewController
-import com.catchpig.mvvm.databinding.LayoutTitleBarBinding
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.utils.ext.longToast
 import com.catchpig.utils.ext.toast
@@ -99,7 +97,8 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
      * 改变title文字
      */
     fun updateTitle(@StringRes title: Int) {
-        updateTitle(getString(title))
+        var titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
+        titleText.setText(title)
     }
 
     fun loadingView(isDialog: Boolean) {

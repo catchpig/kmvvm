@@ -32,7 +32,9 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
             drawTextColor(titleBarBinding)
             //设置返回按钮图标
             drawBackIcon(titleBarBinding.backIcon)
-            titleBarBinding.titleText.setText(title.value)
+            if (title.value != Config.NO_ASSIGNMENT) {
+                titleBarBinding.titleText.setText(title.value)
+            }
 
         }
         drawLine(titleBarBinding.line)
