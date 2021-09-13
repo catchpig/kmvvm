@@ -10,9 +10,16 @@ import androidx.viewbinding.ViewBinding
  */
 class CommonViewHolder<VB : ViewBinding>(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
-    var itemViewBinding: VB? = null
-    constructor(itemViewBinding: VB) : this(itemViewBinding.root){
+    private var itemViewBinding: VB? = null
+
+    constructor(itemViewBinding: VB) : this(itemViewBinding.root) {
         this.itemViewBinding = itemViewBinding
+    }
+
+    fun viewBanding(vb: (viewBinding: VB) -> Unit) {
+        itemViewBinding?.let {
+            vb(it)
+        }
     }
 
 }

@@ -1,57 +1,29 @@
 package com.catchpig.mvvm.base.viewmodel
 
 import androidx.lifecycle.*
+import com.catchpig.mvvm.base.callback.BaseCallback
 import com.catchpig.mvvm.ext.io2main
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 
-open class BaseViewModel : ViewModel(), LifecycleObserver {
+open class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadingDialog {
     private var mCompositeDisposable: CompositeDisposable = CompositeDisposable()
     var showLoadingLiveData = MutableLiveData<Boolean>()
     var hideLoadingLiveData = MutableLiveData<Boolean>()
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    open fun onCreate() {
-
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart() {
-
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
-
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause() {
-
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop() {
-
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroy() {
-    }
-
     /**
      * 展现loading
      */
-    fun showLoading(isDialog: Boolean) {
+    override fun showLoading(isDialog: Boolean) {
         showLoadingLiveData.value = isDialog
     }
 
     /**
      * 隐藏loading
      */
-    fun hideLoading(){
+    override fun hideLoading() {
         hideLoadingLiveData.value = true
     }
 
@@ -75,11 +47,56 @@ open class BaseViewModel : ViewModel(), LifecycleObserver {
         return disposable
     }
 
+    fun <T> execute(
+        flowable: Flowable<T>,
+        io2main: Boolean = true,
+        callback: (t: T) -> Unit
+    ): Disposable {
+        return execute(flowable, object : BaseCallback<T>() {
+            override fun onSuccess(t: T) {
+                callback(t)
+            }
+        }, io2main)
+    }
+
 
     /**
      * 删除指定的Disposable
      */
     fun remove(disposable: Disposable) {
         mCompositeDisposable.remove(disposable)
+    }
+
+    override fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?) {
+
+    }
+
+    override fun onCreate() {
+
+    }
+
+    override fun onStart() {
+
+    }
+
+    override fun onResume() {
+
+    }
+
+    override fun onPause() {
+
+    }
+
+    override fun onStop() {
+
+    }
+
+    override fun onDestroy() {
+
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        mCompositeDisposable.clear()
     }
 }

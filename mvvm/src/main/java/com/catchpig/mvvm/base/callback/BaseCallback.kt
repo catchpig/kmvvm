@@ -1,6 +1,5 @@
 package com.catchpig.mvvm.base.callback
 
-import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.utils.ext.loge
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 
@@ -10,7 +9,7 @@ import io.reactivex.rxjava3.subscribers.ResourceSubscriber
  * description:
  */
 abstract class BaseCallback<T>(
-    var baseViewModel: BaseViewModel? = null,
+    var iLoadingDialog: ILoadingDialog? = null,
     var isLoadingDialog: Boolean = true
 ) :
     ResourceSubscriber<T>() {
@@ -20,7 +19,7 @@ abstract class BaseCallback<T>(
 
     override fun onStart() {
         super.onStart()
-        baseViewModel?.let {
+        iLoadingDialog?.let {
             it.showLoading(isLoadingDialog)
         }
     }
@@ -45,8 +44,20 @@ abstract class BaseCallback<T>(
     }
 
     private fun hideLoading() {
-        baseViewModel?.let {
+        iLoadingDialog?.let {
             it.hideLoading()
         }
+    }
+
+    interface ILoadingDialog {
+        /**
+         * 展示Dialog
+         */
+        fun showLoading(isLoadingDialog: Boolean)
+
+        /**
+         * 隐藏Dialog
+         */
+        fun hideLoading()
     }
 }

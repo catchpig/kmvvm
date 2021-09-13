@@ -13,11 +13,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.*
-import com.catchpig.mvvm.databinding.ViewLoadEmptyBinding
 import com.catchpig.mvvm.ext.getEmptyLayout
 import com.catchpig.mvvm.widget.refresh.IPageControl
 import com.scwang.smart.refresh.layout.constant.RefreshState
-import java.lang.reflect.ParameterizedType
 import java.util.*
 
 
@@ -102,15 +100,37 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
      */
     private var firstLoad = true
 
-    var onItemClickListener: OnItemClickListener<M>? = null
+    private var onItemClickListener: OnItemClickListener<M>? = null
 
-    fun onItemClickListener(listener: (id: Int, m: M, position: Int) -> Unit) {
-        onItemClickListener = object : OnItemClickListener<M> {
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener<M>) {
+        this.onItemClickListener = onItemClickListener
+    }
+
+    fun setOnItemClickListener(listener: (id: Int, m: M, position: Int) -> Unit) {
+        object : OnItemClickListener<M> {
             override fun itemClick(id: Int, m: M, position: Int) {
                 listener(id, m, position)
             }
 
-        }
+        }.also { onItemClickListener = it }
+    }
+
+    fun setOnItemClickListener(listener: (m: M) -> Unit) {
+        object : OnItemClickListener<M> {
+            override fun itemClick(id: Int, m: M, position: Int) {
+                listener(m)
+            }
+
+        }.also { onItemClickListener = it }
+    }
+
+    fun setOnItemClickListener(listener: (m: M, position: Int) -> Unit) {
+        object : OnItemClickListener<M> {
+            override fun itemClick(id: Int, m: M, position: Int) {
+                listener(m, position)
+            }
+
+        }.also { onItemClickListener = it }
     }
 
     fun addHeaderView(@LayoutRes layoutId: Int) {

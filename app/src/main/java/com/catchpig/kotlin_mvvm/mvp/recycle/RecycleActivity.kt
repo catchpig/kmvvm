@@ -8,6 +8,7 @@ import com.catchpig.annotation.TimeLog
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityRecycleBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
+import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.widget.refresh.OnRefreshListener
 import com.catchpig.utils.ext.logd
 import com.gyf.immersionbar.ktx.immersionBar
@@ -32,7 +33,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
 
     private fun initAdapter(){
         var userAdapter = UserAdapter(bodyBinding.refresh)
-        userAdapter.onItemClickListener { _, m, _ ->
+        userAdapter.setOnItemClickListener { _, m, _ ->
             "${m.name}".logd("adsd")
         }
         var linearLayoutManager = LinearLayoutManager(this)

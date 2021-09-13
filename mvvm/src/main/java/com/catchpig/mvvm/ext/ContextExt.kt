@@ -1,5 +1,7 @@
 package com.catchpig.mvvm.ext
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
@@ -123,13 +125,5 @@ fun Context.getEmptyLayout():Int{
         "主题中未设置列表空页面,属性名称为:recycle_view_empty_layout".logd("ContextExt")
     }
     return typedValue.resourceId
-}
-
-/**
- * ColorRes 转 ColorInt
- */
-@ColorInt
-fun Context.colorResToInt(colorRes: Int):Int{
-    return ContextCompat.getColor(this,colorRes)
 }
 
