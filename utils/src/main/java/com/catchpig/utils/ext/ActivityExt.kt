@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 
 inline fun <reified T : Activity> Context.startKtActivity(
-        intent: Intent = Intent()
+    intent: Intent = Intent()
 ) {
 
     intent.setClass(this, T::class.java)
@@ -14,7 +14,7 @@ inline fun <reified T : Activity> Context.startKtActivity(
 }
 
 inline fun <reified T : Activity> Fragment.startKtActivity(
-        intent: Intent = Intent()
+    intent: Intent = Intent()
 ) {
     activity?.let {
         intent.setClass(it, T::class.java)
@@ -23,16 +23,16 @@ inline fun <reified T : Activity> Fragment.startKtActivity(
 }
 
 inline fun <reified T : Activity> Activity.startKtActivityForResult(
-        intent: Intent = Intent(),
-        requestCode: Int
+    requestCode: Int,
+    intent: Intent = Intent()
 ) {
     intent.setClass(this, T::class.java)
     startActivityForResult(intent, requestCode)
 }
 
 inline fun <reified T : Activity> Fragment.startKtActivityForResult(
-        intent: Intent = Intent(),
-        requestCode: Int
+    requestCode: Int,
+    intent: Intent = Intent()
 ) {
     activity?.let {
         intent.setClass(it, T::class.java)
