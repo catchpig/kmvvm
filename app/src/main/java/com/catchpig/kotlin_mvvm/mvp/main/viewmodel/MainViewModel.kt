@@ -12,11 +12,12 @@ import java.util.concurrent.TimeUnit
 class MainViewModel : BaseViewModel() {
     override fun onCreate() {
         super.onCreate()
-        execute(Flowable.timer(5,TimeUnit.SECONDS),object : BaseCallback<Long>(this){
-            override fun onSuccess(t: Long) {
+        execute(Flowable.timer(5, TimeUnit.SECONDS),
+            object : BaseCallback<Long>(this@MainViewModel) {
+                override fun onSuccess(t: Long) {
 
-            }
-        })
+                }
+            })
 //        execute(model.banner(), object :Callback<Result<Any>>(){
 //            override fun onNext(result: Result<Any>?) {
 //                view.toast(result!!.errorCode.toString())

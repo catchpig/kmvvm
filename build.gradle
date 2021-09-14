@@ -8,7 +8,9 @@ buildscript {
     ext.koin_version = '2.2.1'
 
     repositories {
-        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
+        maven{
+            url "https://maven.aliyun.com/repository/central"
+        }
         maven{
             url 'https://maven.aliyun.com/repository/public'
         }
@@ -34,7 +36,18 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
+        maven{
+            url "https://maven.aliyun.com/repository/central"
+        }
+        maven{
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven{
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven{
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
         maven { url 'https://jitpack.io' }
         google()
         jcenter()

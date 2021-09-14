@@ -16,18 +16,21 @@ import com.gyf.immersionbar.ImmersionBar
  *
  * @author TLi2
  **/
-class LoadingViewController(private val baseActivity: BaseActivity<*>,private val rootBinding: ViewRootBinding) {
-    private var dialog:Dialog? = null
+class LoadingViewController(
+    private val baseActivity: BaseActivity<*>,
+    private val rootBinding: ViewRootBinding
+) {
+    private var dialog: Dialog? = null
     private var isLoadingInflate = false
-    private lateinit var loadingFrame:FrameLayout
-    private lateinit var loadingView:LoadingView
-    fun loadingView(){
+    private lateinit var loadingFrame: FrameLayout
+    private lateinit var loadingView: LoadingView
+    fun loadingView() {
         rootBinding.layoutBody.run {
             if (isLoadingInflate) {
                 loadingFrame.visibility = View.VISIBLE
                 loadingFrame.setBackgroundResource(baseActivity.getLoadingViewBackground())
                 loadingView.setLoadColor(baseActivity.getLoadingColor())
-            }else{
+            } else {
                 //setOnInflateListener监听器一定要在inflate()之前,不然会报空指针
                 rootBinding.loadingViewStub.setOnInflateListener { _, view ->
                     isLoadingInflate = true
@@ -42,7 +45,12 @@ class LoadingViewController(private val baseActivity: BaseActivity<*>,private va
         }
     }
 
-    fun loadingDialog(){
+    fun loadingDialog() {
+        dialog?.let {
+            if (it.isShowing) {
+                return
+            }
+        }
         dialog = Dialog(baseActivity, R.style.loading_dialog_theme)
         dialog?.run {
             setCancelable(false)
@@ -51,19 +59,19 @@ class LoadingViewController(private val baseActivity: BaseActivity<*>,private va
             val loadingView = findViewById<LoadingView>(R.id.loading_view)
             loadingFrame.visibility = View.VISIBLE
             loadingView.setLoadColor(baseActivity.getLoadingColor())
-            ImmersionBar.with(baseActivity,this).transparentBar().init()
+            ImmersionBar.with(baseActivity, this).transparentBar().init()
             show()
             window?.run {
                 var layoutParams = attributes
                 layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
                 layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
-                decorView.setPadding(0,0,0,0)
+                decorView.setPadding(0, 0, 0, 0)
                 attributes = layoutParams
             }
         }
     }
 
-    fun hideLoading(){
+    fun hideLoading() {
         dialog?.let {
             it.dismiss()
         }
