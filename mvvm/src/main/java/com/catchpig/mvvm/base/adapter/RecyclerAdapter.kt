@@ -315,13 +315,23 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
                 inflate(emptyLayout, parent)
             }
             else -> {
-                return CommonViewHolder(getViewBanding(LayoutInflater.from(parent.context)))
+                return CommonViewHolder(getViewBanding(LayoutInflater.from(parent.context), parent))
             }
         }
         return CommonViewHolder(view)
     }
 
-    abstract fun getViewBanding(layoutInflater: LayoutInflater): VB
+    private fun getViewBanding(layoutInflater: LayoutInflater, parent: ViewGroup): VB {
+        val method = itemViewBanding().getDeclaredMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+        return method.invoke(this, layoutInflater, parent, false) as VB
+    }
+
+    abstract fun itemViewBanding(): Class<VB>
 
     /**
      * 获取需要viewHolder的view
