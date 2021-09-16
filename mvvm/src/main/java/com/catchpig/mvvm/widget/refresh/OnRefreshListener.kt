@@ -35,5 +35,5 @@ abstract class OnRefreshListener : OnRefreshLoadMoreListener {
     /**
      * 下拉刷新和上拉加载更多的回调接口
      */
-    abstract fun update(refreshLayout: RefreshLayout)
+    abstract fun update(refreshLayout: RefreshLayoutWrapper)
 }

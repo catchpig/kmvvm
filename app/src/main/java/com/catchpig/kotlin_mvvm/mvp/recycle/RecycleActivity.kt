@@ -31,7 +31,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
         Glide.with(this).load(getPic()).placeholder(R.drawable.fullscreen).into(bodyBinding.image)
     }
 
-    private fun initAdapter(){
+    private fun initAdapter() {
         var userAdapter = UserAdapter(bodyBinding.refresh)
         userAdapter.setOnItemClickListener { _, m, _ ->
             "${m.name}".logd("adsd")
@@ -44,40 +44,38 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
 //        userAdapter.headerView {
 //            header_name.text = "我是头部"
 //        }
+        bodyBinding.refresh.setOnRefreshLoadMoreListener { nextPageIndex ->
+            Flowable.timer(3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : ResourceSubscriber<Long>() {
+                    override fun onComplete() {
+                        "onComplete".logd()
+                    }
 
-        bodyBinding.refresh.setOnRefreshLoadMoreListener(object :OnRefreshListener(){
-            override fun update(refreshLayout: RefreshLayout) {
-                Flowable.timer(3,TimeUnit.SECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object:ResourceSubscriber<Long>(){
-                            override fun onComplete() {
-                                "onComplete".logd()
-                            }
+                    override fun onNext(t: Long?) {
+                        "onNext".logd()
+                        var data: MutableList<User> = ArrayList()
+                        var count = if (bodyBinding.refresh.nextPageIndex == 3) {
+                            15
+                        } else {
+                            16
+                        }
+                        for (i in 1..count) {
+                            data.add(User("姓名$i"))
+                        }
+                        userAdapter.autoUpdateList(data)
+                    }
 
-                            override fun onNext(t: Long?) {
-                                "onNext".logd()
-                                var data:MutableList<User> = ArrayList()
-                                var count = if (bodyBinding.refresh.nextPageIndex==3) {
-                                    15
-                                }else{
-                                    16
-                                }
-                                for (i in 1..count){
-                                    data.add(User("姓名$i"))
-                                }
-                                userAdapter.autoUpdateList(data)
-                            }
-
-                            override fun onError(t: Throwable?) {
-                                "onError".logd()
-                                bodyBinding.refresh.updateError()
-                            }
-                        })
-            }
-        })
+                    override fun onError(t: Throwable?) {
+                        "onError".logd()
+                        bodyBinding.refresh.updateError()
+                    }
+                })
+        }
         bodyBinding.refresh.autoRefresh()
     }
-    private fun initToolBar(){
+
+    private fun initToolBar() {
         immersionBar {
             titleBar(bodyBinding.detailToolbar)
         }

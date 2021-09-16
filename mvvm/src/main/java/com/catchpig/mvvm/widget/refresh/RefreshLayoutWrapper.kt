@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 
 
@@ -25,15 +26,18 @@ class RefreshLayoutWrapper(
         const val NONE_PRE_PAGE_INDEX = -1
 
         const val PAGE_SIZE = 16
+
         /**
          * matreral风格的下拉控件
          */
         const val SIMPLE_NAME_MATERIAL_HEADER = "MaterialHeader"
     }
+
     init {
         //初始化加载更多不可用
         setEnableLoadMore(false)
     }
+
     /**
      * 当前页面index
      */
@@ -55,15 +59,15 @@ class RefreshLayoutWrapper(
      * @param list 更新数据集合
      */
     override fun updateSuccess(list: MutableList<*>?) {
-        if (list==null) {
+        if (list == null) {
             //设置加载更多不可用
             setEnableLoadMore(false)
-        }else{
+        } else {
             list?.apply {
-                if(size<pageSize){
+                if (size < pageSize) {
                     //设置加载更多不可用
                     setEnableLoadMore(false)
-                }else{
+                } else {
                     //设置加载更多可用
                     setEnableLoadMore(true)
                 }
@@ -119,5 +123,29 @@ class RefreshLayoutWrapper(
                 it.view.setBackgroundColor(Color.TRANSPARENT)
             }
         }
+    }
+
+    /**
+     * 设置刷新监听回调
+     */
+    fun setOnRefreshLoadMoreListener(listener: (nextPageIndex: Int) -> Unit) {
+        setOnRefreshLoadMoreListener(object : OnRefreshListener() {
+
+            override fun update(refreshLayout: RefreshLayoutWrapper) {
+                listener(refreshLayout.nextPageIndex)
+            }
+        })
+    }
+
+    /**
+     * 设置刷新监听回调
+     */
+    fun setOnRefreshLoadMoreListener(listener: (nextPageIndex: Int, pageSize: Int) -> Unit) {
+        setOnRefreshLoadMoreListener(object : OnRefreshListener() {
+
+            override fun update(refreshLayout: RefreshLayoutWrapper) {
+                listener(refreshLayout.nextPageIndex, refreshLayout.pageSize)
+            }
+        })
     }
 }
