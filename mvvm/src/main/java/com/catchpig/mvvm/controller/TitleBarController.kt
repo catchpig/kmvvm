@@ -3,6 +3,7 @@ package com.catchpig.mvvm.controller
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
@@ -19,24 +20,31 @@ import com.catchpig.mvvm.ext.*
  * @author catchpig
  * @date 2019/8/18 00:18
  */
-class TitleBarController(private val baseActivity: BaseActivity<*>, private val title: TitleParam) : View.OnClickListener {
+class TitleBarController(private val baseActivity: BaseActivity<*>, private val title: TitleParam) :
+    View.OnClickListener {
 
-    fun initTitleBar(view:View) {
+    fun initTitleBar(view: View) {
         val titleBarBinding = LayoutTitleBarBinding.bind(view)
-        titleBarBinding.titleBar.visibility = View.VISIBLE
-        initListener(titleBarBinding)
-        titleBarBinding.titleBar.run {
-            //设置背景色
-            drawBackground(this)
-            //设置文字颜色
-            drawTextColor(titleBarBinding)
-            //设置返回按钮图标
-            drawBackIcon(titleBarBinding.backIcon)
-            if (title.value != Config.NO_ASSIGNMENT) {
-                titleBarBinding.titleText.setText(title.value)
+        titleBarBinding.titleBar.let {
+            val titleBarHeight = baseActivity.getTitleHeight()
+            it.post {
+                var layoutParams = it.layoutParams
+                layoutParams.height = titleBarHeight.toInt()
+                it.layoutParams = layoutParams
             }
-
+            it.visibility = View.VISIBLE
+            initListener(titleBarBinding)
+            //设置背景色
+            drawBackground(it)
         }
+        //设置文字颜色
+        drawTextColor(titleBarBinding)
+        //设置返回按钮图标
+        drawBackIcon(titleBarBinding.backIcon)
+        if (title.value != Config.NO_ASSIGNMENT) {
+            titleBarBinding.titleText.setText(title.value)
+        }
+
         drawLine(titleBarBinding.line)
     }
 
@@ -111,7 +119,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
     /**
      * 设置背景色
      */
-    private fun drawBackground(titleBar: FrameLayout) {
+    private fun drawBackground(titleBar: RelativeLayout) {
         val backgroundColor = if (title!!.backgroundColor == Config.NO_ASSIGNMENT) {
             baseActivity.getTitleBackground()
         } else {

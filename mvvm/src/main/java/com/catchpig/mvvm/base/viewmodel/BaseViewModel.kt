@@ -48,7 +48,7 @@ abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadin
         return disposable
     }
 
-    fun <T> execute(
+    open fun <T> execute(
         flowable: Flowable<T>,
         io2main: Boolean = true,
         callback: (t: T) -> Unit

@@ -8,6 +8,7 @@ buildscript {
     ext.koin_version = '2.2.1'
 
     repositories {
+        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
         maven{
             url "https://maven.aliyun.com/repository/central"
         }
@@ -36,6 +37,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
         maven{
             url "https://maven.aliyun.com/repository/central"
         }
