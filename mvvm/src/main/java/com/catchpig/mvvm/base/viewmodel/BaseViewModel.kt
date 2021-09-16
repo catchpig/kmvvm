@@ -8,10 +8,11 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 
-open class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadingDialog {
+abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadingDialog {
     private var mCompositeDisposable: CompositeDisposable = CompositeDisposable()
     var showLoadingLiveData = MutableLiveData<Boolean>()
     var hideLoadingLiveData = MutableLiveData<Boolean>()
+    var toastLiveData = MutableLiveData<String>()
 
     /**
      * 展现loading

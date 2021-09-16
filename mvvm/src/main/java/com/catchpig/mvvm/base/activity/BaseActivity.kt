@@ -120,12 +120,4 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     fun closeActivity() {
         finish()
     }
-
-    fun toast(text: String, isLong: Boolean) {
-        if (isLong) {
-            longToast(text)
-        } else {
-            toast(text)
-        }
-    }
 }

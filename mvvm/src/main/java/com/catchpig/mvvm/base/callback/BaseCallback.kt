@@ -10,7 +10,8 @@ import io.reactivex.rxjava3.subscribers.ResourceSubscriber
  */
 abstract class BaseCallback<T>(
     var iLoadingDialog: ILoadingDialog? = null,
-    var isLoadingDialog: Boolean = true
+    var isLoadingDialog: Boolean = true,
+    var throwError: Boolean = true
 ) :
     ResourceSubscriber<T>() {
     companion object {
@@ -31,9 +32,14 @@ abstract class BaseCallback<T>(
     abstract fun onSuccess(t: T)
 
     override fun onError(t: Throwable?) {
-        t?.let { it ->
-            it.message?.let {
-                it.loge(TAG)
+        t?.let {
+            if (throwError) {
+                iLoadingDialog?.run {
+                    onError(it)
+                }
+            }
+            it.message?.run {
+                loge(TAG)
             }
         }
         hideLoading()
@@ -59,5 +65,7 @@ abstract class BaseCallback<T>(
          * 隐藏Dialog
          */
         fun hideLoading()
+
+        fun onError(t: Throwable);
     }
 }

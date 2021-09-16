@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import com.catchpig.utils.ext.toast
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -26,11 +27,27 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
         initParam()
         lifecycle.addObserver(viewModel)
         initView()
+        observerLoading()
+        observerErrorToast()
     }
-
 
     protected abstract fun initParam()
 
 
     protected abstract fun initView()
+
+    private fun observerErrorToast() {
+        viewModel.toastLiveData.observe(this, {
+            toast(it)
+        })
+    }
+
+    private fun observerLoading() {
+        viewModel.showLoadingLiveData.observe(this, {
+            loadingView(it)
+        })
+        viewModel.hideLoadingLiveData.observe(this, {
+            hideLoadingView()
+        })
+    }
 }

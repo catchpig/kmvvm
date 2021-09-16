@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -57,12 +56,6 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
     fun closeActivity() {
         activity?.let {
             it.finish()
-        }
-    }
-
-    fun toast(text: String, isLong: Boolean) {
-        baseActivity()?.let {
-            it.toast(text, isLong)
         }
     }
 }
