@@ -1,6 +1,9 @@
 package com.catchpig.mvvm.base.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.catchpig.mvvm.base.callback.BaseCallback
 import com.catchpig.mvvm.ext.io2main
 import io.reactivex.rxjava3.core.Flowable
@@ -60,11 +63,18 @@ abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadin
         }, io2main)
     }
 
+    /**
+     * 添加Disposable到CompositeDisposable
+     */
+    override fun add(disposable: Disposable) {
+        mCompositeDisposable.add(disposable)
+    }
+
 
     /**
      * 删除指定的Disposable
      */
-    fun remove(disposable: Disposable) {
+    override fun remove(disposable: Disposable) {
         mCompositeDisposable.remove(disposable)
     }
 

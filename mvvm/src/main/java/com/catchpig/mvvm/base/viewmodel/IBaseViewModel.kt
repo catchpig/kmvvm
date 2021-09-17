@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * @author litao
@@ -11,6 +12,10 @@ import androidx.lifecycle.OnLifecycleEvent
  * description:
  */
 interface IBaseViewModel : LifecycleObserver {
+
+    fun add(disposable: Disposable)
+
+    fun remove(disposable: Disposable)
 
     /**
      * 此函数可以监听Activity的全部Event事件
