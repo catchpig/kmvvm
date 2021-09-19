@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply from: '../lib_aspectj.gradle'
 
-group = 'com.github.catch-pig'
+group = 'com.gitee.catch-pig'
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion

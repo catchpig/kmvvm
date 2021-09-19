@@ -8,7 +8,7 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 apply plugin: 'com.github.dcendents.android-maven'
 
-group = 'com.github.catch-pig'
+group = 'com.gitee.catch-pig'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -49,7 +49,7 @@ dependencies {
     api 'androidx.recyclerview:recyclerview:1.0.0'
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api project(path: ':annotation')
     api project(path: ':aop')
     //koin
@@ -80,7 +80,6 @@ dependencies {
     //rxjava3
     api "io.reactivex.rxjava3:rxjava:$rxjava_version"
     api "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
-
 
 
     api "com.github.catch-pig:LoadingView:$loading_version"
