@@ -56,7 +56,7 @@ dependencies {
     // Koin for Android
 //    api "org.koin:koin-android:$koin_version"
     // Koin AndroidX Scope features
-    api "org.koin:koin-androidx-scope:$koin_version"
+//    api "org.koin:koin-androidx-scope:$koin_version"
     // Koin AndroidX ViewModel features
 //    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     // Koin AndroidX Fragment features

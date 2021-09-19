@@ -2,7 +2,6 @@ package com.catchpig.mvvm.manager
 
 import android.os.Environment
 import android.util.ArrayMap
-import com.catchpig.mvvm.di.NAMED_DOWNLOAD
 import com.catchpig.mvvm.ext.io2main
 import com.catchpig.mvvm.interceptor.DownloadInterceptor
 import com.catchpig.mvvm.listener.DownloadCallback
@@ -15,23 +14,76 @@ import com.catchpig.mvvm.provider.KotlinMvpContentProvider
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
-import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
-import org.koin.java.KoinJavaComponent
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
 import java.net.URL
 import java.nio.channels.FileChannel
+import java.util.concurrent.TimeUnit
 
 /**
  * 描述:下载工具类
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-class DownloadManager {
+object DownloadManager {
+    /**
+     * 连接超时时间(秒)
+     */
+    private const val CONNECT_TIMEOUT = 5L
+
+    /**
+     * 读取数据超时时间(分钟)
+     */
+    private const val READ_TIMEOUT = 10L
     private var downloadServiceMap: MutableMap<String, DownloadService> = ArrayMap()
+    private val logInterceptor by lazy {
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        httpLoggingInterceptor
+    }
+
+    private val downloadInterceptor by lazy {
+        DownloadInterceptor()
+    }
+
+    private var okHttpClient: OkHttpClient? = null
+
+    private fun getOkHttpClient(): OkHttpClient {
+        if (okHttpClient == null) {
+            okHttpClient = OkHttpClient
+                .Builder()
+                /**
+                 * 连接超时时间5秒
+                 */
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                /**
+                 * 读取数据超时时间10分钟
+                 */
+                .readTimeout(READ_TIMEOUT, TimeUnit.MINUTES)
+                .addInterceptor(logInterceptor)
+                .addInterceptor(downloadInterceptor)
+                .build()
+        }
+        return okHttpClient!!
+    }
+
+    private fun getDowLoadService(baseUrl: String): DownloadService {
+        return Retrofit
+            .Builder()
+            .baseUrl(baseUrl)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .client(getOkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(DownloadService::class.java)
+    }
 
     /**
      * 初始化下载器接口类
@@ -39,19 +91,24 @@ class DownloadManager {
      * @param downloadProgressListener DownloadProgressListener
      * @return DownloadService
      */
-    private fun initDownloadService(url: URL, downloadProgressListener: DownloadProgressListener): DownloadService {
+    private fun initDownloadService(
+        url: URL,
+        downloadProgressListener: DownloadProgressListener
+    ): DownloadService {
         val baseUrl = "${url.protocol}://${url.host}/"
         var downloadService = downloadServiceMap[baseUrl]
         if (downloadService == null) {
-            downloadService = KoinJavaComponent.getKoin().get(named(NAMED_DOWNLOAD)) { parametersOf(baseUrl) }
+            downloadService = getDowLoadService(baseUrl)
             downloadServiceMap[baseUrl] = downloadService
         }
-        var downloadInterceptor = KoinJavaComponent.getKoin().get<DownloadInterceptor>(named(NAMED_DOWNLOAD))
-        downloadInterceptor.addProgressListener(url.toString(),downloadProgressListener)
+        downloadInterceptor.addProgressListener(url.toString(), downloadProgressListener)
         return downloadService
     }
 
-    fun multiDownload(downloadUrls: MutableList<String>, callback: (paths: MutableList<String>) -> Unit): Disposable {
+    fun multiDownload(
+        downloadUrls: MutableList<String>,
+        callback: (paths: MutableList<String>) -> Unit
+    ): Disposable {
         return multiDownload(downloadUrls, object : MultiDownloadCallback {
             override fun onStart() {
 
@@ -71,7 +128,10 @@ class DownloadManager {
         })
     }
 
-    fun multiDownload(downloadUrls: MutableList<String>, multiDownloadCallback: MultiDownloadCallback): Disposable {
+    fun multiDownload(
+        downloadUrls: MutableList<String>,
+        multiDownloadCallback: MultiDownloadCallback
+    ): Disposable {
         val multiDownloadSubscriber = MultiDownloadSubscriber(multiDownloadCallback)
         return Flowable.fromIterable(downloadUrls).flatMap {
             val localFilePath = localFileName(it)
@@ -87,6 +147,68 @@ class DownloadManager {
             val downloadService = initDownloadService(url, multiDownloadSubscriber)
             return@flatMap httpDownload(downloadService, url.file.substring(1), localFilePath)
         }.io2main().subscribeWith(multiDownloadSubscriber)
+    }
+
+    /**
+     * 下载返回File
+     */
+    fun downloadFile(
+        downloadUrl: String,
+        callback: (file: File) -> Unit,
+        process: (readLength: Long, countLength: Long) -> Unit
+    ): Disposable {
+        return download(downloadUrl, object : DownloadCallback {
+            override fun onStart() {
+
+            }
+
+            override fun onComplete() {
+
+            }
+
+            override fun onProgress(readLength: Long, countLength: Long) {
+                process(readLength, countLength)
+            }
+
+            override fun onError(t: Throwable) {
+
+            }
+
+            override fun onSuccess(path: String) {
+                callback(File(path))
+            }
+        })
+    }
+
+    /**
+     * 下载返回路径地址
+     */
+    fun download(
+        downloadUrl: String,
+        callback: (path: String) -> Unit,
+        process: (readLength: Long, countLength: Long) -> Unit
+    ): Disposable {
+        return download(downloadUrl, object : DownloadCallback {
+            override fun onStart() {
+
+            }
+
+            override fun onComplete() {
+
+            }
+
+            override fun onProgress(readLength: Long, countLength: Long) {
+                process(readLength, countLength)
+            }
+
+            override fun onError(t: Throwable) {
+
+            }
+
+            override fun onSuccess(path: String) {
+                callback(path)
+            }
+        })
     }
 
     fun download(downloadUrl: String, callback: (path: String) -> Unit): Disposable {
@@ -144,7 +266,11 @@ class DownloadManager {
         return downloadSubscriber
     }
 
-    private fun httpDownload(downloadService: DownloadService, url: String, localFilePath: String): Flowable<String> {
+    private fun httpDownload(
+        downloadService: DownloadService,
+        url: String,
+        localFilePath: String
+    ): Flowable<String> {
         return downloadService.download(url).subscribeOn(Schedulers.io()).map {
             return@map writeCache(it, localFilePath)
         }
@@ -188,7 +314,8 @@ class DownloadManager {
         }
         var randomAccessFile = RandomAccessFile(file, "rwd")
         var fileChannel = randomAccessFile.channel
-        var mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, 0, responseBody.contentLength())
+        var mappedByteBuffer =
+            fileChannel.map(FileChannel.MapMode.READ_WRITE, 0, responseBody.contentLength())
         var buffer = ByteArray(1024 * 8)
         var len: Int
         while (true) {

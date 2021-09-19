@@ -28,6 +28,9 @@ class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkV
                     viewModel.download()
                 }
             }
+        viewModel.progressLiveData.observe(this, {
+            bodyBinding.progressBar.progress = it
+        })
     }
 
 //    override fun setDownloadProgress(progress: Int) {
