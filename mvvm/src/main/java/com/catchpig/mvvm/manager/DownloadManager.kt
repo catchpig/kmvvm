@@ -1,5 +1,6 @@
 package com.catchpig.mvvm.manager
 
+import android.content.Context
 import android.os.Environment
 import android.util.ArrayMap
 import com.catchpig.mvvm.ext.io2main
@@ -285,10 +286,10 @@ object DownloadManager {
         val fileName = downloadUrl.replace("/", "").replace("\\", "")
         var cashDir = if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
             //有SD卡,拿到SD卡的/storage/sdcard0/Android/data/包名/cash目录
-            KotlinMvpContentProvider.application.externalCacheDir!!.absolutePath
+            ContextManager.context.externalCacheDir!!.absolutePath
         } else {
             //没有SD卡的,拿到/data/data/包名/cash目录
-            KotlinMvpContentProvider.application.cacheDir.absolutePath
+            ContextManager.context.cacheDir.absolutePath
         }
         return "$cashDir/download/$fileName"
     }

@@ -21,10 +21,12 @@ import javax.lang.model.type.TypeKind
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 class PrefsProcessor : BaseProcessor() {
     companion object {
-        private val CLASS_NAME_SHARED_PREFERENCES_EDITOR = ClassName("android.content.SharedPreferences", "Editor")
-        private val CLASS_NAME_SHARED_PREFERENCES = ClassName("android.content", "SharedPreferences")
+        private val CLASS_NAME_SHARED_PREFERENCES_EDITOR =
+            ClassName("android.content.SharedPreferences", "Editor")
+        private val CLASS_NAME_SHARED_PREFERENCES =
+            ClassName("android.content", "SharedPreferences")
 
-        private val TYPE_KOTLIN_MVP_CONTENT_PROVIDER = Class.forName("com.catchpig.mvvm.provider.KotlinMvpContentProvider")
+        private val TYPE_CONTEXT_MANAGER = Class.forName("com.catchpig.mvvm.manager.ContextManager")
 
         private const val JAVA_STRING = "java.lang.String"
 
@@ -36,7 +38,10 @@ class PrefsProcessor : BaseProcessor() {
         return set
     }
 
-    override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
+    override fun process(
+        annotations: MutableSet<out TypeElement>,
+        roundEnv: RoundEnvironment
+    ): Boolean {
         val elements = roundEnv.getElementsAnnotatedWith(Prefs::class.java)
         elements.map {
             it as TypeElement
@@ -47,18 +52,18 @@ class PrefsProcessor : BaseProcessor() {
             val fullPackageName = elementUtils.getPackageOf(it).qualifiedName.toString()
 
             val typeSpec = TypeSpec
-                    .objectBuilder("${className}SharedPrefs")
-                    .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
-                    .addProperty(addSharedPrefsProperty())
-                    .addProperty(addSharedPrefsEditorProperty())
-                    .addInitializerBlock(addCodeBlock(prefs, className))
-                    .addFunctions(addFuns(it))
-                    .build()
+                .objectBuilder("${className}SharedPrefs")
+                .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
+                .addProperty(addSharedPrefsProperty())
+                .addProperty(addSharedPrefsEditorProperty())
+                .addInitializerBlock(addCodeBlock(prefs, className))
+                .addFunctions(addFuns(it))
+                .build()
             FileSpec
-                    .builder(fullPackageName, typeSpec.name!!)
-                    .addType(typeSpec)
-                    .build()
-                    .writeTo(filer)
+                .builder(fullPackageName, typeSpec.name!!)
+                .addType(typeSpec)
+                .build()
+                .writeTo(filer)
         }
         return true
     }
@@ -71,68 +76,73 @@ class PrefsProcessor : BaseProcessor() {
                 val fieldName = it.simpleName.toString()
                 val prefsKey = if (prefsField.value.isEmpty()) {
                     fieldName
-                }else{
+                } else {
                     prefsField.value
                 }
 
                 val funName = fieldName.substring(0, 1).uppercase() + fieldName.substring(1)
                 if (isCreateMethod(it)) {
                     //set方法
-                    funSpecs.add(createSetFunction(it,funName,fieldName,prefsKey))
+                    funSpecs.add(createSetFunction(it, funName, fieldName, prefsKey))
                     //get方法
-                    funSpecs.add(createGetFunction(it,funName,prefsKey))
-                }else{
+                    funSpecs.add(createGetFunction(it, funName, prefsKey))
+                } else {
                     error("${fieldName}的类型不支持,只支持Double,Float,Int,Long,String,Boolean")
                 }
 
             }
         }
         val clearFunSpec = FunSpec
-                .builder("clear")
-                .addStatement("sharedEditor.clear()")
-                .addStatement("sharedEditor.commit()")
-                .build()
+            .builder("clear")
+            .addStatement("sharedEditor.clear()")
+            .addStatement("sharedEditor.commit()")
+            .build()
         funSpecs.add(clearFunSpec)
         return funSpecs
     }
+
     /**
      * 创建get方法
      */
-    private fun createGetFunction(element: Element, funName:String, prefsKey:String):FunSpec{
+    private fun createGetFunction(element: Element, funName: String, prefsKey: String): FunSpec {
         var getFunSpecBuilder = FunSpec
-                .builder("get${funName}")
+            .builder("get${funName}")
 
         when (element.asType().kind) {
             TypeKind.BOOLEAN -> {
                 getFunSpecBuilder = getFunSpecBuilder
-                        .addStatement("return sharedPrefs.getBoolean(%S,false)",prefsKey)
-                        .returns(BOOLEAN)
+                    .addStatement("return sharedPrefs.getBoolean(%S,false)", prefsKey)
+                    .returns(BOOLEAN)
             }
             TypeKind.FLOAT -> {
                 getFunSpecBuilder = getFunSpecBuilder
-                        .addStatement("return sharedPrefs.getFloat(%S,0f)",prefsKey)
-                        .returns(FLOAT)
+                    .addStatement("return sharedPrefs.getFloat(%S,0f)", prefsKey)
+                    .returns(FLOAT)
             }
             TypeKind.INT -> {
                 getFunSpecBuilder = getFunSpecBuilder
-                        .returns(INT)
-                        .addStatement("return sharedPrefs.getInt(%S,0)",prefsKey)
+                    .returns(INT)
+                    .addStatement("return sharedPrefs.getInt(%S,0)", prefsKey)
             }
             TypeKind.LONG -> {
                 getFunSpecBuilder = getFunSpecBuilder
-                        .returns(LONG)
-                        .addStatement("return sharedPrefs.getLong(%S,0)",prefsKey)
+                    .returns(LONG)
+                    .addStatement("return sharedPrefs.getLong(%S,0)", prefsKey)
             }
             TypeKind.DOUBLE -> {
                 getFunSpecBuilder = getFunSpecBuilder
-                        .returns(DOUBLE)
-                        .addStatement("return sharedPrefs.getString(%S,%S)!!.toDouble()",prefsKey,"0.0")
+                    .returns(DOUBLE)
+                    .addStatement(
+                        "return sharedPrefs.getString(%S,%S)!!.toDouble()",
+                        prefsKey,
+                        "0.0"
+                    )
             }
             TypeKind.DECLARED -> {
                 if (element.asType().toString() == JAVA_STRING) {
                     getFunSpecBuilder = getFunSpecBuilder
-                            .returns(STRING)
-                            .addStatement("return sharedPrefs.getString(%S,%S)!!",prefsKey,"")
+                        .returns(STRING)
+                        .addStatement("return sharedPrefs.getString(%S,%S)!!", prefsKey, "")
                 }
             }
             else -> {
@@ -144,40 +154,48 @@ class PrefsProcessor : BaseProcessor() {
     /**
      * 创建set方法
      */
-    private fun createSetFunction(element: Element, funName:String, fieldName:String, prefsKey:String):FunSpec{
+    private fun createSetFunction(
+        element: Element,
+        funName: String,
+        fieldName: String,
+        prefsKey: String
+    ): FunSpec {
         var setFunSpecBuilder = FunSpec
-                .builder("set${funName}")
+            .builder("set${funName}")
         when (element.asType().kind) {
             TypeKind.BOOLEAN -> {
                 setFunSpecBuilder = setFunSpecBuilder
-                        .addParameter(fieldName, BOOLEAN)
-                        .addStatement("sharedEditor.putBoolean(%S,$fieldName).apply()",prefsKey)
+                    .addParameter(fieldName, BOOLEAN)
+                    .addStatement("sharedEditor.putBoolean(%S,$fieldName).apply()", prefsKey)
             }
             TypeKind.FLOAT -> {
                 setFunSpecBuilder = setFunSpecBuilder
-                        .addParameter(fieldName, FLOAT)
-                        .addStatement("sharedEditor.putFloat(%S,$fieldName).apply()",prefsKey)
+                    .addParameter(fieldName, FLOAT)
+                    .addStatement("sharedEditor.putFloat(%S,$fieldName).apply()", prefsKey)
             }
             TypeKind.INT -> {
                 setFunSpecBuilder = setFunSpecBuilder
-                        .addParameter(fieldName, INT)
-                        .addStatement("sharedEditor.putInt(%S,$fieldName).apply()",prefsKey)
+                    .addParameter(fieldName, INT)
+                    .addStatement("sharedEditor.putInt(%S,$fieldName).apply()", prefsKey)
             }
             TypeKind.LONG -> {
                 setFunSpecBuilder = setFunSpecBuilder
-                        .addParameter(fieldName, LONG)
-                        .addStatement("sharedEditor.putLong(%S,$fieldName).apply()",prefsKey)
+                    .addParameter(fieldName, LONG)
+                    .addStatement("sharedEditor.putLong(%S,$fieldName).apply()", prefsKey)
             }
             TypeKind.DOUBLE -> {
                 setFunSpecBuilder = setFunSpecBuilder
-                        .addParameter(fieldName, DOUBLE)
-                        .addStatement("sharedEditor.putString(%S,${fieldName}.toString()).apply()",prefsKey)
+                    .addParameter(fieldName, DOUBLE)
+                    .addStatement(
+                        "sharedEditor.putString(%S,${fieldName}.toString()).apply()",
+                        prefsKey
+                    )
             }
             TypeKind.DECLARED -> {
                 if (element.asType().toString() == JAVA_STRING) {
                     setFunSpecBuilder = setFunSpecBuilder
-                            .addParameter(fieldName, STRING)
-                            .addStatement("sharedEditor.putString(%S,${fieldName}).apply()",prefsKey)
+                        .addParameter(fieldName, STRING)
+                        .addStatement("sharedEditor.putString(%S,${fieldName}).apply()", prefsKey)
                 }
             }
             else -> {
@@ -197,10 +215,14 @@ class PrefsProcessor : BaseProcessor() {
             prefs.value
         }
         return CodeBlock
-                .builder()
-                .addStatement("sharedPrefs = %T.application.getSharedPreferences(\"SharedPrefs_$sharedPrefsName\",%L)", TYPE_KOTLIN_MVP_CONTENT_PROVIDER, prefs.mode.value)
-                .addStatement("sharedEditor = sharedPrefs.edit()")
-                .build()
+            .builder()
+            .addStatement(
+                "sharedPrefs = %T.context.getSharedPreferences(\"SharedPrefs_$sharedPrefsName\",%L)",
+                TYPE_CONTEXT_MANAGER,
+                prefs.mode.value
+            )
+            .addStatement("sharedEditor = sharedPrefs.edit()")
+            .build()
     }
 
     /**
@@ -208,9 +230,9 @@ class PrefsProcessor : BaseProcessor() {
      */
     private fun addSharedPrefsEditorProperty(): PropertySpec {
         return PropertySpec
-                .builder("sharedEditor", CLASS_NAME_SHARED_PREFERENCES_EDITOR)
-                .addModifiers(KModifier.PRIVATE)
-                .build()
+            .builder("sharedEditor", CLASS_NAME_SHARED_PREFERENCES_EDITOR)
+            .addModifiers(KModifier.PRIVATE)
+            .build()
     }
 
     /**
@@ -218,9 +240,9 @@ class PrefsProcessor : BaseProcessor() {
      */
     private fun addSharedPrefsProperty(): PropertySpec {
         return PropertySpec
-                .builder("sharedPrefs", CLASS_NAME_SHARED_PREFERENCES)
-                .addModifiers(KModifier.PRIVATE)
-                .build()
+            .builder("sharedPrefs", CLASS_NAME_SHARED_PREFERENCES)
+            .addModifiers(KModifier.PRIVATE)
+            .build()
     }
 
     /**
@@ -228,10 +250,10 @@ class PrefsProcessor : BaseProcessor() {
      *
      * 只有类型为Double,Float,Int,Long,String,Boolean才能生成方法
      */
-    private fun isCreateMethod(element: Element):Boolean{
+    private fun isCreateMethod(element: Element): Boolean {
         return when (element.asType().kind) {
-            TypeKind.BOOLEAN,TypeKind.FLOAT,TypeKind.INT,TypeKind.LONG,TypeKind.DOUBLE -> {
-               true
+            TypeKind.BOOLEAN, TypeKind.FLOAT, TypeKind.INT, TypeKind.LONG, TypeKind.DOUBLE -> {
+                true
             }
             TypeKind.DECLARED -> {
                 element.asType().toString() == JAVA_STRING
