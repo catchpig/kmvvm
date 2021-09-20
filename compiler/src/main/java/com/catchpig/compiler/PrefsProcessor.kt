@@ -26,7 +26,7 @@ class PrefsProcessor : BaseProcessor() {
 
         private val TYPE_KOTLIN_MVP_CONTENT_PROVIDER = Class.forName("com.catchpig.mvvm.provider.KotlinMvpContentProvider")
 
-        private val JAVA_STRING = "java.lang.String"
+        private const val JAVA_STRING = "java.lang.String"
 
     }
 
