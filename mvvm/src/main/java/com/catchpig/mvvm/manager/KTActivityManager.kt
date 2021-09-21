@@ -29,6 +29,13 @@ object KTActivityManager {
     }
 
     /**
+     * 获取第一个Activity
+     */
+    fun getFirstActivity(): Activity {
+        return activities.first
+    }
+
+    /**
      * 删除除最上层之外的所有activity
      */
     fun finishAllActivitesExceptTop() {
