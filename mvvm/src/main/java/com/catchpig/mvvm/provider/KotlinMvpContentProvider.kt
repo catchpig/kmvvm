@@ -3,12 +3,10 @@ package com.catchpig.mvvm.provider
 import android.app.Application
 import android.content.ContentProvider
 import android.content.ContentValues
-import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import com.catchpig.mvvm.lifecycle.ActivityManagerLifeCycleCallbacksImpl
+import com.catchpig.mvvm.lifecycle.ActivityLifeCycleCallbacksImpl
 import com.catchpig.mvvm.manager.ContextManager
-import com.catchpig.mvvm.manager.KTActivityManager
 
 /**
  * @author catchpig
@@ -34,7 +32,7 @@ class KotlinMvpContentProvider : ContentProvider() {
         val applicationContext = context!!.applicationContext
         ContextManager.context = applicationContext
         val application = applicationContext as Application
-        application.registerActivityLifecycleCallbacks(ActivityManagerLifeCycleCallbacksImpl())
+        application.registerActivityLifecycleCallbacks(ActivityLifeCycleCallbacksImpl())
         return true
     }
 

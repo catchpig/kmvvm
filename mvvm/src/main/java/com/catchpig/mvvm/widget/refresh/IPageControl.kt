@@ -38,7 +38,7 @@ interface IPageControl {
     fun updateSuccess(list: MutableList<*>?)
 
     /**
-     * a更新数据失败
+     * 更新数据失败
      */
     fun updateError()
 }

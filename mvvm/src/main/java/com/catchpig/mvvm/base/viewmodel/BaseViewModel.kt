@@ -10,12 +10,16 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
+import java.lang.Deprecated
 
-abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadingDialog {
-    private var mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+abstract class BaseViewModel : ViewModel(), IBaseViewModel {
+    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
     var showLoadingLiveData = MutableLiveData<Boolean>()
+        private set
     var hideLoadingLiveData = MutableLiveData<Boolean>()
+        private set
     var toastLiveData = MutableLiveData<String>()
+        private set
 
     /**
      * 展现loading
@@ -37,6 +41,7 @@ abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadin
      * @param callback 回调函数
      * @param io2main 是否flowable在io线程中执行,callback在主线程中执行(默认为true)
      */
+    @Deprecated
     fun <T> execute(
         flowable: Flowable<T>,
         callback: ResourceSubscriber<T>,
@@ -47,10 +52,11 @@ abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadin
         } else {
             flowable.subscribeWith(callback)
         }
-        mCompositeDisposable.add(disposable)
+        compositeDisposable.add(disposable)
         return disposable
     }
 
+    @Deprecated
     open fun <T> execute(
         flowable: Flowable<T>,
         io2main: Boolean = true,
@@ -67,15 +73,14 @@ abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadin
      * 添加Disposable到CompositeDisposable
      */
     override fun add(disposable: Disposable) {
-        mCompositeDisposable.add(disposable)
+        compositeDisposable.add(disposable)
     }
-
 
     /**
      * 删除指定的Disposable
      */
     override fun remove(disposable: Disposable) {
-        mCompositeDisposable.remove(disposable)
+        compositeDisposable.remove(disposable)
     }
 
     override fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?) {
@@ -108,6 +113,6 @@ abstract class BaseViewModel : ViewModel(), IBaseViewModel, BaseCallback.ILoadin
 
     override fun onCleared() {
         super.onCleared()
-        mCompositeDisposable.clear()
+        compositeDisposable.clear()
     }
 }

@@ -1,10 +1,10 @@
-package com.catchpig.kotlin_mvvm.mvp.apk.view
+package com.catchpig.kotlin_mvvm.mvvm.apk.view
 
 import android.Manifest
 import com.catchpig.annotation.Title
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityInstallApkBinding
-import com.catchpig.kotlin_mvvm.mvp.apk.viewmodel.InstallApkViewModel
+import com.catchpig.kotlin_mvvm.mvvm.apk.viewmodel.InstallApkViewModel
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.tbruyelle.rxpermissions3.RxPermissions
 
@@ -33,7 +33,11 @@ class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkV
         })
     }
 
-//    override fun setDownloadProgress(progress: Int) {
+    override fun initObserver() {
+
+    }
+
+    //    override fun setDownloadProgress(progress: Int) {
 //        progressBar.progress = progress
 //    }
 //

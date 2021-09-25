@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvp.main.model
+package com.catchpig.kotlin_mvvm.mvvm.main.model
 
 import com.catchpig.kotlin_mvvm.network.Result
 import com.catchpig.kotlin_mvvm.network.api.WanAndroidService

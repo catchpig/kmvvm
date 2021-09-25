@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvp.child
+package com.catchpig.kotlin_mvvm.mvvm.child
 
 import android.view.View
 import com.catchpig.annotation.*

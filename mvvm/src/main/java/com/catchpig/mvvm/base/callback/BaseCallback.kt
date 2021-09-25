@@ -1,5 +1,6 @@
 package com.catchpig.mvvm.base.callback
 
+import com.catchpig.mvvm.base.viewmodel.IBaseViewModel
 import com.catchpig.utils.ext.loge
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 
@@ -9,9 +10,8 @@ import io.reactivex.rxjava3.subscribers.ResourceSubscriber
  * description:
  */
 abstract class BaseCallback<T>(
-    var iLoadingDialog: ILoadingDialog? = null,
-    var isLoadingDialog: Boolean = true,
-    var throwError: Boolean = true
+    var iBaseViewModel: IBaseViewModel? = null,
+    var isLoadingDialog: Boolean = true
 ) :
     ResourceSubscriber<T>() {
     companion object {
@@ -20,7 +20,7 @@ abstract class BaseCallback<T>(
 
     override fun onStart() {
         super.onStart()
-        iLoadingDialog?.let {
+        iBaseViewModel?.let {
             it.showLoading(isLoadingDialog)
         }
     }
@@ -33,10 +33,8 @@ abstract class BaseCallback<T>(
 
     override fun onError(t: Throwable?) {
         t?.let {
-            if (throwError) {
-                iLoadingDialog?.run {
-                    onError(it)
-                }
+            iBaseViewModel?.run {
+                onError(it)
             }
             it.message?.run {
                 loge(TAG)
@@ -50,22 +48,8 @@ abstract class BaseCallback<T>(
     }
 
     private fun hideLoading() {
-        iLoadingDialog?.let {
+        iBaseViewModel?.let {
             it.hideLoading()
         }
-    }
-
-    interface ILoadingDialog {
-        /**
-         * 展示Dialog
-         */
-        fun showLoading(isLoadingDialog: Boolean)
-
-        /**
-         * 隐藏Dialog
-         */
-        fun hideLoading()
-
-        fun onError(t: Throwable);
     }
 }

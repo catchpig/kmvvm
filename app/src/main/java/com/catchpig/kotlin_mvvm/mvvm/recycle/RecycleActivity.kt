@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvp.recycle
+package com.catchpig.kotlin_mvvm.mvvm.recycle
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,11 +8,8 @@ import com.catchpig.annotation.TimeLog
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityRecycleBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
-import com.catchpig.mvvm.base.adapter.RecyclerAdapter
-import com.catchpig.mvvm.widget.refresh.OnRefreshListener
 import com.catchpig.utils.ext.logd
 import com.gyf.immersionbar.ktx.immersionBar
-import com.scwang.smart.refresh.layout.api.RefreshLayout
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber

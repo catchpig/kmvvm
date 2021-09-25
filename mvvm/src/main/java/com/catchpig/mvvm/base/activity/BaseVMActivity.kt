@@ -26,14 +26,16 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
         initParam()
         lifecycle.addObserver(viewModel)
         initView()
+        initObserver()
         observerLoading()
-        observerErrorToast()
+        observerToast()
     }
 
     protected abstract fun initParam()
     protected abstract fun initView()
+    protected abstract fun initObserver()
 
-    private fun observerErrorToast() {
+    private fun observerToast() {
         viewModel.toastLiveData.observe(this, {
             toast(it)
         })

@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvp.apk.viewmodel
+package com.catchpig.kotlin_mvvm.mvvm.apk.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
@@ -14,6 +14,7 @@ class InstallApkViewModel : BaseViewModel() {
     override fun onError(t: Throwable) {
 
     }
+
 
     fun download() {
         val downloadUrl = "http://www.wichot.com/Uploads/download.pdf"

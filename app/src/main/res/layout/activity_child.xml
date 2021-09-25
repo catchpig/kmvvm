@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".mvp.child.ChildActivity">
+    tools:context=".mvvm.child.ChildActivity">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

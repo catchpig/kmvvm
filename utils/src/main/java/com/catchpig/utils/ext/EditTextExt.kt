@@ -1,5 +1,7 @@
 package com.catchpig.utils.ext
 
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 
@@ -56,4 +58,21 @@ fun EditText.keepDecimal(number: Int) {
             }
         }
     }
+}
+
+/**
+ * 隐藏密码
+ */
+fun EditText.hidePassword() {
+    transformationMethod = PasswordTransformationMethod.getInstance()
+    setSelection(text.toString().length)
+}
+
+/**
+ * 显示密码
+ */
+fun EditText.showPassword() {
+    transformationMethod = HideReturnsTransformationMethod.getInstance()
+    setSelection(text.toString().length)
+
 }

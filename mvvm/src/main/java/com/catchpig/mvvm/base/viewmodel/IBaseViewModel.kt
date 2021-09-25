@@ -12,9 +12,27 @@ import io.reactivex.rxjava3.disposables.Disposable
  * description:
  */
 interface IBaseViewModel : LifecycleObserver {
+    /**
+     * 展现loading
+     * @param isDialog true:loadingDialog,false:loadingView
+     */
+    fun showLoading(isDialog: Boolean)
 
+    /**
+     * 隐藏loading
+     */
+    fun hideLoading()
+
+    fun onError(t: Throwable)
+
+    /**
+     * 添加disposable到CompositeDisposable
+     */
     fun add(disposable: Disposable)
 
+    /**
+     * 从CompositeDisposable中删除一个disposable
+     */
     fun remove(disposable: Disposable)
 
     /**

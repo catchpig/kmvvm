@@ -1,18 +1,17 @@
 package com.catchpig.mvvm.ext
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.Resources
+import android.os.Build
 import android.util.TypedValue
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
-import androidx.core.content.ContextCompat
 import com.catchpig.mvvm.R
 import com.catchpig.utils.ext.logd
 
+private const val TAG = "ContextExt"
 /**
  * 全局主题的配置信息
  * @author catchpig
@@ -123,7 +122,7 @@ fun Context.getTitleLineColor(): Int {
     var typedValue = TypedValue()
     theme.resolveAttribute(R.attr.title_bar_line_color, typedValue, true)
     if (typedValue.resourceId == Resources.ID_NULL) {
-        "主题中未设置标题栏下方的颜色,属性名称为:loading_view_background".logd("ContextExt")
+        "主题中未设置标题栏下方的颜色,属性名称为:loading_view_background".logd(TAG)
     }
     return typedValue.resourceId
 }
@@ -136,8 +135,19 @@ fun Context.getEmptyLayout(): Int {
     var typedValue = TypedValue()
     theme.resolveAttribute(R.attr.recycle_view_empty_layout, typedValue, true)
     if (typedValue.resourceId == Resources.ID_NULL) {
-        "主题中未设置列表空页面,属性名称为:recycle_view_empty_layout".logd("ContextExt")
+        "主题中未设置列表空页面,属性名称为:recycle_view_empty_layout".logd(TAG)
     }
     return typedValue.resourceId
+}
+
+/**
+ * 获取colorRes的颜色值
+ */
+fun Context.getColor(@ColorRes colorRes: Int): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        getColor(colorRes)
+    } else {
+        resources.getColor(colorRes)
+    }
 }
 

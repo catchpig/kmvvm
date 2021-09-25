@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvp.main.viewmodel
+package com.catchpig.kotlin_mvvm.mvvm.main.viewmodel
 
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 

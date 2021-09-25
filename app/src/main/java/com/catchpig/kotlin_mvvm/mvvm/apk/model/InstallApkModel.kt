@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvp.apk.model
+package com.catchpig.kotlin_mvvm.mvvm.apk.model
 
 import com.catchpig.mvvm.manager.DownloadManager
 import com.catchpig.mvvm.listener.DownloadCallback

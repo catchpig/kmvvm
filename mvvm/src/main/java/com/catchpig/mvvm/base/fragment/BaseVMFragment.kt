@@ -3,7 +3,6 @@ package com.catchpig.mvvm.base.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
@@ -15,7 +14,7 @@ import java.lang.reflect.ParameterizedType
  * @date 2019/4/6 11:25
  */
 abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragment<VB>() {
-    val viewModel: VM by lazy {
+    protected val viewModel: VM by lazy {
         var type = javaClass.genericSuperclass
         var modelClass: Class<VM> = (type as ParameterizedType).actualTypeArguments[1] as Class<VM>
         ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(modelClass)
@@ -27,16 +26,18 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
         initParam()
         lifecycle.addObserver(viewModel)
         initView()
+        initObserver()
         observerLoading()
-        observerErrorToast()
+        observerToast()
     }
 
     protected abstract fun initParam()
 
-
     protected abstract fun initView()
 
-    private fun observerErrorToast() {
+    protected abstract fun initObserver()
+
+    private fun observerToast() {
         viewModel.toastLiveData.observe(this, {
             toast(it)
         })

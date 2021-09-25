@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvp.main.view
+package com.catchpig.kotlin_mvvm.mvvm.main.view
 
 import android.view.View
 import com.catchpig.annotation.ClickGap
@@ -7,12 +7,12 @@ import com.catchpig.annotation.StatusBar
 import com.catchpig.annotation.enums.LEVEL
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityMainBinding
-import com.catchpig.kotlin_mvvm.mvp.apk.view.InstallApkActivity
-import com.catchpig.kotlin_mvvm.mvp.child.ChildActivity
-import com.catchpig.kotlin_mvvm.mvp.fullscreen.FullScreenActivity
-import com.catchpig.kotlin_mvvm.mvp.main.viewmodel.MainViewModel
-import com.catchpig.kotlin_mvvm.mvp.recycle.RecycleActivity
-import com.catchpig.kotlin_mvvm.mvp.transparent.TransparentActivity
+import com.catchpig.kotlin_mvvm.mvvm.apk.view.InstallApkActivity
+import com.catchpig.kotlin_mvvm.mvvm.child.ChildActivity
+import com.catchpig.kotlin_mvvm.mvvm.fullscreen.FullScreenActivity
+import com.catchpig.kotlin_mvvm.mvvm.main.viewmodel.MainViewModel
+import com.catchpig.kotlin_mvvm.mvvm.recycle.RecycleActivity
+import com.catchpig.kotlin_mvvm.mvvm.transparent.TransparentActivity
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.catchpig.utils.ext.startKtActivity
 
@@ -25,6 +25,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
     @MethodLog(LEVEL.I)
     override fun initView() {
         bodyBinding.fullScreen.translationX
+    }
+
+    override fun initObserver() {
+
     }
 
     @MethodLog(LEVEL.V)

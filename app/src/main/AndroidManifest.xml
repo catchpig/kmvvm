@@ -16,11 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.catchpig.kotlin_mvvm.mvp.recycle.RecycleActivity"></activity>
-        <activity android:name="com.catchpig.kotlin_mvvm.mvp.fullscreen.FullScreenActivity" />
-        <activity android:name="com.catchpig.kotlin_mvvm.mvp.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
+        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.recycle.RecycleActivity"></activity>
+        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.fullscreen.FullScreenActivity" />
+        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
         <activity
-            android:name="com.catchpig.kotlin_mvvm.mvp.main.view.MainActivity"
+            android:name="com.catchpig.kotlin_mvvm.mvvm.main.view.MainActivity"
             android:theme="@style/MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +29,8 @@
             </intent-filter>
         </activity>
         <!-- 适配小米（xiaomi）刘海屏 -->
-        <activity android:name="com.catchpig.kotlin_mvvm.mvp.child.ChildActivity" />
-        <activity android:name="com.catchpig.kotlin_mvvm.mvp.apk.view.InstallApkActivity"/>
+        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.child.ChildActivity" />
+        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.apk.view.InstallApkActivity"/>
 
         <meta-data
             android:name="android.notch_support"
