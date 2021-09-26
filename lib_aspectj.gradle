@@ -3,8 +3,8 @@ buildscript {
         maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
     }
     dependencies {
-        classpath 'org.aspectj:aspectjtools:1.9.6'
-        classpath 'org.aspectj:aspectjweaver:1.9.6'
+        classpath 'org.aspectj:aspectjtools:1.9.7'
+        classpath 'org.aspectj:aspectjweaver:1.9.7'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

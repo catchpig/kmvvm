@@ -3,8 +3,8 @@ buildscript {
         maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
     }
     dependencies {
-        classpath 'org.aspectj:aspectjtools:1.9.6'
-        classpath 'org.aspectj:aspectjweaver:1.9.6'
+        classpath 'org.aspectj:aspectjtools:1.9.7'
+        classpath 'org.aspectj:aspectjweaver:1.9.7'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -19,10 +19,10 @@ final def log = project.logger
 final def variants = project.android.applicationVariants
 
 variants.all { variant ->
-//    if (!variant.buildType.isDebuggable()) {
-//        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
-//        return;
-//    }
+    if (!variant.buildType.isDebuggable()) {
+        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
+        return;
+    }
 
     JavaCompile javaCompile = variant.javaCompile
     javaCompile.doLast {

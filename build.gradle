@@ -1,11 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-apply plugin: 'koin'
 apply from: 'version.gradle'
 
 buildscript {
     ext.kotlin_version = '1.5.0'
-    ext.koin_version = '2.2.1'
 
     repositories {
         maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
@@ -28,10 +26,10 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath "org.koin:koin-gradle-plugin:$koin_version"
     }
 }
 
