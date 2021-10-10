@@ -55,4 +55,3 @@ dependencies {
     //权限
     implementation "com.github.tbruyelle:rxpermissions:$rxpermissions_version"
 }
-apply from: '../app_aspectj.gradle'
