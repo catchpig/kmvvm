@@ -42,16 +42,19 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    api 'androidx.recyclerview:recyclerview:1.0.0'
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    api 'androidx.recyclerview:recyclerview:1.0.0'
+    api 'com.android.support:design:25.3.0'
     api project(path: ':annotation')
-    api project(path: ':aop')
+    api project(path: ':utils')
 
     //okhttp3
     api "com.squareup.okhttp3:okhttp:$okhttp3_version"

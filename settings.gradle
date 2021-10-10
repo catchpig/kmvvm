@@ -1,1 +1,1 @@
-include ':app', ':mvvm', ':annotation', ':compiler', ':aop', ':utils'
+include ':app', ':mvvm', ':annotation', ':compiler', ':utils'

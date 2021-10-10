@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.catchpig.annotation.StatusBar
-import com.catchpig.annotation.TimeLog
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityRecycleBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
@@ -20,7 +19,6 @@ import kotlin.collections.ArrayList
 @StatusBar(enabled = true)
 class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
 
-    @TimeLog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolBar()

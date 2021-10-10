@@ -1,10 +1,7 @@
 package com.catchpig.kotlin_mvvm.mvvm.main.view
 
 import android.view.View
-import com.catchpig.annotation.ClickGap
-import com.catchpig.annotation.MethodLog
 import com.catchpig.annotation.StatusBar
-import com.catchpig.annotation.enums.LEVEL
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityMainBinding
 import com.catchpig.kotlin_mvvm.mvvm.apk.view.InstallApkActivity
@@ -22,7 +19,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
     override fun initParam() {
     }
 
-    @MethodLog(LEVEL.I)
     override fun initView() {
         bodyBinding.fullScreen.translationX
     }
@@ -31,8 +27,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
 
     }
 
-    @MethodLog(LEVEL.V)
-    @ClickGap(2000)
     fun openChild(v: View) {
         when (v.id) {
             R.id.is_title -> {

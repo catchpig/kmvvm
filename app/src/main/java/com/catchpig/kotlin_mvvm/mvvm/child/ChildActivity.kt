@@ -6,6 +6,7 @@ import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityChildBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.utils.ext.toast
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import java.util.concurrent.TimeUnit
@@ -15,7 +16,10 @@ import java.util.concurrent.TimeUnit
 class ChildActivity : BaseActivity<ActivityChildBinding>() {
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
-        toast(" 第一个图标按钮点击生效")
+        val snackbar = Snackbar.make(bodyBinding.root, "第一个图标按钮点击生效", Snackbar.LENGTH_LONG)
+        snackbar.view.setBackgroundResource(R.color.color_toast_bg)
+        snackbar.show()
+        toast("第一个图标按钮点击生效")
         updateTitle("nihao")
     }
 

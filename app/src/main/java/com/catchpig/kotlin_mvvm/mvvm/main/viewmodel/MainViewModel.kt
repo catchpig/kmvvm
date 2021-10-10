@@ -9,6 +9,7 @@ import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 class MainViewModel : BaseViewModel() {
     override fun onCreate() {
         super.onCreate()
+        toastLiveData.value = "你好"
 //        execute(model.banner(), object :Callback<Result<Any>>(){
 //            override fun onNext(result: Result<Any>?) {
 //                view.toast(result!!.errorCode.toString())

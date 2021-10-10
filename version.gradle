@@ -10,7 +10,7 @@ ext {
     material_version = '1.0.0'
     core_ktx_version = '1.1.0'
     kotlin_mvvm = '0.0.4'
-    okhttp3_version = '4.9.0'
+    okhttp3_version = '4.9.2'
     retrofit2_version = '2.9.0'
     rxjava_version = '3.0.0'
     rxandroid_version = '3.0.0'
