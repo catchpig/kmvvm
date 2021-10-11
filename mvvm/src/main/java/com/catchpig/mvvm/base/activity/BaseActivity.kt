@@ -14,8 +14,7 @@ import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
-import com.catchpig.utils.ext.longToast
-import com.catchpig.utils.ext.toast
+import com.catchpig.mvvm.manager.SnackbarManager
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -99,6 +98,14 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     fun updateTitle(@StringRes title: Int) {
         var titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
         titleText.setText(title)
+    }
+
+    protected fun snackbar(text: CharSequence) {
+        SnackbarManager.show(bodyBinding.root, text)
+    }
+
+    protected fun snackbar(@StringRes textRes: Int) {
+        SnackbarManager.show(bodyBinding.root, textRes)
     }
 
     fun loadingView(isDialog: Boolean) {

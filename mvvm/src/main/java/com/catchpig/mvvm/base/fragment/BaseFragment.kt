@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.Nullable
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
+import com.catchpig.mvvm.manager.SnackbarManager
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -39,6 +41,14 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return bodyBinding.root
+    }
+
+    protected fun snackbar(text: CharSequence) {
+        SnackbarManager.show(bodyBinding.root, text)
+    }
+
+    protected fun snackbar(@StringRes textRes: Int) {
+        SnackbarManager.show(bodyBinding.root, textRes)
     }
 
     fun loadingView(isDialog: Boolean) {

@@ -5,9 +5,7 @@ import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
-import com.google.android.material.snackbar.Snackbar
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -40,9 +38,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
 
     private fun observerToast() {
         viewModel.toastLiveData.observe(this, {
-            val snackbar = Snackbar.make(bodyBinding.root, it, Snackbar.LENGTH_LONG)
-            snackbar.view.setBackgroundResource(R.color.color_toast_bg)
-            snackbar.show()
+            snackbar(it)
         })
     }
 

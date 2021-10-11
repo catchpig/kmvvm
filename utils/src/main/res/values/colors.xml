@@ -2,5 +2,4 @@
 <resources>
     <color name="color_white">#fff</color>
     <color name="color_black">#000</color>
-    <color name="color_toast_bg">#66000000</color>
 </resources>
