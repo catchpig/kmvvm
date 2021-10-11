@@ -4,13 +4,13 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import androidx.core.view.updateMargins
+import androidx.core.view.updateMarginsRelative
 import com.google.android.material.snackbar.Snackbar
 
 /**
  * 设置文字的颜色
  */
-fun Snackbar.setTextColor(@ColorRes textColor: Int) {
+fun Snackbar.setTextColorRes(@ColorRes textColor: Int) {
     view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
         .setTextColorRes(textColor)
 }
@@ -25,12 +25,13 @@ fun Snackbar.setBackgroundResource(@DrawableRes res: Int) {
 /**
  * 设置外边框
  */
-fun Snackbar.setMargin(leftDp: Int, topDp: Int, rightDp: Int, bottomDp: Int) {
+fun Snackbar.setMargin(startDp: Int, topDp: Int, endDp: Int, bottomDp: Int) {
     val view = view as Snackbar.SnackbarLayout
     val layoutParams = view.layoutParams as FrameLayout.LayoutParams
-    layoutParams.updateMargins()
-    layoutParams.marginStart = view.context.dp2px(leftDp)
-    layoutParams.topMargin = view.context.dp2px(topDp)
-    layoutParams.marginEnd = view.context.dp2px(rightDp)
-    layoutParams.bottomMargin = view.context.dp2px(bottomDp)
+    val context = view.context
+    val marginStart = context.dp2px(startDp)
+    val topMargin = context.dp2px(topDp)
+    val marginEnd = context.dp2px(endDp)
+    val bottomMargin = context.dp2px(bottomDp)
+    layoutParams.updateMarginsRelative(marginStart, topMargin, marginEnd, bottomMargin)
 }

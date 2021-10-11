@@ -19,7 +19,7 @@ import java.lang.reflect.ParameterizedType
  * @date 2019/4/4 23:14
  */
 open class BaseFragment<VB : ViewBinding> : Fragment() {
-    val bodyBinding: VB by lazy {
+    protected val bodyBinding: VB by lazy {
         var type = javaClass.genericSuperclass
         var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)

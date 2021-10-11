@@ -45,7 +45,7 @@ import java.lang.reflect.ParameterizedType
  * @date 2019/4/4 00:09
  */
 open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
-    val bodyBinding: VB by lazy {
+    protected val bodyBinding: VB by lazy {
         var type = javaClass.genericSuperclass
         var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
@@ -101,11 +101,11 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     }
 
     protected fun snackbar(text: CharSequence) {
-        SnackbarManager.show(bodyBinding.root, text)
+        SnackbarManager.show(rootBinding.layoutBody, text)
     }
 
     protected fun snackbar(@StringRes textRes: Int) {
-        SnackbarManager.show(bodyBinding.root, textRes)
+        SnackbarManager.show(rootBinding.layoutBody, textRes)
     }
 
     fun loadingView(isDialog: Boolean) {
