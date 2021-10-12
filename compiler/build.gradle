@@ -9,7 +9,7 @@ dependencies {
     kapt "com.google.auto.service:auto-service:$auto_service_version"
     implementation "com.google.auto.service:auto-service:$auto_service_version"
     implementation "com.squareup:kotlinpoet:$kotlinpoet_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api project(path: ':annotation')
 }
 

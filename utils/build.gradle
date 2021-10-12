@@ -29,16 +29,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compileOnly "androidx.appcompat:appcompat:$appcompat_version"
+    compileOnly "androidx.core:core-ktx:$core_ktx_version"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api ("com.google.android.material:material:$material_version",{
-        exclude group: ('androidx.recyclerview')
+        exclude group: 'androidx.recyclerview'
+        exclude group: 'androidx.appcompat'
     })
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     api project(path: ':annotation')
     //gson

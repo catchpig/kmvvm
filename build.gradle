@@ -6,7 +6,6 @@ buildscript {
     ext.kotlin_version = '1.5.0'
 
     repositories {
-        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
         maven{
             url "https://maven.aliyun.com/repository/central"
         }
@@ -26,7 +25,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -35,7 +33,6 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'https://info-maven.apps.saic-gm.com/repository/maven-public/' }
         maven{
             url "https://maven.aliyun.com/repository/central"
         }
