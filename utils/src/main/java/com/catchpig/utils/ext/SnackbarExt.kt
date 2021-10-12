@@ -26,8 +26,8 @@ fun Snackbar.setBackgroundResource(@DrawableRes res: Int) {
  * 设置外边框
  */
 fun Snackbar.setMargin(startDp: Int, topDp: Int, endDp: Int, bottomDp: Int) {
-    val view = view as Snackbar.SnackbarLayout
-    val layoutParams = view.layoutParams as FrameLayout.LayoutParams
+    val snackbarLayout = view as Snackbar.SnackbarLayout
+    val layoutParams = snackbarLayout.layoutParams as FrameLayout.LayoutParams
     val context = view.context
     val marginStart = context.dp2px(startDp)
     val topMargin = context.dp2px(topDp)
