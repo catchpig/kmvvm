@@ -12,6 +12,3 @@ dependencies {
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api project(path: ':annotation')
 }
-
-sourceCompatibility = "8"
-targetCompatibility = "8"
