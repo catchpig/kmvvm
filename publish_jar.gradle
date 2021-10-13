@@ -9,15 +9,15 @@ afterEvaluate {
                 def projectName = project.name
                 groupId = 'com.gitee.catch-pig.kotlin-mvvm'
                 artifactId = projectName
-//                version = rootProject.kotlin_mvvm
+                version = rootProject.kotlin_mvvm
 
-                artifact "${buildDir.path}/libs/${projectName}.jar"
+                artifact "build/libs/${projectName}.jar"
 
             }
         }
         repositories {
             maven {
-                url 'https://jitpack.io'
+                url "${project.buildDir}"
             }
         }
     }

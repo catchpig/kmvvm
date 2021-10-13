@@ -48,7 +48,14 @@ allprojects {
         google()
         jcenter()
     }
+    tasks.whenTaskAdded { task ->
+        if (task.name.contains("publish") && task.name.contains("PublicationToMavenLocal")) {
+            task.dependsOn 'assemble'
+        }
+    }
 }
+
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
