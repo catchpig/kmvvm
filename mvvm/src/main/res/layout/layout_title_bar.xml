@@ -43,7 +43,6 @@
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
             android:clickable="true"
-            android:onClick="clickFirstDrawable"
             android:scaleType="center"
             android:visibility="gone" />
 
@@ -54,7 +53,6 @@
             android:background="@android:color/transparent"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="clickFirstText"
             android:textColor="@android:color/black"
             android:textSize="15sp"
             android:visibility="gone"
@@ -67,7 +65,6 @@
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
             android:clickable="true"
-            android:onClick="clickSecondDrawable"
             android:scaleType="center"
             android:visibility="gone" />
 
@@ -78,7 +75,6 @@
             android:background="@android:color/transparent"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="clickSecondText"
             android:textColor="@android:color/black"
             android:textSize="15sp"
             android:visibility="gone"
