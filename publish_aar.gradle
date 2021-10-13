@@ -1,21 +1,24 @@
 apply plugin: 'maven-publish'
 //group = 'com.gitee.catch-pig'
-// Because the components are created only during the afterEvaluate phase, you must
-// configure your publications using the afterEvaluate() lifecycle method.
+
 afterEvaluate {
     publishing {
         publications {
             // Creates a Maven publication called "release".
             jitpack(MavenPublication) {
 
+                def projectName = project.name
                 groupId = 'com.gitee.catch-pig.kotlin-mvvm'
-                artifactId = project.name
-//                version = '0.1.2.5'
+                artifactId = projectName
+//                version = rootProject.kotlin_mvvm
+
+                artifact "${buildDir.path}/outputs/aar/${projectName}-release.aar"
+
             }
         }
         repositories {
             maven {
-                url 'https://jitpack.io'
+                url "${project.buildDir}"
             }
         }
     }

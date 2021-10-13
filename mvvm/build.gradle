@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
-apply from: '../publish.gradle'
+apply from: '../publish_aar.gradle'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion

@@ -1,0 +1,24 @@
+apply plugin: 'maven-publish'
+//group = 'com.gitee.catch-pig'
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            jitpack(MavenPublication) {
+                def projectName = project.name
+                groupId = 'com.gitee.catch-pig.kotlin-mvvm'
+                artifactId = projectName
+//                version = rootProject.kotlin_mvvm
+
+                artifact "${buildDir.path}/libs/${projectName}.jar"
+
+            }
+        }
+        repositories {
+            maven {
+                url "${project.buildDir}"
+            }
+        }
+    }
+}
