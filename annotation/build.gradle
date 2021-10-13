@@ -2,7 +2,6 @@ apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply from: '../publish.gradle'
 
-group = 'com.gitee.catch-pig'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly "androidx.annotation:annotation:$annotation_version"

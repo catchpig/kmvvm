@@ -6,8 +6,6 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 apply from: '../publish.gradle'
 
-group = 'com.gitee.catch-pig'
-
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion

@@ -43,8 +43,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation project(path: ':mvvm')
     kapt project(path: ':compiler')
-//    implementation "com.github.catch-pig.kotlin-mvvm:mvvm:$kotlin_mvvm"
-//    kapt "com.github.catch-pig.kotlin-mvvm:compiler:$kotlin_mvvm"
+//    implementation "com.gitee.catch-pig.kotlin-mvvm:mvvm:$kotlin_mvvm"
+//    kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:$kotlin_mvvm"
     //刷新-头部
     api "com.scwang.smart:refresh-header-material:$SmartRefreshLayout_version"
     //刷新-底部
