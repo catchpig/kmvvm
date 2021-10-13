@@ -17,7 +17,7 @@ afterEvaluate {
         }
         repositories {
             maven {
-                url "${project.buildDir}"
+                url 'https://jitpack.io'
             }
         }
     }
