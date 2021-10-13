@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
-apply plugin: 'maven-publish'
+apply from: '../publish.gradle'
 
 group = 'com.gitee.catch-pig'
 

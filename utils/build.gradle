@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
+apply from: '../publish.gradle'
 
 group = 'com.gitee.catch-pig'
 android {
