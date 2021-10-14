@@ -1,19 +1,21 @@
 apply plugin: 'maven-publish'
 //group = 'com.gitee.catch-pig'
 
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
 afterEvaluate {
     publishing {
         publications {
             // Creates a Maven publication called "release".
             jitpack(MavenPublication) {
-
+                from components.release
                 def projectName = project.name
                 groupId = 'com.gitee.catch-pig.kotlin-mvvm'
                 artifactId = projectName
                 version = rootProject.kotlin_mvvm
-
-                artifact "build/outputs/aar/${projectName}-release.aar"
-
             }
         }
         repositories {

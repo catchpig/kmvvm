@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: '../publish_aar.gradle'
+
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -39,8 +39,4 @@ dependencies {
     api "com.google.code.gson:gson:$gson_version"
 }
 
-//上传源码
-task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
+apply from: '../publish_aar.gradle'

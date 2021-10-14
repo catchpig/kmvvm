@@ -6,13 +6,11 @@ afterEvaluate {
         publications {
             // Creates a Maven publication called "release".
             jitpack(MavenPublication) {
+                from components.java
                 def projectName = project.name
                 groupId = 'com.gitee.catch-pig.kotlin-mvvm'
                 artifactId = projectName
                 version = rootProject.kotlin_mvvm
-
-                artifact "build/libs/${projectName}.jar"
-
             }
         }
         repositories {
