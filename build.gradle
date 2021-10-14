@@ -20,7 +20,6 @@ buildscript {
         }
         maven { url 'https://jitpack.io' }
         google()
-        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
@@ -46,12 +45,6 @@ allprojects {
         }
         maven { url 'https://jitpack.io' }
         google()
-        jcenter()
-    }
-    tasks.whenTaskAdded { task ->
-        if (task.name.contains("publish") && task.name.contains("PublicationToMavenLocal")) {
-            task.dependsOn 'assemble'
-        }
     }
 }
 

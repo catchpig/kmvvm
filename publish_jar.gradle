@@ -1,5 +1,9 @@
 apply plugin: 'maven-publish'
-//group = 'com.gitee.catch-pig'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 afterEvaluate {
     publishing {

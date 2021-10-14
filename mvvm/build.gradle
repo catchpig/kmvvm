@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
-
-
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -45,19 +43,19 @@ dependencies {
     api project(path: ':utils')
 
     //okhttp3
-    api ("com.squareup.okhttp3:okhttp:$okhttp3_version"){
+    api("com.squareup.okhttp3:okhttp:$okhttp3_version") {
         exclude group: 'org.jetbrains.kotlin'
     }
-    api ("com.squareup.okhttp3:logging-interceptor:$okhttp3_version"){
+    api("com.squareup.okhttp3:logging-interceptor:$okhttp3_version") {
         exclude group: 'org.jetbrains.kotlin'
     }
 
     //retrofit2
     api "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    api ("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version"){
+    api("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version") {
         exclude group: 'io.reactivex.rxjava3'
     }
-    api ("com.squareup.retrofit2:converter-gson:$retrofit2_version"){
+    api("com.squareup.retrofit2:converter-gson:$retrofit2_version") {
         exclude group: 'com.google.code.gson'
     }
 
