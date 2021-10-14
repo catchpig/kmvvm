@@ -1,10 +1,5 @@
 apply plugin: 'maven-publish'
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 afterEvaluate {
     publishing {
         publications {

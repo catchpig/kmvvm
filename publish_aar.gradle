@@ -1,10 +1,5 @@
 apply plugin: 'maven-publish'
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
 afterEvaluate {
     publishing {
         publications {
@@ -15,7 +10,6 @@ afterEvaluate {
                 groupId = 'com.gitee.catch-pig.kotlin-mvvm'
                 artifactId = projectName
                 version = rootProject.kotlin_mvvm
-                artifact sourcesJar
             }
         }
         repositories {
