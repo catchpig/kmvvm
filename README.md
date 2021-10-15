@@ -258,8 +258,6 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
 
 ### [Immersionbar](https://github.com/gyf-dev/ImmersionBar)-状态栏
 
-### [Koin](https://github.com/InsertKoinIO/koin)
-
 ### [RxJava3](https://github.com/ReactiveX/RxJava)
 
 ### [RxAndroid](https://github.com/ReactiveX/RxAndroid)
