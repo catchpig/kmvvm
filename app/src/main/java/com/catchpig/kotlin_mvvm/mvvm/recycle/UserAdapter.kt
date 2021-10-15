@@ -19,10 +19,5 @@ class UserAdapter(iPageControl: IPageControl) :
         holder.viewBanding {
             it.name.text = m.name
         }
-        setOnItemClickListener(object : OnItemClickListener<User> {
-            override fun itemClick(id: Int, m: User, position: Int) {
-
-            }
-        })
     }
 }

@@ -1,4 +1,4 @@
-# [kotlin-mvp](https://github.com/catch-pig/kotlin-mvvm)
+# [kotlin-mvvm](https://gitee.com/catch-pig/kotlin-mvvm)
 [![](https://jitpack.io/v/com.gitee.catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#com.gitee.catch-pig/kotlin-mvvm)
 
 ## 技术要点
@@ -90,11 +90,6 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
     holder.viewBanding {
         it.name.text = m.name
     }
-    setOnItemClickListener(object : OnItemClickListener<User> {
-        override fun itemClick(id: Int, m: User, position: Int) {
-
-        }
-    })
   }
   ```
 ### 5. 注解使用
