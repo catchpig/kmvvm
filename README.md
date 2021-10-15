@@ -178,9 +178,9 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
     RecyclerAdapter.nextPageIndex = 1
     ```
      
-### 7. 文件下载器([DownloadManager](./mvp/src/main/java/com/catchpig/mvp/manager/DownloadManager.kt)))
+### 7. 文件下载器([DownloadManager](./mvp/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
  
- + 单文件下载方法download([DownloadInfo](./mvp/src/main/java/com/catchpig/mvp/bean/DownloadInfo.kt),[DownloadCallback](./mvp/src/main/java/com/catchpig/mvp/listener/DownloadCallback.kt))
+ + 单文件下载方法download([DownloadCallback](./mvp/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
     ```
     DownloadManager.download(downloadUrl, {
             
@@ -188,28 +188,6 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
             progressLiveData.value = (readLength * 100 / countLength).toInt()
         })
     ```
-    * DownloadInfo
-  
-        ```
-        data class DownloadInfo(
-              /**
-               * 域名
-               */
-              val baseUrl:String,
-              /**
-               * 下载地址
-               */
-              val url:String,
-              /**
-               * 连接超时时间(单位:秒)
-               */
-              val connectTimeout:Long = 5
-        ){
-                override fun toString(): String {
-                        return "$baseUrl$url"
-                }
-        }
-        ```
     * DownloadCallback
     
         ```
