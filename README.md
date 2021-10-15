@@ -1,5 +1,5 @@
-# [kotlin-mvp](https://github.com/catch-pig/kotlin-mvp)
-[![](https://jitpack.io/v/catch-pig/kotlin-mvp.svg)](https://jitpack.io/#catch-pig/kotlin-mvp)
+# [kotlin-mvp](https://github.com/catch-pig/kotlin-mvvm)
+[![](https://jitpack.io/v/com.gitee.catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#com.gitee.catch-pig/kotlin-mvvm)
 
 ## 技术要点
 
@@ -13,11 +13,9 @@
 
 ### 5. 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
-### 6. AOP(面向切面)封装注解:TimeLog、ClickGap、MethodLog
+### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar
 
-### 7. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar
-
-### 8. Koin对类的生命周期做一个管理
+### 7. Koin对类的生命周期做一个管理
 
 ## 最低兼容:21
 ## Gradle
@@ -29,29 +27,15 @@ allprojects {
      }
  }
 ```
-    
-### 2. [AspectJX](https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx)的使用请参考官方文档
-    
-```
-dependencies {
-    classpath 'com.github.franticn:gradle_plugin_android_aspectjx:2.0.10'
-}
-```
-### 3. 在app的build.gradle的添加
+
+### 2. 在app的build.gradle的添加
 ```
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
-
-apply plugin: 'android-aspectjx'
-
-aspectjx {
-    exclude 'versions.9.module-info.class'
-    exclude 'module-info.class' 
-}
 ```
-### 4. 添加依赖
+### 3. 添加依赖
 ```
-implementation "com.github.catch-pig.kotlin-mvp:mvp:last_version"
-kapt "com.github.catch-pig.kotlin-mvp:compiler:last_version"
+implementation "com.gitee.catch-pig.kotlin-mvp:mvp:last_version"
+kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
 ```
 ## 使用
 
@@ -59,6 +43,7 @@ kapt "com.github.catch-pig.kotlin-mvp:compiler:last_version"
     
    |属性|类型|必须|默认|说明|
    |---|:---:|:---|:---|:---|
+   |title_bar_height|dimension|是|无|标题栏高度|
    |title_bar_back_icon|DrawableRes|是|无|标题栏的返回图标|
    |title_bar_background|ColorRes|是|无|标题栏的背景色|
    |title_bar_text_color|ColorRes|是|无|标题栏的文字颜色|
@@ -72,6 +57,7 @@ kapt "com.github.catch-pig.kotlin-mvp:compiler:last_version"
     ```
     <style name="AppThemeBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <!--全局标题栏和状态栏配置-->
+        <item name="title_bar_height">80dp</item>
         <item name="title_bar_background">@color/colorPrimary</item>
         <item name="title_bar_back_icon">@drawable/back</item>
         <item name="title_bar_text_color">@color/white</item>
@@ -152,36 +138,18 @@ kapt "com.github.catch-pig.kotlin-mvp:compiler:last_version"
 |enabled|boolean|否|false|状态栏是否可用|
 |transparent|boolean|否|false|状态栏透明|
 
-#### 5.7 [TimeLog](./annotation/src/main/java/com/catchpig/annotation/TimeLog.kt)-打印方法和构造方法执行的时间
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|value|[LEVEL](./annotation/src/main/java/com/catchpig/annotation/TimeLog.kt)|否|[LEVEL.D](./annotation/src/main/java/com/catchpig/annotation/TimeLog.kt)|日志等级|
-
-#### 5.8 [ClickGap](./annotation/src/main/java/com/catchpig/annotation/ClickGap.kt)-重复点击延时
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|value|Long|否|800毫秒|重复点击间隔|
-
-#### 5.9 [Prefs](./annotation/src/main/java/com/catchpig/annotation/Prefs.kt)-SharedPreferences注解生成器
+#### 5.7 [Prefs](./annotation/src/main/java/com/catchpig/annotation/Prefs.kt)-SharedPreferences注解生成器
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|String|否|""|别名|
 |mode|[PrefsMode](./annotation/src/main/java/com/catchpig/annotation/enums/PrefsMode.kt)|否|PrefsMode.MODE_PRIVATE|模式,对应PreferencesMode|
 
-#### 5.10 [PrefsField](./annotation/src/main/java/com/catchpig/annotation/PrefsField.kt)-SharedPreferences字段注解
+#### 5.8 [PrefsField](./annotation/src/main/java/com/catchpig/annotation/PrefsField.kt)-SharedPreferences字段注解
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
-
-#### 5.11 [MethodLog](./annotation/src/main/java/com/catchpig/annotation/MethodLog.kt)-打印方法和构造方法以及参数的值
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|value|[LEVEL](./annotation/src/main/java/com/catchpig/annotation/MethodLog.kt)|否|[LEVEL.D](./annotation/src/main/java/com/catchpig/annotation/MethodLog.kt)|日志等级|
 
 
 ### 6. 刷新分页
@@ -215,75 +183,14 @@ kapt "com.github.catch-pig.kotlin-mvp:compiler:last_version"
     ```
      
 ### 7. 文件下载器([DownloadManager](./mvp/src/main/java/com/catchpig/mvp/manager/DownloadManager.kt)))
- + 在application的onCreate中startKoin,加入[downloadModule](./mvp/src/main/java/com/catchpig/mvp/di/AppModule.kt)
-    
+ 
+ + 单文件下载方法download([DownloadInfo](./mvp/src/main/java/com/catchpig/mvp/bean/DownloadInfo.kt),[DownloadCallback](./mvp/src/main/java/com/catchpig/mvp/listener/DownloadCallback.kt))
     ```
-     startKoin {
-     modules(downloadModule)
-     }
-    ```
-        
-   * downloadModule
-   
-        ```
-        /**
-         * 下载相关类的初始化管理
-         */
-        const val NAMED_DOWNLOAD = "download"
-        val downloadModule = module {
-            single(named(NAMED_DOWNLOAD)) { (downloadProgressListener: DownloadProgressListener)->
-                DownloadInterceptor(downloadProgressListener)
-            } bind Interceptor::class
-        
-            single(named(NAMED_DOWNLOAD)) { (downloadProgressListener: DownloadProgressListener,         timeout:Long)->
-                OkHttpClient
-                        .Builder()
-                        .connectTimeout(timeout, TimeUnit.SECONDS)
-                        .addInterceptor(get<Interceptor>())
-                        .addInterceptor(get<Interceptor>(named(NAMED_DOWNLOAD)){         parametersOf(downloadProgressListener)})
-                        .build()
-            }
-        
-            single(named(NAMED_DOWNLOAD)) { (baseUrl:String,timeout:Long,downloadProgressListener:         DownloadProgressListener)->
-                Retrofit
-                        .Builder()
-                        .baseUrl(baseUrl)
-                        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                        .client(get(named(NAMED_DOWNLOAD)){ parametersOf(downloadProgressListener,timeout)})
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                        .create(DownloadService::class.java)
-            }
-        
-            single {
-                DownloadManager()
-            }
-        }
-        ```
-   
- + 调用下载方法download([DownloadInfo](./mvp/src/main/java/com/catchpig/mvp/bean/DownloadInfo.kt),[DownloadCallback](./mvp/src/main/java/com/catchpig/mvp/listener/DownloadCallback.kt))
-    ```
-    val downloadInfo = DownloadInfo("https://wanandroid.com/","blogimgs/2d120094-e1ee-47fb-a155-6eb4ca49d01f.apk")
-    model.download(downloadInfo,object : DownloadCallback {
-        override fun onStart() {
-    
-        }
-    
-        override fun onSuccess(path: String) {
-            view.activity().installApk(path)
-        }
-    
-        override fun onComplete() {
-        }
-    
-        override fun onProgress(readLength: Long, countLength: Long) {
-            view.setDownloadProgress((readLength*100/countLength).toInt())
-        }
-    
-        override fun onError(t: Throwable) {
-            println(t.message)
-        }
-    })
+    DownloadManager.download(downloadUrl, {
+            
+        }, { readLength, countLength ->
+            progressLiveData.value = (readLength * 100 / countLength).toInt()
+        })
     ```
     * DownloadInfo
   

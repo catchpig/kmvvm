@@ -1,6 +1,5 @@
 package com.catchpig.mvvm.manager
 
-import android.content.Context
 import android.os.Environment
 import android.util.ArrayMap
 import com.catchpig.mvvm.ext.io2main
@@ -11,7 +10,6 @@ import com.catchpig.mvvm.listener.MultiDownloadCallback
 import com.catchpig.mvvm.network.download.DownloadService
 import com.catchpig.mvvm.network.download.DownloadSubscriber
 import com.catchpig.mvvm.network.download.MultiDownloadSubscriber
-import com.catchpig.mvvm.provider.KotlinMvpContentProvider
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
