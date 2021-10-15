@@ -5,17 +5,15 @@
 
 ### 1. RxJava+Retrofit+OkHttp实现链式http请求
 
-### 2. 封装基类:BaseActivity、BasePresenterActivity、BaseFragment、BasePresenterFragment、RecycleAdapter、BasePresenter
+### 2. 封装基类:BaseActivity、BaseVMActivity、BaseFragment、BaseVMFragment、RecycleAdapter、BaseViewModel
 
-### 3. 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt
+### 3. 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
 
-### 4. 引入LifeCycle，将Presenter和Activity的生命周期绑定在一起
+### 4. 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
 
 ### 5. 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
 ### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar
-
-### 7. Koin对类的生命周期做一个管理
 
 ## 最低兼容:21
 ## Gradle
@@ -32,7 +30,13 @@ allprojects {
 ```
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ```
-### 3. 添加依赖
+### 3. 在app的build.gradle的android下添加
+```
+    buildFeatures {
+        viewBinding = true
+    }
+```
+### 4. 添加依赖
 ```
 implementation "com.gitee.catch-pig.kotlin-mvp:mvp:last_version"
 kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
@@ -68,32 +72,29 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
     </style>
     ```
 ### 2. Activity
-  * 使用MVP的继承BasePresenterActivity
+  * 使用MVP的继承BaseVMActivity
   * 不使用MVP的继承BaseActivity
 ### 3. Fragment
-  * 使用MVP的继承BasePresenterFragment
+  * 使用MVP的继承BaseVMFragment
   * 不使用MVP的继承BaseFragment
 ### 4. 如果使用RecycleView的时候,Adapter可以继承RecycleAdapter来使用
-  > 在app的build.gradle的android下添加如下代码:
-   ```
-   //启用实验性功能
-   androidExtensions {
-       experimental = true
-   }
-   ```
     
-  > 只需要实现以下两个方法
+  > adapter使用了ViewBanding,只需要实现以下两个方法
   
   ```
-  class UserAdapter(iPageControl: IPageControl):RecyclerAdapter<User>(iPageControl) {
-      override fun layoutId(): Int {
-          return R.layout.item_user
-      }
-  
-      override fun bindViewHolder(holder: CommonViewHolder, m: User, position: Int) {
-          //使用的experimental之后,可以直接holder.控件ID,不需要holder.itemView.控件ID
-          holder.name.text = m.name
-      }
+  override fun itemViewBanding(): Class<ItemUserBinding> {
+        return ItemUserBinding::class.java
+    }
+
+  override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
+    holder.viewBanding {
+        it.name.text = m.name
+    }
+    setOnItemClickListener(object : OnItemClickListener<User> {
+        override fun itemClick(id: Int, m: User, position: Int) {
+
+        }
+    })
   }
   ```
 ### 5. 注解使用
