@@ -105,7 +105,7 @@ object DownloadManager {
     }
 
     fun multiDownload(
-        downloadUrls: MutableList<String>,
+        downloadUrls: Iterable<String>,
         callback: (paths: MutableList<String>) -> Unit
     ): Disposable {
         return multiDownload(downloadUrls, object : MultiDownloadCallback {
@@ -128,7 +128,7 @@ object DownloadManager {
     }
 
     fun multiDownload(
-        downloadUrls: MutableList<String>,
+        downloadUrls: Iterable<String>,
         multiDownloadCallback: MultiDownloadCallback
     ): Disposable {
         val multiDownloadSubscriber = MultiDownloadSubscriber(multiDownloadCallback)

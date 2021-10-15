@@ -8,7 +8,6 @@ import com.google.gson.GsonBuilder
  * @date 2019/8/18 0018
  */
 object Config {
-    const val TIME_OUT = 5000L
     //时间格式化规则
     const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
     //没有赋值
