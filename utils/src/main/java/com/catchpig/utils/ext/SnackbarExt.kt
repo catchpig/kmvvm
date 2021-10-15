@@ -1,10 +1,9 @@
 package com.catchpig.utils.ext
 
-import android.widget.FrameLayout
+import android.graphics.Rect
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import androidx.core.view.updateMarginsRelative
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -26,12 +25,12 @@ fun Snackbar.setBackgroundResource(@DrawableRes res: Int) {
  * 设置外边框
  */
 fun Snackbar.setMargin(startDp: Int, topDp: Int, endDp: Int, bottomDp: Int) {
-    val snackbarLayout = view as Snackbar.SnackbarLayout
-    val layoutParams = snackbarLayout.layoutParams as FrameLayout.LayoutParams
-    val context = view.context
+    val cls = this::class.java.superclass
+    val field = cls.getDeclaredField("originalMargins")
+    field.isAccessible = true
     val marginStart = context.dp2px(startDp)
     val topMargin = context.dp2px(topDp)
     val marginEnd = context.dp2px(endDp)
     val bottomMargin = context.dp2px(bottomDp)
-    layoutParams.updateMarginsRelative(marginStart, topMargin, marginEnd, bottomMargin)
+    field.set(this, Rect(marginStart, topMargin, marginEnd, bottomMargin))
 }
