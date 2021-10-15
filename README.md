@@ -178,9 +178,9 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
     RecyclerAdapter.nextPageIndex = 1
     ```
      
-### 7. 文件下载器([DownloadManager](./mvp/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
+### 7. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
  
- + 单文件下载方法download([DownloadCallback](./mvp/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
+ + 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
     ```
     DownloadManager.download(downloadUrl, {
             
