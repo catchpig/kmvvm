@@ -12,7 +12,7 @@
 
     <style name="AppThemeBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <!--全局标题栏和状态栏配置-->
-        <item name="title_bar_height">80dp</item>
+        <item name="title_bar_height">50dp</item>
         <item name="title_bar_background">@color/colorPrimary</item>
         <item name="title_bar_back_icon">@drawable/back</item>
         <item name="title_bar_text_color">@color/white</item>

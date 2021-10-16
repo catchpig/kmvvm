@@ -13,10 +13,14 @@ import io.reactivex.rxjava3.disposables.Disposable
  */
 interface IBaseViewModel : LifecycleObserver {
     /**
-     * 展现loading
-     * @param isDialog true:loadingDialog,false:loadingView
+     * 展现loadingView
      */
-    fun showLoading(isDialog: Boolean)
+    fun showLoadingView()
+
+    /**
+     * 展现loadingDialog
+     */
+    fun showLoadingDialog()
 
     /**
      * 隐藏loading

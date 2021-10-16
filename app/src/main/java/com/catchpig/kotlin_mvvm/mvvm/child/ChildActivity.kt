@@ -7,15 +7,12 @@ import com.catchpig.annotation.StatusBar
 import com.catchpig.annotation.Title
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityChildBinding
-import com.catchpig.mvvm.base.activity.BaseActivity
+import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.catchpig.mvvm.manager.SnackbarManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Flowable
-import java.util.concurrent.TimeUnit
 
 @Title
 @StatusBar
-class ChildActivity : BaseActivity<ActivityChildBinding>() {
+class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
         SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
@@ -28,23 +25,29 @@ class ChildActivity : BaseActivity<ActivityChildBinding>() {
         updateTitle("12354")
     }
 
+    override fun initParam() {
+
+    }
+
+    override fun initView() {
+
+    }
+
+    override fun initObserver() {
+
+    }
+
     /**
      * dialog形式的loading
      */
     fun loadingDialog(v: View) {
-        loadingView(true)
-        Flowable.timer(5, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            hideLoadingView()
-        }
+        viewModel.loadingDialog()
     }
 
     /**
      * 标题栏以下的loading
      */
-    fun loadingExtTitle(v: View) {
-        loadingView(false)
-        Flowable.timer(5, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            hideLoadingView()
-        }
+    fun loadingView(v: View) {
+        viewModel.loadingView()
     }
 }
