@@ -1,5 +1,6 @@
 package com.catchpig.mvvm.base.viewmodel
 
+import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -41,6 +42,7 @@ open class BaseViewModel : ViewModel(), IBaseViewModel {
         hideLoadingLiveData.value = true
     }
 
+    @CallSuper
     override fun onError(t: Throwable) {
         KotlinMvvmCompiler.onError(this, t)
     }
