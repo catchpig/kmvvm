@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.apt
+package com.catchpig.mvvm.apt.interfaces
 
 import android.app.Activity
 
@@ -6,9 +6,9 @@ import android.app.Activity
  * @author catchpig
  * @date 2019/10/17 00:17
  */
-interface MvvmCompiler {
+interface ActivityCompiler {
     /**
-     * 初始化标题栏
+     * 初始化标题栏和状态栏
      */
     fun inject(activity: Activity)
 

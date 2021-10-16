@@ -1,7 +1,7 @@
 package com.catchpig.mvvm.apt
 
 import android.app.Activity
-import com.catchpig.mvvm.base.activity.BaseActivity
+import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
 import com.catchpig.utils.ext.logd
 
 /**
@@ -13,9 +13,9 @@ object KotlinMvvmCompiler {
     fun inject(baseActivity: Activity) {
         val className = baseActivity.javaClass.name
         try {
-            val compilerClass = Class.forName(className + "_MvvmCompiler")
+            val compilerClass = Class.forName("${className}_Compiler")
             compilerClass.let {
-                val mvpCompiler = compilerClass.newInstance() as MvvmCompiler
+                val mvpCompiler = compilerClass.newInstance() as ActivityCompiler
                 mvpCompiler.inject(baseActivity)
             }
         } catch (exception: ClassNotFoundException) {

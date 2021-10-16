@@ -3,7 +3,6 @@ package com.catchpig.compiler
 import com.catchpig.annotation.*
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedSourceVersion
@@ -16,14 +15,19 @@ import javax.lang.model.element.TypeElement
 class KotlinMvvmProcessor : BaseProcessor() {
     companion object {
         private val CLASS_NAME_TITLE_PARAM = ClassName("com.catchpig.mvvm.entity", "TitleParam")
-        private val CLASS_NAME_STATUS_BAR_PARAM = ClassName("com.catchpig.mvvm.entity", "StatusBarParam")
-        private val CLASS_NAME_MVP_COMPILER = ClassName("com.catchpig.mvvm.apt", "MvvmCompiler")
-        private val CLASS_NAME_BASE_ACTIVITY = ClassName("com.catchpig.mvvm.base.activity", "BaseActivity")
+        private val CLASS_NAME_STATUS_BAR_PARAM =
+            ClassName("com.catchpig.mvvm.entity", "StatusBarParam")
+        private val CLASS_NAME_MVP_COMPILER =
+            ClassName("com.catchpig.mvvm.apt.interfaces", "ActivityCompiler")
+        private val CLASS_NAME_BASE_ACTIVITY =
+            ClassName("com.catchpig.mvvm.base.activity", "BaseActivity")
         private val CLASS_NAME_ACTIVITY = ClassName("android.app", "Activity")
 
         private val TYPE_VIEW_STUB = Class.forName("android.view.ViewStub")
-        private val TYPE_TITLE_BAR_CONTROLLER = Class.forName("com.catchpig.mvvm.controller.TitleBarController")
-        private val TYPE_STATUS_BAR_CONTROLLER = Class.forName("com.catchpig.mvvm.controller.StatusBarController")
+        private val TYPE_TITLE_BAR_CONTROLLER =
+            Class.forName("com.catchpig.mvvm.controller.TitleBarController")
+        private val TYPE_STATUS_BAR_CONTROLLER =
+            Class.forName("com.catchpig.mvvm.controller.StatusBarController")
         private val TYPE_TEXT_VIEW = Class.forName("android.widget.TextView")
         private val TYPE_IMAGE_VIEW = Class.forName("android.widget.ImageView")
         private val TYPE_VIEW = Class.forName("android.view.View")
@@ -41,13 +45,17 @@ class KotlinMvvmProcessor : BaseProcessor() {
         return set
     }
 
-    override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
+    override fun process(
+        annotations: MutableSet<out TypeElement>,
+        roundEnv: RoundEnvironment
+    ): Boolean {
         val allElements = roundEnv.rootElements
         val elements = allElements.filter {
             if (it is TypeElement) {
                 if (it.getAnnotation(Title::class.java) != null
-                        || it.getAnnotation(StatusBar::class.java) != null
-                        || superClassIsBaseActivity(it)) {
+                    || it.getAnnotation(StatusBar::class.java) != null
+                    || superClassIsBaseActivity(it)
+                ) {
                     return@filter true
                 }
             }
@@ -62,11 +70,11 @@ class KotlinMvvmProcessor : BaseProcessor() {
             val className = it.simpleName.toString()
             val fullPackageName = elementUtils.getPackageOf(it).qualifiedName.toString()
             val typeSpecBuilder = TypeSpec
-                    .classBuilder(className + "_MvvmCompiler")
-                    .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
-                    .addSuperinterface(CLASS_NAME_MVP_COMPILER)
-                    .addProperty(initTitleProperty(title, className))
-                    .addProperty(initStatusBarProperty(statusBar, className))
+                .classBuilder("${className}_Compiler")
+                .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
+                .addSuperinterface(CLASS_NAME_MVP_COMPILER)
+                .addProperty(initTitleProperty(title, className))
+                .addProperty(initStatusBarProperty(statusBar, className))
             val funSpec = initTitleMenuOnClick(it, title)
             funSpec?.let { fsc ->
                 typeSpecBuilder.addFunction(fsc)
@@ -75,11 +83,11 @@ class KotlinMvvmProcessor : BaseProcessor() {
 
             val typeSpec = typeSpecBuilder.build()
             FileSpec
-                    .builder(fullPackageName, typeSpec.name!!)
-                    .addType(typeSpec)
-                    .addImport("com.catchpig.mvvm", "R")
-                    .build()
-                    .writeTo(filer)
+                .builder(fullPackageName, typeSpec.name!!)
+                .addType(typeSpec)
+                .addImport("com.catchpig.mvvm", "R")
+                .build()
+                .writeTo(filer)
         }
         return true
     }
@@ -97,9 +105,9 @@ class KotlinMvvmProcessor : BaseProcessor() {
          */
         var flag = false
         var builder = FunSpec
-                .builder("initTitleMenuOnClick")
-                .addParameter("activity", element.asType().asTypeName())
-                .addModifiers(KModifier.PRIVATE)
+            .builder("initTitleMenuOnClick")
+            .addParameter("activity", element.asType().asTypeName())
+            .addModifiers(KModifier.PRIVATE)
         title?.let {
 
             //第一个文字按钮
@@ -112,11 +120,14 @@ class KotlinMvvmProcessor : BaseProcessor() {
                 if (onClickFirstText != null) {
                     flag = true
                     builder = builder
-                            .addStatement("//第一个文字按钮")
-                            .addStatement("var rightFirstText = activity.findViewById<%T>(R.id.rightFirstText)", TYPE_TEXT_VIEW)
-                            .addStatement("rightFirstText.setText(%L)", onClickFirstText.value)
-                            .addStatement("rightFirstText.visibility = %T.VISIBLE", TYPE_VIEW)
-                            .addStatement("rightFirstText.setOnClickListener {")
+                        .addStatement("//第一个文字按钮")
+                        .addStatement(
+                            "var rightFirstText = activity.findViewById<%T>(R.id.rightFirstText)",
+                            TYPE_TEXT_VIEW
+                        )
+                        .addStatement("rightFirstText.setText(%L)", onClickFirstText.value)
+                        .addStatement("rightFirstText.visibility = %T.VISIBLE", TYPE_VIEW)
+                        .addStatement("rightFirstText.setOnClickListener {")
                     when (parameters.size) {
                         0 -> {
                             builder = builder.addStatement("  activity.${simpleName}()")
@@ -146,11 +157,17 @@ class KotlinMvvmProcessor : BaseProcessor() {
                 if (onClickFirstDrawable != null) {
                     flag = true
                     builder = builder
-                            .addStatement("//第一个图片按钮")
-                            .addStatement("var rightFirstDrawable = activity.findViewById<%T>(R.id.rightFirstDrawable)", TYPE_IMAGE_VIEW)
-                            .addStatement("rightFirstDrawable.setImageResource(%L)", onClickFirstDrawable.value)
-                            .addStatement("rightFirstDrawable.visibility = %T.VISIBLE", TYPE_VIEW)
-                            .addStatement("rightFirstDrawable.setOnClickListener {")
+                        .addStatement("//第一个图片按钮")
+                        .addStatement(
+                            "var rightFirstDrawable = activity.findViewById<%T>(R.id.rightFirstDrawable)",
+                            TYPE_IMAGE_VIEW
+                        )
+                        .addStatement(
+                            "rightFirstDrawable.setImageResource(%L)",
+                            onClickFirstDrawable.value
+                        )
+                        .addStatement("rightFirstDrawable.visibility = %T.VISIBLE", TYPE_VIEW)
+                        .addStatement("rightFirstDrawable.setOnClickListener {")
                     when (parameters.size) {
                         0 -> {
                             builder = builder.addStatement("  activity.${simpleName}()")
@@ -180,11 +197,14 @@ class KotlinMvvmProcessor : BaseProcessor() {
                 if (onClickSecondText != null) {
                     flag = true
                     builder = builder
-                            .addStatement("//第二个文字按钮")
-                            .addStatement("var rightSecondText = activity.findViewById<%T>(R.id.rightSecondText)", TYPE_TEXT_VIEW)
-                            .addStatement("rightSecondText.setText(%L)", onClickSecondText.value)
-                            .addStatement("rightSecondText.visibility = %T.VISIBLE", TYPE_VIEW)
-                            .addStatement("rightSecondText.setOnClickListener {")
+                        .addStatement("//第二个文字按钮")
+                        .addStatement(
+                            "var rightSecondText = activity.findViewById<%T>(R.id.rightSecondText)",
+                            TYPE_TEXT_VIEW
+                        )
+                        .addStatement("rightSecondText.setText(%L)", onClickSecondText.value)
+                        .addStatement("rightSecondText.visibility = %T.VISIBLE", TYPE_VIEW)
+                        .addStatement("rightSecondText.setOnClickListener {")
                     when (parameters.size) {
                         0 -> {
                             builder = builder.addStatement("  activity.${simpleName}()")
@@ -214,11 +234,17 @@ class KotlinMvvmProcessor : BaseProcessor() {
                 if (onClickSecondDrawable != null) {
                     flag = true
                     builder = builder
-                            .addStatement("//第二个图片按钮")
-                            .addStatement("var rightSecondDrawable = activity.findViewById<%T>(R.id.rightSecondDrawable)", TYPE_IMAGE_VIEW)
-                            .addStatement("rightSecondDrawable.setImageResource(%L)", onClickSecondDrawable.value)
-                            .addStatement("rightSecondDrawable.visibility = %T.VISIBLE", TYPE_VIEW)
-                            .addStatement("rightSecondDrawable.setOnClickListener {")
+                        .addStatement("//第二个图片按钮")
+                        .addStatement(
+                            "var rightSecondDrawable = activity.findViewById<%T>(R.id.rightSecondDrawable)",
+                            TYPE_IMAGE_VIEW
+                        )
+                        .addStatement(
+                            "rightSecondDrawable.setImageResource(%L)",
+                            onClickSecondDrawable.value
+                        )
+                        .addStatement("rightSecondDrawable.visibility = %T.VISIBLE", TYPE_VIEW)
+                        .addStatement("rightSecondDrawable.setOnClickListener {")
                     when (parameters.size) {
                         0 -> {
                             builder = builder.addStatement("  activity.${simpleName}()")
@@ -250,27 +276,36 @@ class KotlinMvvmProcessor : BaseProcessor() {
 
     private fun injectFun(className: String, isInitMenuFun: Boolean): FunSpec {
         var funSpecBuilder = FunSpec
-                .builder("inject")
-                .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
-                .addParameter("activity", CLASS_NAME_ACTIVITY)
-                .addStatement("//加载标题栏")
-                .addStatement("val baseActivity = activity as %T<*>", CLASS_NAME_BASE_ACTIVITY)
-                .addStatement("title?.let{")
-                .addStatement("  val titleBarViewStub = baseActivity.findViewById<%T>(R.id.title_bar_view_stub)", TYPE_VIEW_STUB)
-                .addStatement("  titleBarViewStub.setOnInflateListener { _, view ->")
-                .addStatement("    val titleBarController = %T(baseActivity,it)", TYPE_TITLE_BAR_CONTROLLER)
-                .addStatement("    titleBarController.initTitleBar(view)")
+            .builder("inject")
+            .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
+            .addParameter("activity", CLASS_NAME_ACTIVITY)
+            .addStatement("//加载标题栏")
+            .addStatement("val baseActivity = activity as %T<*>", CLASS_NAME_BASE_ACTIVITY)
+            .addStatement("title?.let{")
+            .addStatement(
+                "  val titleBarViewStub = baseActivity.findViewById<%T>(R.id.title_bar_view_stub)",
+                TYPE_VIEW_STUB
+            )
+            .addStatement("  titleBarViewStub.setOnInflateListener { _, view ->")
+            .addStatement(
+                "    val titleBarController = %T(baseActivity,it)",
+                TYPE_TITLE_BAR_CONTROLLER
+            )
+            .addStatement("    titleBarController.initTitleBar(view)")
         if (isInitMenuFun) {
             funSpecBuilder.addStatement("    initTitleMenuOnClick(baseActivity as $className)")
         }
         return funSpecBuilder
-                .addStatement("  }")
-                .addStatement("  titleBarViewStub.inflate()")
-                .addStatement("}")
-                .addStatement("//加载状态栏")
-                .addStatement("val statusBarController = %T(baseActivity,title,statusBar)", TYPE_STATUS_BAR_CONTROLLER)
-                .addStatement("statusBarController.checkStatusBar()")
-                .build()
+            .addStatement("  }")
+            .addStatement("  titleBarViewStub.inflate()")
+            .addStatement("}")
+            .addStatement("//加载状态栏")
+            .addStatement(
+                "val statusBarController = %T(baseActivity,title,statusBar)",
+                TYPE_STATUS_BAR_CONTROLLER
+            )
+            .addStatement("statusBarController.checkStatusBar()")
+            .build()
     }
 
     /**
@@ -278,17 +313,17 @@ class KotlinMvvmProcessor : BaseProcessor() {
      */
     private fun initStatusBarProperty(statusBar: StatusBar?, className: String): PropertySpec {
         var builder = PropertySpec
-                .builder("statusBar", CLASS_NAME_STATUS_BAR_PARAM.copy(nullable = true))
-                .addModifiers(KModifier.PRIVATE)
+            .builder("statusBar", CLASS_NAME_STATUS_BAR_PARAM.copy(nullable = true))
+            .addModifiers(KModifier.PRIVATE)
         return if (null == statusBar) {
             warning("$className:StatusBar注解没有使用")
             builder
-                    .initializer("null")
-                    .build()
+                .initializer("null")
+                .build()
         } else {
             builder
-                    .initializer("StatusBarParam(${statusBar.hide},${statusBar.enabled},${statusBar.transparent})")
-                    .build()
+                .initializer("StatusBarParam(${statusBar.hide},${statusBar.enabled},${statusBar.transparent})")
+                .build()
         }
     }
 
@@ -297,17 +332,23 @@ class KotlinMvvmProcessor : BaseProcessor() {
      */
     private fun initTitleProperty(title: Title?, className: String): PropertySpec {
         var builder = PropertySpec
-                .builder("title", CLASS_NAME_TITLE_PARAM.copy(nullable = true))
-                .addModifiers(KModifier.PRIVATE)
+            .builder("title", CLASS_NAME_TITLE_PARAM.copy(nullable = true))
+            .addModifiers(KModifier.PRIVATE)
         return if (null == title) {
             warning("$className:Title注解没有使用")
             builder
-                    .initializer("null")
-                    .build()
+                .initializer("null")
+                .build()
         } else {
             builder
-                    .initializer("TitleParam(%L,%L,%L,%L)", title.value, title.backgroundColor, title.textColor, title.backIcon)
-                    .build()
+                .initializer(
+                    "TitleParam(%L,%L,%L,%L)",
+                    title.value,
+                    title.backgroundColor,
+                    title.textColor,
+                    title.backIcon
+                )
+                .build()
         }
     }
 
