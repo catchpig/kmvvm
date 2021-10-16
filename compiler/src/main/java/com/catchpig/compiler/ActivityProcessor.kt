@@ -12,12 +12,13 @@ import javax.lang.model.element.TypeElement
 
 @AutoService(Processor::class)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-class KotlinMvvmProcessor : BaseProcessor() {
+class ActivityProcessor : BaseProcessor() {
     companion object {
+        private const val TAG = "ActivityProcessor"
         private val CLASS_NAME_TITLE_PARAM = ClassName("com.catchpig.mvvm.entity", "TitleParam")
         private val CLASS_NAME_STATUS_BAR_PARAM =
             ClassName("com.catchpig.mvvm.entity", "StatusBarParam")
-        private val CLASS_NAME_MVP_COMPILER =
+        private val CLASS_NAME_ACTIVITY_COMPILER =
             ClassName("com.catchpig.mvvm.apt.interfaces", "ActivityCompiler")
         private val CLASS_NAME_BASE_ACTIVITY =
             ClassName("com.catchpig.mvvm.base.activity", "BaseActivity")
@@ -72,7 +73,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
             val typeSpecBuilder = TypeSpec
                 .classBuilder("${className}_Compiler")
                 .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
-                .addSuperinterface(CLASS_NAME_MVP_COMPILER)
+                .addSuperinterface(CLASS_NAME_ACTIVITY_COMPILER)
                 .addProperty(initTitleProperty(title, className))
                 .addProperty(initStatusBarProperty(statusBar, className))
             val funSpec = initTitleMenuOnClick(it, title)
@@ -316,7 +317,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
             .builder("statusBar", CLASS_NAME_STATUS_BAR_PARAM.copy(nullable = true))
             .addModifiers(KModifier.PRIVATE)
         return if (null == statusBar) {
-            warning("$className:StatusBar注解没有使用")
+            warning(TAG, "$className:StatusBar注解没有使用")
             builder
                 .initializer("null")
                 .build()
@@ -335,7 +336,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
             .builder("title", CLASS_NAME_TITLE_PARAM.copy(nullable = true))
             .addModifiers(KModifier.PRIVATE)
         return if (null == title) {
-            warning("$className:Title注解没有使用")
+            warning(TAG, "$className:Title注解没有使用")
             builder
                 .initializer("null")
                 .build()

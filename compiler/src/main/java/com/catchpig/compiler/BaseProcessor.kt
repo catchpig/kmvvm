@@ -29,8 +29,8 @@ abstract class BaseProcessor:AbstractProcessor() {
         return SourceVersion.latestSupported()
     }
 
-    protected fun warning(msg: String) {
-        messager.printMessage(Diagnostic.Kind.WARNING, msg)
+    protected fun warning(tag:String,msg: String) {
+        messager.printMessage(Diagnostic.Kind.WARNING, "$tag:$msg\n")
     }
 
     protected fun error(msg: String) {

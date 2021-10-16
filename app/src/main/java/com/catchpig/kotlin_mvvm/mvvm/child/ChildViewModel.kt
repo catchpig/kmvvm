@@ -9,9 +9,6 @@ import io.reactivex.rxjava3.core.Flowable
 import java.util.concurrent.TimeUnit
 
 class ChildViewModel : BaseViewModel() {
-    override fun onError(t: Throwable) {
-
-    }
 
     fun loadingView() {
         Flowable.timer(5, TimeUnit.SECONDS).loadingView(this, {
@@ -21,6 +18,7 @@ class ChildViewModel : BaseViewModel() {
 
         }, this)
         Flowable.timer(5, TimeUnit.SECONDS).noSubscribe()
+        onError(NullPointerException())
     }
 
     fun loadingDialog() {
