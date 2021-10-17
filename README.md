@@ -13,7 +13,7 @@
 
 ### 5. 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
-### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar
+### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError
 
 ## 最低兼容:21
 ## Gradle
@@ -38,8 +38,8 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ```
 ### 4. 添加依赖
 ```
-implementation "com.gitee.catch-pig.kotlin-mvp:mvp:last_version"
-kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
+implementation "com.gitee.catch-pig.kotlin-mvvm:mvvm:last_version"
+kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
 ```
 ## 使用
 
@@ -72,11 +72,11 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
     </style>
     ```
 ### 2. Activity
-  * 使用MVP的继承BaseVMActivity
-  * 不使用MVP的继承BaseActivity
+  * 使用MVVM的继承BaseVMActivity
+  * 不使用MVVM的继承BaseActivity
 ### 3. Fragment
-  * 使用MVP的继承BaseVMFragment
-  * 不使用MVP的继承BaseFragment
+  * 使用MVVM的继承BaseVMFragment
+  * 不使用MVVM的继承BaseFragment
 ### 4. 如果使用RecycleView的时候,Adapter可以继承RecycleAdapter来使用
     
   > adapter使用了ViewBanding,只需要实现以下两个方法
@@ -146,6 +146,8 @@ kapt "com.gitee.catch-pig.kotlin-mvp:compiler:last_version"
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
+
+#### 5.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-ViewModel中的RxJava的onError方法同意处理
 
 
 ### 6. 刷新分页
