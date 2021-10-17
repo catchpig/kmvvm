@@ -168,14 +168,12 @@ kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
 
 #### 使用RefreshLayoutWrapper+RecyclerAdapter控件实现刷新功能
 
-+ ***
-  RefreshLayoutWrapper继承于[SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout),具体使用请看SmartRefreshLayout官方文档,默认每页数据量为16,如果想修改每页数据量,可使用如下方法更改:***
++ ***RefreshLayoutWrapper继承于[SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout),具体使用请看SmartRefreshLayout官方文档,默认每页数据量为16,如果想修改每页数据量,可使用如下方法更改:***
 
   ```
   RefreshLayoutWrapper.pageSize = 16
   ```
-+ ***
-  RefreshLayoutWrapper实现了[IPageControl](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/IPageControl.kt)
++ ***RefreshLayoutWrapper实现了[IPageControl](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/IPageControl.kt)
   ,可以通过调用接口内的方法类获取刷新控件的状态和更改状态***
 
   ```
@@ -198,15 +196,14 @@ kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
 
 ### 7. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 
-+
-单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
- ```
- DownloadManager.download(downloadUrl, {
-         
-     }, { readLength, countLength ->
-         progressLiveData.value = (readLength * 100 / countLength).toInt()
-     })
- ```
+  + 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
+    ```
+    DownloadManager.download(downloadUrl, {
+            
+        }, { readLength, countLength ->
+            progressLiveData.value = (readLength * 100 / countLength).toInt()
+        })
+    ```
     * DownloadCallback
 
         ```
@@ -241,12 +238,38 @@ kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
             fun onError(t:Throwable)
         }
         ```
-+ 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
-   ```
-   DownloadManager.multiDownload(downloadUrls, {
-           
-       })
-   ```
+  + 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
+    ```
+    DownloadManager.multiDownload(downloadUrls, {
+            
+        })
+    ```
+    * MultiDownloadCallback
+        ```
+        interface MultiDownloadCallback {
+        /**
+        * 开始下载
+        */
+        fun onStart()
+    
+        /**
+        * 下载成功
+        * @param paths 本地保存的地址集
+        */
+        fun onSuccess(paths:MutableList<String>)
+    
+        /**
+        * 下载完成
+        */
+        fun onComplete()
+    
+        /**
+        * 下载错误
+        * @param t 错误信息
+        */
+        fun onError(t:Throwable)
+        }
+        ```
 
 ## 第三方库
 
