@@ -18,7 +18,7 @@ class CommonViewHolder<VB : ViewBinding>(itemView: View) :
 
     fun viewBanding(block: VB.() -> Unit) {
         itemViewBinding?.run {
-            block
+            block(this)
         }
     }
 }

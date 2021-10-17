@@ -1,8 +1,12 @@
 package com.catchpig.mvvm.apt
 
 import android.app.Activity
+import android.view.ViewGroup
+import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
+import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
 import com.catchpig.mvvm.apt.interfaces.ViewModelCompiler
+import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.utils.ext.logd
 
@@ -41,6 +45,21 @@ object KotlinMvvmCompiler {
             }
         }
         viewModelCompiler?.onError(baseViewModel, t)
+    }
 
+    fun viewBanding(recyclerAdapter: RecyclerAdapter<*, *>, parent: ViewGroup): ViewBinding? {
+        val className = recyclerAdapter.javaClass.name
+        try {
+            val compilerClass = Class.forName("${className}_Compiler")
+            compilerClass.let {
+                val recyclerAdapterCompiler = compilerClass.newInstance() as RecyclerAdapterCompiler
+                return recyclerAdapterCompiler.viewBanding(parent)
+            }
+        } catch (exception: ClassNotFoundException) {
+            "$className:必须使用注解Adapter".let {
+                it.logd(TAG)
+            }
+            return null
+        }
     }
 }
