@@ -104,6 +104,9 @@ object DownloadManager {
         return downloadService
     }
 
+    /**
+     * 多文件下载
+     */
     fun multiDownload(
         downloadUrls: Iterable<String>,
         callback: (paths: MutableList<String>) -> Unit
@@ -127,6 +130,9 @@ object DownloadManager {
         })
     }
 
+    /**
+     * 多文件下载
+     */
     fun multiDownload(
         downloadUrls: Iterable<String>,
         multiDownloadCallback: MultiDownloadCallback
