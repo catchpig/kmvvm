@@ -16,8 +16,4 @@ class MainViewModel : BaseViewModel() {
 //            }
 //        })
     }
-
-    override fun onError(t: Throwable) {
-
-    }
 }

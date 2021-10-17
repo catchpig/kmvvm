@@ -11,10 +11,6 @@ import com.catchpig.mvvm.manager.DownloadManager
  */
 class InstallApkViewModel : BaseViewModel() {
     val progressLiveData = MutableLiveData<Int>()
-    override fun onError(t: Throwable) {
-
-    }
-
 
     fun download() {
 //        val downloadUrl = "http://www.wichot.com/Uploads/download.pdf"

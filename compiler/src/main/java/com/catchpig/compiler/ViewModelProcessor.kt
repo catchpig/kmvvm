@@ -38,8 +38,8 @@ class ViewModelProcessor : BaseProcessor() {
         roundEnv: RoundEnvironment
     ): Boolean {
         val elements = roundEnv.getElementsAnnotatedWith(ObserverError::class.java)
-        warning(TAG, "size:${elements.size}")
         if (elements.isNotEmpty()) {
+            warning(TAG, "size:${elements.size}")
             val typeSpecBuilder = TypeSpec
                 .classBuilder("ViewModel_Compiler")
                 .addModifiers(KModifier.FINAL, KModifier.PUBLIC)

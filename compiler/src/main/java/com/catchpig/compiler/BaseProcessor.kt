@@ -12,7 +12,7 @@ import javax.tools.Diagnostic
  * @author catchpig
  * @date 2019/10/29 00:29
  */
-abstract class BaseProcessor:AbstractProcessor() {
+abstract class BaseProcessor : AbstractProcessor() {
     protected lateinit var elementUtils: Elements
     private lateinit var messager: Messager
     protected lateinit var filer: Filer
@@ -29,11 +29,11 @@ abstract class BaseProcessor:AbstractProcessor() {
         return SourceVersion.latestSupported()
     }
 
-    protected fun warning(tag:String,msg: String) {
-        messager.printMessage(Diagnostic.Kind.WARNING, "$tag:$msg\n")
+    protected fun warning(tag: String, msg: String) {
+        messager.printMessage(Diagnostic.Kind.WARNING, "$tag:$msg")
     }
 
-    protected fun error(msg: String) {
-        messager.printMessage(Diagnostic.Kind.ERROR, msg)
+    protected fun error(tag: String, msg: String) {
+        messager.printMessage(Diagnostic.Kind.ERROR, "$tag:$msg")
     }
 }

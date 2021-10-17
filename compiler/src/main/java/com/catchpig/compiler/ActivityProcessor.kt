@@ -138,11 +138,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error("OnClickFirstText注解修饰的参数类型只能为View")
+                                error(TAG,"OnClickFirstText注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error("OnClickFirstText注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG,"OnClickFirstText注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
@@ -178,11 +178,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error("OnClickFirstDrawable注解修饰的参数类型只能为View")
+                                error(TAG,"OnClickFirstDrawable注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error("OnClickFirstDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG,"OnClickFirstDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
@@ -215,11 +215,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error("OnClickSecondText注解修饰的参数类型只能为View")
+                                error(TAG,"OnClickSecondText注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error("OnClickSecondText注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG,"OnClickSecondText注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
@@ -255,11 +255,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error("OnClickSecondDrawable注解修饰的参数类型只能为View")
+                                error(TAG,"OnClickSecondDrawable注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error("OnClickSecondDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG,"OnClickSecondDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
