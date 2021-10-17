@@ -36,7 +36,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     compileOnly "androidx.core:core-ktx:$core_ktx_version"
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     compileOnly "androidx.recyclerview:recyclerview:$recycleview_version"
     api project(path: ':annotation')

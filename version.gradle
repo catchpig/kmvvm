@@ -13,16 +13,16 @@ ext {
     kotlin_mvvm = '0.1.3.1'
     okhttp3_version = '4.9.2'
     retrofit2_version = '2.9.0'
-    rxjava_version = '3.1.1'
+    rxjava_version = '3.1.2'
     rxandroid_version = '3.0.0'
     gson_version = '2.8.8'
-    glide_version = '4.11.0'
+    glide_version = '4.12.0'
     immersionbar_version = '3.0.0'
     loading_version = '1.0.2'
     SmartRefreshLayout_version = '2.0.3'
     aspectj_version = '1.9.7'
-    auto_service_version = '1.0-rc7'
-    kotlinpoet_version = '1.9.0'
+    auto_service_version = '1.0'
+    kotlinpoet_version = '1.10.1'
     rxpermissions_version = "0.12"
     recycleview_version = "1.2.0"
 }
