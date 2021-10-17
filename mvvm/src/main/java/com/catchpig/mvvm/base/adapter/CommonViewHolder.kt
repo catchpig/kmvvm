@@ -16,10 +16,9 @@ class CommonViewHolder<VB : ViewBinding>(itemView: View) :
         this.itemViewBinding = itemViewBinding
     }
 
-    fun viewBanding(vb: (viewBinding: VB) -> Unit) {
-        itemViewBinding?.let {
-            vb(it)
+    fun viewBanding(block: VB.() -> Unit) {
+        itemViewBinding?.run {
+            block
         }
     }
-
 }

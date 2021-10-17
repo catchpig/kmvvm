@@ -17,7 +17,7 @@ class UserAdapter(iPageControl: IPageControl) :
 
     override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
         holder.viewBanding {
-            it.name.text = m.name
+            name.text = m.name
         }
     }
 }
