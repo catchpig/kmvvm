@@ -43,7 +43,7 @@ allprojects {
         maven{
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
-        maven { url 'https://jitpack.io' }
+        maven { url 'https://www.jitpack.io' }
         google()
     }
 }
