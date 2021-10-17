@@ -1,7 +1,7 @@
 package com.catchpig.mvvm.interfaces
 
-import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import com.catchpig.mvvm.base.viewmodel.IBaseViewModel
 
 interface IObserverError {
-    fun onError(baseViewModel: BaseViewModel, t: Throwable)
+    fun onError(iBaseViewModel: IBaseViewModel, t: Throwable)
 }

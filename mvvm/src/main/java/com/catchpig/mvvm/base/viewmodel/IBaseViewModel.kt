@@ -27,15 +27,27 @@ interface IBaseViewModel : LifecycleObserver {
      */
     fun hideLoading()
 
+    /**
+     * 向Activity和Fragment发送弹窗的消息
+     * @param msg String
+     */
+    fun sendMessage(msg: String)
+
+    /**
+     * 异常的处理
+     * @param t Throwable
+     */
     fun onError(t: Throwable)
 
     /**
      * 添加disposable到CompositeDisposable
+     * @param disposable Disposable
      */
     fun add(disposable: Disposable)
 
     /**
      * 从CompositeDisposable中删除一个disposable
+     * @param disposable Disposable
      */
     fun remove(disposable: Disposable)
 

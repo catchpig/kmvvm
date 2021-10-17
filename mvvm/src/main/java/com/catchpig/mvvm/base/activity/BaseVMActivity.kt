@@ -1,20 +1,10 @@
 package com.catchpig.mvvm.base.activity
 
 import android.os.Bundle
-import android.util.Log.d
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
-import com.catchpig.mvvm.manager.SnackbarManager
-import com.catchpig.utils.ext.dp2px
-import com.catchpig.utils.ext.setTextColorRes
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.SnackbarContentLayout
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -37,15 +27,15 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
         initView()
         initObserver()
         observerLoading()
-        observerToast()
+        observerMessage()
     }
 
     protected abstract fun initParam()
     protected abstract fun initView()
     protected abstract fun initObserver()
 
-    private fun observerToast() {
-        viewModel.toastLiveData.observe(this, {
+    private fun observerMessage() {
+        viewModel.messageLiveData.observe(this, {
             snackbar(it)
         })
     }

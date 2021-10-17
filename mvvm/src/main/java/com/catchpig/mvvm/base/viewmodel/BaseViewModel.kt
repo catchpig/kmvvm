@@ -18,7 +18,7 @@ open class BaseViewModel : ViewModel(), IBaseViewModel {
         private set
     var hideLoadingLiveData = MutableLiveData<Boolean>()
         private set
-    var toastLiveData = MutableLiveData<String>()
+    var messageLiveData = MutableLiveData<String>()
         private set
 
     /**
@@ -42,6 +42,14 @@ open class BaseViewModel : ViewModel(), IBaseViewModel {
         hideLoadingLiveData.value = true
     }
 
+    /**
+     * 向Activity和Fragment发送弹窗的消息
+     * @param msg String
+     */
+    override fun sendMessage(msg: String) {
+        messageLiveData.value = msg
+    }
+
     @CallSuper
     override fun onError(t: Throwable) {
         KotlinMvvmCompiler.onError(this, t)
@@ -49,6 +57,7 @@ open class BaseViewModel : ViewModel(), IBaseViewModel {
 
     /**
      * 添加Disposable到CompositeDisposable
+     * @param disposable Disposable
      */
     override fun add(disposable: Disposable) {
         compositeDisposable.add(disposable)
@@ -56,6 +65,7 @@ open class BaseViewModel : ViewModel(), IBaseViewModel {
 
     /**
      * 删除指定的Disposable
+     * @param disposable Disposable
      */
     override fun remove(disposable: Disposable) {
         compositeDisposable.remove(disposable)

@@ -37,7 +37,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
     protected abstract fun initObserver()
 
     private fun observerToast() {
-        viewModel.toastLiveData.observe(this, {
+        viewModel.messageLiveData.observe(this, {
             snackbar(it)
         })
     }

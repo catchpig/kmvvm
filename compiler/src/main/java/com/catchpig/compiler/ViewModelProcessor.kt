@@ -21,8 +21,8 @@ class ViewModelProcessor : BaseProcessor() {
         private val CLASS_NAME_LIST = ClassName("kotlin.collections", "List")
         private val CLASS_NAME_LIST_OF_I_OBSERVER_ERROR =
             CLASS_NAME_LIST.parameterizedBy(CLASS_NAME_I_OBSERVER_ERROR)
-        private val CLASS_NAME_BASE_VIEW_MODEL =
-            ClassName("com.catchpig.mvvm.base.viewmodel", "BaseViewModel")
+        private val CLASS_NAME_I_BASE_VIEW_MODEL =
+            ClassName("com.catchpig.mvvm.base.viewmodel", "IBaseViewModel")
         private val CLASS_NAME_VIEW_MODEL_COMPILER =
             ClassName("com.catchpig.mvvm.apt.interfaces", "ViewModelCompiler")
     }
@@ -48,7 +48,7 @@ class ViewModelProcessor : BaseProcessor() {
                 .addFunction(onErrorFun())
 
             val typeSpec = typeSpecBuilder.build()
-            val fullPackageName = CLASS_NAME_BASE_VIEW_MODEL.packageName
+            val fullPackageName = CLASS_NAME_I_BASE_VIEW_MODEL.packageName
             val fileSpec = FileSpec
                 .builder(fullPackageName, typeSpec.name!!)
                 .addType(typeSpec)
@@ -84,10 +84,10 @@ class ViewModelProcessor : BaseProcessor() {
         var funSpecBuilder = FunSpec
             .builder("onError")
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
-            .addParameter("baseViewModel", CLASS_NAME_BASE_VIEW_MODEL)
+            .addParameter("iBaseViewModel", CLASS_NAME_I_BASE_VIEW_MODEL)
             .addParameter("t", Throwable::class)
             .addStatement("observerErrors.forEach {")
-            .addStatement("  it.onError(baseViewModel, t)")
+            .addStatement("  it.onError(iBaseViewModel, t)")
             .addStatement("}")
         return funSpecBuilder.build()
     }

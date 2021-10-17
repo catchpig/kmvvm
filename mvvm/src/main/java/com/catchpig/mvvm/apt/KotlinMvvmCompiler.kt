@@ -8,6 +8,7 @@ import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
 import com.catchpig.mvvm.apt.interfaces.ViewModelCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import com.catchpig.mvvm.exception.AptRecyclerAdapterException
 import com.catchpig.utils.ext.logd
 
 /**
@@ -26,9 +27,7 @@ object KotlinMvvmCompiler {
                 activityCompiler.inject(baseActivity)
             }
         } catch (exception: ClassNotFoundException) {
-            "$className:没有被(com.catchpig.annotation)下编译时注解修饰".let {
-                it.logd(TAG)
-            }
+            "$className:没有被(com.catchpig.annotation)下编译时注解修饰".logd(TAG)
         }
     }
 
@@ -39,9 +38,7 @@ object KotlinMvvmCompiler {
                     Class.forName("com.catchpig.mvvm.base.viewmodel.ViewModel_Compiler")
                 viewModelCompiler = compilerClass.newInstance() as ViewModelCompiler
             } catch (exception: ClassNotFoundException) {
-                "没有使用注解ObserverError".let {
-                    it.logd(TAG)
-                }
+                "没有使用注解ObserverError".logd(TAG)
             }
         }
         viewModelCompiler?.onError(baseViewModel, t)
@@ -56,10 +53,9 @@ object KotlinMvvmCompiler {
                 return recyclerAdapterCompiler.viewBanding(parent)
             }
         } catch (exception: ClassNotFoundException) {
-            "$className:必须使用注解Adapter".let {
-                it.logd(TAG)
-            }
-            return null
+            val msg = "${className}必须使用注解Adapter"
+            msg.logd(TAG)
+            throw AptRecyclerAdapterException(msg)
         }
     }
 }

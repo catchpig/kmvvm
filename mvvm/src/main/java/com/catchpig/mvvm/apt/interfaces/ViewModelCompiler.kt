@@ -1,7 +1,7 @@
 package com.catchpig.mvvm.apt.interfaces
 
-import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import com.catchpig.mvvm.base.viewmodel.IBaseViewModel
 
 interface ViewModelCompiler {
-    fun onError(baseViewModel: BaseViewModel, t: Throwable)
+    fun onError(iBaseViewModel: IBaseViewModel, t: Throwable)
 }
