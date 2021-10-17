@@ -147,7 +147,7 @@ kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
 |---|:---:|:---|:---|:---|
 |value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
 
-#### 5.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-ViewModel中的RxJava的onError方法同意处理
+#### 5.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-ViewModel中的RxJava的onError方法统一处理
 
 
 ### 6. 刷新分页
