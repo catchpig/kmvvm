@@ -8,6 +8,7 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+        maven { url 'https://www.jitpack.io' }
         maven{
             url 'https://maven.aliyun.com/repository/google'
         }
@@ -20,7 +21,7 @@ buildscript {
         maven{
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
-        maven { url 'https://www.jitpack.io' }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
@@ -34,6 +35,7 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        maven { url 'https://www.jitpack.io' }
         maven{
             url 'https://maven.aliyun.com/repository/google'
         }
@@ -46,7 +48,6 @@ allprojects {
         maven{
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
-        maven { url 'https://www.jitpack.io' }
     }
 }
 
