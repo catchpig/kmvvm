@@ -106,6 +106,9 @@ object DownloadManager {
 
     /**
      * 多文件下载
+     * @param downloadUrls Iterable<String>
+     * @param callback Function1<[@kotlin.ParameterName] MutableList<String>, Unit>
+     * @return Disposable
      */
     fun multiDownload(
         downloadUrls: Iterable<String>,
@@ -132,6 +135,9 @@ object DownloadManager {
 
     /**
      * 多文件下载
+     * @param downloadUrls Iterable<String>
+     * @param multiDownloadCallback MultiDownloadCallback
+     * @return Disposable
      */
     fun multiDownload(
         downloadUrls: Iterable<String>,
@@ -156,6 +162,10 @@ object DownloadManager {
 
     /**
      * 下载返回File
+     * @param downloadUrl String
+     * @param callback Function1<[@kotlin.ParameterName] File, Unit>
+     * @param process Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
+     * @return Disposable
      */
     fun downloadFile(
         downloadUrl: String,
@@ -187,6 +197,10 @@ object DownloadManager {
 
     /**
      * 下载返回路径地址
+     * @param downloadUrl String
+     * @param callback Function1<[@kotlin.ParameterName] String, Unit>
+     * @param process Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
+     * @return Disposable
      */
     fun download(
         downloadUrl: String,
@@ -216,6 +230,12 @@ object DownloadManager {
         })
     }
 
+    /**
+     * 单文件下载
+     * @param downloadUrl String 下载路劲
+     * @param callback Function1<[@kotlin.ParameterName] String, Unit> 本地文件路劲的回调方法
+     * @return Disposable
+     */
     fun download(downloadUrl: String, callback: (path: String) -> Unit): Disposable {
         return download(downloadUrl, object : DownloadCallback {
             override fun onStart() {
@@ -271,6 +291,13 @@ object DownloadManager {
         return downloadSubscriber
     }
 
+    /**
+     * http下载
+     * @param downloadService DownloadService
+     * @param url String
+     * @param localFilePath String
+     * @return Flowable<String>
+     */
     private fun httpDownload(
         downloadService: DownloadService,
         url: String,
