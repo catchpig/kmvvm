@@ -70,11 +70,9 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
                 }
             }
         }
-
-
     }
 
-    var data: MutableList<M> = ArrayList()
+    private var data: MutableList<M> = ArrayList()
 
     /**
      * 头部
@@ -95,6 +93,8 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
      * 空页面layout
      */
     private var emptyLayout = R.layout.view_load_empty
+
+    var emptyView: View? = null
 
     /**
      * 是否是第一次加载数据
@@ -130,6 +130,24 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
                 listener(m, position)
             }
         }.also { onItemClickListener = it }
+    }
+
+    inline fun <reified EVB : ViewBinding> emptyView(empty: EVB.() -> Unit) {
+        val viewBindingClass = EVB::class.java
+        val method = viewBindingClass.getDeclaredMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+        val emptyViewBinding = method.invoke(
+            this,
+            LayoutInflater.from(recyclerView.context),
+            recyclerView,
+            false
+        ) as EVB
+        emptyView = emptyViewBinding.root
+        empty(emptyViewBinding)
     }
 
     fun addHeaderView(@LayoutRes layoutId: Int) {
@@ -325,12 +343,16 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
                 footerView!!
             }
             TYPE_EMPTY -> {
-                parent.context.getEmptyLayout().let {
-                    if (it != Resources.ID_NULL) {
-                        emptyLayout = it
+                if (emptyView!=null) {
+                    emptyView!!
+                }else{
+                    parent.context.getEmptyLayout().let {
+                        if (it != Resources.ID_NULL) {
+                            emptyLayout = it
+                        }
                     }
+                    inflate(emptyLayout, parent)
                 }
-                inflate(emptyLayout, parent)
             }
             else -> {
                 return CommonViewHolder(KotlinMvvmCompiler.viewBanding(this, parent) as VB)
