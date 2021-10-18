@@ -79,12 +79,12 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
     /**
      * 头部
      */
-    private var headerView: View? = null
+    var headerView: View? = null
 
     /**
      * 底部
      */
-    private var footerView: View? = null
+    var footerView: View? = null
 
     /**
      * 是否展示空页面
@@ -121,7 +121,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
             override fun itemClick(id: Int, m: M, position: Int) {
                 listener(m)
             }
-
         }.also { onItemClickListener = it }
     }
 
@@ -130,38 +129,55 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
             override fun itemClick(id: Int, m: M, position: Int) {
                 listener(m, position)
             }
-
         }.also { onItemClickListener = it }
     }
 
     fun addHeaderView(@LayoutRes layoutId: Int) {
-        check(recyclerView != null) {
-            "请在adapter被RecyclerView初始化之后调用"
-        }
         headerView =
-            LayoutInflater.from(recyclerView?.context).inflate(layoutId, recyclerView, false)
+            LayoutInflater.from(recyclerView.context).inflate(layoutId, recyclerView, false)
         notifyDataSetChanged()
     }
 
-    fun headerView(header: View.() -> Unit) {
-        headerView?.let {
-            header(it)
-        }
+    inline fun <reified HVB : ViewBinding> headerView(header: HVB.() -> Unit) {
+        val viewBindingClass = HVB::class.java
+        val method = viewBindingClass.getDeclaredMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+        val headerViewBinding = method.invoke(
+            this,
+            LayoutInflater.from(recyclerView.context),
+            recyclerView,
+            false
+        ) as HVB
+        headerView = headerViewBinding.root
+        header(headerViewBinding)
+    }
+
+    inline fun <reified FVB : ViewBinding> footerView(header: FVB.() -> Unit) {
+        val viewBindingClass = FVB::class.java
+        val method = viewBindingClass.getDeclaredMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+        val headerViewBinding = method.invoke(
+            this,
+            LayoutInflater.from(recyclerView.context),
+            recyclerView,
+            false
+        ) as FVB
+        footerView = headerViewBinding.root
+        header(headerViewBinding)
     }
 
     fun addFooterView(@LayoutRes layoutId: Int) {
-        check(recyclerView != null) {
-            "请在adapter被RecyclerView初始化之后调用"
-        }
         footerView =
-            LayoutInflater.from(recyclerView?.context).inflate(layoutId, recyclerView, false)
+            LayoutInflater.from(recyclerView.context).inflate(layoutId, recyclerView, false)
         notifyDataSetChanged()
-    }
-
-    fun footerView(footer: View.() -> Unit) {
-        footerView?.let {
-            footer(it)
-        }
     }
 
 
@@ -195,7 +211,8 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
     }
 
 
-    private var recyclerView: RecyclerView? = null
+    lateinit var recyclerView: RecyclerView
+        private set
 
     /**
      * 设置空页面
@@ -362,7 +379,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
                 //设置item的点击回调事件
                 holder.itemView.setOnClickListener {
                     onItemClickListener?.let {
-                        it.itemClick(recyclerView!!.id, m, index)
+                        it.itemClick(recyclerView.id, m, index)
                     }
                 }
                 bindViewHolder(holder, m, position)

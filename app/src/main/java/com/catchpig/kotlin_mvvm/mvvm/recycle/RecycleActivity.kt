@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityRecycleBinding
+import com.catchpig.kotlin_mvvm.databinding.LayoutHeaderBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.utils.ext.logd
 import com.gyf.immersionbar.ktx.immersionBar
@@ -35,10 +36,11 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         bodyBinding.recycleView.layoutManager = linearLayoutManager
         bodyBinding.recycleView.adapter = userAdapter
-        userAdapter.addHeaderView(R.layout.layout_header)
-//        userAdapter.headerView {
-//            header_name.text = "我是头部"
-//        }
+        userAdapter.recyclerView
+        userAdapter.headerView<LayoutHeaderBinding> {
+            headerName.text = "我是头部"
+        }
+
         bodyBinding.refresh.setOnRefreshLoadMoreListener { nextPageIndex ->
             Flowable.timer(3, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
