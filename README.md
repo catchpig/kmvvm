@@ -47,17 +47,13 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ### 4. 添加依赖
 > Gitee
 
-    ```
     implementation "com.gitee.catch-pig.kotlin-mvvm:mvvm:last_version"
     kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
-    ```
 
 > Github
 
-     ```
     implementation "com.github.catch-pig.kotlin-mvvm:mvvm:last_version"
     kapt "com.github.catch-pig.kotlin-mvvm:compiler:last_version"
-    ```
 
 ## 使用
 
@@ -76,7 +72,7 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 > 使用示例:
 
-    ```
+    
     <style name="AppThemeBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <!--全局标题栏和状态栏配置-->
         <item name="title_bar_height">80dp</item>
@@ -88,7 +84,7 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
         <item name="loading_view_background">@color/white</item>
         <!--全局标题栏和状态栏配置-->
     </style>
-    ```
+    
 
 ### 2. Activity
 
