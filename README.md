@@ -45,12 +45,16 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ```
 
 ### 4. 添加依赖
-
-```
-implementation "com.gitee.catch-pig.kotlin-mvvm:mvvm:last_version"
-kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
-```
-
+>Gitee
+    ```
+    implementation "com.gitee.catch-pig.kotlin-mvvm:mvvm:last_version"
+    kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
+    ```
+>Github
+     ```
+    implementation "com.github.catch-pig.kotlin-mvvm:mvvm:last_version"
+    kapt "com.github.catch-pig.kotlin-mvvm:compiler:last_version"
+    ```
 ## 使用
 
 ### 1. 在需要使用状态栏、标题栏、加载动画的主题中配置全局参数:
