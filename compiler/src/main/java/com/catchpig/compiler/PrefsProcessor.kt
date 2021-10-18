@@ -21,6 +21,7 @@ import javax.lang.model.type.TypeKind
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 class PrefsProcessor : BaseProcessor() {
     companion object {
+        private const val TAG = "PrefsProcessor"
         private val CLASS_NAME_SHARED_PREFERENCES_EDITOR =
             ClassName("android.content.SharedPreferences", "Editor")
         private val CLASS_NAME_SHARED_PREFERENCES =
@@ -48,7 +49,7 @@ class PrefsProcessor : BaseProcessor() {
         }.forEach {
             val prefs = it.getAnnotation(Prefs::class.java)
             val className = it.simpleName.toString()
-
+            warning(TAG,"${className}被SharedPrefs注解")
             val fullPackageName = elementUtils.getPackageOf(it).qualifiedName.toString()
 
             val typeSpec = TypeSpec
@@ -69,11 +70,13 @@ class PrefsProcessor : BaseProcessor() {
     }
 
     private fun addFuns(element: TypeElement): MutableList<FunSpec> {
+        val className = element.simpleName.toString()
         var funSpecs = ArrayList<FunSpec>()
         val fieldElements = elementUtils.getAllMembers(element)
         fieldElements.forEach {
             it.getAnnotation(PrefsField::class.java)?.let { prefsField ->
                 val fieldName = it.simpleName.toString()
+                warning(TAG,"${className}->${fieldName}被PrefsField注解")
                 val prefsKey = if (prefsField.value.isEmpty()) {
                     fieldName
                 } else {

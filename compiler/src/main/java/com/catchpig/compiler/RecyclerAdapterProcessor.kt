@@ -37,6 +37,7 @@ class RecyclerAdapterProcessor : BaseProcessor() {
             it as TypeElement
         }.forEach {
             val className = it.simpleName.toString()
+            warning(TAG,"${className}被Adapter注解")
             val fullPackageName = elementUtils.getPackageOf(it).qualifiedName.toString()
             val typeSpecBuilder = TypeSpec
                 .classBuilder("${className}_Compiler")
