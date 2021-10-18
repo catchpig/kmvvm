@@ -1,8 +1,12 @@
-# [kotlin-mvvm](https://gitee.com/catch-pig/kotlin-mvvm)
+### Gitee 地址:[kotlin-mvvm](https://gitee.com/catch-pig/kotlin-mvvm) 
+[![](https://jitpack.io/v/com.gitee.catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#com.gitee.catch-pig/kotlin-mvvm)
 
-### Gitee [![Gitee](https://jitpack.io/v/com.gitee.catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#com.gitee.catch-pig/kotlin-mvvm)
+****
 
-### Github [![](https://jitpack.io/v/catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#catch-pig/kotlin-mvvm)
+### Github 地址:[kotlin-mvvm](https://github.com/catch-pig/kotlin-mvvm) 
+[![](https://jitpack.io/v/catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#catch-pig/kotlin-mvvm)
+
+****
 
 ## 技术要点
 
