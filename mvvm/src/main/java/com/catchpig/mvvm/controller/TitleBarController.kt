@@ -1,35 +1,38 @@
 package com.catchpig.mvvm.controller
 
+import android.app.Activity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.config.Config
 import com.catchpig.mvvm.databinding.LayoutTitleBarBinding
 import com.catchpig.mvvm.entity.TitleMenuParam
 import com.catchpig.mvvm.entity.TitleParam
-import com.catchpig.mvvm.ext.*
+import com.catchpig.mvvm.interfaces.IGlobalConfig
+import com.catchpig.utils.ext.colorResToInt
 
 /**
  * 标题栏处理器
  * @author catchpig
  * @date 2019/8/18 00:18
  */
-class TitleBarController(private val baseActivity: BaseActivity<*>, private val title: TitleParam) :
-    View.OnClickListener {
+class TitleBarController(
+    private val activity: Activity,
+    private val iGlobalConfig: IGlobalConfig,
+    private val title: TitleParam
+) : View.OnClickListener {
 
     fun initTitleBar(view: View) {
         val titleBarBinding = LayoutTitleBarBinding.bind(view)
         titleBarBinding.titleBar.let {
-            val titleBarHeight = baseActivity.getTitleHeight()
+            val titleBarHeight =
+                activity.resources.getDimensionPixelOffset(iGlobalConfig.getTitleHeight())
             it.post {
                 var layoutParams = it.layoutParams
-                layoutParams.height = titleBarHeight.toInt()
+                layoutParams.height = titleBarHeight
                 it.layoutParams = layoutParams
             }
             it.visibility = View.VISIBLE
@@ -49,9 +52,9 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
     }
 
     private fun drawLine(line: View) {
-        if (baseActivity.showTitleLine()) {
+        if (iGlobalConfig.isShowTitleLine()) {
             line.visibility = View.VISIBLE
-            val lineColor = baseActivity.getTitleLineColor()
+            val lineColor = iGlobalConfig.getTitleLineColor()
             if (lineColor != 0) {
                 line.setBackgroundResource(lineColor)
             }
@@ -112,7 +115,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
     override fun onClick(view: View?) {
         when (view!!.id) {
             //返回
-            R.id.back_icon -> baseActivity.finish()
+            R.id.back_icon -> activity.finish()
         }
     }
 
@@ -121,7 +124,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
      */
     private fun drawBackground(titleBar: RelativeLayout) {
         val backgroundColor = if (title!!.backgroundColor == Config.NO_ASSIGNMENT) {
-            baseActivity.getTitleBackground()
+            iGlobalConfig.getTitleBackground()
         } else {
             title.backgroundColor
         }
@@ -129,20 +132,13 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
     }
 
     /**
-     * 获取color颜色
-     */
-    private fun getColorInt(@ColorRes color: Int): Int {
-        return ContextCompat.getColor(baseActivity.applicationContext, color)
-    }
-
-    /**
      * 设置文字颜色
      */
     private fun drawTextColor(titleBarBinding: LayoutTitleBarBinding) {
         var textColor = if (title!!.textColor == Config.NO_ASSIGNMENT) {
-            baseActivity.getTitleTextColor()
+            activity.colorResToInt(iGlobalConfig.getTitleTextColor())
         } else {
-            getColorInt(title.textColor)
+            activity.colorResToInt(title.textColor)
         }
         titleBarBinding.titleText.setTextColor(textColor)
         titleBarBinding.rightFirstText.setTextColor(textColor)
@@ -154,7 +150,7 @@ class TitleBarController(private val baseActivity: BaseActivity<*>, private val 
      */
     private fun drawBackIcon(backIcon: ImageView) {
         if (title!!.backIcon == Config.NO_ASSIGNMENT) {
-            backIcon.setImageResource(baseActivity.getTitleBackIcon())
+            backIcon.setImageResource(iGlobalConfig.getTitleBackIcon())
         } else {
             backIcon.setImageResource(title.backIcon)
         }

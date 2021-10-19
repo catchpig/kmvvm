@@ -32,6 +32,9 @@ class ActivityProcessor : BaseProcessor() {
         private val TYPE_TEXT_VIEW = Class.forName("android.widget.TextView")
         private val TYPE_IMAGE_VIEW = Class.forName("android.widget.ImageView")
         private val TYPE_VIEW = Class.forName("android.view.View")
+                private val CLASS_NAME_I_GLOBAL_CONFIG = ClassName("com.catchpig.mvvm.interfaces", "IGlobalConfig")
+        private val CLASS_NAME_LOADING_VIEW_CONTROLLER = ClassName("com.catchpig.mvvm.controller", "LoadingViewController")
+
 
     }
 
@@ -43,6 +46,7 @@ class ActivityProcessor : BaseProcessor() {
         set.add(OnClickFirstText::class.java.canonicalName)
         set.add(OnClickSecondDrawable::class.java.canonicalName)
         set.add(OnClickSecondText::class.java.canonicalName)
+        set.add(GlobalConfig::class.java.canonicalName)
         return set
     }
 
@@ -76,6 +80,7 @@ class ActivityProcessor : BaseProcessor() {
                 .addSuperinterface(CLASS_NAME_ACTIVITY_COMPILER)
                 .addProperty(initTitleProperty(title, className))
                 .addProperty(initStatusBarProperty(statusBar, className))
+                .addProperty(initGlobalConfigProperty(roundEnv))
             val funSpec = initTitleMenuOnClick(it, title)
             funSpec?.let { fsc ->
                 typeSpecBuilder.addFunction(fsc)
@@ -138,11 +143,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error(TAG,"OnClickFirstText注解修饰的参数类型只能为View")
+                                error(TAG, "OnClickFirstText注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error(TAG,"OnClickFirstText注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG, "OnClickFirstText注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
@@ -178,11 +183,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error(TAG,"OnClickFirstDrawable注解修饰的参数类型只能为View")
+                                error(TAG, "OnClickFirstDrawable注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error(TAG,"OnClickFirstDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG, "OnClickFirstDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
@@ -215,11 +220,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error(TAG,"OnClickSecondText注解修饰的参数类型只能为View")
+                                error(TAG, "OnClickSecondText注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error(TAG,"OnClickSecondText注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG, "OnClickSecondText注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
@@ -255,11 +260,11 @@ class ActivityProcessor : BaseProcessor() {
                             if (paramType == TYPE_VIEW.typeName) {
                                 builder = builder.addStatement("  activity.${simpleName}(it)")
                             } else {
-                                error(TAG,"OnClickSecondDrawable注解修饰的参数类型只能为View")
+                                error(TAG, "OnClickSecondDrawable注解修饰的参数类型只能为View")
                             }
                         }
                         else -> {
-                            error(TAG,"OnClickSecondDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(TAG, "OnClickSecondDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
                         }
                     }
                     builder = builder.addStatement("}")
@@ -280,19 +285,28 @@ class ActivityProcessor : BaseProcessor() {
             .builder("inject")
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
             .addParameter("activity", CLASS_NAME_ACTIVITY)
-            .addStatement("//加载标题栏")
+
+            .addStatement("if (globalConfig==null) {")
+            .addStatement("   throw RuntimeException(\"必须实现IGlobalConfig接口,并在Class上加上注解GlobalConfig\")")
+            .addStatement("}")
             .addStatement("val baseActivity = activity as %T<*>", CLASS_NAME_BASE_ACTIVITY)
-            .addStatement("title?.let{")
+            .addStatement("baseActivity.initLoadingViewController(%T(baseActivity,globalConfig,baseActivity.getRootBanding()))",CLASS_NAME_LOADING_VIEW_CONTROLLER)
+            .addStatement("globalConfig?.let { config->")
+            .addStatement("//加载标题栏")
+            .addStatement("  title?.let{")
             .addStatement(
-                "  val titleBarViewStub = baseActivity.findViewById<%T>(R.id.title_bar_view_stub)",
+                "    val titleBarViewStub = baseActivity.findViewById<%T>(R.id.title_bar_view_stub)",
                 TYPE_VIEW_STUB
             )
-            .addStatement("  titleBarViewStub.setOnInflateListener { _, view ->")
+            .addStatement("    titleBarViewStub.setOnInflateListener { _, view ->")
+
+
             .addStatement(
-                "    val titleBarController = %T(baseActivity,it)",
+                "      val titleBarController = %T(baseActivity,config,it)",
                 TYPE_TITLE_BAR_CONTROLLER
             )
-            .addStatement("    titleBarController.initTitleBar(view)")
+            .addStatement("      titleBarController.initTitleBar(view)")
+
         if (isInitMenuFun) {
             funSpecBuilder.addStatement("    initTitleMenuOnClick(baseActivity as $className)")
         }
@@ -302,11 +316,29 @@ class ActivityProcessor : BaseProcessor() {
             .addStatement("}")
             .addStatement("//加载状态栏")
             .addStatement(
-                "val statusBarController = %T(baseActivity,title,statusBar)",
+                "val statusBarController = %T(baseActivity,config,title,statusBar)",
                 TYPE_STATUS_BAR_CONTROLLER
             )
             .addStatement("statusBarController.checkStatusBar()")
+            .addStatement("}")
             .build()
+    }
+
+    private fun initGlobalConfigProperty(roundEnv: RoundEnvironment): PropertySpec {
+        val elements = roundEnv.getElementsAnnotatedWith(GlobalConfig::class.java)
+        var builder = PropertySpec
+            .builder("globalConfig", CLASS_NAME_I_GLOBAL_CONFIG.copy(nullable = true))
+            .addModifiers(KModifier.PRIVATE)
+        return if (elements.isEmpty()) {
+            builder
+                .initializer("null")
+                .build()
+        } else {
+            val element = elements.toList()[0] as TypeElement
+            builder
+                .initializer("%T()", element.asClassName())
+                .build()
+        }
     }
 
     /**

@@ -1,26 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppThemeBarStyle">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textSize">18sp</item>
         <item name="android:windowBackground">@android:color/white</item>
-    </style>
-
-    <style name="AppThemeBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--全局标题栏和状态栏配置-->
-        <item name="title_bar_height">50dp</item>
-        <item name="title_bar_background">@color/colorPrimary</item>
-        <item name="title_bar_back_icon">@drawable/back</item>
-        <item name="title_bar_text_color">@color/white</item>
-        <item name="title_bar_show_line">true</item>
-        <item name="loading_view_color">@color/colorAccent</item>
-        <item name="loading_view_background">@color/white</item>
-        <item name="recycle_view_empty_layout">@layout/layout_empty</item>
-        <!--全局标题栏和状态栏配置-->
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">

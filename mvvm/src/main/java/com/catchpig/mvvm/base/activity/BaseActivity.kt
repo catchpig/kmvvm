@@ -55,7 +55,15 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         ViewRootBinding.inflate(layoutInflater)
     }
 
-    private var loadingViewController: LoadingViewController? = null
+    private lateinit var loadingViewController: LoadingViewController
+
+    fun initLoadingViewController(loadingViewController: LoadingViewController) {
+        this.loadingViewController = loadingViewController
+    }
+
+    fun getRootBanding():ViewRootBinding{
+        return rootBinding
+    }
 
     @CallSuper
     override fun onNewIntent(intent: Intent?) {
@@ -80,7 +88,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
             )
-            loadingViewController = LoadingViewController(this, rootBinding)
+//            loadingViewController = LoadingViewController(this, rootBinding)
         }
     }
 

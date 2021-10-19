@@ -14,7 +14,6 @@ import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.*
-import com.catchpig.mvvm.ext.getEmptyLayout
 import com.catchpig.mvvm.widget.refresh.IPageControl
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import java.util.*
@@ -346,11 +345,12 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
                 if (emptyView!=null) {
                     emptyView!!
                 }else{
-                    parent.context.getEmptyLayout().let {
-                        if (it != Resources.ID_NULL) {
-                            emptyLayout = it
-                        }
-                    }
+                    //TODO 列表空页面还没有做
+//                    parent.context.getEmptyLayout().let {
+//                        if (it != Resources.ID_NULL) {
+//                            emptyLayout = it
+//                        }
+//                    }
                     inflate(emptyLayout, parent)
                 }
             }
