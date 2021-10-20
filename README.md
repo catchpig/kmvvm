@@ -9,6 +9,7 @@
 
 ****
 
+[CHANGE LOG](./CHANGE_lOG.md)
 
 ## 技术要点
 
