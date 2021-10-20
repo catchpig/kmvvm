@@ -1,12 +1,14 @@
-### Gitee 地址:[kotlin-mvvm](https://gitee.com/catch-pig/kotlin-mvvm) 
+
+### Gitee 地址:[kotlin-mvvm](https://gitee.com/catch-pig/kotlin-mvvm)
 [![](https://jitpack.io/v/com.gitee.catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#com.gitee.catch-pig/kotlin-mvvm)
 
 ****
 
-### Github 地址:[kotlin-mvvm](https://github.com/catch-pig/kotlin-mvvm) 
+### Github 地址:[kotlin-mvvm](https://github.com/catch-pig/kotlin-mvvm)
 [![](https://jitpack.io/v/catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#catch-pig/kotlin-mvvm)
 
 ****
+
 
 ## 技术要点
 
@@ -20,7 +22,7 @@
 
 ### 5. 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
-### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter
+### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig
 
 ## 最低兼容:21
 
@@ -31,7 +33,7 @@
 ```
 allprojects {
      repositories {
- 	    maven { url 'https://jitpack.io' }
+       maven { url 'https://jitpack.io' }
      }
  }
 ```
@@ -63,34 +65,117 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 ## 使用
 
-### 1. 在需要使用状态栏、标题栏、加载动画的主题中配置全局参数:
+### 1. 配置全部参数
 
-|属性|类型|必须|默认|说明|
-   |---|:---:|:---|:---|:---|
-|title_bar_height|dimension|是|无|标题栏高度|
-|title_bar_back_icon|DrawableRes|是|无|标题栏的返回图标|
-|title_bar_background|ColorRes|是|无|标题栏的背景色|
-|title_bar_text_color|ColorRes|是|无|标题栏的文字颜色|
-|title_bar_show_line|boolean|否|false|标题栏的下方的线条是否显示|
-|loading_view_color|ColorRes|是|无|loading动画颜色|
-|loading_view_background|ColorRes|是|无|loading动画背景色|
-|recycle_view_empty_layout|LayoutRes|否|[emptyLayout](./mvvm/src/main/res/layout/view_load_empty.xml)|列表空页面|
+```
+interface IGlobalConfig {
+    /**
+     * 标题栏高度
+     * @return Int
+     */
+    @DimenRes
+    fun getTitleHeight(): Int
+
+    /**
+     * 标题栏的返回按钮资源
+     * @return Int
+     */
+    @DrawableRes
+    fun getTitleBackIcon(): Int
+
+    /**
+     * 标题栏背景颜色
+     * @return Int
+     */
+    @ColorRes
+    fun getTitleBackground(): Int
+
+    /**
+     * 标题栏文本颜色
+     * @return Int
+     */
+    @ColorRes
+    fun getTitleTextColor(): Int
+
+    /**
+     * 标题栏下方是否需要横线
+     * @return Boolean
+     */
+    fun isShowTitleLine(): Boolean
+
+    /**
+     * 标题栏下方横线颜色
+     * @return Int
+     */
+    @ColorRes
+    fun getTitleLineColor(): Int
+
+    /**
+     * loading的颜色
+     * @return Int
+     */
+    @ColorRes
+    fun getLoadingColor(): Int
+
+    /**
+     * loading的背景颜色
+     * @return Int
+     */
+    @ColorRes
+    fun getLoadingBackground(): Int
+
+    /**
+     * RecyclerView的空页面ViewBinding
+     * @param parent ViewGroup
+     * @return ViewBinding
+     */
+    fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
+}
+```
++ 实现[IGlobalConfig](./mvvm/src/main/java/com/catchpig/mvvm/interfaces/IGlobalConfig.kt)接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
 
 > 使用示例:
 
-    
-    <style name="AppThemeBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--全局标题栏和状态栏配置-->
-        <item name="title_bar_height">80dp</item>
-        <item name="title_bar_background">@color/colorPrimary</item>
-        <item name="title_bar_back_icon">@drawable/back</item>
-        <item name="title_bar_text_color">@color/white</item>
-        <item name="title_bar_show_line">false</item>
-        <item name="loading_view_color">@color/colorAccent</item>
-        <item name="loading_view_background">@color/white</item>
-        <!--全局标题栏和状态栏配置-->
-    </style>
-    
+```    
+@GlobalConfig
+class MvvmGlobalConfig : IGlobalConfig {
+    override fun getTitleHeight(): Int {
+        return R.dimen.title_bar_height
+    }
+
+    override fun getTitleBackIcon(): Int {
+        return R.drawable.back_black
+    }
+
+    override fun getTitleBackground(): Int {
+        return R.color.colorPrimary
+    }
+
+    override fun getTitleTextColor(): Int {
+        return R.color.white
+    }
+
+    override fun isShowTitleLine(): Boolean {
+        return true
+    }
+
+    override fun getTitleLineColor(): Int {
+        return R.color.color_black
+    }
+
+    override fun getLoadingColor(): Int {
+        return R.color.color_black
+    }
+
+    override fun getLoadingBackground(): Int {
+        return R.color.white
+    }
+
+    override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
+        return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+}
+```
 
 ### 2. Activity
 
@@ -104,15 +189,22 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 ### 4. RecycleView
 
-> Adapter可以继承RecycleAdapter来使用,并在类上添加注解[Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt),RecycleAdapter使用了ViewBanding,只需要实现以下两个方法
++ Adapter可以继承RecycleAdapter来使用,并在类上添加注解[Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt),RecycleAdapter使用了ViewBanding,只需要实现以下一个方法
 
-  ```
-  override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
-    holder.viewBanding {
-        name.text = m.name
+> 使用示例
+
+```
+@Adapter
+class UserAdapter(iPageControl: IPageControl) :
+    RecyclerAdapter<User, ItemUserBinding>(iPageControl) {
+
+    override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
+        holder.viewBanding {
+            name.text = m.name
+        }
     }
-  }
-  ```
+}
+```
 
 ### 5. 注解使用
 
@@ -174,6 +266,8 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 #### 5.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
 
+#### 5.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
+
 ### 6. 刷新分页
 
 #### 使用RefreshLayoutWrapper+RecyclerAdapter控件实现刷新功能
@@ -206,14 +300,14 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 ### 7. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 
-  + 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
-    ```
-    DownloadManager.download(downloadUrl, {
-            
-        }, { readLength, countLength ->
-            progressLiveData.value = (readLength * 100 / countLength).toInt()
-        })
-    ```
++ 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
+  ```
+  DownloadManager.download(downloadUrl, {
+          
+      }, { readLength, countLength ->
+          progressLiveData.value = (readLength * 100 / countLength).toInt()
+      })
+  ```
     * DownloadCallback
 
         ```
@@ -248,12 +342,12 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
             fun onError(t:Throwable)
         }
         ```
-  + 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
-    ```
-    DownloadManager.multiDownload(downloadUrls, {
-            
-        })
-    ```
++ 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
+  ```
+  DownloadManager.multiDownload(downloadUrls, {
+          
+      })
+  ```
     * MultiDownloadCallback
         ```
         interface MultiDownloadCallback {
