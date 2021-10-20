@@ -1,6 +1,5 @@
 package com.catchpig.mvvm.base.adapter
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,11 +86,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
      * 是否展示空页面
      */
     private var showEmpty: Boolean = false
-
-    /**
-     * 空页面layout
-     */
-    private var emptyLayout = R.layout.view_load_empty
 
     var emptyView: View? = null
 
@@ -231,12 +225,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
     lateinit var recyclerView: RecyclerView
         private set
 
-    /**
-     * 设置空页面
-     */
-    fun setEmptyLayout(@LayoutRes emptyLayout: Int) {
-        this.emptyLayout = emptyLayout
-    }
 
     override fun get(position: Int): M? {
         check(position > 0 && position < data.size) {
@@ -334,6 +322,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder<VB> {
+        val adapterBinding = KotlinMvvmCompiler.viewBanding(this, parent)
         val view = when (ItemViewType.enumOfValue(viewType)) {
             TYPE_HEADER -> {
                 headerView!!
@@ -342,20 +331,13 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
                 footerView!!
             }
             TYPE_EMPTY -> {
-                if (emptyView!=null) {
-                    emptyView!!
-                }else{
-                    //TODO 列表空页面还没有做
-//                    parent.context.getEmptyLayout().let {
-//                        if (it != Resources.ID_NULL) {
-//                            emptyLayout = it
-//                        }
-//                    }
-                    inflate(emptyLayout, parent)
+                if (emptyView == null) {
+                    emptyView = adapterBinding.emptyBanding.root
                 }
+                emptyView!!
             }
             else -> {
-                return CommonViewHolder(KotlinMvvmCompiler.viewBanding(this, parent) as VB)
+                return CommonViewHolder(adapterBinding.normalBinding as VB)
             }
         }
         return CommonViewHolder(view)

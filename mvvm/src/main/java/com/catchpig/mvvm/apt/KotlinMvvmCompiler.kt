@@ -8,6 +8,7 @@ import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
 import com.catchpig.mvvm.apt.interfaces.ViewModelCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import com.catchpig.mvvm.entity.AdapterBinding
 import com.catchpig.mvvm.exception.AptRecyclerAdapterException
 import com.catchpig.utils.ext.logd
 
@@ -44,7 +45,7 @@ object KotlinMvvmCompiler {
         viewModelCompiler?.onError(baseViewModel, t)
     }
 
-    fun viewBanding(recyclerAdapter: RecyclerAdapter<*, *>, parent: ViewGroup): ViewBinding? {
+    fun viewBanding(recyclerAdapter: RecyclerAdapter<*, *>, parent: ViewGroup): AdapterBinding {
         val className = recyclerAdapter.javaClass.name
         try {
             val compilerClass = Class.forName("${className}_Compiler")

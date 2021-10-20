@@ -39,21 +39,21 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
 //                snackbar("数据飞了")
 //            }
 //        }
-        userAdapter.headerView<LayoutHeaderBinding> {
-            headerName.text = "我是头部"
-        }
+//        userAdapter.headerView<LayoutHeaderBinding> {
+//            headerName.text = "我是头部"
+//        }
 
         bodyBinding.refresh.setOnRefreshLoadMoreListener { nextPageIndex ->
             Flowable.timer(3, TimeUnit.SECONDS).success({
                 var data: MutableList<User> = ArrayList()
-                var count = if (bodyBinding.refresh.nextPageIndex == 3) {
-                    15
-                } else {
-                    16
-                }
-                for (i in 1..count) {
-                    data.add(User("姓名$i"))
-                }
+//                var count = if (nextPageIndex == 3) {
+//                    15
+//                } else {
+//                    16
+//                }
+//                for (i in 1..count) {
+//                    data.add(User("姓名$i"))
+//                }
                 userAdapter.autoUpdateList(data)
             })
         }

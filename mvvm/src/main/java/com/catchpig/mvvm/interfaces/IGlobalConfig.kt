@@ -1,9 +1,10 @@
 package com.catchpig.mvvm.interfaces
 
+import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
-import androidx.annotation.LayoutRes
+import androidx.viewbinding.ViewBinding
 
 interface IGlobalConfig {
     @DimenRes
@@ -29,6 +30,5 @@ interface IGlobalConfig {
     @ColorRes
     fun getLoadingBackground(): Int
 
-    @LayoutRes
-    fun getRecyclerEmptyLayout(): Int
+    fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
 }

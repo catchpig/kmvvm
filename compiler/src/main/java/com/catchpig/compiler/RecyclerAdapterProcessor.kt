@@ -1,6 +1,7 @@
 package com.catchpig.compiler
 
 import com.catchpig.annotation.Adapter
+import com.catchpig.annotation.GlobalConfig
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
 import javax.annotation.processing.Processor
@@ -17,7 +18,8 @@ class RecyclerAdapterProcessor : BaseProcessor() {
         private const val TAG = "RecyclerAdapterProcessor"
         private val CLASS_NAME_VIEW_GROUP = ClassName("android.view", "ViewGroup")
         private val CLASS_NAME_LAYOUT_INFLATER = ClassName("android.view", "LayoutInflater")
-        private val CLASS_NAME_VIEW_BANDING = ClassName("androidx.viewbinding", "ViewBinding")
+        private val CLASS_NAME_ADAPTER_BANDING =
+            ClassName("com.catchpig.mvvm.entity", "AdapterBinding")
         private val CLASS_NAME_RECYCLER_ADAPTER_COMPILER =
             ClassName("com.catchpig.mvvm.apt.interfaces", "RecyclerAdapterCompiler")
     }
@@ -32,18 +34,19 @@ class RecyclerAdapterProcessor : BaseProcessor() {
         annotations: MutableSet<out TypeElement>,
         roundEnv: RoundEnvironment
     ): Boolean {
+
         val elements = roundEnv.getElementsAnnotatedWith(Adapter::class.java)
         elements.map {
             it as TypeElement
         }.forEach {
             val className = it.simpleName.toString()
-            warning(TAG,"${className}被Adapter注解")
+            warning(TAG, "${className}被Adapter注解")
             val fullPackageName = elementUtils.getPackageOf(it).qualifiedName.toString()
             val typeSpecBuilder = TypeSpec
                 .classBuilder("${className}_Compiler")
                 .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
                 .addSuperinterface(CLASS_NAME_RECYCLER_ADAPTER_COMPILER)
-                .addFunction(onViewBandingFun(it))
+                .addFunction(onViewBandingFun(it, roundEnv))
 
             val typeSpec = typeSpecBuilder.build()
             val fileSpec = FileSpec
@@ -57,11 +60,12 @@ class RecyclerAdapterProcessor : BaseProcessor() {
         return true
     }
 
-    private fun onViewBandingFun(typeElement: TypeElement): FunSpec {
+    private fun onViewBandingFun(typeElement: TypeElement, roundEnv: RoundEnvironment): FunSpec {
+        val elements = roundEnv.getElementsAnnotatedWith(GlobalConfig::class.java)
+        val globalConfigElement = elements.toList()[0] as TypeElement
         val recyclerAdapterType = typeElement.superclass as DeclaredType
         val bandingType = recyclerAdapterType.typeArguments[1] as DeclaredType
-        val bandingElement =
-            bandingType.asElement() as TypeElement
+        val bandingElement = bandingType.asElement() as TypeElement
         var funSpecBuilder = FunSpec
             .builder("viewBanding")
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
@@ -71,10 +75,16 @@ class RecyclerAdapterProcessor : BaseProcessor() {
                 CLASS_NAME_LAYOUT_INFLATER
             )
             .addStatement(
-                "return %T.inflate(layoutInflater, parent, false)",
+                "val normalBanding = %T.inflate(layoutInflater, parent, false)",
                 bandingElement.asClassName()
             )
-            .returns(CLASS_NAME_VIEW_BANDING)
+            .addStatement("val globalConfig = %T()", globalConfigElement.asClassName())
+            .addStatement(
+                "val emptyBanding = globalConfig.getRecyclerEmptyBanding(parent)",
+                bandingElement.asClassName()
+            )
+            .addStatement("return %T(normalBanding,emptyBanding)", CLASS_NAME_ADAPTER_BANDING)
+            .returns(CLASS_NAME_ADAPTER_BANDING)
         return funSpecBuilder.build()
     }
 

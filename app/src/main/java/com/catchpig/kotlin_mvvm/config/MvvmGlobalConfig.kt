@@ -1,7 +1,11 @@
 package com.catchpig.kotlin_mvvm.config
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.viewbinding.ViewBinding
 import com.catchpig.annotation.GlobalConfig
 import com.catchpig.kotlin_mvvm.R
+import com.catchpig.kotlin_mvvm.databinding.LayoutEmptyBinding
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 
 @GlobalConfig
@@ -38,7 +42,7 @@ class MvvmGlobalConfig : IGlobalConfig {
         return R.color.white
     }
 
-    override fun getRecyclerEmptyLayout(): Int {
-        return R.layout.layout_empty
+    override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
+        return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 }
