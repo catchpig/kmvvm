@@ -392,9 +392,11 @@ class UserAdapter(iPageControl: IPageControl) :
 
 ### [Gson](https://github.com/google/gson)
 
-### [AndroidUtilKTX](https://github.com/lulululbj/AndroidUtilCodeKTX)-工具类
+### [kotlinpoet](https://github.com/square/kotlinpoet) - kt代码生成工具
 
-### [LoadingView](https://github.com/catch-pig/LoadingView)-Loading动画
+### [AndroidUtilKTX](https://github.com/lulululbj/AndroidUtilCodeKTX) - 工具类
+
+### [LoadingView](https://github.com/catch-pig/LoadingView) - Loading动画
 
 ## 其他
 
