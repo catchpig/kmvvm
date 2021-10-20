@@ -398,4 +398,4 @@ class UserAdapter(iPageControl: IPageControl) :
 
 ## 其他
 
-### 欢迎大家提出问题,加载issue上,我这边会不定时的看issue,解决问题
+### 欢迎大家在issue上提出问题,我这边会不定时的看issue,解决问题
