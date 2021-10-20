@@ -395,3 +395,7 @@ class UserAdapter(iPageControl: IPageControl) :
 ### [AndroidUtilKTX](https://github.com/lulululbj/AndroidUtilCodeKTX)-工具类
 
 ### [LoadingView](https://github.com/catch-pig/LoadingView)-Loading动画
+
+## 其他
+
+### 欢迎大家提出问题,加载issue上,我这边会不定时的看issue,解决问题
