@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+### v0.1.9(2021.10.21)
+
++ 将分页个数和分页起始页放到全局变量参数里面,提供了getPageSize和getStartPageIndex接口
+
 ### v0.1.8(2021.10.20)
 
 + 将全部参数由style配置改为实现IGlobalConfig接口,并在实现类上加上注解GlobalConfig
