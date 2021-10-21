@@ -68,6 +68,6 @@ object KotlinMvvmCompiler {
                     Class.forName("com.catchpig.mvvm.interfaces.GlobalConfig_Compiler")
             globalConfigCompiler = compilerClass.newInstance() as GlobalConfigCompiler
         }
-        return globalConfig()
+        return globalConfigCompiler!!.getGlobalConfig()
     }
 }

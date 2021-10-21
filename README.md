@@ -131,6 +131,17 @@ interface IGlobalConfig {
      * @return ViewBinding
      */
     fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
+    
+    /**
+     * 刷新每页加载个数
+     * @return Int
+     */
+    fun getPageSize():Int
+
+    /**
+     * 刷新起始页的index(有些后台设置的0,有些后台设置1)
+     */
+    fun getStartPageIndex():Int
 }
 ```
 + 实现[IGlobalConfig](./mvvm/src/main/java/com/catchpig/mvvm/interfaces/IGlobalConfig.kt)接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
@@ -174,6 +185,14 @@ class MvvmGlobalConfig : IGlobalConfig {
 
     override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
         return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+    
+    override fun getPageSize(): Int {
+        return 16
+    }
+
+    override fun getStartPageIndex(): Int {
+        return 1
     }
 }
 ```
