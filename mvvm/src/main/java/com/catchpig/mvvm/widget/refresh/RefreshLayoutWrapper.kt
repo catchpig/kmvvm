@@ -3,6 +3,7 @@ package com.catchpig.mvvm.widget.refresh
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
@@ -25,8 +26,6 @@ class RefreshLayoutWrapper(
          */
         const val NONE_PRE_PAGE_INDEX = -1
 
-        const val PAGE_SIZE = 16
-
         /**
          * matreral风格的下拉控件
          */
@@ -38,17 +37,19 @@ class RefreshLayoutWrapper(
         setEnableLoadMore(false)
     }
 
+    private val startPageIndex = KotlinMvvmCompiler.globalConfig().getStartPageIndex()
+
     /**
      * 当前页面index
      */
-    private var currentPageIndex: Int = 1
+    private var currentPageIndex: Int = startPageIndex
 
     override var nextPageIndex: Int = NONE_PRE_PAGE_INDEX
 
     /**
      * 一页的条目，默认16
      */
-    override var pageSize = PAGE_SIZE
+    override var pageSize = KotlinMvvmCompiler.globalConfig().getPageSize()
     override fun getRefreshStatus(): RefreshState {
         return state
     }
@@ -82,12 +83,12 @@ class RefreshLayoutWrapper(
      * 列表更新失败
      */
     override fun updateError() {
-        this.nextPageIndex = -1
+        this.nextPageIndex = NONE_PRE_PAGE_INDEX
         finishUpdate(false)
     }
 
     override fun resetPageIndex() {
-        this.nextPageIndex = 1
+        this.nextPageIndex = startPageIndex
     }
 
     override fun loadNextPageIndex() {

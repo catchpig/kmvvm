@@ -68,4 +68,15 @@ interface IGlobalConfig {
      * @return ViewBinding
      */
     fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
+
+    /**
+     * 刷新每页加载个数
+     * @return Int
+     */
+    fun getPageSize():Int
+
+    /**
+     * 刷新起始页的index(有些后台设置的0,有些后台设置1)
+     */
+    fun getStartPageIndex():Int
 }
