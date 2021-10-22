@@ -1,6 +1,7 @@
 package com.catchpig.mvvm.apt.interfaces
 
 import com.catchpig.mvvm.base.viewmodel.IBaseViewModel
+import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 
 /**
@@ -21,4 +22,6 @@ interface GlobalCompiler {
      * @param t Throwable
      */
     fun onError(iBaseViewModel: IBaseViewModel, t: Throwable)
+
+    fun getServiceParam(className: String): ServiceParam
 }

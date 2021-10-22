@@ -2,7 +2,7 @@ package com.catchpig.kotlin_mvvm.mvvm.apk.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
-import com.catchpig.mvvm.manager.DownloadManager
+import com.catchpig.mvvm.network.manager.DownloadManager
 
 /**
  *

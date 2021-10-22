@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.interceptor
+package com.catchpig.mvvm.network.interceptor
 
 import com.catchpig.mvvm.network.download.DownloadResponseBody
 import com.catchpig.mvvm.listener.DownloadProgressListener

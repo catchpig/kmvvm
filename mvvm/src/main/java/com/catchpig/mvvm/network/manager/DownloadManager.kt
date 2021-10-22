@@ -1,12 +1,13 @@
-package com.catchpig.mvvm.manager
+package com.catchpig.mvvm.network.manager
 
 import android.os.Environment
 import android.util.ArrayMap
 import com.catchpig.mvvm.ext.io2main
-import com.catchpig.mvvm.interceptor.DownloadInterceptor
+import com.catchpig.mvvm.network.interceptor.DownloadInterceptor
 import com.catchpig.mvvm.listener.DownloadCallback
 import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.mvvm.listener.MultiDownloadCallback
+import com.catchpig.mvvm.manager.ContextManager
 import com.catchpig.mvvm.network.download.DownloadService
 import com.catchpig.mvvm.network.download.DownloadSubscriber
 import com.catchpig.mvvm.network.download.MultiDownloadSubscriber

@@ -8,6 +8,7 @@ import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.entity.AdapterBinding
+import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.exception.AptAdapterException
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 import com.catchpig.utils.ext.logd
@@ -56,5 +57,9 @@ object KotlinMvvmCompiler {
 
     fun globalConfig(): IGlobalConfig {
         return globalCompiler.getGlobalConfig()
+    }
+
+    fun getServiceParam(className:String):ServiceParam{
+        return globalCompiler.getServiceParam(className)
     }
 }
