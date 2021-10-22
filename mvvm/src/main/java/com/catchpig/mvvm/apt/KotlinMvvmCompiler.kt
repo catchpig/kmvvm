@@ -3,9 +3,8 @@ package com.catchpig.mvvm.apt
 import android.app.Activity
 import android.view.ViewGroup
 import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
-import com.catchpig.mvvm.apt.interfaces.GlobalConfigCompiler
+import com.catchpig.mvvm.apt.interfaces.GlobalCompiler
 import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
-import com.catchpig.mvvm.apt.interfaces.ViewModelCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.entity.AdapterBinding
@@ -19,8 +18,10 @@ import com.catchpig.utils.ext.logd
  */
 object KotlinMvvmCompiler {
     private const val TAG = "KotlinMvvmCompiler"
-    private var viewModelCompiler: ViewModelCompiler? = null
-    private var globalConfigCompiler: GlobalConfigCompiler? = null
+    private val globalCompiler: GlobalCompiler by lazy {
+        var compilerClass = Class.forName("com.catchpig.mvvm.apt.interfaces.Global_Compiler")
+        compilerClass.newInstance() as GlobalCompiler
+    }
     fun inject(baseActivity: Activity) {
         val className = baseActivity.javaClass.name
         try {
@@ -35,16 +36,7 @@ object KotlinMvvmCompiler {
     }
 
     fun onError(baseViewModel: BaseViewModel, t: Throwable) {
-        if (viewModelCompiler == null) {
-            try {
-                val compilerClass =
-                        Class.forName("com.catchpig.mvvm.base.viewmodel.ViewModel_Compiler")
-                viewModelCompiler = compilerClass.newInstance() as ViewModelCompiler
-            } catch (exception: ClassNotFoundException) {
-                "没有使用注解ObserverError".logd(TAG)
-            }
-        }
-        viewModelCompiler?.onError(baseViewModel, t)
+        globalCompiler.onError(baseViewModel, t)
     }
 
     fun viewBanding(recyclerAdapter: RecyclerAdapter<*, *>, parent: ViewGroup): AdapterBinding {
@@ -63,11 +55,6 @@ object KotlinMvvmCompiler {
     }
 
     fun globalConfig(): IGlobalConfig {
-        if (globalConfigCompiler == null) {
-            val compilerClass =
-                    Class.forName("com.catchpig.mvvm.interfaces.GlobalConfig_Compiler")
-            globalConfigCompiler = compilerClass.newInstance() as GlobalConfigCompiler
-        }
-        return globalConfigCompiler!!.getGlobalConfig()
+        return globalCompiler.getGlobalConfig()
     }
 }
