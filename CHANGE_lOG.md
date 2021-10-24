@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+### v0.2.0(2021.10.24)
+
++ 增加Retrofit+OkHttp+RxJava的ServiceApi注解
+
 ### v0.1.9(2021.10.21)
 
 + 将分页个数和分页起始页放到全局变量参数里面,提供了getPageSize和getStartPageIndex接口
