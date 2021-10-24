@@ -20,7 +20,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
-        bodyBinding.fullScreen.translationX
     }
 
     override fun initObserver() {

@@ -1,4 +1,4 @@
-package com.catchpig.kotlin_mvvm.mvvm.recycle
+package com.catchpig.kotlin_mvvm.entity
 
 import com.catchpig.annotation.Prefs
 import com.catchpig.annotation.PrefsField

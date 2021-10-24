@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
-annotation class Service(
+annotation class ServiceApi(
     /**
      * 域名或者IP
      */

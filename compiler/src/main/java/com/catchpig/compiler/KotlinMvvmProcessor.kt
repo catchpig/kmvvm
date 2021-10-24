@@ -2,7 +2,7 @@ package com.catchpig.compiler
 
 import com.catchpig.annotation.GlobalConfig
 import com.catchpig.annotation.ObserverError
-import com.catchpig.annotation.Service
+import com.catchpig.annotation.ServiceApi
 import com.catchpig.compiler.exception.KAptException
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
@@ -42,7 +42,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
         var set = HashSet<String>()
         set.add(GlobalConfig::class.java.canonicalName)
         set.add(ObserverError::class.java.canonicalName)
-        set.add(Service::class.java.canonicalName)
+        set.add(ServiceApi::class.java.canonicalName)
         return set
     }
 
@@ -92,12 +92,12 @@ class KotlinMvvmProcessor : BaseProcessor() {
         }.forEach {
             constructorBuilder = constructorBuilder.addStatement("observerErrors.add(%T())", it)
         }
-        val serviceElements = roundEnv.getElementsAnnotatedWith(Service::class.java)
+        val serviceElements = roundEnv.getElementsAnnotatedWith(ServiceApi::class.java)
         serviceElements.map {
             it as TypeElement
         }.forEach {
             val className = it.asClassName().simpleName
-            val service = it.getAnnotation(Service::class.java)
+            val service = it.getAnnotation(ServiceApi::class.java)
             val factory = try {
                 service.factory
             } catch (e: MirroredTypeException) {

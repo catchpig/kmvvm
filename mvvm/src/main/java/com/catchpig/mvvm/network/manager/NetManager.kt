@@ -3,6 +3,7 @@ package com.catchpig.mvvm.network.manager
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.entity.ServiceParam
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import java.util.concurrent.TimeUnit
@@ -42,6 +43,9 @@ object NetManager {
              */
             .readTimeout(serviceParam.readTimeout, TimeUnit.MILLISECONDS)
         serviceParam.interceptors.forEach {
+            if (it is HttpLoggingInterceptor) {
+                it.setLevel(HttpLoggingInterceptor.Level.BODY)
+            }
             builder = builder.addInterceptor(it)
         }
         return builder.build()

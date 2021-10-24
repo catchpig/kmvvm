@@ -2,6 +2,7 @@ package com.catchpig.kotlin_mvvm.mvvm.recycle
 
 import com.catchpig.annotation.Adapter
 import com.catchpig.kotlin_mvvm.databinding.ItemUserBinding
+import com.catchpig.kotlin_mvvm.entity.User
 import com.catchpig.mvvm.base.adapter.CommonViewHolder
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.widget.refresh.IPageControl

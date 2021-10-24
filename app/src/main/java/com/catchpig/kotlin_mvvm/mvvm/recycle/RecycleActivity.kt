@@ -7,6 +7,7 @@ import com.catchpig.annotation.StatusBar
 import com.catchpig.kotlin_mvvm.R
 import com.catchpig.kotlin_mvvm.databinding.ActivityRecycleBinding
 import com.catchpig.kotlin_mvvm.databinding.LayoutHeaderBinding
+import com.catchpig.kotlin_mvvm.entity.User
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.ext.success
 import com.gyf.immersionbar.ktx.immersionBar
