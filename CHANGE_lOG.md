@@ -1,6 +1,10 @@
 # CHANGE LOG
 
-### v0.2.0(2021.10.24)
+### v0.2.1(2021.10.24)
+
++ NetManger增加debug模式的设置
+
+### v0.2.0(2021.10.23)
 
 + 增加Retrofit+OkHttp+RxJava的ServiceApi注解
 
