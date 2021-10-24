@@ -1,7 +1,9 @@
 package com.catchpig.kotlin_mvvm.app
 
 import android.app.Application
+import com.catchpig.kotlin_mvvm.BuildConfig
 import com.catchpig.kotlin_mvvm.R
+import com.catchpig.mvvm.network.manager.NetManager
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -10,8 +12,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * @author catchpig
  * @date 2019/8/18 00:18
  */
-class KotlinMvpApp:Application(){
-
+class KotlinMvpApp : Application() {
 
     init {
         //设置全局的Header构建器
@@ -23,5 +24,10 @@ class KotlinMvpApp:Application(){
         SmartRefreshLayout.setDefaultRefreshFooterCreator { context, _ -> //指定为经典Footer，默认是 BallPulseFooter
             ClassicsFooter(context).setDrawableSize(20f)
         }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        NetManager.setDebug(BuildConfig.DEBUG)
     }
 }

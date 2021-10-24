@@ -23,7 +23,7 @@
 
 ### 5. 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
-### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig
+### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig、ServiceApi
 
 ## 最低兼容:21
 
@@ -226,9 +226,32 @@ class UserAdapter(iPageControl: IPageControl) :
 }
 ```
 
-### 5. 注解使用
+### 5. 网络请求
 
-#### 5.1 [Title](./annotation/src/main/java/com/catchpig/annotation/Title.kt)-标题
++ 只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt),并使用NetManager.getService()获取对应的接口类
+
+> 使用示例
+```
+@ServiceApi(baseUrl = "https://www.wanandroid.com/", factory = WanAndroidConverterFactory::class,interceptors = [HttpLoggingInterceptor::class])
+interface WanAndroidService {
+    @GET("banner/json")
+    fun banner(): Flowable<List<Banner>>
+}
+```
+```
+object WanAndroidRepository : WanAndroidProxy {
+    private val wanAndroidService = NetManager.getService(WanAndroidService::class.java)
+    override fun getBanners(): Flowable<Banner> {
+        return wanAndroidService.banner().map {
+            return@map it[0]
+        }
+    }
+}
+```
+
+### 6. 注解使用
+
+#### 6.1 [Title](./annotation/src/main/java/com/catchpig/annotation/Title.kt)-标题
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
@@ -237,31 +260,31 @@ class UserAdapter(iPageControl: IPageControl) :
 |textColor|ColorRes|否|全局标题文字颜色|标题文字颜色|
 |backIcon|DrawableRes|否|全局标题返回按钮图标|标题返回按钮图标|
 
-#### 5.2 [OnClickFirstDrawable](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstDrawable.kt)-标题上第一个图标按钮的点击事件
+#### 6.2 [OnClickFirstDrawable](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstDrawable.kt)-标题上第一个图标按钮的点击事件
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
 |value|StringRes|是|无|按钮图片内容|
 
-#### 5.3 [OnClickFirstText](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstText.kt)-标题上第一个文字按钮的点击事件
+#### 6.3 [OnClickFirstText](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstText.kt)-标题上第一个文字按钮的点击事件
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
 |value|StringRes|是|无|按钮文字内容|
 
-#### 5.4 [OnClickSecondDrawable](./annotation/src/main/java/java/com/catchpig/annotation/OnClickSecondDrawable.kt)-标题上第二个图标按钮的点击事件
+#### 6.4 [OnClickSecondDrawable](./annotation/src/main/java/java/com/catchpig/annotation/OnClickSecondDrawable.kt)-标题上第二个图标按钮的点击事件
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
 |value|StringRes|是|无|按钮图片内容|
 
-#### 5.5 [OnClickSecondText](./annotation/src/main/java/com/catchpig/annotation/OnClickSecondText.kt)-标题上第二个文字按钮的点击事件
+#### 6.5 [OnClickSecondText](./annotation/src/main/java/com/catchpig/annotation/OnClickSecondText.kt)-标题上第二个文字按钮的点击事件
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
 |value|StringRes|是|无|按钮文字内容|
 
-#### 5.6 [StatusBar](./annotation/src/main/java/com/catchpig/annotation/StatusBar.kt)-状态栏
+#### 6.6 [StatusBar](./annotation/src/main/java/com/catchpig/annotation/StatusBar.kt)-状态栏
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
@@ -269,26 +292,29 @@ class UserAdapter(iPageControl: IPageControl) :
 |enabled|boolean|否|false|状态栏是否可用|
 |transparent|boolean|否|false|状态栏透明|
 
-#### 5.7 [Prefs](./annotation/src/main/java/com/catchpig/annotation/Prefs.kt)-SharedPreferences注解生成器
+#### 6.7 [Prefs](./annotation/src/main/java/com/catchpig/annotation/Prefs.kt)-SharedPreferences注解生成器
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|String|否|""|别名|
 |mode|[PrefsMode](./annotation/src/main/java/com/catchpig/annotation/enums/PrefsMode.kt)|否|PrefsMode.MODE_PRIVATE|模式,对应PreferencesMode|
 
-#### 5.8 [PrefsField](./annotation/src/main/java/com/catchpig/annotation/PrefsField.kt)-SharedPreferences字段注解
+#### 6.8 [PrefsField](./annotation/src/main/java/com/catchpig/annotation/PrefsField.kt)-SharedPreferences字段注解
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
 
-#### 5.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-ViewModel中的RxJava的onError方法统一处理
+#### 6.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-ViewModel中的RxJava的onError方法统一处理
 
-#### 5.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
+#### 6.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
 
-#### 5.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
+#### 6.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
 
-### 6. 刷新分页
+#### 6.12 [ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
+
+
+### 7. 刷新分页
 
 #### 使用RefreshLayoutWrapper+RecyclerAdapter控件实现刷新功能
 
@@ -318,7 +344,7 @@ class UserAdapter(iPageControl: IPageControl) :
   RecyclerAdapter.nextPageIndex = 1
   ```
 
-### 7. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
+### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 
 + 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
   ```
