@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="com.catchpig.kotlin_mvvm">
+    package="com.catchpig.kmvvm">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
-        android:name="com.catchpig.kotlin_mvvm.app.KotlinMvpApp"
+        android:name="com.catchpig.kmvvm.app.KotlinMvpApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
@@ -16,11 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.recycle.RecycleActivity"></activity>
-        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.fullscreen.FullScreenActivity" />
-        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
+        <activity android:name="com.catchpig.kmvvm.mvvm.recycle.RecycleActivity"></activity>
+        <activity android:name="com.catchpig.kmvvm.mvvm.fullscreen.FullScreenActivity" />
+        <activity android:name="com.catchpig.kmvvm.mvvm.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
         <activity
-            android:name="com.catchpig.kotlin_mvvm.mvvm.main.view.MainActivity"
+            android:name="com.catchpig.kmvvm.mvvm.main.view.MainActivity"
             android:theme="@style/MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +29,8 @@
             </intent-filter>
         </activity>
         <!-- 适配小米（xiaomi）刘海屏 -->
-        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.child.ChildActivity" />
-        <activity android:name="com.catchpig.kotlin_mvvm.mvvm.apk.view.InstallApkActivity"/>
+        <activity android:name="com.catchpig.kmvvm.mvvm.child.ChildActivity" />
+        <activity android:name="com.catchpig.kmvvm.mvvm.apk.view.InstallApkActivity"/>
 
         <meta-data
             android:name="android.notch_support"
