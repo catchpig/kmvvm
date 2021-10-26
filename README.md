@@ -1,11 +1,11 @@
 
 ## Gitee 地址:[kotlin-mvvm](https://gitee.com/catch-pig/kotlin-mvvm)
-[![](https://jitpack.io/v/com.gitee.catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#com.gitee.catch-pig/kotlin-mvvm)
+[![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm)
 
 ****
 
 ## Github 地址:[kotlin-mvvm](https://github.com/catch-pig/kotlin-mvvm)
-[![](https://jitpack.io/v/catch-pig/kotlin-mvvm.svg)](https://jitpack.io/#catch-pig/kotlin-mvvm)
+[![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)
 
 ****
 
