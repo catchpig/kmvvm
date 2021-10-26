@@ -56,13 +56,13 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ### 4. 添加依赖
 > Gitee
 
-    implementation "com.gitee.catch-pig.kotlin-mvvm:mvvm:last_version"
-    kapt "com.gitee.catch-pig.kotlin-mvvm:compiler:last_version"
+    implementation "com.gitee.catchpig.kmvvm:mvvm:last_version"
+    kapt "com.gitee.catchpig.kmvvm:compiler:last_version"
 
 > Github
 
-    implementation "com.github.catch-pig.kotlin-mvvm:mvvm:last_version"
-    kapt "com.github.catch-pig.kotlin-mvvm:compiler:last_version"
+    implementation "com.github.catchpig.kmvvm:mvvm:last_version"
+    kapt "com.github.catchpig.kmvvm:compiler:last_version"
 
 ## 使用
 
