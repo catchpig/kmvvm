@@ -4,7 +4,7 @@
 
 ****
 
-## Github 地址:[kmvvm](https://github.com/catch-pig/kmvvm)
+## Github 地址:[kmvvm](https://github.com/catchpig/kmvvm)
 [![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)
 
 ****
