@@ -9,6 +9,10 @@ import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.ActivityChildBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.catchpig.mvvm.manager.SnackbarManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 @Title
 @StatusBar
@@ -41,13 +45,24 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * dialog形式的loading
      */
     fun loadingDialog(v: View) {
-        viewModel.loadingDialog()
+        launcherLoadingDialog(viewModel.loadingDialog().map {
+            delay(2000)
+            it
+        }) {
+            snackbar(this)
+        }
+
     }
 
     /**
      * 标题栏以下的loading
      */
     fun loadingView(v: View) {
-        viewModel.loadingView()
+        launcherLoadingView(viewModel.loadingView().map {
+            delay(2000)
+            it
+        }) {
+            snackbar(this)
+        }
     }
 }

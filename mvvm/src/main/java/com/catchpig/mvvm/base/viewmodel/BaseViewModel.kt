@@ -1,11 +1,8 @@
 package com.catchpig.mvvm.base.viewmodel
 
-import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -14,46 +11,6 @@ import io.reactivex.rxjava3.disposables.Disposable
  */
 open class BaseViewModel : ViewModel(), IBaseViewModel {
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
-    var showLoadingLiveData = MutableLiveData<Boolean>()
-        private set
-    var hideLoadingLiveData = MutableLiveData<Boolean>()
-        private set
-    var messageLiveData = MutableLiveData<String>()
-        private set
-
-    /**
-     * 展现loadingView
-     */
-    override fun showLoadingView() {
-        showLoadingLiveData.value = false
-    }
-
-    /**
-     * 展现loadingDialog
-     */
-    override fun showLoadingDialog() {
-        showLoadingLiveData.value = true
-    }
-
-    /**
-     * 隐藏loading
-     */
-    override fun hideLoading() {
-        hideLoadingLiveData.value = true
-    }
-
-    /**
-     * 向Activity和Fragment发送弹窗的消息
-     * @param msg String
-     */
-    override fun sendMessage(msg: String) {
-        messageLiveData.value = msg
-    }
-
-    @CallSuper
-    override fun onError(t: Throwable) {
-        KotlinMvvmCompiler.onError(this, t)
-    }
 
     /**
      * 添加Disposable到CompositeDisposable

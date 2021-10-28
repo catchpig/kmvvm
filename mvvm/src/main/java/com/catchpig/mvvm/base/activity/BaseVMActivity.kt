@@ -3,8 +3,12 @@ package com.catchpig.mvvm.base.activity
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -26,26 +30,41 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
         lifecycle.addObserver(viewModel)
         initView()
         initObserver()
-        observerLoading()
-        observerMessage()
     }
 
     protected abstract fun initParam()
     protected abstract fun initView()
     protected abstract fun initObserver()
 
-    private fun observerMessage() {
-        viewModel.messageLiveData.observe(this, {
-            snackbar(it)
-        })
+    fun <T> launcherLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            flow.flowOn(Dispatchers.IO).onStart {
+                loadingView()
+            }.onCompletion {
+                hideLoadingView()
+            }.catch { t: Throwable ->
+                t.message?.let {
+                    snackbar(it)
+                }
+            }.collect {
+                callback(it)
+            }
+        }
     }
 
-    private fun observerLoading() {
-        viewModel.showLoadingLiveData.observe(this, {
-            loadingView(it)
-        })
-        viewModel.hideLoadingLiveData.observe(this, {
-            hideLoadingView()
-        })
+    fun <T> launcherLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            flow.flowOn(Dispatchers.IO).onStart {
+                loadingDialog()
+            }.onCompletion {
+                hideLoadingView()
+            }.catch { t: Throwable ->
+                t.message?.let {
+                    snackbar(it)
+                }
+            }.collect {
+                callback(it)
+            }
+        }
     }
 }

@@ -61,7 +61,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         this.loadingViewController = loadingViewController
     }
 
-    fun getRootBanding():ViewRootBinding{
+    fun getRootBanding(): ViewRootBinding {
         return rootBinding
     }
 
@@ -116,13 +116,15 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         SnackbarManager.show(rootBinding.layoutBody, textRes)
     }
 
-    fun loadingView(isDialog: Boolean) {
+    fun loadingDialog() {
         loadingViewController?.let {
-            if (isDialog) {
-                it.loadingDialog()
-            } else {
-                it.loadingView()
-            }
+            it.loadingDialog()
+        }
+    }
+
+    fun loadingView() {
+        loadingViewController?.let {
+            it.loadingView()
         }
     }
 

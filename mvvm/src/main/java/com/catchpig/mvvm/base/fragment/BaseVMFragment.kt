@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -26,8 +30,6 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
         lifecycle.addObserver(viewModel)
         initView()
         initObserver()
-        observerLoading()
-        observerToast()
     }
 
     protected abstract fun initParam()
@@ -36,18 +38,35 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
 
     protected abstract fun initObserver()
 
-    private fun observerToast() {
-        viewModel.messageLiveData.observe(this, {
-            snackbar(it)
-        })
+    fun <T> launcherLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            flow.flowOn(Dispatchers.IO).onStart {
+                loadingView()
+            }.onCompletion {
+                hideLoadingView()
+            }.catch { t: Throwable ->
+                t.message?.let {
+                    snackbar(it)
+                }
+            }.collect {
+                callback
+            }
+        }
     }
 
-    private fun observerLoading() {
-        viewModel.showLoadingLiveData.observe(this, {
-            loadingView(it)
-        })
-        viewModel.hideLoadingLiveData.observe(this, {
-            hideLoadingView()
-        })
+    fun <T> launcherLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            flow.flowOn(Dispatchers.IO).onStart {
+                loadingDialog()
+            }.onCompletion {
+                hideLoadingView()
+            }.catch { t: Throwable ->
+                t.message?.let {
+                    snackbar(it)
+                }
+            }.collect {
+                callback
+            }
+        }
     }
 }

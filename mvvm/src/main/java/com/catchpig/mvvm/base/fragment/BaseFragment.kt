@@ -51,9 +51,15 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         SnackbarManager.show(bodyBinding.root, textRes)
     }
 
-    fun loadingView(isDialog: Boolean) {
+    fun loadingView() {
         baseActivity()?.let {
-            it.loadingView(isDialog)
+            it.loadingView()
+        }
+    }
+
+    fun loadingDialog() {
+        baseActivity()?.let {
+            it.loadingDialog()
         }
     }
 

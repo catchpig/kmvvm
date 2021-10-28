@@ -9,9 +9,10 @@ import com.catchpig.kmvvm.databinding.ActivityRecycleBinding
 import com.catchpig.kmvvm.databinding.LayoutHeaderBinding
 import com.catchpig.kmvvm.entity.User
 import com.catchpig.mvvm.base.activity.BaseActivity
-import com.catchpig.mvvm.ext.success
 import com.gyf.immersionbar.ktx.immersionBar
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Consumer
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -45,7 +46,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
         }
 
         bodyBinding.refresh.setOnRefreshLoadMoreListener { nextPageIndex ->
-            Flowable.timer(3, TimeUnit.SECONDS).success({
+            Flowable.timer(3, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
                 var data: MutableList<User> = ArrayList()
                 var count = if (nextPageIndex == 3) {
                     15
@@ -56,7 +57,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
                     data.add(User("姓名$i"))
                 }
                 userAdapter.autoUpdateList(data)
-            })
+            }
         }
         bodyBinding.refresh.autoRefresh()
     }

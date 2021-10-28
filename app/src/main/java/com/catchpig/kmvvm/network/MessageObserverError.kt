@@ -7,6 +7,6 @@ import com.catchpig.mvvm.interfaces.IObserverError
 @ObserverError
 class MessageObserverError : IObserverError {
     override fun onError(iBaseViewModel: IBaseViewModel, t: Throwable) {
-        iBaseViewModel.sendMessage("错误消息")
+
     }
 }

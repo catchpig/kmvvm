@@ -8,7 +8,6 @@ import com.catchpig.mvvm.base.activity.BaseVMActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @StatusBar(transparent = true)
 class TransparentActivity : BaseVMActivity<ActivityTransparentBinding, TransparentViewModel>() {
@@ -19,7 +18,7 @@ class TransparentActivity : BaseVMActivity<ActivityTransparentBinding, Transpare
     override fun initView() {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.banner().flowOn(Dispatchers.IO).onStart {
-                loadingView(true)
+                loadingView()
             }.catch { t: Throwable ->
                 snackbar(t.message!!)
             }.onCompletion {
