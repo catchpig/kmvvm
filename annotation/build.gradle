@@ -4,13 +4,9 @@ apply from: '../publish_jar.gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly "androidx.annotation:annotation:$annotation_version"
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compileOnly "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    compileOnly ("com.squareup.retrofit2:converter-gson:$retrofit2_version") {
-        exclude group: 'com.google.code.gson'
-    }
-    compileOnly ("com.squareup.okhttp3:okhttp:$okhttp3_version") {
-        exclude group: 'org.jetbrains.kotlin'
-    }
+    implementation "androidx.annotation:annotation:$annotation_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofit2_version")
+    implementation ("com.squareup.okhttp3:okhttp:$okhttp3_version")
 }

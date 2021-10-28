@@ -5,6 +5,7 @@ import com.catchpig.kmvvm.network.api.WanAndroidService
 import com.catchpig.kmvvm.proxy.WanAndroidProxy
 import com.catchpig.mvvm.network.manager.NetManager
 import io.reactivex.rxjava3.core.Flowable
+import kotlinx.coroutines.Deferred
 
 object WanAndroidRepository : WanAndroidProxy {
     private val wanAndroidService = NetManager.getService(WanAndroidService::class.java)
@@ -12,5 +13,10 @@ object WanAndroidRepository : WanAndroidProxy {
         return wanAndroidService.banner().map {
             return@map it[0]
         }
+    }
+
+    override suspend fun queryBanner(): Banner {
+        val banners = wanAndroidService.queryBanner()
+        return banners[0]
     }
 }

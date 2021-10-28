@@ -8,8 +8,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.GET
 
 
-@ServiceApi(baseUrl = "https://www.wanandroid.com/", factory = WanAndroidConverterFactory::class,interceptors = [HttpLoggingInterceptor::class])
+@ServiceApi(
+    baseUrl = "https://www.wanandroid.com/",
+    factory = WanAndroidConverterFactory::class
+)
 interface WanAndroidService {
     @GET("banner/json")
     fun banner(): Flowable<List<Banner>>
+
+    @GET("banner/json")
+    suspend fun queryBanner(): List<Banner>
 }

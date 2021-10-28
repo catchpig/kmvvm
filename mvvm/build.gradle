@@ -35,29 +35,31 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    compileOnly "androidx.core:core-ktx:$core_ktx_version"
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    compileOnly "androidx.recyclerview:recyclerview:$recycleview_version"
+    implementation "androidx.recyclerview:recyclerview:$recycleview_version"
+
+    // 协程核心库
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
+    // 协程Android支持库
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+    // 协程Java8支持库
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.2"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+
     api project(path: ':annotation')
     api project(path: ':utils')
 
     //okhttp3
-    api("com.squareup.okhttp3:okhttp:$okhttp3_version") {
-        exclude group: 'org.jetbrains.kotlin'
-    }
-    api("com.squareup.okhttp3:logging-interceptor:$okhttp3_version") {
-        exclude group: 'org.jetbrains.kotlin'
-    }
+    api "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    api("com.squareup.okhttp3:logging-interceptor:$okhttp3_version")
 
     //retrofit2
     api "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    api("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version") {
-        exclude group: 'io.reactivex.rxjava3'
-    }
-    api("com.squareup.retrofit2:converter-gson:$retrofit2_version") {
-        exclude group: 'com.google.code.gson'
-    }
+    api("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+    api("com.squareup.retrofit2:converter-gson:$retrofit2_version")
 
     //rxjava3
     api "io.reactivex.rxjava3:rxjava:$rxjava_version"
