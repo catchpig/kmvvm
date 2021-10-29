@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
 import com.catchpig.mvvm.apt.interfaces.GlobalCompiler
 import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
+import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
-import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.entity.AdapterBinding
 import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.exception.AptAdapterException
@@ -23,6 +23,7 @@ object KotlinMvvmCompiler {
         var compilerClass = Class.forName("com.catchpig.mvvm.apt.interfaces.Global_Compiler")
         compilerClass.newInstance() as GlobalCompiler
     }
+
     fun inject(baseActivity: Activity) {
         val className = baseActivity.javaClass.name
         try {
@@ -36,8 +37,8 @@ object KotlinMvvmCompiler {
         }
     }
 
-    fun onError(baseViewModel: BaseViewModel, t: Throwable) {
-        globalCompiler.onError(baseViewModel, t)
+    fun onError(any: Any, t: Throwable) {
+        globalCompiler.onError(any, t)
     }
 
     fun viewBanding(recyclerAdapter: RecyclerAdapter<*, *>, parent: ViewGroup): AdapterBinding {
@@ -59,7 +60,7 @@ object KotlinMvvmCompiler {
         return globalCompiler.getGlobalConfig()
     }
 
-    fun getServiceParam(className:String):ServiceParam{
+    fun getServiceParam(className: String): ServiceParam {
         return globalCompiler.getServiceParam(className)
     }
 }

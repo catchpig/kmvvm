@@ -1,6 +1,6 @@
 package com.catchpig.mvvm.apt.interfaces
 
-import com.catchpig.mvvm.base.viewmodel.IBaseViewModel
+import android.app.Activity
 import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 
@@ -18,10 +18,10 @@ interface GlobalCompiler {
 
     /**
      * 发送Rxjava的异常到被注解ObserverError修饰的接口实现类
-     * @param iBaseViewModel IBaseViewModel
+     * @param any Any
      * @param t Throwable
      */
-    fun onError(iBaseViewModel: IBaseViewModel, t: Throwable)
+    fun onError(any: Any, t: Throwable)
 
     fun getServiceParam(className: String): ServiceParam
 }

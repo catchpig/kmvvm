@@ -43,11 +43,11 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         return bodyBinding.root
     }
 
-    protected fun snackbar(text: CharSequence) {
+    fun snackBar(text: CharSequence) {
         SnackbarManager.show(bodyBinding.root, text)
     }
 
-    protected fun snackbar(@StringRes textRes: Int) {
+    fun snackBar(@StringRes textRes: Int) {
         SnackbarManager.show(bodyBinding.root, textRes)
     }
 

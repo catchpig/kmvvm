@@ -12,7 +12,6 @@ import com.catchpig.mvvm.base.activity.BaseActivity
 import com.gyf.immersionbar.ktx.immersionBar
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.functions.Consumer
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -30,7 +29,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
     private fun initAdapter() {
         var userAdapter = UserAdapter(bodyBinding.refresh)
         userAdapter.setOnItemClickListener { _, m, _ ->
-            snackbar(m.name)
+            snackBar(m.name)
         }
         var linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL

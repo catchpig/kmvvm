@@ -20,12 +20,12 @@ class TransparentActivity : BaseVMActivity<ActivityTransparentBinding, Transpare
             viewModel.banner().flowOn(Dispatchers.IO).onStart {
                 loadingView()
             }.catch { t: Throwable ->
-                snackbar(t.message!!)
+                snackBar(t.message!!)
             }.onCompletion {
                 hideLoadingView()
             }.collect {
                 Glide.with(this@TransparentActivity).load(it.imagePath).into(bodyBinding.banner)
-                snackbar(it.title)
+                snackBar(it.title)
             }
         }
     }

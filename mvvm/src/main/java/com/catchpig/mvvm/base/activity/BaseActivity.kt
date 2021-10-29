@@ -88,7 +88,6 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
             )
-//            loadingViewController = LoadingViewController(this, rootBinding)
         }
     }
 
@@ -108,11 +107,11 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         titleText.setText(title)
     }
 
-    protected fun snackbar(text: CharSequence) {
+    fun snackBar(text: CharSequence) {
         SnackbarManager.show(rootBinding.layoutBody, text)
     }
 
-    protected fun snackbar(@StringRes textRes: Int) {
+    fun snackBar(@StringRes textRes: Int) {
         SnackbarManager.show(rootBinding.layoutBody, textRes)
     }
 

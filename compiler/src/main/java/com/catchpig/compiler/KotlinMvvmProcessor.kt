@@ -30,8 +30,6 @@ class KotlinMvvmProcessor : BaseProcessor() {
         private val CLASS_NAME_LIST_OF_I_OBSERVER_ERROR =
             CLASS_NAME_LIST.parameterizedBy(CLASS_NAME_I_OBSERVER_ERROR)
         private val CLASS_NAME_MAP = ClassName("kotlin.collections", "HashMap")
-        private val CLASS_NAME_I_BASE_VIEW_MODEL =
-            ClassName("com.catchpig.mvvm.base.viewmodel", "IBaseViewModel")
         private val CLASS_NAME_SERVICE_PARAM =
             ClassName("com.catchpig.mvvm.entity", "ServiceParam")
         private val CLASS_NAME_INTERCEPTOR =
@@ -175,10 +173,10 @@ class KotlinMvvmProcessor : BaseProcessor() {
         var funSpecBuilder = FunSpec
             .builder("onError")
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
-            .addParameter("iBaseViewModel", CLASS_NAME_I_BASE_VIEW_MODEL)
+            .addParameter("any", ANY)
             .addParameter("t", Throwable::class)
             .addStatement("observerErrors.forEach {")
-            .addStatement("  it.onError(iBaseViewModel, t)")
+            .addStatement("  it.onError(any, t)")
             .addStatement("}")
         return funSpecBuilder.build()
     }

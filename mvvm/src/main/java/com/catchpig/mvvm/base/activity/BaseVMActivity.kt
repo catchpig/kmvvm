@@ -5,6 +5,7 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
+import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -43,9 +44,7 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
             }.onCompletion {
                 hideLoadingView()
             }.catch { t: Throwable ->
-                t.message?.let {
-                    snackbar(it)
-                }
+                KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
             }.collect {
                 callback(it)
             }
@@ -59,9 +58,7 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
             }.onCompletion {
                 hideLoadingView()
             }.catch { t: Throwable ->
-                t.message?.let {
-                    snackbar(it)
-                }
+                KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
             }.collect {
                 callback(it)
             }
