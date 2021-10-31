@@ -149,7 +149,7 @@ interface IGlobalConfig {
     fun getStartPageIndex():Int
 }
 ```
-+ 实现[IGlobalConfig](##6.11)接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
++ 实现[IGlobalConfig](###6.11)接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
 
 > 使用示例:
 
