@@ -12,17 +12,19 @@
 
 ## 技术要点
 
-### 1. RxJava+Retrofit+OkHttp实现链式http请求
++ ### 支持Flow+Retrofit+OkHttp实现链式http请求
 
-### 2. 封装基类:BaseActivity、BaseVMActivity、BaseFragment、BaseVMFragment、RecycleAdapter、BaseViewModel
++ ### 支持Rxjava+Retrofit+OkHttp实现链式http请求
 
-### 3. 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
++ ### 封装基类:BaseActivity、BaseVMActivity、BaseFragment、BaseVMFragment、RecycleAdapter、BaseViewModel
 
-### 4. 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
++ ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
 
-### 5. 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
++ ### 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
 
-### 6. APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig、ServiceApi
++ ### 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
+
++ ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig、ServiceApi
 
 ## 最低兼容:21
 
@@ -147,7 +149,7 @@ interface IGlobalConfig {
     fun getStartPageIndex():Int
 }
 ```
-+ 实现[IGlobalConfig](./mvvm/src/main/java/com/catchpig/mvvm/interfaces/IGlobalConfig.kt)接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
++ 实现[IGlobalConfig](##6.11)接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
 
 > 使用示例:
 
