@@ -1,4 +1,3 @@
-
 ## Gitee 地址:[kmvvm](https://gitee.com/catchpig/kmvvm)
 [![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm)
 
@@ -23,7 +22,7 @@
 
 ### 5. 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
-### 6. APT(编译时注解)封装注解：OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig、ServiceApi
+### 6. APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig、ServiceApi
 
 ## 最低兼容:21
 
@@ -31,7 +30,7 @@
 
 ### 1. 在Project的build.gradle中添加
 
-```
+```groovy
 allprojects {
      repositories {
        maven { url 'https://jitpack.io' }
@@ -41,13 +40,13 @@ allprojects {
 
 ### 2. 在app的build.gradle的添加
 
-```
+```groovy
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ```
 
 ### 3. 在app的build.gradle的android下添加
 
-```
+```groovy
     buildFeatures {
         viewBinding = true
     }
@@ -56,19 +55,23 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ### 4. 添加依赖
 > Gitee
 
-    implementation "com.gitee.catchpig.kmvvm:mvvm:last_version"
-    kapt "com.gitee.catchpig.kmvvm:compiler:last_version"
+```groovy
+implementation "com.gitee.catchpig.kmvvm:mvvm:last_version"
+kapt "com.gitee.catchpig.kmvvm:compiler:last_version"
+```
 
 > Github
 
-    implementation "com.github.catchpig.kmvvm:mvvm:last_version"
-    kapt "com.github.catchpig.kmvvm:compiler:last_version"
+```groovy
+implementation "com.github.catchpig.kmvvm:mvvm:last_version"
+kapt "com.github.catchpig.kmvvm:compiler:last_version"
+```
 
 ## 使用
 
 ### 1. 配置全部参数
 
-```
+```kotlin
 interface IGlobalConfig {
     /**
      * 标题栏高度
@@ -148,7 +151,7 @@ interface IGlobalConfig {
 
 > 使用示例:
 
-```    
+```    kotlin
 @GlobalConfig
 class MvvmGlobalConfig : IGlobalConfig {
     override fun getTitleHeight(): Int {
@@ -200,7 +203,28 @@ class MvvmGlobalConfig : IGlobalConfig {
 ### 2. Activity
 
 * 使用MVVM的继承BaseVMActivity
+
 * 不使用MVVM的继承BaseActivity
+
+  #### 2.1 标题注解使用
+
+  > 使用示例
+  
+  ```kotlin
+  @Title(R.string.child_title)
+  class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() 
+  ```
+  
+  #### 2.2 状态栏注解使用
+  
+  > 使用示例
+  
+  ```kotlin
+  @StatusBar(hide = true)
+  class FullScreenActivity : BaseActivity<ActivityFullScreenBinding>()
+  ```
+  
+  
 
 ### 3. Fragment
 
@@ -213,7 +237,7 @@ class MvvmGlobalConfig : IGlobalConfig {
 
 > 使用示例
 
-```
+```kotlin
 @Adapter
 class UserAdapter(iPageControl: IPageControl) :
     RecyclerAdapter<User, ItemUserBinding>(iPageControl) {
@@ -231,20 +255,20 @@ class UserAdapter(iPageControl: IPageControl) :
 + 只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt),并使用NetManager.getService()获取对应的接口类
 
 > 使用示例
-```
+```kotlin
 @ServiceApi(baseUrl = "https://www.wanandroid.com/", factory = WanAndroidConverterFactory::class,interceptors = [HttpLoggingInterceptor::class])
 interface WanAndroidService {
     @GET("banner/json")
     fun banner(): Flowable<List<Banner>>
-}
+
 ```
-```
+```kotlin
 object WanAndroidRepository : WanAndroidProxy {
     private val wanAndroidService = NetManager.getService(WanAndroidService::class.java)
-    override fun getBanners(): Flowable<Banner> {
-        return wanAndroidService.banner().map {
-            return@map it[0]
-        }
+
+    override suspend fun queryBanner(): Banner {
+        val banners = wanAndroidService.queryBanner()
+        return banners[0]
     }
 }
 ```
@@ -305,13 +329,21 @@ object WanAndroidRepository : WanAndroidProxy {
 |---|:---:|:---|:---|:---|
 |value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
 
-#### 6.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-ViewModel中的RxJava的onError方法统一处理
+#### 6.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-Activity和Fragment中的Flow的onError方法统一处理
 
 #### 6.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
 
 #### 6.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
 
 #### 6.12 [ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
+
+| 属性           |    类型     | 必须 | 默认                 | 说明              |
+| -------------- | :---------: | :--- | :------------------- | :---------------- |
+| baseUrl        |   String    | 是   | 无                   | retrofit的baseurl |
+| factory        |   Factory   | 否   | GsonConverterFactory | 数据转换器        |
+| connectTimeout |    Long     | 否   | 5000                 | http的超时时间    |
+| readTimeout    |    Long     | 否   | 5000                 | http读取超时时间  |
+| interceptors   | Interceptor | 否   | Interceptor          | http拦截器        |
 
 
 ### 7. 刷新分页
@@ -347,7 +379,7 @@ object WanAndroidRepository : WanAndroidProxy {
 ### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 
 + 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
-  ```
+  ```kotlin
   DownloadManager.download(downloadUrl, {
           
       }, { readLength, countLength ->
@@ -356,7 +388,7 @@ object WanAndroidRepository : WanAndroidProxy {
   ```
     * DownloadCallback
 
-        ```
+        ```kotlin
         interface DownloadCallback {
             /**
              * 开始下载
@@ -389,30 +421,30 @@ object WanAndroidRepository : WanAndroidProxy {
         }
         ```
 + 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
-  ```
+  ```kotlin
   DownloadManager.multiDownload(downloadUrls, {
           
       })
   ```
     * MultiDownloadCallback
-        ```
+        ```kotlin
         interface MultiDownloadCallback {
         /**
         * 开始下载
         */
         fun onStart()
-    
+          
         /**
         * 下载成功
         * @param paths 本地保存的地址集
         */
         fun onSuccess(paths:MutableList<String>)
-    
+          
         /**
         * 下载完成
         */
         fun onComplete()
-    
+          
         /**
         * 下载错误
         * @param t 错误信息
@@ -446,3 +478,4 @@ object WanAndroidRepository : WanAndroidProxy {
 ## 其他
 
 ### 欢迎大家在issue上提出问题,我这边会不定时的看issue,解决问题
+~~~
