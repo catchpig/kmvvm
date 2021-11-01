@@ -260,9 +260,9 @@ class UserAdapter(iPageControl: IPageControl) :
 ```kotlin
 @ServiceApi(baseUrl = "https://www.wanandroid.com/", factory = WanAndroidConverterFactory::class,interceptors = [HttpLoggingInterceptor::class])
 interface WanAndroidService {
-    @GET("banner/json")
-    fun banner(): Flowable<List<Banner>>
-
+  @GET("banner/json")
+  suspend fun banner(): List<Banner>
+}
 ```
 ```kotlin
 object WanAndroidRepository : WanAndroidProxy {
@@ -455,6 +455,10 @@ object WanAndroidRepository : WanAndroidProxy {
         }
         ```
 
+### 9. 工具库
+
+[utils](./utils/README.md)
+
 ## 第三方库
 
 ### [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)-刷新控件
@@ -480,4 +484,3 @@ object WanAndroidRepository : WanAndroidProxy {
 ## 其他
 
 ### 欢迎大家在issue上提出问题,我这边会不定时的看issue,解决问题
-~~~

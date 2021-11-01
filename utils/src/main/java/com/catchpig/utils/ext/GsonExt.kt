@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 
-val defaultGson = GsonBuilder().setDateFormat(DATE_FORMAT).create()
+val defaultGson: Gson = GsonBuilder().setDateFormat(DATE_FORMAT).create()
 /**
  * json转实体类
  */
