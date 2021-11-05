@@ -1,10 +1,10 @@
-package com.catchpig.kmvvm.mvvm.apk.view
+package com.catchpig.kmvvm.apk.view
 
 import android.Manifest
 import com.catchpig.annotation.Title
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.ActivityInstallApkBinding
-import com.catchpig.kmvvm.mvvm.apk.viewmodel.InstallApkViewModel
+import com.catchpig.kmvvm.apk.viewmodel.InstallApkViewModel
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.tbruyelle.rxpermissions3.RxPermissions
 

@@ -1,50 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
-    tools:context=".mvvm.main.view.MainActivity">
+    android:orientation="vertical"
+    tools:context=".main.view.MainActivity">
 
-    <Button
-        android:id="@+id/is_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:onClick="openChild"
-        android:text="有标题栏"/>
-    <Button
-        android:id="@+id/transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:onClick="openChild"
-        android:text="状态栏透明"/>
-    <Button
-        android:id="@+id/full_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:onClick="openChild"
-        android:text="全屏显示"/>
-    <Button
-        android:id="@+id/recycle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:onClick="openChild"
-        android:text="Recycle列表显示"/>
-    <Button
-        android:id="@+id/installApk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:onClick="openChild"
-        android:text="下载并安装apk"/>
-</LinearLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tab_layout">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:tabIndicatorHeight="0dp"
+        app:tabSelectedTextColor="@color/color_black"
+        app:tabTextColor="@color/color_white">
+
+    </com.google.android.material.tabs.TabLayout>
+</RelativeLayout>

@@ -15,11 +15,6 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="MainTheme" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    </style>
-
     <style name="ExpandedTitleAppearance" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorAccent</item>

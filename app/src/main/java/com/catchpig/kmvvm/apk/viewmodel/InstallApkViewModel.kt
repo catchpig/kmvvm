@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.mvvm.apk.viewmodel
+package com.catchpig.kmvvm.apk.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel

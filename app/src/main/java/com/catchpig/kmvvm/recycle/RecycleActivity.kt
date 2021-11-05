@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.mvvm.recycle
+package com.catchpig.kmvvm.recycle
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager

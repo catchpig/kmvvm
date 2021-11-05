@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.mvvm.transparent
+package com.catchpig.kmvvm.transparent
 
 import androidx.lifecycle.MutableLiveData
 import com.catchpig.kmvvm.entity.Banner

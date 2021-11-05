@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.mvvm.fullscreen
+package com.catchpig.kmvvm.fullscreen
 
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kmvvm.databinding.ActivityFullScreenBinding

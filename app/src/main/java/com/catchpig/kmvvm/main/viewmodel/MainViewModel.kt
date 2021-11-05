@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.mvvm.main.viewmodel
+package com.catchpig.kmvvm.main.viewmodel
 
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 

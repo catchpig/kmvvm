@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.mvvm.transparent
+package com.catchpig.kmvvm.transparent
 
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide

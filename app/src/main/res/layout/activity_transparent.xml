@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvvm.transparent.TransparentActivity">
+    tools:context=".transparent.TransparentActivity">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/banner"
         android:layout_width="match_parent"

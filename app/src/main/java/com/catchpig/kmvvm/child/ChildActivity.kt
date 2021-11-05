@@ -1,9 +1,8 @@
-package com.catchpig.kmvvm.mvvm.child
+package com.catchpig.kmvvm.child
 
 import android.view.View
 import com.catchpig.annotation.OnClickFirstDrawable
 import com.catchpig.annotation.OnClickFirstText
-import com.catchpig.annotation.StatusBar
 import com.catchpig.annotation.Title
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.ActivityChildBinding

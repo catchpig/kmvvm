@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.mvvm.child
+package com.catchpig.kmvvm.child
 
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.delay
