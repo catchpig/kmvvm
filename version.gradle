@@ -25,4 +25,5 @@ ext {
     kotlinpoet_version = '1.10.1'
     rxpermissions_version = "0.12"
     recycleview_version = "1.2.0"
+    UIViewPager_version = "0.1.8"
 }

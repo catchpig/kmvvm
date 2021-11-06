@@ -33,15 +33,7 @@ class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkV
         })
     }
 
-    override fun initObserver() {
+    override fun initFlow() {
 
     }
-
-    //    override fun setDownloadProgress(progress: Int) {
-//        progressBar.progress = progress
-//    }
-//
-//    override fun setDownloadProgress1(progress: Int) {
-//        progressBar1.progress = progress
-//    }
 }

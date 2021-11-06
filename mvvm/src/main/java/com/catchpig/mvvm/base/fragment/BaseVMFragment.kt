@@ -30,16 +30,16 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
         initParam()
         lifecycle.addObserver(viewModel)
         initView()
-        initObserver()
+        initFlow()
     }
 
     protected abstract fun initParam()
 
     protected abstract fun initView()
 
-    protected abstract fun initObserver()
+    protected abstract fun initFlow()
 
-    fun <T> launcherLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
+    fun <T> lifecycleLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
@@ -51,9 +51,10 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
                 callback(it)
             }
         }
+
     }
 
-    fun <T> launcherLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
+    fun <T> lifecycleLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingDialog()
@@ -65,5 +66,6 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
                 callback(it)
             }
         }
+
     }
 }

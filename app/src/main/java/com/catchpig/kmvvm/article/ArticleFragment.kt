@@ -29,7 +29,7 @@ class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>
 
     }
 
-    override fun initObserver() {
+    override fun initFlow() {
 
     }
 }

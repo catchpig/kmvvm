@@ -1,7 +1,7 @@
 package com.catchpig.kmvvm.index
 
-import android.os.Bundle
 import android.view.View
+import com.bumptech.glide.Glide
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.apk.view.InstallApkActivity
 import com.catchpig.kmvvm.child.ChildActivity
@@ -9,25 +9,27 @@ import com.catchpig.kmvvm.databinding.FragmentIndexBinding
 import com.catchpig.kmvvm.fullscreen.FullScreenActivity
 import com.catchpig.kmvvm.recycle.RecycleActivity
 import com.catchpig.kmvvm.transparent.TransparentActivity
-import com.catchpig.mvvm.base.fragment.BaseFragment
+import com.catchpig.mvvm.base.fragment.BaseVMFragment
 import com.catchpig.utils.ext.startKtActivity
-import com.gyf.immersionbar.ktx.hideStatusBar
 import com.gyf.immersionbar.ktx.immersionBar
 
-class IndexFragment : BaseFragment<FragmentIndexBinding>(),View.OnClickListener {
+class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), View.OnClickListener {
     companion object {
         fun newInstance(): IndexFragment {
             return IndexFragment()
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
+    override fun initParam() {
+
     }
 
-    private fun initView() {
+    override fun initView() {
         bodyBinding.run {
+            banner.bindLifecycle(this@IndexFragment)
+            banner.setImageLoader { imageView, path ->
+                Glide.with(this@IndexFragment).load(path).into(imageView)
+            }
             openTitle.setOnClickListener(this@IndexFragment)
             transparent.setOnClickListener(this@IndexFragment)
             fullScreen.setOnClickListener(this@IndexFragment)
@@ -36,11 +38,23 @@ class IndexFragment : BaseFragment<FragmentIndexBinding>(),View.OnClickListener 
         }
     }
 
+    override fun initFlow() {
+        lifecycleLoadingView(viewModel.queryBanners()) {
+            val images = mutableListOf<String>()
+            this.forEach {
+                images.add(it.imagePath)
+            }
+            bodyBinding.banner.run {
+                setImages(images)
+                start()
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         immersionBar {
             transparentStatusBar()
-            statusBarView()
             statusBarColor(R.color.white)
         }
     }

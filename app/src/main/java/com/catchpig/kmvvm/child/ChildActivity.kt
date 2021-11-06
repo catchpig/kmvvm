@@ -31,7 +31,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
 
     }
 
-    override fun initObserver() {
+    override fun initFlow() {
 
     }
 
@@ -39,7 +39,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * dialog形式的loading
      */
     fun loadingDialog(v: View) {
-        launcherLoadingDialog(viewModel.loadingDialog()) {
+        lifecycleLoadingDialog(viewModel.loadingDialog()) {
             snackBar(this)
         }
 
@@ -49,7 +49,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * 标题栏以下的loading
      */
     fun loadingView(v: View) {
-        launcherLoadingView(viewModel.loadingView()) {
+        lifecycleLoadingView(viewModel.loadingView()) {
             snackBar(this)
         }
     }

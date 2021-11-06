@@ -29,7 +29,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    override fun initObserver() {
+    override fun initFlow() {
 
     }
 }

@@ -13,9 +13,7 @@ import retrofit2.http.GET
     factory = WanAndroidConverterFactory::class
 )
 interface WanAndroidService {
-    @GET("banner/json")
-    fun banner(): Flowable<List<Banner>>
 
     @GET("banner/json")
-    suspend fun queryBanner(): List<Banner>
+    suspend fun queryBanner(): MutableList<Banner>
 }

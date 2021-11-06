@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.transparent
+package com.catchpig.kmvvm.index
 
 import com.catchpig.kmvvm.entity.Banner
 import com.catchpig.kmvvm.repository.WanAndroidRepository
@@ -7,11 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 
-class TransparentViewModel : BaseViewModel() {
-
-    fun banner(): Flow<Banner> {
+class IndexViewModel : BaseViewModel() {
+    fun queryBanners(): Flow<MutableList<Banner>> {
         return flow {
-            emit(WanAndroidRepository.queryBanner())
+            emit(WanAndroidRepository.getBanners())
         }
     }
 }
