@@ -11,7 +11,6 @@ import com.catchpig.kmvvm.recycle.RecycleActivity
 import com.catchpig.kmvvm.transparent.TransparentActivity
 import com.catchpig.mvvm.base.fragment.BaseVMFragment
 import com.catchpig.utils.ext.startKtActivity
-import com.gyf.immersionbar.ktx.immersionBar
 
 class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), View.OnClickListener {
     companion object {
@@ -27,6 +26,8 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
     override fun initView() {
         bodyBinding.run {
             banner.bindLifecycle(this@IndexFragment)
+            banner.setAutoPlay(true)
+            banner.setInfiniteLoop(true)
             banner.setImageLoader { imageView, path ->
                 Glide.with(this@IndexFragment).load(path).into(imageView)
             }
@@ -39,7 +40,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
     }
 
     override fun initFlow() {
-        lifecycleLoadingView(viewModel.queryBanners()) {
+        lifecycleFlow(viewModel.queryBanners()) {
             val images = mutableListOf<String>()
             this.forEach {
                 images.add(it.imagePath)
@@ -48,14 +49,6 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                 setImages(images)
                 start()
             }
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        immersionBar {
-            transparentStatusBar()
-            statusBarColor(R.color.white)
         }
     }
 
@@ -80,4 +73,5 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
             }
         }
     }
+
 }

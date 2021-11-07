@@ -17,7 +17,7 @@ class TransparentActivity : BaseVMActivity<ActivityTransparentBinding, Transpare
     }
 
     override fun initFlow() {
-        lifecycleLoadingDialog(viewModel.banner()) {
+        lifecycleFlowLoadingDialog(viewModel.banner()) {
             Glide.with(this@TransparentActivity).load(imagePath).into(bodyBinding.banner)
             snackBar(title)
         }

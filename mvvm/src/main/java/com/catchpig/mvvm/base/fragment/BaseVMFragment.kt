@@ -39,7 +39,16 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
 
     protected abstract fun initFlow()
 
-    fun <T> lifecycleLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
+    fun <T> lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit) =
+        lifecycleScope.launch(Dispatchers.Main) {
+            flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
+                KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
+            }.collect {
+                callback(it)
+            }
+        }
+
+    fun <T> lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
@@ -54,7 +63,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
 
     }
 
-    fun <T> lifecycleLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
+    fun <T> lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingDialog()
@@ -66,6 +75,5 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
                 callback(it)
             }
         }
-
     }
 }

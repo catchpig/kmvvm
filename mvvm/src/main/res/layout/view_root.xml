@@ -9,20 +9,22 @@
         android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
+
     <ViewStub
         android:id="@+id/title_bar_view_stub"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout="@layout/layout_title_bar"/>
+        android:layout="@layout/layout_title_bar" />
 
     <FrameLayout
         android:id="@+id/layout_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ViewStub
             android:id="@+id/loading_view_stub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout="@layout/layout_loading"/>
+            android:layout="@layout/layout_loading" />
     </FrameLayout>
 </LinearLayout>

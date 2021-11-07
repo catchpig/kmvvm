@@ -39,7 +39,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * dialog形式的loading
      */
     fun loadingDialog(v: View) {
-        lifecycleLoadingDialog(viewModel.loadingDialog()) {
+        lifecycleFlowLoadingDialog(viewModel.loadingDialog()) {
             snackBar(this)
         }
 
@@ -49,7 +49,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * 标题栏以下的loading
      */
     fun loadingView(v: View) {
-        lifecycleLoadingView(viewModel.loadingView()) {
+        lifecycleFlowLoadingView(viewModel.loadingView()) {
             snackBar(this)
         }
     }
