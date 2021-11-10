@@ -1,5 +1,18 @@
 # CHANGE LOG
 
+### v0.2.5(2021.11.7)
+
++ activity和fragment封装不带loading的flow+lifecycleScope的方法(lifecycleFlow)
+
+### v0.2.4(2021.11.6)
+
++ 修改lifecycle和Flow封装的方法名
+
+### v0.2.3(2021.10.29)
+
++ 1.网络请求支持FLow回调
++ 2.loading和hideLoading在activity中处理
+
 ### v0.2.2(2021.10.25)
 
 + 解决StatusBar注解设置全屏状态栏和透明状态不起作用的问题
