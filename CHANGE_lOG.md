@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+### v0.2.6(2021.11.10)
+
++ fragment调整loadingview的实现
++ activity和fragment增加lifecycleScope+flow关于刷新列表的封装方法lifecycleFlowRefresh
+
 ### v0.2.5(2021.11.7)
 
 + activity和fragment封装不带loading的flow+lifecycleScope的方法(lifecycleFlow)
@@ -10,8 +15,8 @@
 
 ### v0.2.3(2021.10.29)
 
-+ 1.网络请求支持FLow回调
-+ 2.loading和hideLoading在activity中处理
++ 网络请求支持FLow回调
++ loading和hideLoading在activity中处理
 
 ### v0.2.2(2021.10.25)
 
