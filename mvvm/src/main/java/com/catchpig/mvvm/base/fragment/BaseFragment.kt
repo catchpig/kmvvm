@@ -9,7 +9,10 @@ import androidx.annotation.Nullable
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.activity.BaseActivity
+import com.catchpig.mvvm.controller.LoadingViewController
+import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.manager.SnackbarManager
 import java.lang.reflect.ParameterizedType
 
@@ -26,6 +29,18 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         method.invoke(this, layoutInflater) as VB
     }
 
+    private val loadingViewController: LoadingViewController by lazy {
+        LoadingViewController(requireActivity(), KotlinMvvmCompiler.globalConfig(), rootBinding)
+    }
+
+    private val rootBinding: ViewRootBinding by lazy {
+        ViewRootBinding.inflate(layoutInflater)
+    }
+
+    fun getRootBanding(): ViewRootBinding {
+        return rootBinding
+    }
+
     fun baseActivity(): BaseActivity<*>? {
         if (activity is BaseActivity<*>) {
             return activity as BaseActivity<*>
@@ -40,7 +55,15 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return bodyBinding.root
+        rootBinding.layoutBody.addView(
+            bodyBinding.root,
+            0,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
+        return rootBinding.root
     }
 
     fun snackBar(text: CharSequence) {
@@ -52,26 +75,14 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
     }
 
     fun loadingView() {
-        baseActivity()?.let {
-            it.loadingView()
-        }
+        loadingViewController.loadingView()
     }
 
     fun loadingDialog() {
-        baseActivity()?.let {
-            it.loadingDialog()
-        }
+        loadingViewController.loadingDialog()
     }
 
-    fun hideLoadingView() {
-        baseActivity()?.let {
-            it.hideLoadingView()
-        }
-    }
-
-    fun closeActivity() {
-        activity?.let {
-            it.finish()
-        }
+    fun hideLoading() {
+        loadingViewController.hideLoading()
     }
 }

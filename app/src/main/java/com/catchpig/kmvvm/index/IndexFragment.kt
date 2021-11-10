@@ -40,7 +40,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
     }
 
     override fun initFlow() {
-        lifecycleFlow(viewModel.queryBanners()) {
+        lifecycleFlowLoadingView(viewModel.queryBanners()) {
             val images = mutableListOf<String>()
             this.forEach {
                 images.add(it.imagePath)

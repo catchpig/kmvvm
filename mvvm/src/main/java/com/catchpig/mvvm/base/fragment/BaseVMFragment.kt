@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -39,6 +40,19 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
 
     protected abstract fun initFlow()
 
+    fun <T> lifecycleFlowRefresh(
+        flow: Flow<MutableList<T>>,
+        recyclerAdapter: RecyclerAdapter<T, out ViewBinding>
+    ) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            flow.flowOn(Dispatchers.IO).catch {
+                recyclerAdapter.updateFailed()
+            }.collect {
+                recyclerAdapter.autoUpdateList(it)
+            }
+        }
+    }
+
     fun <T> lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit) =
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
@@ -53,7 +67,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
             }.onCompletion {
-                hideLoadingView()
+                hideLoading()
             }.catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
             }.collect {
@@ -68,7 +82,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingDialog()
             }.onCompletion {
-                hideLoadingView()
+                hideLoading()
             }.catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
             }.collect {
