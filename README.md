@@ -211,8 +211,11 @@ class MvvmGlobalConfig : IGlobalConfig {
   #### 2.1 标题注解使用
 
   > 使用示例
+  >
+  > **Title其他注解参数,请看下方注解详情**
   
   ```kotlin
+  //设置标题的文字
   @Title(R.string.child_title)
   class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() 
   ```
@@ -220,13 +223,49 @@ class MvvmGlobalConfig : IGlobalConfig {
   #### 2.2 状态栏注解使用
   
   > 使用示例
+  >
+  > **StatusBar其他注解参数,请看下方注解详情**
   
   ```kotlin
+  //弃用注解
   @StatusBar(hide = true)
   class FullScreenActivity : BaseActivity<ActivityFullScreenBinding>()
   ```
   
+  ### 2.3 标题右侧文字或图标按钮注解使用
   
+  > 使用示例
+  >
+  > **注解修饰的方法只能可以带View参数,也可以不带View参数,看自身的需求**
+  
+  ```kotlin
+  @Title(R.string.child_title)
+  class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
+      @OnClickFirstDrawable(R.drawable.more)
+      fun clickFirstDrawable(v: View) {
+          SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
+          updateTitle("nihao")
+      }
+  
+      @OnClickFirstText(R.string.more)
+      fun clickFirstText() {
+          SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
+          updateTitle("12354")
+      }
+      
+      @OnClickSecondDrawable(R.drawable.more)
+      fun clickSecondDrawable(v: View) {
+          SnackbarManager.show(bodyBinding.root, "第二个图标按钮点击生效")
+          updateTitle("nihao")
+      }
+  
+      @OnClickSecondText(R.string.more)
+      fun clickSecondText() {
+          SnackbarManager.show(bodyBinding.root, "第二个文字按钮点击生效")
+          updateTitle("12354")
+      }
+  }
+  ```
 
 ### 3. Fragment
 
@@ -265,15 +304,44 @@ interface WanAndroidService {
 }
 ```
 ```kotlin
-object WanAndroidRepository : WanAndroidProxy {
+object WanAndroidRepository {
     private val wanAndroidService = NetManager.getService(WanAndroidService::class.java)
-
-    override suspend fun queryBanner(): Banner {
-        val banners = wanAndroidService.queryBanner()
-        return banners[0]
+    fun getBanners(): Flow<MutableList<Banner>> {
+        //这里如果用flowOf的话,方法上面必须加上suspend关键字
+        return flow {
+            emit(wanAndroidService.queryBanner())
+        }
     }
 }
 ```
+
+```kotlin
+class IndexViewModel : BaseViewModel() {
+    fun queryBanners(): Flow<MutableList<Banner>> {
+        return WanAndroidRepository.getBanners()
+    }
+}
+```
+
+```kotlin
+//Activity或者Fragment
+lifecycleFlowLoadingView(viewModel.queryBanners()) {
+    val images = mutableListOf<String>()
+    this.forEach {
+        images.add(it.imagePath)
+    }
+    bodyBinding.banner.run {
+        setImages(images)
+        start()
+    }
+}
+```
+
++ Activity和Fragment封装了网络请求方法(带lifecycleScope)
+  + lifecycleFlowRefresh(flow: Flow<MutableList<T>>,recyclerAdapter: RecyclerAdapter<T, out ViewBinding>)-刷新+RecycleView的网络请求封装
+  + lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)-不带loading的网络请求封装
+  + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
+  + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
 ### 6. 注解使用
 
@@ -289,8 +357,8 @@ object WanAndroidRepository : WanAndroidProxy {
 #### 6.2 [OnClickFirstDrawable](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstDrawable.kt)-标题上第一个图标按钮的点击事件
 
 |属性|类型|必须|默认|说明|
- |---|:---:|:---|:---|:---|
-|value|StringRes|是|无|按钮图片内容|
+|---|:---:|:---|:---|:---|
+|value|StringRes|是|无|按钮图片资源|
 
 #### 6.3 [OnClickFirstText](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstText.kt)-标题上第一个文字按钮的点击事件
 
@@ -301,8 +369,8 @@ object WanAndroidRepository : WanAndroidProxy {
 #### 6.4 [OnClickSecondDrawable](./annotation/src/main/java/java/com/catchpig/annotation/OnClickSecondDrawable.kt)-标题上第二个图标按钮的点击事件
 
 |属性|类型|必须|默认|说明|
- |---|:---:|:---|:---|:---|
-|value|StringRes|是|无|按钮图片内容|
+|---|:---:|:---|:---|:---|
+|value|StringRes|是|无|按钮图片资源|
 
 #### 6.5 [OnClickSecondText](./annotation/src/main/java/com/catchpig/annotation/OnClickSecondText.kt)-标题上第二个文字按钮的点击事件
 
@@ -336,6 +404,8 @@ object WanAndroidRepository : WanAndroidProxy {
 #### 6.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
 
 #### 6.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
+
++ 注解在IGlobalConfig接口的实现类上面
 
 #### 6.12 [ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
 

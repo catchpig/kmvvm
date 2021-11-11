@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.flowOf
 class TransparentViewModel : BaseViewModel() {
 
     fun banner(): Flow<Banner> {
-        return flow {
-            emit(WanAndroidRepository.queryBanner())
-        }
+        return WanAndroidRepository.queryBanner()
     }
 }

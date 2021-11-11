@@ -8,8 +8,6 @@ import kotlinx.coroutines.flow.flow
 
 class ArticleViewModel : BaseViewModel() {
     fun queryArticles(pageIndex: Int): Flow<MutableList<Article>> {
-        return flow {
-            emit(WanAndroidRepository.queryArticles(pageIndex))
-        }
+        return WanAndroidRepository.queryArticles(pageIndex)
     }
 }

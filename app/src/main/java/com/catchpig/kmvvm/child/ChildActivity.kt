@@ -1,9 +1,7 @@
 package com.catchpig.kmvvm.child
 
 import android.view.View
-import com.catchpig.annotation.OnClickFirstDrawable
-import com.catchpig.annotation.OnClickFirstText
-import com.catchpig.annotation.Title
+import com.catchpig.annotation.*
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.ActivityChildBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
@@ -19,6 +17,18 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
 
     @OnClickFirstText(R.string.more)
     fun clickFirstText() {
+        SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
+        updateTitle("12354")
+    }
+
+    @OnClickSecondDrawable(R.drawable.more)
+    fun clickSecondDrawable(v: View) {
+        SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
+        updateTitle("nihao")
+    }
+
+    @OnClickSecondText(R.string.more)
+    fun clickSecondText() {
         SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
         updateTitle("12354")
     }

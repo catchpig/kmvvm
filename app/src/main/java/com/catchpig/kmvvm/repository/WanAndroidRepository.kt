@@ -5,22 +5,30 @@ import com.catchpig.kmvvm.entity.Banner
 import com.catchpig.kmvvm.network.api.WanAndroidService
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.network.manager.NetManager
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 object WanAndroidRepository {
     private val wanAndroidService = NetManager.getService(WanAndroidService::class.java)
-    suspend fun getBanners(): MutableList<Banner> {
-        return wanAndroidService.queryBanner()
+    fun getBanners(): Flow<MutableList<Banner>> {
+        return flow {
+            emit(wanAndroidService.queryBanner())
+        }
     }
 
-    suspend fun queryBanner(): Banner {
-        val banners = wanAndroidService.queryBanner()
-        return banners[0]
+    fun queryBanner(): Flow<Banner> {
+        return getBanners().map {
+            return@map it[0]
+        }
     }
 
-    suspend fun queryArticles(pageIndex: Int): MutableList<Article> {
-        return wanAndroidService.queryArticles(
-            pageIndex,
-            KotlinMvvmCompiler.globalConfig().getPageSize()+2
-        ).datas
+    fun queryArticles(pageIndex: Int): Flow<MutableList<Article>> {
+        val pageSize = KotlinMvvmCompiler.globalConfig().getPageSize() + 2
+        return flow {
+            emit(wanAndroidService.queryArticles(pageIndex, pageSize))
+        }.map {
+            return@map it.datas
+        }
     }
 }

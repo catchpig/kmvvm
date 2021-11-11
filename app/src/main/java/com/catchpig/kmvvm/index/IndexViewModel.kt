@@ -9,8 +9,6 @@ import kotlinx.coroutines.flow.flowOf
 
 class IndexViewModel : BaseViewModel() {
     fun queryBanners(): Flow<MutableList<Banner>> {
-        return flow {
-            emit(WanAndroidRepository.getBanners())
-        }
+        return WanAndroidRepository.getBanners()
     }
 }
