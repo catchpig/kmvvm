@@ -232,7 +232,7 @@ class MvvmGlobalConfig : IGlobalConfig {
   class FullScreenActivity : BaseActivity<ActivityFullScreenBinding>()
   ```
   
-  ### 2.3 标题右侧文字或图标按钮注解使用
+  #### 2.3 标题右侧文字或图标按钮注解使用
   
   > 使用示例
   >
