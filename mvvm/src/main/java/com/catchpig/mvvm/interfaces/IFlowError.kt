@@ -1,5 +1,5 @@
 package com.catchpig.mvvm.interfaces
 
-interface IObserverError {
+interface IFlowError {
     fun onError(any: Any, t: Throwable)
 }

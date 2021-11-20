@@ -1,12 +1,12 @@
 package com.catchpig.kmvvm.network
 
-import com.catchpig.annotation.ObserverError
+import com.catchpig.annotation.FlowError
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.base.fragment.BaseFragment
-import com.catchpig.mvvm.interfaces.IObserverError
+import com.catchpig.mvvm.interfaces.IFlowError
 
-@ObserverError
-class MessageObserverError : IObserverError {
+@FlowError
+class MessageFlowError : IFlowError {
     override fun onError(any: Any, t: Throwable) {
         t.message?.let {
             when (any) {

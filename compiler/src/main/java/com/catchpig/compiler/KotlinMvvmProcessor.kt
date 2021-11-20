@@ -1,7 +1,7 @@
 package com.catchpig.compiler
 
 import com.catchpig.annotation.GlobalConfig
-import com.catchpig.annotation.ObserverError
+import com.catchpig.annotation.FlowError
 import com.catchpig.compiler.exception.KAptException
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
@@ -22,7 +22,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
         private val CLASS_NAME_KOTLIN_MVVM_COMPILER =
             ClassName("com.catchpig.mvvm.apt.interfaces", "GlobalCompiler")
         private val CLASS_NAME_I_OBSERVER_ERROR =
-            ClassName("com.catchpig.mvvm.interfaces", "IObserverError")
+            ClassName("com.catchpig.mvvm.interfaces", "IFlowError")
         private val CLASS_NAME_LIST = ClassName("kotlin.collections", "ArrayList")
         private val CLASS_NAME_LIST_OF_I_OBSERVER_ERROR =
             CLASS_NAME_LIST.parameterizedBy(CLASS_NAME_I_OBSERVER_ERROR)
@@ -31,7 +31,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
     override fun getSupportedAnnotationTypes(): MutableSet<String> {
         var set = HashSet<String>()
         set.add(GlobalConfig::class.java.canonicalName)
-        set.add(ObserverError::class.java.canonicalName)
+        set.add(FlowError::class.java.canonicalName)
         return set
     }
 
@@ -56,7 +56,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
                     .addSuperinterface(CLASS_NAME_KOTLIN_MVVM_COMPILER)
                     .primaryConstructor(initConstructor(roundEnv))
                     .addProperty(initGlobalConfigProperty(element))
-                    .addProperty(initObserverProperty())
+                    .addProperty(initFlowProperty())
                     .addFunction(getGlobalConfigFun())
                     .addFunction(onErrorFun())
                     .build()
@@ -72,19 +72,19 @@ class KotlinMvvmProcessor : BaseProcessor() {
     }
 
     private fun initConstructor(roundEnv: RoundEnvironment): FunSpec {
-        val observerErrorElements = roundEnv.getElementsAnnotatedWith(ObserverError::class.java)
+        val observerErrorElements = roundEnv.getElementsAnnotatedWith(FlowError::class.java)
         var constructorBuilder = FunSpec.constructorBuilder()
         observerErrorElements.map {
             it as TypeElement
         }.forEach {
-            constructorBuilder = constructorBuilder.addStatement("observerErrors.add(%T())", it)
+            constructorBuilder = constructorBuilder.addStatement("flowErrors.add(%T())", it)
         }
         return constructorBuilder.build()
     }
 
-    private fun initObserverProperty(): PropertySpec {
+    private fun initFlowProperty(): PropertySpec {
         var builder = PropertySpec
-            .builder("observerErrors", CLASS_NAME_LIST_OF_I_OBSERVER_ERROR)
+            .builder("flowErrors", CLASS_NAME_LIST_OF_I_OBSERVER_ERROR)
             .addModifiers(KModifier.PRIVATE)
         builder.initializer("arrayListOf()")
         return builder.build()
@@ -114,7 +114,7 @@ class KotlinMvvmProcessor : BaseProcessor() {
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
             .addParameter("any", ANY)
             .addParameter("t", Throwable::class)
-            .addStatement("observerErrors.forEach {")
+            .addStatement("flowErrors.forEach {")
             .addStatement("  it.onError(any, t)")
             .addStatement("}")
         return funSpecBuilder.build()
