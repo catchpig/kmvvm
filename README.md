@@ -24,7 +24,7 @@
 
 + ### 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
-+ ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、ObserverError、Adapter、GlobalConfig、ServiceApi
++ ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、Adapter、GlobalConfig、ServiceApi
 
 ## 最低兼容:21
 
