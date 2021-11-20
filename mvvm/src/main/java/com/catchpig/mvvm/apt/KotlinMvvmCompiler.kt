@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
 import com.catchpig.mvvm.apt.interfaces.GlobalCompiler
 import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
-import com.catchpig.mvvm.base.activity.BaseActivity
+import com.catchpig.mvvm.apt.interfaces.ServiceApiCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.entity.AdapterBinding
 import com.catchpig.mvvm.entity.ServiceParam
@@ -22,6 +22,11 @@ object KotlinMvvmCompiler {
     private val globalCompiler: GlobalCompiler by lazy {
         var compilerClass = Class.forName("com.catchpig.mvvm.apt.interfaces.Global_Compiler")
         compilerClass.newInstance() as GlobalCompiler
+    }
+
+    private val serviceApiCompiler: ServiceApiCompiler by lazy {
+        var compilerClass = Class.forName("com.catchpig.mvvm.apt.interfaces.ServiceApi_Compiler")
+        compilerClass.newInstance() as ServiceApiCompiler
     }
 
     fun inject(baseActivity: Activity) {
@@ -61,6 +66,6 @@ object KotlinMvvmCompiler {
     }
 
     fun getServiceParam(className: String): ServiceParam {
-        return globalCompiler.getServiceParam(className)
+        return serviceApiCompiler.getServiceParam(className)
     }
 }

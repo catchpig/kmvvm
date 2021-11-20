@@ -23,5 +23,5 @@ interface GlobalCompiler {
      */
     fun onError(any: Any, t: Throwable)
 
-    fun getServiceParam(className: String): ServiceParam
+
 }

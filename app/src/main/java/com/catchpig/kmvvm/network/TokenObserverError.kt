@@ -1,8 +1,6 @@
 package com.catchpig.kmvvm.network
 
 import com.catchpig.annotation.ObserverError
-import com.catchpig.mvvm.base.activity.BaseActivity
-import com.catchpig.mvvm.base.fragment.BaseFragment
 import com.catchpig.mvvm.interfaces.IObserverError
 
 @ObserverError
