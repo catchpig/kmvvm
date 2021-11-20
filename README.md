@@ -399,7 +399,7 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 |---|:---:|:---|:---|:---|
 |value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
 
-#### 6.9 [ObserverError](./annotation/src/main/java/com/catchpig/annotation/ObserverError.kt)-Activity和Fragment中的Flow的onError方法统一处理
+#### 6.9 [FlowError](./annotation/src/main/java/com/catchpig/annotation/FlowError.kt)-Activity和Fragment中的Flow的onError方法统一处理
 
 #### 6.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
 
