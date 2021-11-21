@@ -1,6 +1,7 @@
 package com.catchpig.mvvm.base.fragment
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,8 +67,8 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         return rootBinding.root
     }
 
-    fun snackBar(text: CharSequence) {
-        SnackbarManager.show(bodyBinding.root, text)
+    fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM) {
+        SnackbarManager.show(bodyBinding.root, text, gravity)
     }
 
     fun snackBar(@StringRes textRes: Int) {

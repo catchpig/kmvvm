@@ -11,25 +11,25 @@ import com.catchpig.mvvm.manager.SnackbarManager
 class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
-        SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
+        snackBar("第一个图标按钮点击生效")
         updateTitle("nihao")
     }
 
     @OnClickFirstText(R.string.more)
     fun clickFirstText() {
-        SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
+        snackBar("第一个文字按钮点击生效")
         updateTitle("12354")
     }
 
     @OnClickSecondDrawable(R.drawable.more)
     fun clickSecondDrawable(v: View) {
-        SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
+        snackBar("第二个图标按钮点击生效")
         updateTitle("nihao")
     }
 
     @OnClickSecondText(R.string.more)
     fun clickSecondText() {
-        SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
+        snackBar("第二个文字按钮点击生效")
         updateTitle("12354")
     }
 

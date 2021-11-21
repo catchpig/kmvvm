@@ -3,19 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".child.ChildActivity">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="100dp"
+        android:layout_height="50dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="dialog的loading"
-        android:onClick="loadingDialog"/>
+        android:onClick="loadingDialog"
+        android:text="dialog的loading" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="标题栏以下的的loading"
-        android:onClick="loadingView"/>
+        android:onClick="loadingView"
+        android:text="标题栏以下的的loading" />
 </LinearLayout>

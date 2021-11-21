@@ -15,6 +15,18 @@
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="50dp" />
+
+    <Button
+        android:id="@+id/snackbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:text="SnackBar" />
+
     <Button
         android:id="@+id/open_title"
         android:layout_width="wrap_content"

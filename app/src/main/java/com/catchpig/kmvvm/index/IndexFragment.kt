@@ -1,5 +1,6 @@
 package com.catchpig.kmvvm.index
 
+import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 import com.catchpig.kmvvm.R
@@ -30,6 +31,9 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
             banner.setInfiniteLoop(true)
             banner.setImageLoader { imageView, path ->
                 Glide.with(this@IndexFragment).load(path).into(imageView)
+            }
+            snackbar.setOnClickListener {
+                snackBar("dadad")
             }
             openTitle.setOnClickListener(this@IndexFragment)
             transparent.setOnClickListener(this@IndexFragment)

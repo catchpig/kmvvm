@@ -1,9 +1,13 @@
 package com.catchpig.utils.ext
 
 import android.graphics.Rect
+import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.updateLayoutParams
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -19,6 +23,31 @@ fun Snackbar.setTextColorRes(@ColorRes textColor: Int) {
  */
 fun Snackbar.setBackgroundResource(@DrawableRes res: Int) {
     view.setBackgroundResource(res)
+}
+
+/**
+ * 设置显示位置
+ * @receiver Snackbar
+ * @param gravity Int
+ */
+fun Snackbar.setGravity(gravity: Int) {
+    view.updateLayoutParams {
+        when (this) {
+            is FrameLayout.LayoutParams -> {
+                this.gravity = gravity
+            }
+            is CoordinatorLayout.LayoutParams -> {
+                this.gravity = gravity
+            }
+        }
+    }
+}
+
+fun Snackbar.targetParent(): View {
+    val cls = this::class.java.superclass
+    val field = cls.getDeclaredField("targetParent")
+    field.isAccessible = true
+    return field.get(this) as View
 }
 
 /**
