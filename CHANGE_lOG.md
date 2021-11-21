@@ -1,7 +1,8 @@
 # CHANGE LOG
 ### v0.2.8(2021.11.21)
 
-+解决fragment弹出的snackBar在fragment下方的问题
++ 解决fragment弹出的snackBar在fragment下方的问题
++ snackBar弹出可以设置位置(Gravity)
 
 ### v0.2.7(2021.11.20)
 
