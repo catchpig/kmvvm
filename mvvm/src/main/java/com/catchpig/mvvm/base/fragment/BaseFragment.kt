@@ -71,8 +71,8 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         SnackbarManager.show(bodyBinding.root, text, gravity)
     }
 
-    fun snackBar(@StringRes textRes: Int) {
-        SnackbarManager.show(bodyBinding.root, textRes)
+    fun snackBar(@StringRes textRes: Int, gravity: Int = Gravity.BOTTOM) {
+        SnackbarManager.show(bodyBinding.root, textRes, gravity)
     }
 
     fun loadingView() {

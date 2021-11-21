@@ -2,6 +2,7 @@ package com.catchpig.mvvm.base.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,12 +108,12 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         titleText.setText(title)
     }
 
-    fun snackBar(text: CharSequence) {
-        SnackbarManager.show(rootBinding.layoutBody, text)
+    fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM) {
+        SnackbarManager.show(bodyBinding.root, text, gravity)
     }
 
-    fun snackBar(@StringRes textRes: Int) {
-        SnackbarManager.show(rootBinding.layoutBody, textRes)
+    fun snackBar(@StringRes textRes: Int, gravity: Int = Gravity.BOTTOM) {
+        SnackbarManager.show(bodyBinding.root, textRes, gravity)
     }
 
     fun loadingDialog() {
