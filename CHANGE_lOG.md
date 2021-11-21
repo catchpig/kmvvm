@@ -1,6 +1,9 @@
 # CHANGE LOG
+### v0.2.8(2021.11.21)
 
-### v0.2.7(2021.11.27)
++解决fragment弹出的snackBar在fragment下方的问题
+
+### v0.2.7(2021.11.20)
 
 + 将ServiceApi注解从GlobalCompiler中分离出来,因为ServiceApi注解有可能在module中使用
 + 将注解ObserverError改为FlowError
