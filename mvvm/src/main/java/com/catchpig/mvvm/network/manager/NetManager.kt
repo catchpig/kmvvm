@@ -19,7 +19,7 @@ object NetManager {
     }
 
     fun <S> getService(serviceClass: Class<S>): S {
-        val className = serviceClass.simpleName
+        val className = serviceClass.name
         val service = serviceMap[className]
         return if (service == null) {
             val serviceParam = KotlinMvvmCompiler.getServiceParam(className)
