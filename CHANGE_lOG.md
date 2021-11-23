@@ -1,4 +1,9 @@
 # CHANGE LOG
+
+### v0.2.9(2021.11.23)
+
++ 解决多个注解ServiceApi,apt生成代码错误问题
+
 ### v0.2.8(2021.11.21)
 
 + 解决fragment弹出的snackBar在fragment下方的问题

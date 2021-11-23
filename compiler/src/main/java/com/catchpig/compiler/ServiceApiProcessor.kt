@@ -62,10 +62,12 @@ class ServiceApiProcessor : BaseProcessor() {
         var constructorBuilder = FunSpec.constructorBuilder()
         serviceElements.map {
             it as TypeElement
-        }.forEach {
-            val className = it.asClassName().simpleName
+        }.forEachIndexed { index, typeElement ->
+            val clsName = typeElement.asClassName()
+            val className = clsName.simpleName
+            val packageName = clsName.packageName
             warning(TAG, "${className}被ServiceApi注解")
-            val service = it.getAnnotation(ServiceApi::class.java)
+            val service = typeElement.getAnnotation(ServiceApi::class.java)
             val factory = try {
                 service.factory
             } catch (e: MirroredTypeException) {
@@ -79,16 +81,18 @@ class ServiceApiProcessor : BaseProcessor() {
             }
             constructorBuilder =
                 constructorBuilder.addStatement(
-                    "val list = mutableListOf<%T>()",
+                    "val list$index = mutableListOf<%T>()",
                     CLASS_NAME_INTERCEPTOR
                 )
-            inteceptors.forEach { inteceptor ->
-                constructorBuilder =
-                    constructorBuilder.addStatement("list.add(%T())", inteceptor)
+            if (inteceptors.isNotEmpty()) {
+                inteceptors.forEach { inteceptor ->
+                    constructorBuilder =
+                        constructorBuilder.addStatement("list$index.add(%T())", inteceptor)
+                }
             }
             constructorBuilder = constructorBuilder.addStatement(
-                "serviceMap.put(%S, %T(%S, %T.create(), %L, %L, list))",
-                className,
+                "serviceMap.put(%S, %T(%S, %T.create(), %L, %L, list$index))",
+                "$packageName.$className",
                 CLASS_NAME_SERVICE_PARAM,
                 service.baseUrl,
                 factory,
