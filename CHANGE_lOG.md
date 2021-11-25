@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+### v0.3.2(2021.11.24)
+
++ IFlowError接口增加onBaseFragmentError和onBaseActivityError接口回调
+
 ### v0.3.1(2021.11.23)
 
 + 解决多个注解ServiceApi,apt生成代码错误问题

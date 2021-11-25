@@ -1,7 +1,7 @@
 package com.catchpig.compiler
 
-import com.catchpig.annotation.GlobalConfig
 import com.catchpig.annotation.FlowError
+import com.catchpig.annotation.GlobalConfig
 import com.catchpig.compiler.exception.KAptException
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
@@ -24,6 +24,10 @@ class KotlinMvvmProcessor : BaseProcessor() {
         private val CLASS_NAME_I_OBSERVER_ERROR =
             ClassName("com.catchpig.mvvm.interfaces", "IFlowError")
         private val CLASS_NAME_LIST = ClassName("kotlin.collections", "ArrayList")
+        private val CLASS_NAME_BASE_ACTIVITY =
+            ClassName("com.catchpig.mvvm.base.activity", "BaseActivity")
+        private val CLASS_NAME_BASE_FRAGMENT =
+            ClassName("com.catchpig.mvvm.base.fragment", "BaseFragment")
         private val CLASS_NAME_LIST_OF_I_OBSERVER_ERROR =
             CLASS_NAME_LIST.parameterizedBy(CLASS_NAME_I_OBSERVER_ERROR)
     }
@@ -116,6 +120,11 @@ class KotlinMvvmProcessor : BaseProcessor() {
             .addParameter("t", Throwable::class)
             .addStatement("flowErrors.forEach {")
             .addStatement("  it.onError(any, t)")
+            .addStatement("  if(any is %T<*>){", CLASS_NAME_BASE_ACTIVITY)
+            .addStatement("     it.onBaseActivityError(any, t)")
+            .addStatement("  }else if(any is %T<*>){", CLASS_NAME_BASE_FRAGMENT)
+            .addStatement("     it.onBaseFragmentError(any, t)")
+            .addStatement("  }")
             .addStatement("}")
         return funSpecBuilder.build()
     }
