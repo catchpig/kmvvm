@@ -416,6 +416,7 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 | connectTimeout |    Long     | 否   | 5000                 | http的超时时间    |
 | readTimeout    |    Long     | 否   | 5000                 | http读取超时时间  |
 | interceptors   | Interceptor | 否   | Interceptor          | http拦截器        |
+| debugInterceptors   | Interceptor | 否   | Interceptor          | debug模式下的http拦截器        |
 
 
 ### 7. 刷新分页

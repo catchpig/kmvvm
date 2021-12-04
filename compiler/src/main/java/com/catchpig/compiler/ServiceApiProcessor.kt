@@ -79,19 +79,40 @@ class ServiceApiProcessor : BaseProcessor() {
             } catch (e: MirroredTypesException) {
                 e.typeMirrors
             }
+
+            val debugInteceptors = try {
+                service.debugInterceptors.toList()
+            } catch (e: MirroredTypesException) {
+                e.typeMirrors
+            }
+            val interceptorName = "interceptor$index"
+            val debugInterceptorName = "debugInterceptor$index"
             constructorBuilder =
                 constructorBuilder.addStatement(
-                    "val list$index = mutableListOf<%T>()",
+                    "val $interceptorName = mutableListOf<%T>()",
+                    CLASS_NAME_INTERCEPTOR
+                ).addStatement(
+                    "val $debugInterceptorName = mutableListOf<%T>()",
                     CLASS_NAME_INTERCEPTOR
                 )
             if (inteceptors.isNotEmpty()) {
-                inteceptors.forEach { inteceptor ->
+                inteceptors.forEach { interceptor ->
                     constructorBuilder =
-                        constructorBuilder.addStatement("list$index.add(%T())", inteceptor)
+                        constructorBuilder.addStatement("$interceptorName.add(%T())", interceptor)
+                }
+            }
+
+            if (debugInteceptors.isNotEmpty()) {
+                debugInteceptors.forEach { interceptor ->
+                    constructorBuilder =
+                        constructorBuilder.addStatement(
+                            "$debugInterceptorName.add(%T())",
+                            interceptor
+                        )
                 }
             }
             constructorBuilder = constructorBuilder.addStatement(
-                "serviceMap.put(%S, %T(%S, %T.create(), %L, %L, list$index))",
+                "serviceMap.put(%S, %T(%S, %T.create(), %L, %L, $interceptorName,$debugInterceptorName))",
                 "$packageName.$className",
                 CLASS_NAME_SERVICE_PARAM,
                 service.baseUrl,

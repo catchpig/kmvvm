@@ -32,6 +32,10 @@ annotation class ServiceApi(
     /**
      * 拦截器
      */
-    vararg val interceptors: KClass<out Interceptor> = [],
+    val interceptors: Array<KClass<out Interceptor>> = [],
+    /**
+     * debug模式的拦截器
+     */
+    val debugInterceptors: Array<KClass<out Interceptor>> = []
 )
 

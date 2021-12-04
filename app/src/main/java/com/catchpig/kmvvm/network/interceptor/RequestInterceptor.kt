@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.network
+package com.catchpig.kmvvm.network.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

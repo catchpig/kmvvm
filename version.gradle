@@ -26,4 +26,5 @@ ext {
     rxpermissions_version = "0.12"
     recycleview_version = "1.2.0"
     UIViewPager_version = "0.1.8"
+    okhttpprofiler_version = "1.0.8"
 }

@@ -8,5 +8,6 @@ data class ServiceParam(
     val factory: Converter.Factory,
     val connectTimeout: Long,
     val readTimeout: Long,
-    val interceptors: MutableList<Interceptor>
+    val interceptors: MutableList<Interceptor>,
+    val debugInterceptors: MutableList<Interceptor>
 )

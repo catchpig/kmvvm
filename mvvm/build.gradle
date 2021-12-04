@@ -54,7 +54,7 @@ dependencies {
 
     //okhttp3
     api "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    api("com.squareup.okhttp3:logging-interceptor:$okhttp3_version")
+    implementation ("com.squareup.okhttp3:logging-interceptor:$okhttp3_version")
 
     //retrofit2
     api "com.squareup.retrofit2:retrofit:$retrofit2_version"

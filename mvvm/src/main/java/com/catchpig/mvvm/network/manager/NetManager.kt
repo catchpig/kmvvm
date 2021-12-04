@@ -50,6 +50,9 @@ object NetManager {
              */
             .readTimeout(serviceParam.readTimeout, TimeUnit.MILLISECONDS)
         if (debug) {
+            serviceParam.debugInterceptors.forEach {
+                builder = builder.addInterceptor(it)
+            }
             val loggingInterceptor = HttpLoggingInterceptor {
                 it.logd(TAG)
             }

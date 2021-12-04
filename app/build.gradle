@@ -55,4 +55,5 @@ dependencies {
     //权限
     implementation "com.github.tbruyelle:rxpermissions:$rxpermissions_version"
     implementation "com.gitee.catchpig:UIViewPager:$UIViewPager_version"
+    implementation "com.localebro:okhttpprofiler:$okhttpprofiler_version"
 }
