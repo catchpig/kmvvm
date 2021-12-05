@@ -47,7 +47,7 @@ class MvvmGlobalConfig : IGlobalConfig {
     }
 
     override fun getPageSize(): Int {
-        return 18
+        return 16
     }
 
     override fun getStartPageIndex(): Int {

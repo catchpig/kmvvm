@@ -1,7 +1,11 @@
 # CHANGE LOG
+### v0.3.4(2021.12.5)
+
++ 解决RecycleAdapter添加footer数据下标越界的崩溃问题
+
 ### v0.3.3(2021.12.4)
 
-注解ServiceApi增减debugInterceptors参数,只有NetManager.setDebug(true)的情况下,拦截器才会添加到OkHttp里面
++ 注解ServiceApi增减debugInterceptors参数,只有NetManager.setDebug(true)的情况下,拦截器才会添加到OkHttp里面
 
 ### v0.3.2(2021.11.24)
 
