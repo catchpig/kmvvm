@@ -27,9 +27,16 @@ android {
     }
     kotlinOptions {
         jvmTarget = '11'
+        useIR = true
     }
     buildFeatures {
         viewBinding = true
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 
