@@ -6,23 +6,23 @@ buildscript {
     ext.kotlin_version = '1.5.31'
 
     repositories {
-        mavenCentral()
-        google()
+        mavenCentral(){
+            allowInsecureProtocol = true
+        }
+        google(){
+            allowInsecureProtocol = true
+        }
         maven { url 'https://jitpack.io' }
         maven{
-            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/google'
         }
         maven{
-            allowInsecureProtocol = true
             url "https://maven.aliyun.com/repository/central"
         }
         maven{
-            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/public'
         }
         maven{
-            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
 
@@ -37,23 +37,23 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
-        google()
+        mavenCentral(){
+            allowInsecureProtocol = true
+        }
+        google(){
+            allowInsecureProtocol = true
+        }
         maven { url 'https://jitpack.io' }
         maven{
-            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/google'
         }
         maven{
-            allowInsecureProtocol = true
             url "https://maven.aliyun.com/repository/central"
         }
         maven{
-            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/public'
         }
         maven{
-            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
     }
