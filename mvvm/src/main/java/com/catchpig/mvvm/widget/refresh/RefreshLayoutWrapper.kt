@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.util.AttributeSet
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 
 
@@ -15,7 +14,7 @@ import com.scwang.smart.refresh.layout.constant.RefreshState
  * @date 2017/12/21 20:10
  */
 
-class RefreshLayoutWrapper(
+open class RefreshLayoutWrapper(
     context: Context,
     attrs: AttributeSet
 ) : SmartRefreshLayout(context, attrs), IPageControl {

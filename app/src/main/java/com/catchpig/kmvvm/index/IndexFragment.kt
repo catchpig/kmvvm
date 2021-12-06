@@ -1,6 +1,5 @@
 package com.catchpig.kmvvm.index
 
-import android.view.Gravity
 import android.view.View
 import com.bumptech.glide.Glide
 import com.catchpig.kmvvm.R
@@ -44,7 +43,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
     }
 
     override fun initFlow() {
-        lifecycleFlowLoadingView(viewModel.queryBanners()) {
+        lifecycleFlow(viewModel.queryBanners()) {
             val images = mutableListOf<String>()
             this.forEach {
                 images.add(it.imagePath)

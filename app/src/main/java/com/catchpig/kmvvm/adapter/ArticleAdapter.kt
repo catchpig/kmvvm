@@ -5,11 +5,9 @@ import com.catchpig.kmvvm.databinding.ItemArticleBinding
 import com.catchpig.kmvvm.entity.Article
 import com.catchpig.mvvm.base.adapter.CommonViewHolder
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
-import com.catchpig.mvvm.widget.refresh.IPageControl
 
 @Adapter
-class ArticleAdapter(iPageControl: IPageControl) :
-    RecyclerAdapter<Article, ItemArticleBinding>(iPageControl) {
+class ArticleAdapter : RecyclerAdapter<Article, ItemArticleBinding>() {
 
     override fun bindViewHolder(
         holder: CommonViewHolder<ItemArticleBinding>,

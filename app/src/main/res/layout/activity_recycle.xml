@@ -5,55 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".recycle.RecycleActivity">
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="200dp">
+
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:collapsedTitleGravity="left|center_vertical"
+            app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleGravity="center_horizontal|bottom"
             app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
-            app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
-            app:collapsedTitleGravity="left|center_vertical"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:scrimVisibleHeightTrigger="100dp"
-            app:titleEnabled="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:titleEnabled="true">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:contentInsetStart="0dp"
                 app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin"
                 app:title="RecycleView列表">
+
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:scaleType="center"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back" />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-    <com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper
+
+    <com.catchpig.mvvm.widget.RefreshRecyclerView
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:recycler_background="#445467">
+
+    </com.catchpig.mvvm.widget.RefreshRecyclerView>
+    <!--<com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_view"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#445467">
 
         </androidx.recyclerview.widget.RecyclerView>
-    </com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper>
+    </com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper>-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

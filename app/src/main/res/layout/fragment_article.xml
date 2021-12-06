@@ -12,16 +12,10 @@
         android:text="文章"
         android:textColor="@color/color_white" />
 
-    <com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper
+    <com.catchpig.mvvm.widget.RefreshRecyclerView
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
-    </com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper>
+    </com.catchpig.mvvm.widget.RefreshRecyclerView>
 </LinearLayout>

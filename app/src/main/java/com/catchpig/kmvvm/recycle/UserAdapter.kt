@@ -12,8 +12,7 @@ import com.catchpig.mvvm.widget.refresh.IPageControl
  * @author TLi2
  **/
 @Adapter
-class UserAdapter(iPageControl: IPageControl) :
-    RecyclerAdapter<User, ItemUserBinding>(iPageControl) {
+class UserAdapter : RecyclerAdapter<User, ItemUserBinding>() {
 
     override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
         holder.viewBanding {

@@ -23,7 +23,7 @@ import java.util.*
  * @date 2017年12月22日13:43:56
  */
 
-abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IPageControl? = null) :
+abstract class RecyclerAdapter<M, VB : ViewBinding> :
     RecyclerView.Adapter<CommonViewHolder<VB>>(), IAdapterListControl<M> {
     /**
      * item的类型
@@ -94,6 +94,8 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
     private var firstLoad = true
 
     private var onItemClickListener: OnItemClickListener<M>? = null
+
+    var iPageControl: IPageControl? = null
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener<M>) {
         this.onItemClickListener = onItemClickListener

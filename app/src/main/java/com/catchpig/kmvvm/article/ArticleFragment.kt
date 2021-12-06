@@ -26,14 +26,14 @@ class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>
                 it.layoutParams.height = statusBarHeight
             }
         }
-        articleAdapter = ArticleAdapter(bodyBinding.refresh)
-        bodyBinding.recycle.run {
-            adapter = articleAdapter
+        articleAdapter = ArticleAdapter()
+        bodyBinding.refresh.run {
             val linearLayoutManager = LinearLayoutManager(context)
             linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-            layoutManager = linearLayoutManager
+            setLayoutManager(linearLayoutManager)
+            setAdapter(articleAdapter)
+            autoRefresh()
         }
-        bodyBinding.refresh.autoRefresh()
     }
 
     override fun initFlow() {
