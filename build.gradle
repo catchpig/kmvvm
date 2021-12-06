@@ -10,15 +10,19 @@ buildscript {
         google()
         maven { url 'https://jitpack.io' }
         maven{
+            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/google'
         }
         maven{
+            allowInsecureProtocol = true
             url "https://maven.aliyun.com/repository/central"
         }
         maven{
+            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/public'
         }
         maven{
+            allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
 
