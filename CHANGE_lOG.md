@@ -1,4 +1,8 @@
 # CHANGE LOG
+### v0.3.5(2021.12.6)
+
++ 解决单独添加footer崩溃问题(#I4L4U2)
+
 ### v0.3.4(2021.12.5)
 
 + 解决RecycleAdapter添加footer数据下标越界的崩溃问题

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.*
 import com.catchpig.mvvm.widget.refresh.IPageControl
@@ -299,22 +298,49 @@ abstract class RecyclerAdapter<M, VB : ViewBinding>(private val iPageControl: IP
      * @return Int
      */
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0 && headerView == null && showEmpty) {
-            //当前数据空位,展示空页面
-            TYPE_EMPTY.value
-        } else if (position == 1 && headerView != null && showEmpty) {
-            //当前数据空位,展示空页面
-            TYPE_EMPTY.value
-        } else if (position == 0 && headerView != null) {
-            //当前view是头部信息
-            TYPE_HEADER.value
-        } else if (position == (itemCount - 1) && headerView != null && footerView != null) {
-            //当前view是底部信息
-            TYPE_FOOTER.value
-        } else if (position == itemCount && headerView == null && footerView != null) {
-            //当前view是底部信息
-            TYPE_FOOTER.value
-        } else getCenterViewType(position)
+        return if (showEmpty) {
+            if (position == 0 && headerView != null) {
+                //当前view是头部信息
+                TYPE_HEADER.value
+            } else if (position == 0 && headerView == null) {
+                //当前数据空位,展示空页面
+                TYPE_EMPTY.value
+            } else if (position == 1 && headerView != null) {
+                //当前数据空位,展示空页面
+                TYPE_EMPTY.value
+            } else {
+                getCenterViewType(position)
+            }
+        } else {
+            if (position == 0 && headerView != null) {
+                //当前view是头部信息
+                TYPE_HEADER.value
+            } else if (position == (itemCount - 1) && headerView != null && footerView != null) {
+                //当前view是底部信息
+                TYPE_FOOTER.value
+            } else if (position == (itemCount - 1) && headerView == null && footerView != null) {
+                //当前view是底部信息
+                TYPE_FOOTER.value
+            } else {
+                getCenterViewType(position)
+            }
+        }
+//        return if (position == 0 && headerView == null && showEmpty) {
+//            //当前数据空位,展示空页面
+//            TYPE_EMPTY.value
+//        } else if (position == 1 && headerView != null && showEmpty) {
+//            //当前数据空位,展示空页面
+//            TYPE_EMPTY.value
+//        } else if (position == 0 && headerView != null) {
+//            //当前view是头部信息
+//            TYPE_HEADER.value
+//        } else if (position == (itemCount - 1) && !showEmpty && headerView != null && footerView != null) {
+//            //当前view是底部信息
+//            TYPE_FOOTER.value
+//        } else if (position == (itemCount - 1) && !showEmpty && headerView == null && footerView != null) {
+//            //当前view是底部信息
+//            TYPE_FOOTER.value
+//        } else getCenterViewType(position)
     }
 
     /**
