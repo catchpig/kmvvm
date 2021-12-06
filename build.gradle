@@ -6,6 +6,7 @@ buildscript {
     ext.kotlin_version = '1.5.31'
 
     repositories {
+        allowInsecureProtocol = true
         mavenCentral()
         google()
         maven { url 'https://jitpack.io' }
@@ -33,6 +34,7 @@ buildscript {
 
 allprojects {
     repositories {
+        allowInsecureProtocol = true
         mavenCentral()
         google()
         maven { url 'https://jitpack.io' }
