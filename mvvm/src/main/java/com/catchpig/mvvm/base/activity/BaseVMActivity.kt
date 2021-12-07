@@ -8,6 +8,7 @@ import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -40,13 +41,13 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
 
     fun <T> lifecycleFlowRefresh(
         flow: Flow<MutableList<T>>,
-        recyclerAdapter: RecyclerAdapter<T, out ViewBinding>
+        refresh: RefreshRecyclerView
     ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).catch {
-                recyclerAdapter.updateFailed()
+                refresh.updateError()
             }.collect {
-                recyclerAdapter.autoUpdateList(it)
+                refresh.updateData(it)
             }
         }
     }

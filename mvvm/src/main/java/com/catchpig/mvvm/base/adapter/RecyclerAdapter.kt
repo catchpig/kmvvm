@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.*
-import com.catchpig.mvvm.widget.refresh.IPageControl
-import com.scwang.smart.refresh.layout.constant.RefreshState
 import java.util.*
 
 
@@ -24,7 +22,7 @@ import java.util.*
  */
 
 abstract class RecyclerAdapter<M, VB : ViewBinding> :
-    RecyclerView.Adapter<CommonViewHolder<VB>>(), IAdapterListControl<M> {
+    RecyclerView.Adapter<CommonViewHolder<VB>>() {
     /**
      * item的类型
      */
@@ -94,8 +92,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     private var firstLoad = true
 
     private var onItemClickListener: OnItemClickListener<M>? = null
-
-    var iPageControl: IPageControl? = null
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener<M>) {
         this.onItemClickListener = onItemClickListener
@@ -193,7 +189,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     }
 
 
-    override fun set(list: MutableList<M>?) {
+    fun set(list: MutableList<M>?) {
         firstLoad = false
         if (list != null) {
             data = list
@@ -227,7 +223,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
         private set
 
 
-    override fun get(position: Int): M? {
+    fun get(position: Int): M? {
         check(position > 0 && position < data.size) {
             "position必须大于0,且不能大于data.size"
         }
@@ -245,53 +241,11 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     /**
      * list中添加更多的数据
      */
-    override fun add(list: MutableList<M>?) {
+    fun add(list: MutableList<M>?) {
         list?.let {
             data.addAll(it)
         }
         notifyDataSetChanged()
-    }
-
-    override var pageSize: Int
-        get() {
-            check(iPageControl != null) {
-                "获取pageSize,IPageControl不能为空"
-            }
-            return iPageControl!!.pageSize
-        }
-        set(_) {
-            throw IllegalStateException("pageSize不能外部赋值")
-        }
-
-    override var nextPageIndex: Int
-        get() {
-            check(iPageControl != null) {
-                "获取nextPageIndex,IPageControl不能为空"
-            }
-            return iPageControl!!.nextPageIndex
-        }
-        set(_) {
-            throw IllegalStateException("nextPageIndex不能外部赋值")
-        }
-
-    override fun autoUpdateList(list: MutableList<M>?) {
-        iPageControl?.let {
-            when (it.getRefreshStatus()) {
-                RefreshState.Refreshing -> {
-                    set(list)
-                }
-                RefreshState.Loading -> {
-                    add(list)
-                }
-            }
-            it.updateSuccess(list)
-        }
-    }
-
-    override fun updateFailed() {
-        iPageControl?.let {
-            it.updateError()
-        }
     }
 
     /**
@@ -327,22 +281,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
                 getCenterViewType(position)
             }
         }
-//        return if (position == 0 && headerView == null && showEmpty) {
-//            //当前数据空位,展示空页面
-//            TYPE_EMPTY.value
-//        } else if (position == 1 && headerView != null && showEmpty) {
-//            //当前数据空位,展示空页面
-//            TYPE_EMPTY.value
-//        } else if (position == 0 && headerView != null) {
-//            //当前view是头部信息
-//            TYPE_HEADER.value
-//        } else if (position == (itemCount - 1) && !showEmpty && headerView != null && footerView != null) {
-//            //当前view是底部信息
-//            TYPE_FOOTER.value
-//        } else if (position == (itemCount - 1) && !showEmpty && headerView == null && footerView != null) {
-//            //当前view是底部信息
-//            TYPE_FOOTER.value
-//        } else getCenterViewType(position)
     }
 
     /**
@@ -392,7 +330,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
         when (ItemViewType.enumOfValue(getItemViewType(position))) {
             TYPE_HEADER, TYPE_FOOTER -> {
                 /*
-                 * 当前holder是头部或者底部就直接返回,不需要去设置viewholder的内容
+                 * 当前holder是头部或者底部就直接返回,不需要去设置ViewHolder的内容
                  */
                 return
             }

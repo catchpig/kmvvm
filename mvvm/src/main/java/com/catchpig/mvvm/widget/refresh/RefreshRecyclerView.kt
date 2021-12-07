@@ -1,13 +1,14 @@
-package com.catchpig.mvvm.widget
+package com.catchpig.mvvm.widget.refresh
 
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
-import com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper
+import com.scwang.smart.refresh.layout.constant.RefreshState
 
 
 class RefreshRecyclerView(
@@ -36,10 +37,20 @@ class RefreshRecyclerView(
         recyclerView.layoutManager = layoutManage
     }
 
-    fun setAdapter(adapter: RecyclerView.Adapter<*>) {
+    fun <M> setAdapter(adapter: RecyclerAdapter<M, out ViewBinding>) {
         recyclerView.adapter = adapter
-        if (adapter is RecyclerAdapter<*, *>) {
-            adapter.iPageControl = this
+    }
+
+    fun <M> updateData(data: MutableList<M>?) {
+        val adapter = recyclerView.adapter as RecyclerAdapter<M, out ViewBinding>
+        when (state) {
+            RefreshState.Refreshing -> {
+                adapter.set(data)
+            }
+            RefreshState.Loading -> {
+                adapter.add(data)
+            }
         }
+        updateSuccess(data)
     }
 }

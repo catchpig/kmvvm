@@ -51,7 +51,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
                         for (i in 1..count) {
                             data.add(User("姓名$i"))
                         }
-                        userAdapter.autoUpdateList(data)
+                        updateData(data)
                     }
             }
             autoRefresh()

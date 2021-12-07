@@ -48,14 +48,14 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.catchpig.mvvm.widget.RefreshRecyclerView
+    <com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:recycler_background="#445467">
 
-    </com.catchpig.mvvm.widget.RefreshRecyclerView>
+    </com.catchpig.mvvm.widget.refresh.RefreshRecyclerView>
     <!--<com.catchpig.mvvm.widget.refresh.RefreshLayoutWrapper
         android:id="@+id/refresh"
         android:layout_width="match_parent"

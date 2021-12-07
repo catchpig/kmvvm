@@ -5,7 +5,6 @@ import com.catchpig.kmvvm.databinding.ItemUserBinding
 import com.catchpig.kmvvm.entity.User
 import com.catchpig.mvvm.base.adapter.CommonViewHolder
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
-import com.catchpig.mvvm.widget.refresh.IPageControl
 
 /**
  *

@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.util.AttributeSet
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.scwang.smart.refresh.layout.constant.RefreshState
 
 
 /**
@@ -43,15 +42,15 @@ open class RefreshLayoutWrapper(
      */
     private var currentPageIndex: Int = startPageIndex
 
-    override var nextPageIndex: Int = NONE_PRE_PAGE_INDEX
+    /**
+     * 下一页的index
+     */
+    private var nextPageIndex: Int = NONE_PRE_PAGE_INDEX
 
     /**
-     * 一页的条目，默认16
+     * 一页的条目
      */
-    override var pageSize = KotlinMvvmCompiler.globalConfig().getPageSize()
-    override fun getRefreshStatus(): RefreshState {
-        return state
-    }
+    private val pageSize = KotlinMvvmCompiler.globalConfig().getPageSize()
 
     /**
      * 列表更新成功
@@ -82,16 +81,16 @@ open class RefreshLayoutWrapper(
      * 列表更新失败
      */
     override fun updateError() {
-        this.nextPageIndex = NONE_PRE_PAGE_INDEX
+        nextPageIndex = NONE_PRE_PAGE_INDEX
         finishUpdate(false)
     }
 
     override fun resetPageIndex() {
-        this.nextPageIndex = startPageIndex
+        nextPageIndex = startPageIndex
     }
 
     override fun loadNextPageIndex() {
-        this.nextPageIndex = this.currentPageIndex + 1
+        nextPageIndex = currentPageIndex + 1
     }
 
     /**
@@ -111,8 +110,8 @@ open class RefreshLayoutWrapper(
      * 当前页面索引更新
      */
     private fun updateCurrentPageIndex() {
-        this.currentPageIndex = this.nextPageIndex
-        this.nextPageIndex = NONE_PRE_PAGE_INDEX
+        currentPageIndex = nextPageIndex
+        nextPageIndex = NONE_PRE_PAGE_INDEX
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
