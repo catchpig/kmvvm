@@ -27,7 +27,7 @@ class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>
             }
         }
         articleAdapter = ArticleAdapter()
-        bodyBinding.refresh.run {
+        bodyBinding.refresh.apply {
             val linearLayoutManager = LinearLayoutManager(context)
             linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
             setLayoutManager(linearLayoutManager)

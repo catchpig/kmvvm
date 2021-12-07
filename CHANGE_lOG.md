@@ -1,4 +1,10 @@
 # CHANGE LOG
+
+### v0.3.6(2021.12.7)
+
++ 优化刷新控件
++ 封装控件RefreshRecyclerView
+
 ### v0.3.5(2021.12.6)
 
 + 解决单独添加footer崩溃问题(#I4L4U2)
