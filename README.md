@@ -290,7 +290,7 @@ fun clickSecondDrawable(v: View) {
 }
 ```
 
-<img src="D:\work\kmvvm\images\activity_snackbar.jpg" style="zoom:30%;" />
+<img src="D:\work\kmvvm\images\activity_snackbar.jpg" style="zoom:50%;" />
 
 ### 3. Fragment
 
@@ -310,7 +310,7 @@ snackbar.setOnClickListener {
 }
 ```
 
-<img src="D:\work\kmvvm\images\fragment_snackbar.jpg" style="zoom:30%;" />
+<img src="D:\work\kmvvm\images\fragment_snackbar.jpg" style="zoom:50%;" />
 
 ### 4. RecycleView
 
@@ -335,12 +335,48 @@ class UserAdapter(iPageControl: IPageControl) :
 
 + RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
 + 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
-+ 只需要设置LayoutManager和RecyclerAdapter
++ 只需要设置LayoutManager和RecyclerAdapter,提供了setLayoutManager和setAdapter方法
 + 在获取到数据的时候调用updateData方法
 + 获取数据失败的时候调用updateError方法
 + 如果使用了lifecycleFlowRefresh方法,updateData方法和updateError方法都不用关心
++ 提供自定义属性recycler_background(设置RecyclerView的背景色)
+
+```
+<declare-styleable name="RefreshRecyclerView">
+    <attr name="recycler_background" format="color" />
+</declare-styleable>
+```
+
+
 
 >  使用示例
+
+```xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="文章"
+        android:textColor="@color/color_white" />
+
+    <com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:recycler_background="#445467">
+
+    </com.catchpig.mvvm.widget.refresh.RefreshRecyclerView>
+</LinearLayout>
+```
+
+
 
 ```kotlin
 bodyBinding.refresh.run {
