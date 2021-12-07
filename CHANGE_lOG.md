@@ -3,6 +3,8 @@
 ### v0.3.6(2021.12.7)
 
 + 优化刷新控件
++ 弃用IAdapterListControl接口
++ 删除IPageControl接口中的pageSize,nextPageIndex属性和getRefreshStatus方法
 + 封装控件RefreshRecyclerView
 
 ### v0.3.5(2021.12.6)
