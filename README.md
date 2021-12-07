@@ -290,7 +290,7 @@ fun clickSecondDrawable(v: View) {
 }
 ```
 
-<img src="D:\work\kmvvm\images\activity_snackbar.jpg" style="zoom:50%;" />
+<img src=".\images\activity_snackbar.jpg" style="zoom:50%;" />
 
 ### 3. Fragment
 
@@ -310,7 +310,7 @@ snackbar.setOnClickListener {
 }
 ```
 
-<img src="D:\work\kmvvm\images\fragment_snackbar.jpg" style="zoom:50%;" />
+<img src=".\images\fragment_snackbar.jpg" style="zoom:50%;" />
 
 ### 4. RecycleView
 
