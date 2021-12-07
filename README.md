@@ -358,7 +358,7 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
-|value|StringRes|是|无|按钮图片资源|
+|value|DrawableRes|是|无|按钮图片资源|
 
 #### 6.3 [OnClickFirstText](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstText.kt)-标题上第一个文字按钮的点击事件
 
@@ -370,7 +370,7 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
-|value|StringRes|是|无|按钮图片资源|
+|value|DrawableRes|是|无|按钮图片资源|
 
 #### 6.5 [OnClickSecondText](./annotation/src/main/java/com/catchpig/annotation/OnClickSecondText.kt)-标题上第二个文字按钮的点击事件
 
