@@ -49,9 +49,9 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 ### 3. 在app的build.gradle的android下添加
 
 ```groovy
-    buildFeatures {
-        viewBinding = true
-    }
+buildFeatures {
+    viewBinding = true
+}
 ```
 
 ### 4. 添加依赖
@@ -153,7 +153,7 @@ interface IGlobalConfig {
 
 > 使用示例:
 
-```    kotlin
+```kotlin
 @GlobalConfig
 class MvvmGlobalConfig : IGlobalConfig {
     override fun getTitleHeight(): Int {
@@ -205,72 +205,112 @@ class MvvmGlobalConfig : IGlobalConfig {
 ### 2. Activity
 
 * 使用MVVM的继承BaseVMActivity
+* 不使用MVVM的继承BaseActivity'
 
-* 不使用MVVM的继承BaseActivity
+#### 2.1 标题注解使用
 
-  #### 2.1 标题注解使用
+> 使用示例
+>
+> **Title其他注解参数,请看下方注解详情**
 
-  > 使用示例
-  >
-  > **Title其他注解参数,请看下方注解详情**
-  
-  ```kotlin
-  //设置标题的文字
-  @Title(R.string.child_title)
-  class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() 
-  ```
-  
-  #### 2.2 状态栏注解使用
-  
-  > 使用示例
-  >
-  > **StatusBar其他注解参数,请看下方注解详情**
-  
-  ```kotlin
-  //弃用注解
-  @StatusBar(hide = true)
-  class FullScreenActivity : BaseActivity<ActivityFullScreenBinding>()
-  ```
-  
-  #### 2.3 标题右侧文字或图标按钮注解使用
-  
-  > 使用示例
-  >
-  > **注解修饰的方法只能可以带View参数,也可以不带View参数,看自身的需求**
-  
-  ```kotlin
-  @Title(R.string.child_title)
-  class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
-      @OnClickFirstDrawable(R.drawable.more)
-      fun clickFirstDrawable(v: View) {
-          SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
-          updateTitle("nihao")
-      }
-  
-      @OnClickFirstText(R.string.more)
-      fun clickFirstText() {
-          SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
-          updateTitle("12354")
-      }
-      
-      @OnClickSecondDrawable(R.drawable.more)
-      fun clickSecondDrawable(v: View) {
-          SnackbarManager.show(bodyBinding.root, "第二个图标按钮点击生效")
-          updateTitle("nihao")
-      }
-  
-      @OnClickSecondText(R.string.more)
-      fun clickSecondText() {
-          SnackbarManager.show(bodyBinding.root, "第二个文字按钮点击生效")
-          updateTitle("12354")
-      }
-  }
-  ```
+```kotlin
+//设置标题的文字
+@Title(R.string.child_title)
+class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() 
+```
+> **如果标题栏文字要根据接口显示不同的文字,也有接口设置**
+```kotlin
+class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
+    @OnClickFirstDrawable(R.drawable.more)
+    fun clickFirstDrawable(v: View) {
+        SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
+        updateTitle("更改标题")
+    }
+}
+```
+
+#### 2.2 状态栏注解使用
+
+> 使用示例
+>
+> **StatusBar其他注解参数,请看下方注解详情**
+
+```kotlin
+//弃用注解
+@StatusBar(hide = true)
+class FullScreenActivity : BaseActivity<ActivityFullScreenBinding>()
+```
+
+#### 2.3 标题右侧文字或图标按钮注解使用
+
+> 使用示例
+>
+> **注解修饰的方法只能可以带View参数,也可以不带View参数,看自身的需求**
+
+```kotlin
+@Title(R.string.child_title)
+class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
+    @OnClickFirstDrawable(R.drawable.more)
+    fun clickFirstDrawable(v: View) {
+        SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
+        updateTitle("nihao")
+    }
+
+    @OnClickFirstText(R.string.more)
+    fun clickFirstText() {
+        SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
+        updateTitle("12354")
+    }
+    
+    @OnClickSecondDrawable(R.drawable.more)
+    fun clickSecondDrawable(v: View) {
+        SnackbarManager.show(bodyBinding.root, "第二个图标按钮点击生效")
+        updateTitle("nihao")
+    }
+
+    @OnClickSecondText(R.string.more)
+    fun clickSecondText() {
+        SnackbarManager.show(bodyBinding.root, "第二个文字按钮点击生效")
+        updateTitle("12354")
+    }
+}
+```
+
+#### 2.4 提示框
+
++ Android 11 之后,Toast已经不支持自定义Toast,原生的Toast是很难看的
++ 本框架使用SnackBar做提示框
+
+> 使用示例
+
+```kotlin
+@OnClickSecondDrawable(R.drawable.more)
+fun clickSecondDrawable(v: View) {
+    snackBar("第二个图标按钮点击生效")
+}
+```
+
+<img src="D:\work\kmvvm\images\activity_snackbar.jpg" style="zoom:30%;" />
 
 ### 3. Fragment
 
 * 使用MVVM的继承BaseVMFragment
 * 不使用MVVM的继承BaseFragment
+
+#### 3.1 提示框
+
++ Android 11 之后,Toast已经不支持自定义Toast,原生的Toast是很难看的
++ 本框架使用SnackBar做提示框
+
+> 使用示例
+
+```kotlin
+snackbar.setOnClickListener {
+    snackBar("提示框")
+}
+```
+
+<img src="D:\work\kmvvm\images\fragment_snackbar.jpg" style="zoom:30%;" />
 
 ### 4. RecycleView
 
@@ -291,13 +331,39 @@ class UserAdapter(iPageControl: IPageControl) :
 }
 ```
 
-### 5. 网络请求
+### 5.刷新分页控件([RefreshRecyclerView](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshRecyclerView.kt))
+
++ RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
++ 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
++ 只需要设置LayoutManager和RecyclerAdapter
++ 在获取到数据的时候调用updateData方法
++ 获取数据失败的时候调用updateError方法
++ 如果使用了lifecycleFlowRefresh方法,updateData方法和updateError方法都不用关心
+
+>  使用示例
+
+```kotlin
+bodyBinding.refresh.run {
+   setOnRefreshLoadMoreListener { nextPageIndex ->
+       lifecycleFlowRefresh(viewModel.queryArticles(nextPageIndex), this)
+   }
+}
+```
+
+
+
+### 6. 网络请求
 
 + 只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt),并使用NetManager.getService()获取对应的接口类
 
 > 使用示例
 ```kotlin
-@ServiceApi(baseUrl = "https://www.wanandroid.com/", factory = WanAndroidConverterFactory::class,interceptors = [HttpLoggingInterceptor::class])
+@ServiceApi(
+    baseUrl = "https://www.wanandroid.com/",
+    factory = WanAndroidConverterFactory::class,
+    interceptors = [RequestInterceptor::class],
+    debugInterceptors = [OkHttpProfilerInterceptor::class]
+)
 interface WanAndroidService {
   @GET("banner/json")
   suspend fun banner(): List<Banner>
@@ -338,14 +404,14 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 ```
 
 + Activity和Fragment封装了网络请求方法(带lifecycleScope)
-  + lifecycleFlowRefresh(flow: Flow<MutableList<T>>,recyclerAdapter: RecyclerAdapter<T, out ViewBinding>)-刷新+RecycleView的网络请求封装
+  + lifecycleFlowRefresh(flow: Flow<MutableList<T>>,refresh: RefreshRecyclerView)-刷新+RecycleView的网络请求封装
   + lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)-不带loading的网络请求封装
   + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
   + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
-### 6. 注解使用
+### 7. 注解使用
 
-#### 6.1 [Title](./annotation/src/main/java/com/catchpig/annotation/Title.kt)-标题
+#### 7.1 [Title](./annotation/src/main/java/com/catchpig/annotation/Title.kt)-标题
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
@@ -354,31 +420,31 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 |textColor|ColorRes|否|全局标题文字颜色|标题文字颜色|
 |backIcon|DrawableRes|否|全局标题返回按钮图标|标题返回按钮图标|
 
-#### 6.2 [OnClickFirstDrawable](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstDrawable.kt)-标题上第一个图标按钮的点击事件
+#### 7.2 [OnClickFirstDrawable](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstDrawable.kt)-标题上第一个图标按钮的点击事件
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|DrawableRes|是|无|按钮图片资源|
 
-#### 6.3 [OnClickFirstText](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstText.kt)-标题上第一个文字按钮的点击事件
+#### 7.3 [OnClickFirstText](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstText.kt)-标题上第一个文字按钮的点击事件
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
 |value|StringRes|是|无|按钮文字内容|
 
-#### 6.4 [OnClickSecondDrawable](./annotation/src/main/java/java/com/catchpig/annotation/OnClickSecondDrawable.kt)-标题上第二个图标按钮的点击事件
+#### 7.4 [OnClickSecondDrawable](./annotation/src/main/java/java/com/catchpig/annotation/OnClickSecondDrawable.kt)-标题上第二个图标按钮的点击事件
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|DrawableRes|是|无|按钮图片资源|
 
-#### 6.5 [OnClickSecondText](./annotation/src/main/java/com/catchpig/annotation/OnClickSecondText.kt)-标题上第二个文字按钮的点击事件
+#### 7.5 [OnClickSecondText](./annotation/src/main/java/com/catchpig/annotation/OnClickSecondText.kt)-标题上第二个文字按钮的点击事件
 
 |属性|类型|必须|默认|说明|
  |---|:---:|:---|:---|:---|
 |value|StringRes|是|无|按钮文字内容|
 
-#### 6.6 [StatusBar](./annotation/src/main/java/com/catchpig/annotation/StatusBar.kt)-状态栏
+#### 7.6 [StatusBar](./annotation/src/main/java/com/catchpig/annotation/StatusBar.kt)-状态栏
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
@@ -386,28 +452,28 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 |enabled|boolean|否|false|状态栏是否可用|
 |transparent|boolean|否|false|状态栏透明|
 
-#### 6.7 [Prefs](./annotation/src/main/java/com/catchpig/annotation/Prefs.kt)-SharedPreferences注解生成器
+#### 7.7 [Prefs](./annotation/src/main/java/com/catchpig/annotation/Prefs.kt)-SharedPreferences注解生成器
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|String|否|""|别名|
 |mode|[PrefsMode](./annotation/src/main/java/com/catchpig/annotation/enums/PrefsMode.kt)|否|PrefsMode.MODE_PRIVATE|模式,对应PreferencesMode|
 
-#### 6.8 [PrefsField](./annotation/src/main/java/com/catchpig/annotation/PrefsField.kt)-SharedPreferences字段注解
+#### 7.8 [PrefsField](./annotation/src/main/java/com/catchpig/annotation/PrefsField.kt)-SharedPreferences字段注解
 
 |属性|类型|必须|默认|说明|
 |---|:---:|:---|:---|:---|
 |value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
 
-#### 6.9 [FlowError](./annotation/src/main/java/com/catchpig/annotation/FlowError.kt)-Activity和Fragment中的Flow的onError方法统一处理
+#### 7.9 [FlowError](./annotation/src/main/java/com/catchpig/annotation/FlowError.kt)-Activity和Fragment中的Flow的onError方法统一处理
 
-#### 6.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
+#### 7.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
 
-#### 6.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
+#### 7.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
 
 + 注解在IGlobalConfig接口的实现类上面
 
-#### 6.12 [ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
+#### 7.12 [ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
 
 | 属性           |    类型     | 必须 | 默认                 | 说明              |
 | -------------- | :---------: | :--- | :------------------- | :---------------- |
@@ -417,37 +483,6 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 | readTimeout    |    Long     | 否   | 5000                 | http读取超时时间  |
 | interceptors   | Interceptor | 否   | Interceptor          | http拦截器        |
 | debugInterceptors   | Interceptor | 否   | Interceptor          | debug模式下的http拦截器,只有NetManager.setDebug(true),才会生效        |
-
-
-### 7. 刷新分页
-
-#### 使用RefreshLayoutWrapper+RecyclerAdapter控件实现刷新功能
-
-+ ***RefreshLayoutWrapper继承于[SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout),具体使用请看SmartRefreshLayout官方文档,默认每页数据量为16,如果想修改每页数据量,可使用如下方法更改:***
-
-  ```
-  RefreshLayoutWrapper.pageSize = 16
-  ```
-+ ***RefreshLayoutWrapper实现了[IPageControl](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/IPageControl.kt)
-  ,可以通过调用接口内的方法类获取刷新控件的状态和更改状态***
-
-  ```
-  //获取刷新的状态
-  iPageControl.getRefreshStatus()
-  ```
-+ ***RecyclerAdapter在实例化的时候传入IPageControl, 获取数据成功之后,只需要调用autoUpdateList(list)方法,
-  可以自动RefreshLayoutWrapper页码和刷新状态变化***
-
-+ ***数据更新失败可以调用RecyclerAdapter.updateFailed()***
-
-+ ***获取每页的数据量和下一页的页码,可以调用一下方法***
-
-  ```
-  //每页的数据量
-  RecyclerAdapter.pageSize = 16
-  //下一页的页码
-  RecyclerAdapter.nextPageIndex = 1
-  ```
 
 ### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 

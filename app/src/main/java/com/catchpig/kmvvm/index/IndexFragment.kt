@@ -32,7 +32,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                 Glide.with(this@IndexFragment).load(path).into(imageView)
             }
             snackbar.setOnClickListener {
-                snackBar("dadad")
+                snackBar("提示框")
             }
             openTitle.setOnClickListener(this@IndexFragment)
             transparent.setOnClickListener(this@IndexFragment)
