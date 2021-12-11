@@ -1,4 +1,10 @@
 # CHANGE LOG
+### v0.3.7(2021.12.11)
+
++ 优化网络请求框架
++ 1.将注解ServiceApi的factory参数改为responseConverter
++ 2.增加封装类GsonResponseBodyConverter
++ 3.增加封装抽象类BaseResponseBodyConverter
 
 ### v0.3.6(2021.12.7)
 
