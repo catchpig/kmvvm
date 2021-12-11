@@ -5,7 +5,7 @@ import com.catchpig.kmvvm.network.ResponseBodyConverter
 
 @ServiceApi(
     baseUrl = "https://www.wanandroid.com/ad/",
-    converter = ResponseBodyConverter::class,
+    responseConverter = ResponseBodyConverter::class,
 )
 interface OtherService {
 }

@@ -4,6 +4,7 @@ import com.catchpig.annotation.ServiceApi
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import java.lang.reflect.Type
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedSourceVersion
@@ -25,6 +26,14 @@ class ServiceApiProcessor : BaseProcessor() {
             ClassName("com.catchpig.mvvm.entity", "ServiceParam")
         private val CLASS_NAME_INTERCEPTOR =
             ClassName("okhttp3", "Interceptor")
+        private val CLASS_NAME_TYPE_ADAPTER = ClassName("com.google.gson", "TypeAdapter")
+        private val CLASS_NAME_TYPE_ADAPTER_OF_ANY = CLASS_NAME_TYPE_ADAPTER.parameterizedBy(ANY)
+        private val CLASS_NAME_GSON = ClassName("com.google.gson", "Gson")
+        private val CLASS_NAME_CONVERTER =
+            ClassName("retrofit2", "Converter")
+        private val CLASS_NAME_RESPONSE_BODY = ClassName("okhttp3", "ResponseBody")
+        private val CLASS_NAME_CONVERTER_OF_RESPONSE_BODY_AND_ANY =
+            CLASS_NAME_CONVERTER.parameterizedBy(CLASS_NAME_RESPONSE_BODY, ANY)
     }
 
 
@@ -47,6 +56,7 @@ class ServiceApiProcessor : BaseProcessor() {
                 .primaryConstructor(initConstructor(elements))
                 .addProperty(initServiceProperty())
                 .addFunction(getServiceParamFun())
+                .addFunction(getResponseBodyConverterFun(elements))
                 .build()
             val fullPackageName = CLASS_NAME_SERVICE_API_COMPILER.packageName
             var fileSpecBuilder = FileSpec
@@ -68,11 +78,6 @@ class ServiceApiProcessor : BaseProcessor() {
             val packageName = clsName.packageName
             warning(TAG, "${className}被ServiceApi注解")
             val service = typeElement.getAnnotation(ServiceApi::class.java)
-            val converter = try {
-                service.converter
-            } catch (e: MirroredTypeException) {
-                e.typeMirror
-            }
             val inteceptors = try {
                 service.interceptors.toList()
             } catch (e: MirroredTypesException) {
@@ -111,7 +116,7 @@ class ServiceApiProcessor : BaseProcessor() {
                 }
             }
             constructorBuilder = constructorBuilder.addStatement(
-                "serviceMap.put(%S, %T(%S, Class.forName(\"${converter}\"), %L, %L, $interceptorName,$debugInterceptorName))",
+                "serviceMap.put(%S, %T(%S, %L, %L, $interceptorName,$debugInterceptorName))",
                 "$packageName.$className",
                 CLASS_NAME_SERVICE_PARAM,
                 service.baseUrl,
@@ -143,6 +148,43 @@ class ServiceApiProcessor : BaseProcessor() {
             .addParameter("className", String::class)
             .addStatement("return serviceMap.get(className)!!")
             .returns(CLASS_NAME_SERVICE_PARAM)
+        return funSpecBuilder.build()
+    }
+
+    private fun getResponseBodyConverterFun(serviceElements: Set<Element>): FunSpec {
+        var funSpecBuilder = FunSpec
+            .builder("getResponseBodyConverter")
+            .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
+            .addParameter("className", String::class)
+            .addParameter("typeAdapter", CLASS_NAME_TYPE_ADAPTER_OF_ANY)
+            .addParameter("type", Type::class)
+            .addParameter("gson", CLASS_NAME_GSON)
+            .addStatement("val bodyConverter = when(className){")
+
+        serviceElements.map {
+            it as TypeElement
+        }.forEach { typeElement ->
+            val clsName = typeElement.asClassName()
+            val className = clsName.simpleName
+            val packageName = clsName.packageName
+            val service = typeElement.getAnnotation(ServiceApi::class.java)
+            val converter = try {
+                service.responseConverter
+            } catch (e: MirroredTypeException) {
+                e.typeMirror
+            }
+            funSpecBuilder = funSpecBuilder
+                .addStatement("  \"$packageName.$className\" ->{")
+                .addStatement("    %T(typeAdapter, type, gson)", converter)
+                .addStatement("  }")
+        }
+        funSpecBuilder = funSpecBuilder
+            .addStatement("  else ->{")
+            .addStatement("    null")
+            .addStatement("  }")
+            .addStatement("}")
+            .addStatement("return bodyConverter")
+            .returns(CLASS_NAME_CONVERTER_OF_RESPONSE_BODY_AND_ANY.copy(nullable = true))
         return funSpecBuilder.build()
     }
 }

@@ -12,6 +12,11 @@ import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.exception.AptAdapterException
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 import com.catchpig.utils.ext.logd
+import com.google.gson.Gson
+import com.google.gson.TypeAdapter
+import okhttp3.ResponseBody
+import retrofit2.Converter
+import java.lang.reflect.Type
 
 /**
  * @author catchpig
@@ -67,5 +72,14 @@ object KotlinMvvmCompiler {
 
     fun getServiceParam(className: String): ServiceParam {
         return serviceApiCompiler.getServiceParam(className)
+    }
+
+    fun getResponseBodyConverter(
+        className: String,
+        typeAdapter: TypeAdapter<Any>,
+        type: Type,
+        gson: Gson
+    ): Converter<ResponseBody, Any>? {
+        return serviceApiCompiler.getResponseBodyConverter(className, typeAdapter, type, gson)
     }
 }

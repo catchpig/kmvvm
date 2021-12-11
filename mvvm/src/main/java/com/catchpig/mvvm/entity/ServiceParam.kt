@@ -4,7 +4,6 @@ import okhttp3.Interceptor
 
 data class ServiceParam(
     val baseUrl: String,
-    val converter: Class<*>,
     val connectTimeout: Long,
     val readTimeout: Long,
     val interceptors: MutableList<Interceptor>,

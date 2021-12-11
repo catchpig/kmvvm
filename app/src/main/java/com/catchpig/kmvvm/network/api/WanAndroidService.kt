@@ -14,7 +14,7 @@ import retrofit2.http.Query
 
 @ServiceApi(
     baseUrl = "https://www.wanandroid.com/",
-    converter = ResponseBodyConverter::class,
+    responseConverter = ResponseBodyConverter::class,
     interceptors = [RequestInterceptor::class],
     debugInterceptors = [OkHttpProfilerInterceptor::class]
 )
