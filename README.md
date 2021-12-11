@@ -395,7 +395,7 @@ bodyBinding.refresh.run {
 ```kotlin
 @ServiceApi(
     baseUrl = "https://www.wanandroid.com/",
-    factory = WanAndroidConverterFactory::class,
+    responseConverter = ResponseBodyConverter::class,
     interceptors = [RequestInterceptor::class],
     debugInterceptors = [OkHttpProfilerInterceptor::class]
 )
@@ -510,14 +510,14 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 
 #### 7.12 [ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
 
-| 属性           |    类型     | 必须 | 默认                 | 说明              |
-| -------------- | :---------: | :--- | :------------------- | :---------------- |
-| baseUrl        |   String    | 是   | 无                   | retrofit的baseurl |
-| factory        |   Factory   | 否   | GsonConverterFactory | 数据转换器        |
-| connectTimeout |    Long     | 否   | 5000                 | http的超时时间    |
-| readTimeout    |    Long     | 否   | 5000                 | http读取超时时间  |
-| interceptors   | Interceptor | 否   | Interceptor          | http拦截器        |
-| debugInterceptors   | Interceptor | 否   | Interceptor          | debug模式下的http拦截器,只有NetManager.setDebug(true),才会生效        |
+| 属性              |    类型      | 必须 | 默认                 | 说明              |
+| --------------   | :---------: | :--- | :-------------------| :---------------- |
+| baseUrl          |   String    | 是   | 无                   | retrofit的baseurl |
+| responseConverter|   Converter | 是   | 无                   | 接收数据转换器        |
+| connectTimeout   |    Long     | 否   | 5000                 | http的超时时间    |
+| readTimeout      |    Long     | 否   | 5000                 | http读取超时时间  |
+| interceptors     | Interceptor | 否   | Interceptor          | http拦截器        |
+| debugInterceptors| Interceptor | 否   | Interceptor          | debug模式下的http拦截器,只有NetManager.setDebug(true),才会生效 |
 
 ### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 
