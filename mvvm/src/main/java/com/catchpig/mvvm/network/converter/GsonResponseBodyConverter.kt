@@ -8,13 +8,13 @@ import com.google.gson.stream.JsonToken
 import okhttp3.ResponseBody
 import retrofit2.Converter
 
-class GsonResponseBodyConverter<T> : Converter<ResponseBody, T> {
+class GsonResponseBodyConverter : Converter<ResponseBody, Any> {
     lateinit var gson: Gson
-    lateinit var adapter: TypeAdapter<T>
-    override fun convert(value: ResponseBody): T? {
+    lateinit var typeAdapter: TypeAdapter<Any>
+    override fun convert(value: ResponseBody): Any? {
         val jsonReader: JsonReader = gson.newJsonReader(value.charStream())
         return value.use {
-            val result: T = adapter.read(jsonReader)
+            val result: Any = typeAdapter.read(jsonReader)
             if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
                 throw JsonIOException("JSON document was not fully consumed.")
             }

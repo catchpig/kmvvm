@@ -16,7 +16,7 @@ open abstract class BaseResponseBodyConverter<T> : Converter<ResponseBody, T> {
         private const val STRING_EMPTY = "\"\""
         private const val NUMBER_ZERO = "0"
     }
-    lateinit var typeAdapter: TypeAdapter<T>
+    lateinit var typeAdapter: TypeAdapter<out T>
     lateinit var responseType: Type
     lateinit var gson: Gson
 
