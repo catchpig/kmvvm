@@ -189,7 +189,7 @@ class MvvmGlobalConfig : IGlobalConfig {
     }
 
     override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
-        return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, 	         false)
     }
     
     override fun getPageSize(): Int {
@@ -223,7 +223,6 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>()
 class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
-        SnackbarManager.show(bodyBinding.root, "第一个图标按钮点击生效")
         updateTitle("更改标题")
     }
 }

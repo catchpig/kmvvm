@@ -1,11 +1,11 @@
 package com.catchpig.kmvvm.network.api
 
 import com.catchpig.annotation.ServiceApi
-import com.catchpig.kmvvm.network.WanAndroidConverterFactory
+import com.catchpig.kmvvm.network.ResponseBodyConverter
 
 @ServiceApi(
     baseUrl = "https://www.wanandroid.com/ad/",
-    factory = WanAndroidConverterFactory::class
+    converter = ResponseBodyConverter::class,
 )
 interface OtherService {
 }

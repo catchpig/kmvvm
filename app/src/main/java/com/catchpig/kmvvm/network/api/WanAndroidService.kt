@@ -4,8 +4,8 @@ import com.catchpig.annotation.ServiceApi
 import com.catchpig.kmvvm.entity.Article
 import com.catchpig.kmvvm.entity.Banner
 import com.catchpig.kmvvm.entity.PageData
+import com.catchpig.kmvvm.network.ResponseBodyConverter
 import com.catchpig.kmvvm.network.interceptor.RequestInterceptor
-import com.catchpig.kmvvm.network.WanAndroidConverterFactory
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,7 +14,7 @@ import retrofit2.http.Query
 
 @ServiceApi(
     baseUrl = "https://www.wanandroid.com/",
-    factory = WanAndroidConverterFactory::class,
+    converter = ResponseBodyConverter::class,
     interceptors = [RequestInterceptor::class],
     debugInterceptors = [OkHttpProfilerInterceptor::class]
 )

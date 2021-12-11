@@ -16,6 +16,7 @@ class MessageFlowError : IFlowError {
     }
 
     override fun onError(any: Any, t: Throwable) {
+        t.printStackTrace()
         t.message?.let {
             when (any) {
                 is BaseActivity<*> -> {

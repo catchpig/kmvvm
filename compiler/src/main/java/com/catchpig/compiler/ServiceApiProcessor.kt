@@ -68,12 +68,11 @@ class ServiceApiProcessor : BaseProcessor() {
             val packageName = clsName.packageName
             warning(TAG, "${className}被ServiceApi注解")
             val service = typeElement.getAnnotation(ServiceApi::class.java)
-            val factory = try {
-                service.factory
+            val converter = try {
+                service.converter
             } catch (e: MirroredTypeException) {
                 e.typeMirror
             }
-
             val inteceptors = try {
                 service.interceptors.toList()
             } catch (e: MirroredTypesException) {
@@ -112,11 +111,10 @@ class ServiceApiProcessor : BaseProcessor() {
                 }
             }
             constructorBuilder = constructorBuilder.addStatement(
-                "serviceMap.put(%S, %T(%S, %T.create(), %L, %L, $interceptorName,$debugInterceptorName))",
+                "serviceMap.put(%S, %T(%S, Class.forName(\"${converter}\"), %L, %L, $interceptorName,$debugInterceptorName))",
                 "$packageName.$className",
                 CLASS_NAME_SERVICE_PARAM,
                 service.baseUrl,
-                factory,
                 service.connectTimeout,
                 service.readTimeout,
             )

@@ -2,6 +2,8 @@ package com.catchpig.mvvm.network.manager
 
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.entity.ServiceParam
+import com.catchpig.mvvm.network.covert.BaseResponseBodyConverter
+import com.catchpig.mvvm.network.factory.MvvmGsonCovertFactory
 import com.catchpig.utils.ext.logd
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,7 +30,7 @@ object NetManager {
                 .baseUrl(serviceParam.baseUrl)
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .client(getClient(serviceParam))
-                .addConverterFactory(serviceParam.factory)
+                .addConverterFactory(MvvmGsonCovertFactory.create(serviceParam.converter as Class<out BaseResponseBodyConverter<*>>))
                 .build()
                 .create(serviceClass)
             serviceMap[className] = newService!!

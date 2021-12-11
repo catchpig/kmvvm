@@ -1,8 +1,7 @@
 package com.catchpig.annotation
 
 import okhttp3.Interceptor
-import retrofit2.Converter.Factory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Converter
 import kotlin.reflect.KClass
 
 /**
@@ -20,7 +19,7 @@ annotation class ServiceApi(
     /**
      * 数据转换器
      */
-    val factory: KClass<out Factory> = GsonConverterFactory::class,
+    val converter: KClass<out Converter<*, *>>,
     /**
      * 连接超时时间(毫秒)
      */
