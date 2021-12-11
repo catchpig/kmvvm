@@ -5,7 +5,7 @@ import com.catchpig.mvvm.network.data.BaseResponseData
 import kotlin.reflect.KClass
 
 class ResponseBodyConverter :
-    BaseResponseBodyConverter<Any>() {
+    BaseResponseBodyConverter() {
     override fun getResultClass(): KClass<out BaseResponseData<*>> {
         return Result::class
     }

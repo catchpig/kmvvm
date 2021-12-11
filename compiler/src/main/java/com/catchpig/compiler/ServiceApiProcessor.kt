@@ -31,8 +31,6 @@ class ServiceApiProcessor : BaseProcessor() {
         private val CLASS_NAME_GSON = ClassName("com.google.gson", "Gson")
         private val CLASS_NAME_BASE_RESPONSE_BODY_CONVERTER =
             ClassName("com.catchpig.mvvm.network.converter", "BaseResponseBodyConverter")
-        private val CLASS_NAME_BASE_RESPONSE_BODY_CONVERTER_OF_ANY =
-            CLASS_NAME_BASE_RESPONSE_BODY_CONVERTER.parameterizedBy(ANY)
         private val CLASS_NAME_GSON_RESPONSE_BODY_CONVERTER =
             ClassName("com.catchpig.mvvm.network.converter", "GsonResponseBodyConverter")
         private val CLASS_NAME_CONVERTER =
@@ -190,7 +188,7 @@ class ServiceApiProcessor : BaseProcessor() {
             .addStatement("  }")
             .addStatement("}")
             .addStatement("when(bodyConverter){")
-            .addStatement("  is %T ->{", CLASS_NAME_BASE_RESPONSE_BODY_CONVERTER_OF_ANY)
+            .addStatement("  is %T ->{", CLASS_NAME_BASE_RESPONSE_BODY_CONVERTER)
             .addStatement("   bodyConverter.gson = gson")
             .addStatement("   bodyConverter.typeAdapter = typeAdapter")
             .addStatement("   bodyConverter.responseType = type")

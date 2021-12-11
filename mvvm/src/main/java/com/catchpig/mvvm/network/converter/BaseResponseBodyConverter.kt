@@ -9,20 +9,21 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
-open abstract class BaseResponseBodyConverter<T> : Converter<ResponseBody, T> {
+open abstract class BaseResponseBodyConverter : Converter<ResponseBody, Any> {
     companion object {
         private const val LIST_EMPTY = "[]"
         private const val MAP_EMPTY = "{}"
         private const val STRING_EMPTY = "\"\""
         private const val NUMBER_ZERO = "0"
     }
-    lateinit var typeAdapter: TypeAdapter<out T>
+
+    lateinit var typeAdapter: TypeAdapter<Any>
     lateinit var responseType: Type
     lateinit var gson: Gson
 
     abstract fun getResultClass(): KClass<out BaseResponseData<*>>
 
-    override fun convert(value: ResponseBody): T? {
+    override fun convert(value: ResponseBody): Any? {
         value.use { value ->
             val valueString = value.string()
             val result: BaseResponseData<*> = gson.fromJson(valueString, getResultClass().java)
