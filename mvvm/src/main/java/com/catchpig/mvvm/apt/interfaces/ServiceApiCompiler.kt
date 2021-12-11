@@ -1,7 +1,6 @@
 package com.catchpig.mvvm.apt.interfaces
 
 import com.catchpig.mvvm.entity.ServiceParam
-import com.catchpig.mvvm.network.covert.BaseResponseBodyConverter
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import okhttp3.ResponseBody

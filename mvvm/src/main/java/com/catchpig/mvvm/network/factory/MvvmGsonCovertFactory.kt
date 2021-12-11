@@ -1,7 +1,7 @@
 package com.catchpig.mvvm.network.factory
 
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
-import com.catchpig.mvvm.network.covert.RequestBodyConverter
+import com.catchpig.mvvm.network.converter.GsonRequestBodyConverter
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.reflect.TypeToken
@@ -29,7 +29,7 @@ class MvvmGsonCovertFactory(private val serviceClassName: String) :
         retrofit: Retrofit
     ): Converter<*, RequestBody>? {
         val adapter: TypeAdapter<out Any> = gson.getAdapter(TypeToken.get(type))
-        return RequestBodyConverter(adapter, gson)
+        return GsonRequestBodyConverter(adapter, gson)
     }
 
     override fun responseBodyConverter(

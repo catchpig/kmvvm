@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.network.covert
+package com.catchpig.mvvm.network.converter
 
 import com.catchpig.mvvm.network.data.BaseResponseData
 import com.google.gson.Gson
@@ -9,17 +9,16 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
-open abstract class BaseResponseBodyConverter<T>(
-    var typeAdapter: TypeAdapter<T>,
-    var responseType: Type,
-    var gson: Gson
-) : Converter<ResponseBody, T> {
+open abstract class BaseResponseBodyConverter<T> : Converter<ResponseBody, T> {
     companion object {
         private const val LIST_EMPTY = "[]"
         private const val MAP_EMPTY = "{}"
         private const val STRING_EMPTY = "\"\""
         private const val NUMBER_ZERO = "0"
     }
+    lateinit var typeAdapter: TypeAdapter<T>
+    lateinit var responseType: Type
+    lateinit var gson: Gson
 
     abstract fun getResultClass(): KClass<out BaseResponseData<*>>
 

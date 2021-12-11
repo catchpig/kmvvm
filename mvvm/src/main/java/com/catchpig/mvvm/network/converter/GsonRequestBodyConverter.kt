@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.network.covert
+package com.catchpig.mvvm.network.converter
 
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
@@ -9,7 +9,7 @@ import okio.Buffer
 import retrofit2.Converter
 import java.io.OutputStreamWriter
 
-class RequestBodyConverter<T>(
+class GsonRequestBodyConverter<T>(
     private val typeAdapter: TypeAdapter<T>,
     private val gson: Gson
 ) : Converter<T, RequestBody> {
