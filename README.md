@@ -1,9 +1,11 @@
 ## Gitee 地址:[kmvvm](https://gitee.com/catchpig/kmvvm)
+
 [![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm)
 
 ****
 
 ## Github 地址:[kmvvm](https://github.com/catchpig/kmvvm)
+
 [![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)
 
 ****
@@ -34,10 +36,10 @@
 
 ```groovy
 allprojects {
-     repositories {
-       maven { url 'https://jitpack.io' }
-     }
- }
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
 
 ### 2. 在app的build.gradle的添加
@@ -55,6 +57,7 @@ buildFeatures {
 ```
 
 ### 4. 添加依赖
+
 > Gitee
 
 ```groovy
@@ -136,20 +139,22 @@ interface IGlobalConfig {
      * @return ViewBinding
      */
     fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
-    
+
     /**
      * 刷新每页加载个数
      * @return Int
      */
-    fun getPageSize():Int
+    fun getPageSize(): Int
 
     /**
      * 刷新起始页的index(有些后台设置的0,有些后台设置1)
      */
-    fun getStartPageIndex():Int
+    fun getStartPageIndex(): Int
 }
 ```
-+ 实现[IGlobalConfig](./annotation/src/main/java/com/catchpig/annotation/IGlobalConfig.kt)接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
+
++ 实现[IGlobalConfig](./annotation/src/main/java/com/catchpig/annotation/IGlobalConfig.kt)
+  接口,并在实现类上加上注解[GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)
 
 > 使用示例:
 
@@ -189,9 +194,9 @@ class MvvmGlobalConfig : IGlobalConfig {
     }
 
     override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
-        return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, 	         false)
+        return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
-    
+
     override fun getPageSize(): Int {
         return 16
     }
@@ -218,7 +223,9 @@ class MvvmGlobalConfig : IGlobalConfig {
 @Title(R.string.child_title)
 class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() 
 ```
+
 > **如果标题栏文字要根据接口显示不同的文字,也有接口设置**
+
 ```kotlin
 class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     @OnClickFirstDrawable(R.drawable.more)
@@ -260,7 +267,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
         SnackbarManager.show(bodyBinding.root, "第一个文字按钮点击生效")
         updateTitle("12354")
     }
-    
+
     @OnClickSecondDrawable(R.drawable.more)
     fun clickSecondDrawable(v: View) {
         SnackbarManager.show(bodyBinding.root, "第二个图标按钮点击生效")
@@ -313,7 +320,9 @@ snackbar.setOnClickListener {
 
 ### 4. RecycleView
 
-+ Adapter可以继承RecycleAdapter来使用,并在类上添加注解[Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt),RecycleAdapter使用了ViewBanding,只需要实现以下一个方法
++
+Adapter可以继承RecycleAdapter来使用,并在类上添加注解[Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)
+,RecycleAdapter使用了ViewBanding,只需要实现以下一个方法
 
 > 使用示例
 
@@ -333,7 +342,8 @@ class UserAdapter(iPageControl: IPageControl) :
 ### 5.刷新分页控件([RefreshRecyclerView](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshRecyclerView.kt))
 
 + RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
-+ 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
++
+不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
 + 只需要设置LayoutManager和RecyclerAdapter,提供了setLayoutManager和setAdapter方法
 + 在获取到数据的时候调用updateData方法
 + 获取数据失败的时候调用updateError方法
@@ -346,52 +356,41 @@ class UserAdapter(iPageControl: IPageControl) :
 </declare-styleable>
 ```
 
-
-
->  使用示例
+> 使用示例
 
 ```xml
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="文章"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+
+    <TextView android:layout_width="match_parent" android:layout_height="50dp"
+        android:background="@color/colorPrimary" android:gravity="center" android:text="文章"
         android:textColor="@color/color_white" />
 
-    <com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.catchpig.mvvm.widget.refresh.RefreshRecyclerView android:id="@+id/refresh"
+        android:layout_width="match_parent" android:layout_height="match_parent"
         app:recycler_background="#445467">
 
     </com.catchpig.mvvm.widget.refresh.RefreshRecyclerView>
 </LinearLayout>
 ```
 
-
-
 ```kotlin
 bodyBinding.refresh.run {
-   setOnRefreshLoadMoreListener { nextPageIndex ->
-       lifecycleFlowRefresh(viewModel.queryArticles(nextPageIndex), this)
-   }
+    setOnRefreshLoadMoreListener { nextPageIndex ->
+        lifecycleFlowRefresh(viewModel.queryArticles(nextPageIndex), this)
+    }
 }
 ```
 
-
-
 ### 6. 网络请求
 
-+ 只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt),并使用NetManager.getService()获取对应的接口类
++ 只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)
+  ,并使用NetManager.getService()获取对应的接口类
 
 > 使用示例
+
 ```kotlin
 @ServiceApi(
     baseUrl = "https://www.wanandroid.com/",
@@ -400,10 +399,11 @@ bodyBinding.refresh.run {
     debugInterceptors = [OkHttpProfilerInterceptor::class]
 )
 interface WanAndroidService {
-  @GET("banner/json")
-  suspend fun banner(): List<Banner>
+    @GET("banner/json")
+    suspend fun banner(): List<Banner>
 }
 ```
+
 ```kotlin
 object WanAndroidRepository {
     private val wanAndroidService = NetManager.getService(WanAndroidService::class.java)
@@ -439,10 +439,11 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 ```
 
 + Activity和Fragment封装了网络请求方法(带lifecycleScope)
-  + lifecycleFlowRefresh(flow: Flow<MutableList<T>>,refresh: RefreshRecyclerView)-刷新+RecycleView的网络请求封装
-  + lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)-不带loading的网络请求封装
-  + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
-  + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
+    + lifecycleFlowRefresh(flow: Flow<MutableList<T>>,refresh: RefreshRecyclerView)
+      -刷新+RecycleView的网络请求封装
+    + lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)-不带loading的网络请求封装
+    + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
+    + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
 ### 7. 注解使用
 
@@ -521,14 +522,15 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 
 ### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 
-+ 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
-  ```kotlin
-  DownloadManager.download(downloadUrl, {
-          
-      }, { readLength, countLength ->
-          progressLiveData.value = (readLength * 100 / countLength).toInt()
-      })
-  ```
++
+单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
+```kotlin
+DownloadManager.download(downloadUrl, {
+        
+    }, { readLength, countLength ->
+        progressLiveData.value = (readLength * 100 / countLength).toInt()
+    })
+```
     * DownloadCallback
 
         ```kotlin
@@ -563,12 +565,13 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
             fun onError(t:Throwable)
         }
         ```
-+ 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
-  ```kotlin
-  DownloadManager.multiDownload(downloadUrls, {
-          
-      })
-  ```
++
+多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
+```kotlin
+DownloadManager.multiDownload(downloadUrls, {
+        
+    })
+```
     * MultiDownloadCallback
         ```kotlin
         interface MultiDownloadCallback {
@@ -621,6 +624,8 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 ### [AndroidUtilKTX](https://github.com/lulululbj/AndroidUtilCodeKTX) - 工具类
 
 ### [LoadingView](https://github.com/catch-pig/LoadingView) - Loading动画
+
+### [coroutines](https://github.com/Kotlin/kotlinx.coroutines) - 协程
 
 ## 其他
 
