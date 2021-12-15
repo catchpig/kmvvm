@@ -5,7 +5,7 @@ interface BaseResponseData<T> {
      * 返回数据
      * @return T
      */
-    fun data(): T
+    fun data(): T?
 
     /**
      * 成功返回数据

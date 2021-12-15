@@ -37,7 +37,6 @@ class MvvmGsonCovertFactory(private val serviceClassName: String) :
         annotations: Array<Annotation>,
         retrofit: Retrofit
     ): Converter<ResponseBody, *>? {
-        val typeAdapter: TypeAdapter<Any> = gson.getAdapter(TypeToken.get(type)) as TypeAdapter<Any>
-        return KotlinMvvmCompiler.getResponseBodyConverter(serviceClassName, typeAdapter, type, gson)
+        return KotlinMvvmCompiler.getResponseBodyConverter(serviceClassName, type)
     }
 }

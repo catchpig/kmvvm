@@ -1,15 +1,19 @@
 package com.catchpig.mvvm.network.converter
 
 import com.catchpig.mvvm.network.data.BaseResponseData
-import com.google.gson.Gson
-import com.google.gson.TypeAdapter
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.serializer
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
-open abstract class BaseResponseBodyConverter : Converter<ResponseBody, Any> {
+open abstract class BaseResponseBodyConverter :
+    Converter<ResponseBody, Any> {
     companion object {
         private const val LIST_EMPTY = "[]"
         private const val MAP_EMPTY = "{}"
@@ -17,27 +21,36 @@ open abstract class BaseResponseBodyConverter : Converter<ResponseBody, Any> {
         private const val NUMBER_ZERO = "0"
     }
 
-    lateinit var typeAdapter: TypeAdapter<Any>
-    lateinit var responseType: Type
-    lateinit var gson: Gson
+    lateinit var type: Type
 
-    abstract fun getResultClass(): KClass<out BaseResponseData<*>>
+    abstract fun getResultClass(): KClass<out BaseResponseData<JsonElement>>
 
     override fun convert(value: ResponseBody): Any? {
-        value.use { value ->
-            val valueString = value.string()
-            val result: BaseResponseData<*> = gson.fromJson(valueString, getResultClass().java)
-            when (result.getErrorCode()) {
-                result.isSuccess() -> {
-                    val data = result.data()
-                    return if (data == null) {
-                        typeAdapter.fromJson(checkType(responseType))
-                    } else {
-                        typeAdapter.fromJson(gson.toJson(data))
-                    }
+        val valueString = value.string()
+        val kSerializer: KSerializer<Any> =
+            Json.serializersModule.serializer(getResultClass().java)
+        val result: BaseResponseData<JsonElement> =
+            Json.decodeFromString(kSerializer, valueString) as BaseResponseData<JsonElement>
+        when (result.getErrorCode()) {
+            result.isSuccess() -> {
+                val data = result.data()
+                return if (data == null) {
+                    Json {
+                        ignoreUnknownKeys = true
+                    }.decodeFromString(
+                        Json.serializersModule.serializer(type),
+                        checkType(type)
+                    )
+                } else {
+                    Json {
+                        ignoreUnknownKeys = true
+                    }.decodeFromString(
+                        Json.serializersModule.serializer(type),
+                        Json.encodeToString(data)
+                    )
                 }
-                else -> throw handlerErrorCode(result.getErrorCode(), result.getErrorMessage())
             }
+            else -> throw handlerErrorCode(result.getErrorCode(), result.getErrorMessage())
         }
     }
 

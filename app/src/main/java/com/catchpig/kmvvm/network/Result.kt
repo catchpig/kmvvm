@@ -1,14 +1,20 @@
 package com.catchpig.kmvvm.network
 
 import com.catchpig.mvvm.network.data.BaseResponseData
+import kotlinx.serialization.Required
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 
-data class Result<T>(val errorCode: Int, val errorMsg: String, val data: T) :
-    BaseResponseData<T> {
+@Serializable
+data class Result(val errorCode: Int, val errorMsg: String?, val data: JsonElement?) :
+    BaseResponseData<JsonElement> {
     companion object {
         const val SUCCESS_CODE = "0"
     }
 
-    override fun data(): T {
+    override fun data(): JsonElement? {
         return data
     }
 
@@ -21,6 +27,6 @@ data class Result<T>(val errorCode: Int, val errorMsg: String, val data: T) :
     }
 
     override fun getErrorMessage(): String {
-        return errorMsg
+        return errorMsg!!
     }
 }

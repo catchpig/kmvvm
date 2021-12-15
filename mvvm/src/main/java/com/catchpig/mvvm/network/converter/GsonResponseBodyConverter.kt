@@ -1,24 +1,16 @@
 package com.catchpig.mvvm.network.converter
 
-import com.google.gson.Gson
-import com.google.gson.JsonIOException
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonToken
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import okhttp3.ResponseBody
 import retrofit2.Converter
+import java.lang.reflect.Type
 
 class GsonResponseBodyConverter : Converter<ResponseBody, Any> {
-    lateinit var gson: Gson
-    lateinit var typeAdapter: TypeAdapter<Any>
+    lateinit var type: Type
     override fun convert(value: ResponseBody): Any? {
-        val jsonReader: JsonReader = gson.newJsonReader(value.charStream())
-        return value.use {
-            val result: Any = typeAdapter.read(jsonReader)
-            if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
-                throw JsonIOException("JSON document was not fully consumed.")
-            }
-            result
-        }
+        return Json {
+            ignoreUnknownKeys = true
+        }.decodeFromString(Json.serializersModule.serializer(type), value.string())
     }
 }

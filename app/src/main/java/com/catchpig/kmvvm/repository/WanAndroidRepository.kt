@@ -6,6 +6,7 @@ import com.catchpig.kmvvm.network.api.OtherService
 import com.catchpig.kmvvm.network.api.WanAndroidService
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.network.manager.NetManager
+import com.catchpig.utils.ext.md5
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -16,6 +17,7 @@ object WanAndroidRepository {
     fun getBanners(): Flow<MutableList<Banner>> {
         return flow {
             val result = otherService.queryBanner()
+            wanAndroidService.login("zhuazhu","123456")
             emit(wanAndroidService.queryBanner())
         }
     }

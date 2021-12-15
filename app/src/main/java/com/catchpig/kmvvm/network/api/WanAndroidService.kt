@@ -7,9 +7,7 @@ import com.catchpig.kmvvm.entity.PageData
 import com.catchpig.kmvvm.network.ResponseBodyConverter
 import com.catchpig.kmvvm.network.interceptor.RequestInterceptor
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 @ServiceApi(
@@ -19,6 +17,16 @@ import retrofit2.http.Query
     debugInterceptors = [OkHttpProfilerInterceptor::class]
 )
 interface WanAndroidService {
+
+    @POST("user/register")
+    suspend fun register(@Body map: Map<String, String>): String
+
+    @FormUrlEncoded
+    @POST("user/login")
+    suspend fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): String
 
     @GET("banner/json")
     suspend fun queryBanner(): MutableList<Banner>

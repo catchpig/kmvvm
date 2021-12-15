@@ -12,8 +12,6 @@ import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.exception.AptAdapterException
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 import com.catchpig.utils.ext.logd
-import com.google.gson.Gson
-import com.google.gson.TypeAdapter
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import java.lang.reflect.Type
@@ -76,10 +74,8 @@ object KotlinMvvmCompiler {
 
     fun getResponseBodyConverter(
         className: String,
-        typeAdapter: TypeAdapter<Any>,
-        type: Type,
-        gson: Gson
+        type: Type
     ): Converter<ResponseBody, Any>? {
-        return serviceApiCompiler.getResponseBodyConverter(className, typeAdapter, type, gson)
+        return serviceApiCompiler.getResponseBodyConverter(className, type)
     }
 }
