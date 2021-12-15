@@ -13,7 +13,7 @@ import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
 open abstract class BaseResponseBodyConverter :
-    Converter<ResponseBody, Any> {
+        Converter<ResponseBody, Any> {
     companion object {
         private const val LIST_EMPTY = "[]"
         private const val MAP_EMPTY = "{}"
@@ -28,9 +28,9 @@ open abstract class BaseResponseBodyConverter :
     override fun convert(value: ResponseBody): Any? {
         val valueString = value.string()
         val kSerializer: KSerializer<Any> =
-            Json.serializersModule.serializer(getResultClass().java)
+                Json.serializersModule.serializer(getResultClass().java)
         val result: BaseResponseData<JsonElement> =
-            Json.decodeFromString(kSerializer, valueString) as BaseResponseData<JsonElement>
+                Json.decodeFromString(kSerializer, valueString) as BaseResponseData<JsonElement>
         when (result.getErrorCode()) {
             result.isSuccess() -> {
                 val data = result.data()
@@ -38,15 +38,15 @@ open abstract class BaseResponseBodyConverter :
                     Json {
                         ignoreUnknownKeys = true
                     }.decodeFromString(
-                        Json.serializersModule.serializer(type),
-                        checkType(type)
+                            serializer(type),
+                            checkType(type)
                     )
                 } else {
                     Json {
                         ignoreUnknownKeys = true
                     }.decodeFromString(
-                        Json.serializersModule.serializer(type),
-                        Json.encodeToString(data)
+                            serializer(type),
+                            Json.encodeToString(data)
                     )
                 }
             }

@@ -6,7 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 import java.lang.reflect.Type
 
-class GsonResponseBodyConverter : Converter<ResponseBody, Any> {
+class SerializationResponseBodyConverter : Converter<ResponseBody, Any> {
     lateinit var type: Type
     override fun convert(value: ResponseBody): Any? {
         return Json {

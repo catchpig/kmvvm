@@ -27,12 +27,10 @@ class ServiceApiProcessor : BaseProcessor() {
         private val CLASS_NAME_INTERCEPTOR =
             ClassName("okhttp3", "Interceptor")
         private val CLASS_NAME_TYPE_ADAPTER = ClassName("com.google.gson", "TypeAdapter")
-        private val CLASS_NAME_TYPE_ADAPTER_OF_ANY = CLASS_NAME_TYPE_ADAPTER.parameterizedBy(ANY)
-        private val CLASS_NAME_GSON = ClassName("com.google.gson", "Gson")
         private val CLASS_NAME_BASE_RESPONSE_BODY_CONVERTER =
             ClassName("com.catchpig.mvvm.network.converter", "BaseResponseBodyConverter")
         private val CLASS_NAME_GSON_RESPONSE_BODY_CONVERTER =
-            ClassName("com.catchpig.mvvm.network.converter", "GsonResponseBodyConverter")
+            ClassName("com.catchpig.mvvm.network.converter", "SerializationResponseBodyConverter")
         private val CLASS_NAME_CONVERTER =
             ClassName("retrofit2", "Converter")
         private val CLASS_NAME_RESPONSE_BODY = ClassName("okhttp3", "ResponseBody")

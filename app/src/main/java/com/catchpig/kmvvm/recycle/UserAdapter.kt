@@ -15,7 +15,7 @@ class UserAdapter : RecyclerAdapter<User, ItemUserBinding>() {
 
     override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
         holder.viewBanding {
-            name.text = m.name
+            name.text = m.username
         }
     }
 }

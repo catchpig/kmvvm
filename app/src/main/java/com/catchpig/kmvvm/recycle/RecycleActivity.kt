@@ -31,7 +31,7 @@ class RecycleActivity : BaseActivity<ActivityRecycleBinding>() {
     private fun initAdapter() {
         var userAdapter = UserAdapter()
         userAdapter.setOnItemClickListener { _, m, _ ->
-            snackBar(m.name)
+            snackBar(m.username)
         }
         bodyBinding.refresh.run {
             var linearLayoutManager = LinearLayoutManager(this@RecycleActivity)
