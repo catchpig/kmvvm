@@ -386,8 +386,7 @@ bodyBinding.refresh.run {
 
 ### 6. 网络请求
 
-+ 只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)
-  ,并使用NetManager.getService()获取对应的接口类
+#### 6.1只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt),并使用NetManager.getService()获取对应的接口类
 
 > 使用示例
 
@@ -438,12 +437,50 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 }
 ```
 
-+ Activity和Fragment封装了网络请求方法(带lifecycleScope)
-    + lifecycleFlowRefresh(flow: Flow<MutableList<T>>,refresh: RefreshRecyclerView)
-      -刷新+RecycleView的网络请求封装
-    + lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)-不带loading的网络请求封装
-    + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
-    + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
+#### 6.2 Response转换器
+
+##### 6.2.1
+
++ 一般Response发返回结果会是如下
+
+```json
+{
+	code:"SUCCESS",
+	errorMsg:"成功",
+	data:...
+}
+```
+
++ 在code返回SUCEESSD的时候, 我们在Retrofit的Api接口里面只想拿到data的数据做返回,我们想在Converter里面处理掉code返回错误码的逻辑,就可以继承[BaseResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/BaseResponseBodyConverter.kt),内部已经实现了将response转化为data的逻辑
+
+> 代码示例
+
+```
+class ResponseBodyConverter :
+    BaseResponseBodyConverter() {
+    override fun getResultClass(): KClass<out BaseResponseData<JsonElement>> {
+        return Result::class
+    }
+
+    override fun handlerErrorCode(errorCode: String, msg: String): Exception {
+        return NullPointerException()
+    }
+}
+```
+
++ 再将实现了BaseResponseBodyConverter的类加到ServiceApi注解的responseConverter属性上
+
+##### 6.2.2
+
++ 如果想直接拿response的结果作为网络请求的返回值,可以直接将[SerializationResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/SerializationResponseBodyConverter.kt)加到ServiceApi注解的responseConverter属性上
+
+#### 6.3 Activity和Fragment封装了网络请求方法(带lifecycleScope)
+
++ lifecycleFlowRefresh(flow: Flow<MutableList<T>>,refresh: RefreshRecyclerView)
+  -刷新+RecycleView的网络请求封装
++ lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)-不带loading的网络请求封装
++ lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
++ lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
 ### 7. 注解使用
 
@@ -532,7 +569,7 @@ DownloadManager.download(downloadUrl, {
     })
 ```
     * DownloadCallback
-
+    
         ```kotlin
         interface DownloadCallback {
             /**
