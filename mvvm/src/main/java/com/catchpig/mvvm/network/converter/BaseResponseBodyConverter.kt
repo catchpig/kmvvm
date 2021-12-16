@@ -37,17 +37,11 @@ open abstract class BaseResponseBodyConverter :
                 return if (data == null) {
                     Json {
                         ignoreUnknownKeys = true
-                    }.decodeFromString(
-                            serializer(type),
-                            checkType(type)
-                    )
+                    }.decodeFromString(serializer(type), checkType(type))
                 } else {
                     Json {
                         ignoreUnknownKeys = true
-                    }.decodeFromString(
-                            serializer(type),
-                            Json.encodeToString(data)
-                    )
+                    }.decodeFromString(serializer(type), Json.encodeToString(data))
                 }
             }
             else -> throw handlerErrorCode(result.getErrorCode(), result.getErrorMessage())

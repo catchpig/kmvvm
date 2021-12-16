@@ -11,6 +11,6 @@ class SerializationResponseBodyConverter : Converter<ResponseBody, Any> {
     override fun convert(value: ResponseBody): Any? {
         return Json {
             ignoreUnknownKeys = true
-        }.decodeFromString(Json.serializersModule.serializer(type), value.string())
+        }.decodeFromString(serializer(type), value.string())
     }
 }
