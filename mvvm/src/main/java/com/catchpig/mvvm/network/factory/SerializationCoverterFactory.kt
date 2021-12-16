@@ -8,12 +8,12 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type
 
-class SerializationCovertFactory(private val serviceClassName: String) :
+class SerializationCoverterFactory(private val serviceClassName: String) :
         Converter.Factory() {
     companion object {
         @JvmStatic
-        fun create(serviceClassName: String): SerializationCovertFactory {
-            return SerializationCovertFactory(serviceClassName)
+        fun create(serviceClassName: String): SerializationCoverterFactory {
+            return SerializationCoverterFactory(serviceClassName)
         }
     }
 
