@@ -664,6 +664,8 @@ DownloadManager.multiDownload(downloadUrls, {
 
 ### [coroutines](https://github.com/Kotlin/kotlinx.coroutines) - 协程
 
+### [serialization](https://github.com/Kotlin/kotlinx.serialization)-序列化
+
 ## 其他
 
 ### 欢迎大家在issue上提出问题,我这边会不定时的看issue,解决问题
