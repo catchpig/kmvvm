@@ -8,7 +8,7 @@ import com.catchpig.mvvm.listener.DownloadCallback
 import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.mvvm.listener.MultiDownloadCallback
 import com.catchpig.mvvm.manager.ContextManager
-import com.catchpig.mvvm.network.download.DownloadService
+import com.catchpig.mvvm.network.api.DownloadService
 import com.catchpig.mvvm.network.download.DownloadSubscriber
 import com.catchpig.mvvm.network.download.MultiDownloadSubscriber
 import io.reactivex.rxjava3.core.Flowable
@@ -300,9 +300,9 @@ object DownloadManager {
      * @return Flowable<String>
      */
     private fun httpDownload(
-        downloadService: DownloadService,
-        url: String,
-        localFilePath: String
+            downloadService: DownloadService,
+            url: String,
+            localFilePath: String
     ): Flowable<String> {
         return downloadService.download(url).subscribeOn(Schedulers.io()).map {
             return@map writeCache(it, localFilePath)
