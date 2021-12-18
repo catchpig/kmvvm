@@ -9,6 +9,7 @@ import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
+import com.catchpig.utils.ext.logd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,6 +20,9 @@ import java.lang.reflect.ParameterizedType
  * @date 2019/4/6 11:07
  */
 abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivity<VB>() {
+    companion object {
+        private const val TAG = "BaseVMActivity"
+    }
 
     val viewModel: VM by lazy {
         var type = javaClass.genericSuperclass
@@ -40,12 +44,14 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
     protected abstract fun initFlow()
 
     fun <T> lifecycleFlowRefresh(
-        flow: Flow<MutableList<T>>,
-        refresh: RefreshRecyclerView
+            flow: Flow<MutableList<T>>,
+            refresh: RefreshRecyclerView
     ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).catch {
                 refresh.updateError()
+            }.onCompletion {
+                "lifecycleFlowRefresh:onCompletion".logd(this@BaseVMActivity.javaClass.simpleName)
             }.collect {
                 refresh.updateData(it)
             }
@@ -53,19 +59,22 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
     }
 
     fun <T> lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit) =
-        lifecycleScope.launch(Dispatchers.Main) {
-            flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
-                KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
-            }.collect {
-                callback(it)
+            lifecycleScope.launch(Dispatchers.Main) {
+                flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
+                    KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
+                }.onCompletion {
+                    "lifecycleFlow:onCompletion".logd(this@BaseVMActivity.javaClass.simpleName)
+                }.collect {
+                    callback(it)
+                }
             }
-        }
 
     fun <T> lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
             }.onCompletion {
+                "lifecycleFlowLoadingView:onCompletion".logd(this@BaseVMActivity.javaClass.simpleName)
                 hideLoadingView()
             }.catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
@@ -80,6 +89,7 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingDialog()
             }.onCompletion {
+                "lifecycleFlowLoadingDialog:onCompletion".logd(this@BaseVMActivity.javaClass.simpleName)
                 hideLoadingView()
             }.catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMActivity, t)

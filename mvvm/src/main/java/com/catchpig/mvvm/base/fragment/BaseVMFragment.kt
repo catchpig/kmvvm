@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
+import com.catchpig.utils.ext.logd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -41,12 +42,14 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
     protected abstract fun initFlow()
 
     fun <T> lifecycleFlowRefresh(
-        flow: Flow<MutableList<T>>,
-        refresh: RefreshRecyclerView
+            flow: Flow<MutableList<T>>,
+            refresh: RefreshRecyclerView
     ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).catch {
                 refresh.updateError()
+            }.onCompletion {
+                "lifecycleFlowRefresh:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
             }.collect {
                 refresh.updateData(it)
             }
@@ -54,19 +57,22 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
     }
 
     fun <T> lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit) =
-        lifecycleScope.launch(Dispatchers.Main) {
-            flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
-                KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
-            }.collect {
-                callback(it)
+            lifecycleScope.launch(Dispatchers.Main) {
+                flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
+                    KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
+                }.onCompletion {
+                    "lifecycleFlow:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
+                }.collect {
+                    callback(it)
+                }
             }
-        }
 
     fun <T> lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
             }.onCompletion {
+                "lifecycleFlowLoadingView:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
                 hideLoading()
             }.catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
@@ -82,6 +88,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingDialog()
             }.onCompletion {
+                "lifecycleFlowLoadingDialog:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
                 hideLoading()
             }.catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
