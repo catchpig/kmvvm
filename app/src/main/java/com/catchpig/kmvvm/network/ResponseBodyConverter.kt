@@ -1,10 +1,9 @@
 package com.catchpig.kmvvm.network
 
 import com.catchpig.mvvm.network.converter.BaseResponseBodyConverter
-import com.catchpig.mvvm.network.data.BaseResponseData
+import com.catchpig.mvvm.network.data.IResponseData
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
 class ResponseBodyConverter :
@@ -13,7 +12,7 @@ class ResponseBodyConverter :
         ignoreUnknownKeys = true
     }
 
-    override fun getResultClass(): KClass<out BaseResponseData<JsonElement>> {
+    override fun getResultClass(): KClass<out IResponseData<JsonElement>> {
         return Result::class
     }
 

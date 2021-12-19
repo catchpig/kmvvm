@@ -1,15 +1,12 @@
 package com.catchpig.kmvvm.network
 
-import com.catchpig.mvvm.network.data.BaseResponseData
-import kotlinx.serialization.Required
+import com.catchpig.mvvm.network.data.IResponseData
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class Result(val errorCode: Int, val errorMsg: String?, val data: JsonElement?) :
-    BaseResponseData<JsonElement> {
+    IResponseData<JsonElement> {
     companion object {
         const val SUCCESS_CODE = "0"
     }

@@ -1,10 +1,9 @@
 package com.catchpig.mvvm.network.converter
 
 import com.catchpig.annotation.interfaces.SerializationConverter
-import com.catchpig.mvvm.network.data.BaseResponseData
+import com.catchpig.mvvm.network.data.IResponseData
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.serializer
 import okhttp3.ResponseBody
@@ -23,14 +22,14 @@ open abstract class BaseResponseBodyConverter :
 
     lateinit var type: Type
 
-    abstract fun getResultClass(): KClass<out BaseResponseData<JsonElement>>
+    abstract fun getResultClass(): KClass<out IResponseData<JsonElement>>
 
     override fun convert(value: ResponseBody): Any? {
         val valueString = value.string()
         val kSerializer: KSerializer<Any> =
                 serializer(getResultClass().java)
-        val result: BaseResponseData<JsonElement> =
-                json.decodeFromString(kSerializer, valueString) as BaseResponseData<JsonElement>
+        val result: IResponseData<JsonElement> =
+                json.decodeFromString(kSerializer, valueString) as IResponseData<JsonElement>
         when (result.getErrorCode()) {
             result.isSuccess() -> {
                 val data = result.data()

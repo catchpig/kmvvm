@@ -1,6 +1,6 @@
 package com.catchpig.mvvm.network.data
 
-interface BaseResponseData<T> {
+interface IResponseData<T> {
     /**
      * 返回数据
      * @return T
