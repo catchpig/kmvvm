@@ -6,11 +6,15 @@ import com.catchpig.kmvvm.adapter.MainAdapter
 import com.catchpig.kmvvm.databinding.ActivityMainBinding
 import com.catchpig.kmvvm.main.viewmodel.MainViewModel
 import com.catchpig.mvvm.base.activity.BaseVMActivity
+import com.catchpig.utils.ext.logd
 import com.gyf.immersionbar.ktx.immersionBar
 
 @StatusBar(transparent = true)
 class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
     ViewPager.OnPageChangeListener {
+    companion object {
+        private const val TAG = "MainActivity"
+    }
 
     private lateinit var mainAdapter: MainAdapter
     override fun initParam() {
@@ -30,7 +34,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun initFlow() {
-
+        "initFlow".logd(TAG)
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {

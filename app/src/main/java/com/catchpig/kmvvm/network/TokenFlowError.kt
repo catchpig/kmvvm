@@ -16,7 +16,6 @@ class TokenFlowError : IFlowError {
     }
 
     override fun onError(any: Any, t: Throwable) {
-
-
+        t.printStackTrace()
     }
 }

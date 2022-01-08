@@ -46,6 +46,7 @@ allprojects {
 
 ```groovy
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
+apply plugin: 'kotlinx-serialization' //序列化
 ```
 
 ### 3. 在app的build.gradle的android下添加
@@ -455,7 +456,7 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 
 > 代码示例
 
-```
+```kotlin
 class ResponseBodyConverter :
     BaseResponseBodyConverter() {
     override fun getResultClass(): KClass<out BaseResponseData<JsonElement>> {
@@ -559,8 +560,8 @@ class ResponseBodyConverter :
 
 ### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
 
-+
-单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
++ 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
+
 ```kotlin
 DownloadManager.download(downloadUrl, {
         
@@ -568,77 +569,121 @@ DownloadManager.download(downloadUrl, {
         progressLiveData.value = (readLength * 100 / countLength).toInt()
     })
 ```
-    * DownloadCallback
+* DownloadCallback
+
+```kotlin
+interface DownloadCallback {
+        /**
+         * 开始下载
+         */
+        fun onStart()
     
-        ```kotlin
-        interface DownloadCallback {
-            /**
-             * 开始下载
-             */
-            fun onStart()
-        
-            /**
-             * 下载成功
-             * @param path 本地保存的地址
-             */
-            fun onSuccess(path:String)
-        
-            /**
-             * 下载完成
-             */
-            fun onComplete()
-        
-            /**
-             * 下载进度
-             * @param readLength 读取的进度
-             * @param countLength 总进度
-             */
-            fun onProgress(readLength:Long,countLength:Long)
-        
-            /**
-             * 下载错误
-             * @param t 错误信息
-             */
-            fun onError(t:Throwable)
-        }
-        ```
-+
-多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
+        /**
+         * 下载成功
+         * @param path 本地保存的地址
+         */
+        fun onSuccess(path:String)
+    
+        /**
+         * 下载完成
+         */
+        fun onComplete()
+    
+        /**
+         * 下载进度
+         * @param readLength 读取的进度
+         * @param countLength 总进度
+         */
+        fun onProgress(readLength:Long,countLength:Long)
+    
+        /**
+         * 下载错误
+         * @param t 错误信息
+         */
+        fun onError(t:Throwable)
+    }
+```
+
++ 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
 ```kotlin
 DownloadManager.multiDownload(downloadUrls, {
         
     })
 ```
-    * MultiDownloadCallback
-        ```kotlin
-        interface MultiDownloadCallback {
-        /**
-        * 开始下载
-        */
-        fun onStart()
-          
-        /**
-        * 下载成功
-        * @param paths 本地保存的地址集
-        */
-        fun onSuccess(paths:MutableList<String>)
-          
-        /**
-        * 下载完成
-        */
-        fun onComplete()
-          
-        /**
-        * 下载错误
-        * @param t 错误信息
-        */
-        fun onError(t:Throwable)
-        }
-        ```
+* MultiDownloadCallback
+```kotlin
+interface MultiDownloadCallback {
+    /**
+    * 开始下载
+    */
+    fun onStart()
+      
+    /**
+    * 下载成功
+    * @param paths 本地保存的地址集
+    */
+    fun onSuccess(paths:MutableList<String>)
+  
+    /**
+    * 下载完成
+    */
+    fun onComplete()
+      
+    /**
+    * 下载错误
+    * @param t 错误信息
+    */
+    fun onError(t:Throwable)
+}
+```
 
 ### 9. 工具库
 
 [utils](./utils/README.md)
+
+### 混淆
+
+```properties
+-keep class com.catchpig.annotation.enums.**
+
+-keep class com.google.android.material.snackbar.Snackbar {*;}
+
+-keep @com.catchpig.annotation.Adapter class * {*;}
+-keep @com.catchpig.annotation.ServiceApi class * {*;}
+
+-keep public class **.databinding.*Binding {*;}
+
+-keep class **.*_Compiler {*;}
+
+-keep class com.gyf.immersionbar.* {*;}
+-dontwarn com.gyf.immersionbar.**
+
+#序列化混淆
+-if @kotlinx.serialization.Serializable class **
+-keepclassmembers class <1> {
+    static <1>$Companion Companion;
+}
+
+# Keep `serializer()` on companion objects (both default and named) of serializable classes.
+-if @kotlinx.serialization.Serializable class ** {
+    static **$* *;
+}
+-keepclassmembers class <1>$<3> {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Keep `INSTANCE.serializer()` of serializable objects.
+-if @kotlinx.serialization.Serializable class ** {
+    public static ** INSTANCE;
+}
+-keepclassmembers class <1> {
+    public static <1> INSTANCE;
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
+-keepattributes RuntimeVisibleAnnotations,AnnotationDefault
+```
 
 ## 第三方库
 
