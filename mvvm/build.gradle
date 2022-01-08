@@ -78,7 +78,7 @@ dependencies {
     // kotlin扩展（可选）
     api "com.gyf.immersionbar:immersionbar-ktx:$immersionbar_version"
     //刷新
-    api "com.scwang.smart:refresh-layout-kernel:$SmartRefreshLayout_version"
+    api "io.github.scwang90:refresh-layout-kernel:$SmartRefreshLayout_version"
 }
 
 apply from: '../publish_aar.gradle'

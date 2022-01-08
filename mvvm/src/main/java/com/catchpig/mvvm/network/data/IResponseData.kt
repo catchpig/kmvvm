@@ -1,6 +1,8 @@
 package com.catchpig.mvvm.network.data
 
-interface IResponseData<T> {
+import kotlinx.serialization.json.JsonElement
+
+interface IResponseData<T : JsonElement> {
     /**
      * 返回数据
      * @return T

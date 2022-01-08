@@ -52,9 +52,9 @@ dependencies {
 //    implementation "com.gitee.catchpig.kmvvm:mvvm:$kotlin_mvvm"
 //    kapt "com.gitee.catchpig.kmvvm:compiler:$kotlin_mvvm"
     //刷新-头部
-    api "com.scwang.smart:refresh-header-material:$SmartRefreshLayout_version"
+    implementation "io.github.scwang90:refresh-header-material:$SmartRefreshLayout_version"
     //刷新-底部
-    implementation "com.scwang.smart:refresh-footer-classics:$SmartRefreshLayout_version"
+    implementation "io.github.scwang90:refresh-footer-classics:$SmartRefreshLayout_version"
     //图片加载框架
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"

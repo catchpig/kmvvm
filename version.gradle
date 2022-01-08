@@ -19,7 +19,7 @@ ext {
     glide_version = '4.12.0'
     immersionbar_version = '3.0.0'
     loading_version = '1.0.2'
-    SmartRefreshLayout_version = '2.0.3'
+    SmartRefreshLayout_version = '2.0.5'
     aspectj_version = '1.9.7'
     auto_service_version = '1.0'
     kotlinpoet_version = '1.10.1'
