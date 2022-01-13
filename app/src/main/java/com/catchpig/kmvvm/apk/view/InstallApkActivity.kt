@@ -31,6 +31,9 @@ class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkV
         viewModel.progressLiveData.observe(this, {
             bodyBinding.progressBar.progress = it
         })
+        viewModel.progressLiveData1.observe(this, {
+            bodyBinding.progressBar1.progress = it
+        })
     }
 
     override fun initFlow() {

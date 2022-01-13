@@ -3,7 +3,6 @@ package com.catchpig.mvvm.network.manager
 import android.os.Environment
 import android.util.ArrayMap
 import com.catchpig.mvvm.ext.io2main
-import com.catchpig.mvvm.network.interceptor.DownloadInterceptor
 import com.catchpig.mvvm.listener.DownloadCallback
 import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.mvvm.listener.MultiDownloadCallback
@@ -11,6 +10,7 @@ import com.catchpig.mvvm.manager.ContextManager
 import com.catchpig.mvvm.network.api.DownloadService
 import com.catchpig.mvvm.network.download.DownloadSubscriber
 import com.catchpig.mvvm.network.download.MultiDownloadSubscriber
+import com.catchpig.mvvm.network.interceptor.DownloadInterceptor
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -128,6 +128,54 @@ object DownloadManager {
 
             }
 
+            override fun onProgress(
+                readLength: Long,
+                countLength: Long,
+                completeCount: Int,
+                TotalCount: Int
+            ) {
+
+            }
+
+            override fun onSuccess(paths: MutableList<String>) {
+                callback(paths)
+            }
+        })
+    }
+
+    /**
+     * 多文件下载
+     * @param downloadUrls Iterable<String>
+     * @param callback Function1<[@kotlin.ParameterName] MutableList<String>, Unit>
+     * @return Disposable
+     */
+    fun multiDownload(
+        downloadUrls: Iterable<String>,
+        callback: (paths: MutableList<String>) -> Unit,
+        progress: (readLength: Long, countLength: Long, completeCount: Int, totalCount: Int) -> Unit
+    ): Disposable {
+        return multiDownload(downloadUrls, object : MultiDownloadCallback {
+            override fun onStart() {
+
+            }
+
+            override fun onComplete() {
+
+            }
+
+            override fun onError(t: Throwable) {
+
+            }
+
+            override fun onProgress(
+                readLength: Long,
+                countLength: Long,
+                completeCount: Int,
+                totalCount: Int
+            ) {
+                progress(readLength, countLength, completeCount, totalCount)
+            }
+
             override fun onSuccess(paths: MutableList<String>) {
                 callback(paths)
             }
@@ -144,7 +192,8 @@ object DownloadManager {
         downloadUrls: Iterable<String>,
         multiDownloadCallback: MultiDownloadCallback
     ): Disposable {
-        val multiDownloadSubscriber = MultiDownloadSubscriber(multiDownloadCallback)
+        val multiDownloadSubscriber =
+            MultiDownloadSubscriber(downloadUrls.count(), multiDownloadCallback)
         return Flowable.fromIterable(downloadUrls).flatMap {
             val localFilePath = localFileName(it)
             val file = File(localFilePath)
@@ -171,7 +220,7 @@ object DownloadManager {
     fun downloadFile(
         downloadUrl: String,
         callback: (file: File) -> Unit,
-        process: (readLength: Long, countLength: Long) -> Unit
+        progress: (readLength: Long, countLength: Long) -> Unit
     ): Disposable {
         return download(downloadUrl, object : DownloadCallback {
             override fun onStart() {
@@ -183,7 +232,7 @@ object DownloadManager {
             }
 
             override fun onProgress(readLength: Long, countLength: Long) {
-                process(readLength, countLength)
+                progress(readLength, countLength)
             }
 
             override fun onError(t: Throwable) {
@@ -300,9 +349,9 @@ object DownloadManager {
      * @return Flowable<String>
      */
     private fun httpDownload(
-            downloadService: DownloadService,
-            url: String,
-            localFilePath: String
+        downloadService: DownloadService,
+        url: String,
+        localFilePath: String
     ): Flowable<String> {
         return downloadService.download(url).subscribeOn(Schedulers.io()).map {
             return@map writeCache(it, localFilePath)
