@@ -3,9 +3,10 @@ package com.catchpig.kmvvm.apk.view
 import android.Manifest
 import com.catchpig.annotation.Title
 import com.catchpig.kmvvm.R
-import com.catchpig.kmvvm.databinding.ActivityInstallApkBinding
 import com.catchpig.kmvvm.apk.viewmodel.InstallApkViewModel
+import com.catchpig.kmvvm.databinding.ActivityInstallApkBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
+import com.catchpig.utils.ext.logd
 import com.tbruyelle.rxpermissions3.RxPermissions
 
 /**
@@ -16,6 +17,11 @@ import com.tbruyelle.rxpermissions3.RxPermissions
 @Title(R.string.download_install_apk)
 class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkViewModel>() {
     private val rxPermissions by lazy { RxPermissions(this) }
+
+    companion object {
+        private const val TAG = "InstallApkActivity"
+    }
+
     override fun initParam() {
 
     }
@@ -29,10 +35,12 @@ class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkV
                 }
             }
         viewModel.progressLiveData.observe(this, {
-            bodyBinding.progressBar.progress = it
+            bodyBinding.progressBar.progress = (it.readLength * 100 / it.totalCount).toInt()
         })
         viewModel.progressLiveData1.observe(this, {
-            bodyBinding.progressBar1.progress = it
+            "${(it.readLength * 100 / it.countLength).toInt()}".logd(TAG)
+            bodyBinding.progressBar1.progress = (it.readLength * 100 / it.countLength).toInt()
+            bodyBinding.progressText.text = "${it.completeCount}/${it.totalCount}"
         })
     }
 

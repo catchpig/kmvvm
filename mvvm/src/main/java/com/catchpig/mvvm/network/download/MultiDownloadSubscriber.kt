@@ -1,5 +1,6 @@
 package com.catchpig.mvvm.network.download
 
+import com.catchpig.mvvm.entity.DownloadProgress
 import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.mvvm.listener.MultiDownloadCallback
 import com.catchpig.utils.ext.logd
@@ -44,8 +45,14 @@ class MultiDownloadSubscriber(
 
     override fun update(read: Long, count: Long, done: Boolean) {
         Flowable.just(done).subscribeOn(AndroidSchedulers.mainThread()).subscribe(Consumer {
-            "progress:$read/$count;$done,completeCount:${paths.size},totalCount:$totalCount".logd(TAG)
-            multiDownloadCallback.onProgress(read, count, paths.size, totalCount)
+            val completeCount = paths.size
+            val downloadProgress = if (done && (completeCount + 1) == totalCount) {
+                DownloadProgress(read, count, totalCount, totalCount)
+            } else {
+                DownloadProgress(read, count, completeCount, totalCount)
+            }
+            "progress:$downloadProgress".logd(TAG)
+            multiDownloadCallback.onProgress(downloadProgress)
         })
     }
 }

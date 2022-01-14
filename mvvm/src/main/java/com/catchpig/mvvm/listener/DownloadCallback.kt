@@ -1,7 +1,10 @@
 package com.catchpig.mvvm.listener
+
+import com.catchpig.mvvm.entity.DownloadProgress
+
 /**
  * 下载回调接口
-  * @author catchpig
+ * @author catchpig
  * @date 2020/11/20 10:25
  */
 interface DownloadCallback {
@@ -14,7 +17,7 @@ interface DownloadCallback {
      * 下载成功
      * @param path 本地保存的地址
      */
-    fun onSuccess(path:String)
+    fun onSuccess(path: String)
 
     /**
      * 下载完成
@@ -23,14 +26,13 @@ interface DownloadCallback {
 
     /**
      * 下载进度
-     * @param readLength 读取的进度
-     * @param countLength 总进度
+     * @param downloadProgress DownloadProgress
      */
-    fun onProgress(readLength:Long,countLength:Long)
+    fun onProgress(downloadProgress: DownloadProgress)
 
     /**
      * 下载错误
      * @param t 错误信息
      */
-    fun onError(t:Throwable)
+    fun onError(t: Throwable)
 }

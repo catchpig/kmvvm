@@ -1,5 +1,6 @@
 package com.catchpig.mvvm.network.download
 
+import com.catchpig.mvvm.entity.DownloadProgress
 import com.catchpig.mvvm.listener.DownloadCallback
 import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.utils.ext.logd
@@ -10,11 +11,12 @@ import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 
 /**
  * 下载观察者
-  * @author catchpig
+ * @author catchpig
  * @date 2020/11/20 10:25
  */
-class DownloadSubscriber(private val downloadCallback: DownloadCallback):ResourceSubscriber<String>(), DownloadProgressListener {
-    companion object{
+class DownloadSubscriber(private val downloadCallback: DownloadCallback) :
+    ResourceSubscriber<String>(), DownloadProgressListener {
+    companion object {
         const val TAG = "DownloadSubscriber"
     }
 
@@ -22,6 +24,7 @@ class DownloadSubscriber(private val downloadCallback: DownloadCallback):Resourc
         super.onStart()
         downloadCallback.onStart()
     }
+
     override fun onNext(t: String) {
         downloadCallback.onSuccess(t)
     }
@@ -38,8 +41,13 @@ class DownloadSubscriber(private val downloadCallback: DownloadCallback):Resourc
 
     override fun update(read: Long, count: Long, done: Boolean) {
         Flowable.just(done).subscribeOn(AndroidSchedulers.mainThread()).subscribe(Consumer {
-            "progress:$read/$count;$done".logd(TAG)
-            downloadCallback.onProgress(read,count)
+            val downloadProgress = if (done) {
+                DownloadProgress(read, count, 1, 1)
+            } else {
+                DownloadProgress(read, count, 0, 1)
+            }
+            "progress:$downloadProgress".logd(TAG)
+            downloadCallback.onProgress(downloadProgress)
         })
 
     }

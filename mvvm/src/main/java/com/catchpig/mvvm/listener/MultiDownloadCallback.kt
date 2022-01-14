@@ -1,5 +1,7 @@
 package com.catchpig.mvvm.listener
 
+import com.catchpig.mvvm.entity.DownloadProgress
+
 /**
  * 下载回调接口
  * @author catchpig
@@ -13,12 +15,9 @@ interface MultiDownloadCallback {
 
     /**
      * 文件下载进度
-     * @param readLength Long 当前正在下载文件的已下载长度
-     * @param countLength Long 当前正在下载文件的总长度
-     * @param completeCount Int 已完成文件下载的个数
-     * @param TotalCount Int 总文件个数
+     * @param downloadProgress DownloadProgress
      */
-    fun onProgress(readLength: Long, countLength: Long, completeCount: Int, TotalCount: Int)
+    fun onProgress(downloadProgress: DownloadProgress)
 
     /**
      * 下载成功

@@ -2,6 +2,7 @@ package com.catchpig.mvvm.network.manager
 
 import android.os.Environment
 import android.util.ArrayMap
+import com.catchpig.mvvm.entity.DownloadProgress
 import com.catchpig.mvvm.ext.io2main
 import com.catchpig.mvvm.listener.DownloadCallback
 import com.catchpig.mvvm.listener.DownloadProgressListener
@@ -109,50 +110,13 @@ object DownloadManager {
      * 多文件下载
      * @param downloadUrls Iterable<String>
      * @param callback Function1<[@kotlin.ParameterName] MutableList<String>, Unit>
-     * @return Disposable
-     */
-    fun multiDownload(
-        downloadUrls: Iterable<String>,
-        callback: (paths: MutableList<String>) -> Unit
-    ): Disposable {
-        return multiDownload(downloadUrls, object : MultiDownloadCallback {
-            override fun onStart() {
-
-            }
-
-            override fun onComplete() {
-
-            }
-
-            override fun onError(t: Throwable) {
-
-            }
-
-            override fun onProgress(
-                readLength: Long,
-                countLength: Long,
-                completeCount: Int,
-                TotalCount: Int
-            ) {
-
-            }
-
-            override fun onSuccess(paths: MutableList<String>) {
-                callback(paths)
-            }
-        })
-    }
-
-    /**
-     * 多文件下载
-     * @param downloadUrls Iterable<String>
-     * @param callback Function1<[@kotlin.ParameterName] MutableList<String>, Unit>
+     * @param progress Function4<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, [@kotlin.ParameterName] Int, [@kotlin.ParameterName] Int, Unit>?
      * @return Disposable
      */
     fun multiDownload(
         downloadUrls: Iterable<String>,
         callback: (paths: MutableList<String>) -> Unit,
-        progress: (readLength: Long, countLength: Long, completeCount: Int, totalCount: Int) -> Unit
+        progress: ((downloadProgress: DownloadProgress) -> Unit)? = null
     ): Disposable {
         return multiDownload(downloadUrls, object : MultiDownloadCallback {
             override fun onStart() {
@@ -167,13 +131,8 @@ object DownloadManager {
 
             }
 
-            override fun onProgress(
-                readLength: Long,
-                countLength: Long,
-                completeCount: Int,
-                totalCount: Int
-            ) {
-                progress(readLength, countLength, completeCount, totalCount)
+            override fun onProgress(downloadProgress: DownloadProgress) {
+                progress?.let { it(downloadProgress) }
             }
 
             override fun onSuccess(paths: MutableList<String>) {
@@ -194,7 +153,7 @@ object DownloadManager {
     ): Disposable {
         val multiDownloadSubscriber =
             MultiDownloadSubscriber(downloadUrls.count(), multiDownloadCallback)
-        return Flowable.fromIterable(downloadUrls).flatMap {
+        return Flowable.fromIterable(downloadUrls).concatMap {
             val localFilePath = localFileName(it)
             val file = File(localFilePath)
             val url = URL(it)
@@ -202,11 +161,12 @@ object DownloadManager {
                 val fileLength = file.length()
                 val contentLength = url.openConnection().contentLength
                 if (fileLength == contentLength.toLong()) {
-                    return@flatMap Flowable.just(localFilePath)
+                    multiDownloadSubscriber.update(fileLength, fileLength, true)
+                    return@concatMap Flowable.just(localFilePath)
                 }
             }
             val downloadService = initDownloadService(url, multiDownloadSubscriber)
-            return@flatMap httpDownload(downloadService, url.file.substring(1), localFilePath)
+            return@concatMap httpDownload(downloadService, url.file.substring(1), localFilePath)
         }.io2main().subscribeWith(multiDownloadSubscriber)
     }
 
@@ -214,13 +174,13 @@ object DownloadManager {
      * 下载返回File
      * @param downloadUrl String
      * @param callback Function1<[@kotlin.ParameterName] File, Unit>
-     * @param process Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
+     * @param progress Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
      * @return Disposable
      */
     fun downloadFile(
         downloadUrl: String,
         callback: (file: File) -> Unit,
-        progress: (readLength: Long, countLength: Long) -> Unit
+        progress: ((downloadProgress: DownloadProgress) -> Unit)? = null
     ): Disposable {
         return download(downloadUrl, object : DownloadCallback {
             override fun onStart() {
@@ -231,8 +191,8 @@ object DownloadManager {
 
             }
 
-            override fun onProgress(readLength: Long, countLength: Long) {
-                progress(readLength, countLength)
+            override fun onProgress(downloadProgress: DownloadProgress) {
+                progress?.let { it(downloadProgress) }
             }
 
             override fun onError(t: Throwable) {
@@ -249,13 +209,13 @@ object DownloadManager {
      * 下载返回路径地址
      * @param downloadUrl String
      * @param callback Function1<[@kotlin.ParameterName] String, Unit>
-     * @param process Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
+     * @param progress Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
      * @return Disposable
      */
     fun download(
         downloadUrl: String,
         callback: (path: String) -> Unit,
-        process: (readLength: Long, countLength: Long) -> Unit
+        progress: ((downloadProgress: DownloadProgress) -> Unit)? = null
     ): Disposable {
         return download(downloadUrl, object : DownloadCallback {
             override fun onStart() {
@@ -266,38 +226,8 @@ object DownloadManager {
 
             }
 
-            override fun onProgress(readLength: Long, countLength: Long) {
-                process(readLength, countLength)
-            }
-
-            override fun onError(t: Throwable) {
-
-            }
-
-            override fun onSuccess(path: String) {
-                callback(path)
-            }
-        })
-    }
-
-    /**
-     * 单文件下载
-     * @param downloadUrl String 下载路劲
-     * @param callback Function1<[@kotlin.ParameterName] String, Unit> 本地文件路劲的回调方法
-     * @return Disposable
-     */
-    fun download(downloadUrl: String, callback: (path: String) -> Unit): Disposable {
-        return download(downloadUrl, object : DownloadCallback {
-            override fun onStart() {
-
-            }
-
-            override fun onComplete() {
-
-            }
-
-            override fun onProgress(readLength: Long, countLength: Long) {
-
+            override fun onProgress(downloadProgress: DownloadProgress) {
+                progress?.let { it(downloadProgress) }
             }
 
             override fun onError(t: Throwable) {
