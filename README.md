@@ -564,9 +564,9 @@ class ResponseBodyConverter :
 
 ```kotlin
 DownloadManager.download(downloadUrl, {
-        
-    }, { readLength, countLength ->
-        progressLiveData.value = (readLength * 100 / countLength).toInt()
+        //下载完成回调
+    }, { downloadProgress ->
+        //下载进度回调
     })
 ```
 * DownloadCallback
@@ -589,12 +589,11 @@ interface DownloadCallback {
          */
         fun onComplete()
     
-        /**
-         * 下载进度
-         * @param readLength 读取的进度
-         * @param countLength 总进度
+		/**
+     	 * 下载进度
+         * @param downloadProgress DownloadProgress
          */
-        fun onProgress(readLength:Long,countLength:Long)
+        fun onProgress(downloadProgress: DownloadProgress)
     
         /**
          * 下载错误
@@ -607,7 +606,9 @@ interface DownloadCallback {
 + 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
 ```kotlin
 DownloadManager.multiDownload(downloadUrls, {
-        
+         //下载完成回调
+    }, { downloadProgress ->
+        //下载进度回调
     })
 ```
 * MultiDownloadCallback
@@ -623,6 +624,12 @@ interface MultiDownloadCallback {
     * @param paths 本地保存的地址集
     */
     fun onSuccess(paths:MutableList<String>)
+    
+    /**
+     * 文件下载进度
+     * @param downloadProgress DownloadProgress
+     */
+    fun onProgress(downloadProgress: DownloadProgress)
   
     /**
     * 下载完成
