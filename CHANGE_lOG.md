@@ -1,8 +1,17 @@
 # CHANGE LOG
-### v0.3.9(2022.1.14)
+### v0.4.1(2022.1.14)
 
 + 多文件下载增加进度回调接口
 + 优化问文件下载接口
+
+### v0.4.0(2021.12.19)
+
++ 优化代码
+
+
+### v0.3.9(2021.12.17)
+
++ 优化Retrofit的Serialization,将ServiceApi注解的responseConverter属性的继承基类SerializationConverter
 
 ### v0.3.8(2021.12.16)
 
