@@ -1,4 +1,9 @@
 # CHANGE LOG
+### v0.3.9(2022.1.14)
+
++ 多文件下载增加进度回调接口
++ 优化问文件下载接口
+
 ### v0.3.8(2021.12.16)
 
 + 将网络请求的GsonConverterFactory替换为SerializationCoverterFactory
