@@ -8,7 +8,6 @@ apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
