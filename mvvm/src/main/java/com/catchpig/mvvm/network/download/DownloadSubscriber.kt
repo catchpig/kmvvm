@@ -20,35 +20,42 @@ class DownloadSubscriber(private val downloadCallback: DownloadCallback) :
         const val TAG = "DownloadSubscriber"
     }
 
-    override fun onStart() {
+    public override fun onStart() {
         super.onStart()
+        "onStart".logd(TAG)
         downloadCallback.onStart()
     }
 
     override fun onNext(t: String) {
+        "onNext($t)".logd(TAG)
         downloadCallback.onSuccess(t)
     }
 
     override fun onError(t: Throwable?) {
         t?.let {
+            if (t is Exception) {
+                t.printStackTrace()
+            }
+            "onError(${it})".logd(TAG)
             downloadCallback.onError(it)
         }
     }
 
     override fun onComplete() {
+        "onComplete".logd(TAG)
         downloadCallback.onComplete()
     }
 
     override fun update(read: Long, count: Long, done: Boolean) {
-        Flowable.just(done).subscribeOn(AndroidSchedulers.mainThread()).subscribe(Consumer {
+        Flowable.just(done).subscribeOn(AndroidSchedulers.mainThread()).subscribe {
             val downloadProgress = if (done) {
                 DownloadProgress(read, count, 1, 1)
             } else {
                 DownloadProgress(read, count, 0, 1)
             }
-            "progress:$downloadProgress".logd(TAG)
+            "update($read,$count,$done)".logd(TAG)
             downloadCallback.onProgress(downloadProgress)
-        })
+        }
 
     }
 }

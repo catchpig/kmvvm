@@ -12,25 +12,25 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     @OnClickFirstDrawable(R.drawable.more)
     fun clickFirstDrawable(v: View) {
         snackBar("第一个图标按钮点击生效")
-        updateTitle("nihao")
+        updateTitle("第一图标")
     }
 
     @OnClickFirstText(R.string.more)
     fun clickFirstText() {
         snackBar("第一个文字按钮点击生效")
-        updateTitle("12354")
+        updateTitle("第一文字")
     }
 
     @OnClickSecondDrawable(R.drawable.more)
     fun clickSecondDrawable(v: View) {
         snackBar("第二个图标按钮点击生效")
-        updateTitle("nihao")
+        updateTitle("第二图标")
     }
 
     @OnClickSecondText(R.string.more)
     fun clickSecondText() {
         snackBar("第二个文字按钮点击生效")
-        updateTitle("12354")
+        updateTitle("第二文字")
     }
 
     override fun initParam() {
