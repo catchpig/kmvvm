@@ -9,25 +9,21 @@ import com.catchpig.mvvm.listener.MultiDownloadCallback
 import com.catchpig.mvvm.network.api.RxJavaDownloadService
 import com.catchpig.mvvm.network.download.DownloadSubscriber
 import com.catchpig.mvvm.network.download.MultiDownloadSubscriber
-import com.catchpig.mvvm.network.interceptor.DownloadInterceptor
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.net.URL
-import java.util.concurrent.TimeUnit
 
 /**
  * 描述:下载工具类
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-object RxJavaDownloadManager : BaseDownloadManager() {
+object RxJavaDownloadManager : DownloadManager() {
 
     private var downloadServiceMap: MutableMap<String, RxJavaDownloadService> = ArrayMap()
 

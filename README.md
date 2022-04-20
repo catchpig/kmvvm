@@ -558,12 +558,20 @@ class ResponseBodyConverter :
 | interceptors     | Interceptor | 否   | Interceptor          | http拦截器        |
 | debugInterceptors| Interceptor | 否   | Interceptor          | debug模式下的http拦截器,只有NetManager.setDebug(true),才会生效 |
 
-### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt)))
+### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt))-支持协程方式和RxJava两种方式的下载([RxJavaDownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/listener/RxJavaDownloadManager.kt)、[CoroutinesDownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/listener/CoroutinesDownloadManager.kt))
+
++ 设置下载路径
+
+  ```kotlin
+  DownloadManager.setDownloadPath("${ContextManager.context.externalCacheDir!!.absolutePath}/kmvvmDownload")
+  ```
+
+  
 
 + 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
 
 ```kotlin
-DownloadManager.download(downloadUrl, {
+RxJavaDownloadManager.download(downloadUrl, {
         //下载完成回调
     }, { downloadProgress ->
         //下载进度回调

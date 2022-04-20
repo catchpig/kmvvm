@@ -3,6 +3,7 @@ package com.catchpig.mvvm.network.manager
 import android.os.Environment
 import com.catchpig.mvvm.manager.ContextManager
 import com.catchpig.mvvm.network.interceptor.DownloadInterceptor
+import com.catchpig.utils.ext.deleteAll
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,7 +13,7 @@ import java.io.RandomAccessFile
 import java.nio.channels.FileChannel
 import java.util.concurrent.TimeUnit
 
-open class BaseDownloadManager {
+open class DownloadManager {
     companion object {
         /**
          * 连接超时时间(秒)
@@ -23,39 +24,52 @@ open class BaseDownloadManager {
          * 读取数据超时时间(分钟)
          */
         private const val READ_TIMEOUT = 10L
-    }
 
+        /**
+         * 下载路径
+         */
+        private var downloadPath: String? = null
 
-    private val logInterceptor by lazy {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        httpLoggingInterceptor
-    }
-
-    protected val downloadInterceptor by lazy {
-        DownloadInterceptor()
-    }
-
-    private var okHttpClient: OkHttpClient? = null
-
-    protected fun getOkHttpClient(): OkHttpClient {
-        if (okHttpClient == null) {
-            okHttpClient = OkHttpClient
-                .Builder()
-                /**
-                 * 连接超时时间5秒
-                 */
-                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                /**
-                 * 读取数据超时时间10分钟
-                 */
-                .readTimeout(READ_TIMEOUT, TimeUnit.MINUTES)
-                .addInterceptor(logInterceptor)
-                .addInterceptor(downloadInterceptor)
-                .build()
+        private val logInterceptor by lazy {
+            val httpLoggingInterceptor = HttpLoggingInterceptor()
+            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            httpLoggingInterceptor
         }
-        return okHttpClient!!
+
+        val downloadInterceptor by lazy {
+            DownloadInterceptor()
+        }
+
+        private var okHttpClient: OkHttpClient? = null
+
+        fun getOkHttpClient(): OkHttpClient {
+            if (okHttpClient == null) {
+                okHttpClient = OkHttpClient
+                    .Builder()
+                    /**
+                     * 连接超时时间5秒
+                     */
+                    .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                    /**
+                     * 读取数据超时时间10分钟
+                     */
+                    .readTimeout(READ_TIMEOUT, TimeUnit.MINUTES)
+                    .addInterceptor(logInterceptor)
+                    .addInterceptor(downloadInterceptor)
+                    .build()
+            }
+            return okHttpClient!!
+        }
+
+        /**
+         * 设置下载路径
+         * @param path String
+         */
+        fun setDownloadPath(path: String) {
+            downloadPath = path
+        }
     }
+
 
     /**
      * 生成文件的地址
@@ -65,17 +79,25 @@ open class BaseDownloadManager {
     protected fun localFileName(downloadUrl: String): String {
         val fileName = downloadUrl.replace("/", "").replace("\\", "")
         var cashDir = getDownloadFilePath()
-        return "$cashDir/download/$fileName"
+        return "$cashDir/$fileName"
     }
 
     private fun getDownloadFilePath(): String {
-        return if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
+        downloadPath?.let {
+            return it
+        }
+        val path = if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
             //有SD卡,拿到SD卡的/storage/sdcard0/Android/data/包名/cash目录
             ContextManager.context.externalCacheDir!!.absolutePath
         } else {
             //没有SD卡的,拿到/data/data/包名/cash目录
             ContextManager.context.cacheDir.absolutePath
         }
+        return "$path/download"
+    }
+
+    fun clearFiles() {
+        File(getDownloadFilePath()).deleteAll()
     }
 
     /**

@@ -3,6 +3,8 @@ package com.catchpig.kmvvm.app
 import android.app.Application
 import com.catchpig.kmvvm.BuildConfig
 import com.catchpig.kmvvm.R
+import com.catchpig.mvvm.manager.ContextManager
+import com.catchpig.mvvm.network.manager.DownloadManager
 import com.catchpig.mvvm.network.manager.NetManager
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
@@ -29,5 +31,6 @@ class KotlinMvpApp : Application() {
     override fun onCreate() {
         super.onCreate()
         NetManager.setDebug(BuildConfig.DEBUG)
+        DownloadManager.setDownloadPath("${ContextManager.context.externalCacheDir!!.absolutePath}/kmvvmDownload")
     }
 }

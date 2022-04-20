@@ -21,7 +21,7 @@ import java.net.URL
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-object CoroutinesDownloadManager : BaseDownloadManager() {
+object CoroutinesDownloadManager : DownloadManager() {
     private var downloadServiceMap: MutableMap<String, CoroutinesDownloadService> = ArrayMap()
 
     private fun getDowLoadService(baseUrl: String): CoroutinesDownloadService {

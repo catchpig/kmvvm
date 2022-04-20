@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.entity.DownloadProgress
 import com.catchpig.mvvm.network.manager.CoroutinesDownloadManager
-import com.catchpig.mvvm.network.manager.RxJavaDownloadManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -36,6 +35,7 @@ class InstallApkViewModel : BaseViewModel() {
 //            }, { downloadProgress ->
 //                progressLiveData1.value = downloadProgress
 //            })
+            CoroutinesDownloadManager.clearFiles()
             CoroutinesDownloadManager.download(downloadUrlpng, {
 
             }, { downloadProgress ->
