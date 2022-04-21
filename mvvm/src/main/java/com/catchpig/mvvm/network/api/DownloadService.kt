@@ -1,7 +1,6 @@
 package com.catchpig.mvvm.network.api
 
 import io.reactivex.rxjava3.core.Flowable
-import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Streaming
@@ -12,12 +11,20 @@ import retrofit2.http.Url
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-interface RxJavaDownloadService {
+interface DownloadService {
     /**
-     * 可以断点续传
+     * 可以断点续传(Rxjava)
      * @param url 下载地址
      */
     @Streaming
     @GET
-    fun download(@Url url: String): Flowable<ResponseBody>
+    fun rxJavaDownload(@Url url: String): Flowable<ResponseBody>
+
+    /**
+     * 可以断点续传(协程)
+     * @param url 下载地址
+     */
+    @Streaming
+    @GET
+    suspend fun coroutinesDownload(@Url url: String): ResponseBody
 }

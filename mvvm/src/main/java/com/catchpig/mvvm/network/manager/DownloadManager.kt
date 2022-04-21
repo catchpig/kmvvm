@@ -1,15 +1,22 @@
 package com.catchpig.mvvm.network.manager
 
 import android.os.Environment
+import android.util.ArrayMap
+import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.mvvm.manager.ContextManager
+import com.catchpig.mvvm.network.api.DownloadService
 import com.catchpig.mvvm.network.interceptor.DownloadInterceptor
 import com.catchpig.utils.ext.deleteAll
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
+import java.net.URL
 import java.nio.channels.FileChannel
 import java.util.concurrent.TimeUnit
 
@@ -30,21 +37,23 @@ open class DownloadManager {
          */
         private var downloadPath: String? = null
 
+        private var downloadServiceMap: MutableMap<String, DownloadService> = ArrayMap()
+
         private val logInterceptor by lazy {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             httpLoggingInterceptor
         }
 
-        val downloadInterceptor by lazy {
+        private val downloadInterceptor by lazy {
             DownloadInterceptor()
         }
 
         private var okHttpClient: OkHttpClient? = null
 
-        fun getOkHttpClient(): OkHttpClient {
-            if (okHttpClient == null) {
-                okHttpClient = OkHttpClient
+        private fun getOkHttpClient(): OkHttpClient {
+            return okHttpClient.run {
+                OkHttpClient
                     .Builder()
                     /**
                      * 连接超时时间5秒
@@ -58,7 +67,6 @@ open class DownloadManager {
                     .addInterceptor(downloadInterceptor)
                     .build()
             }
-            return okHttpClient!!
         }
 
         /**
@@ -67,6 +75,37 @@ open class DownloadManager {
          */
         fun setDownloadPath(path: String) {
             downloadPath = path
+        }
+
+        private fun getDowLoadService(baseUrl: String): DownloadService {
+            return Retrofit
+                .Builder()
+                .baseUrl(baseUrl)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .client(getOkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(DownloadService::class.java)
+        }
+
+        /**
+         * 初始化下载器接口类
+         * @param url URL
+         * @param downloadProgressListener DownloadProgressListener
+         * @return DownloadService
+         */
+        fun initDownloadService(
+            url: URL,
+            downloadProgressListener: DownloadProgressListener
+        ): DownloadService {
+            val baseUrl = "${url.protocol}://${url.host}/"
+            var downloadService = downloadServiceMap[baseUrl]
+            downloadService = downloadService.run {
+                getDowLoadService(baseUrl)
+            }
+            downloadServiceMap[baseUrl] = downloadService
+            downloadInterceptor.addProgressListener(url.toString(), downloadProgressListener)
+            return downloadService
         }
     }
 

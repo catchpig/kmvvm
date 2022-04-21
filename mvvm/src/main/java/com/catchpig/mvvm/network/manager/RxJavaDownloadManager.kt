@@ -1,20 +1,15 @@
 package com.catchpig.mvvm.network.manager
 
-import android.util.ArrayMap
 import com.catchpig.mvvm.entity.DownloadProgress
 import com.catchpig.mvvm.ext.io2main
 import com.catchpig.mvvm.listener.DownloadCallback
-import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.mvvm.listener.MultiDownloadCallback
-import com.catchpig.mvvm.network.api.RxJavaDownloadService
+import com.catchpig.mvvm.network.api.DownloadService
 import com.catchpig.mvvm.network.download.DownloadSubscriber
 import com.catchpig.mvvm.network.download.MultiDownloadSubscriber
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.net.URL
 
@@ -24,40 +19,6 @@ import java.net.URL
  * @date 2020/11/20 10:25
  */
 object RxJavaDownloadManager : DownloadManager() {
-
-    private var downloadServiceMap: MutableMap<String, RxJavaDownloadService> = ArrayMap()
-
-
-    private fun getDowLoadService(baseUrl: String): RxJavaDownloadService {
-        return Retrofit
-            .Builder()
-            .baseUrl(baseUrl)
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .client(getOkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(RxJavaDownloadService::class.java)
-    }
-
-    /**
-     * 初始化下载器接口类
-     * @param baseUrl String
-     * @param downloadProgressListener DownloadProgressListener
-     * @return DownloadService
-     */
-    private fun initDownloadService(
-        url: URL,
-        downloadProgressListener: DownloadProgressListener
-    ): RxJavaDownloadService {
-        val baseUrl = "${url.protocol}://${url.host}/"
-        var downloadService = downloadServiceMap[baseUrl]
-        if (downloadService == null) {
-            downloadService = getDowLoadService(baseUrl)
-            downloadServiceMap[baseUrl] = downloadService
-        }
-        downloadInterceptor.addProgressListener(url.toString(), downloadProgressListener)
-        return downloadService
-    }
 
     /**
      * 多文件下载
@@ -232,14 +193,13 @@ object RxJavaDownloadManager : DownloadManager() {
      * @return Flowable<String>
      */
     private fun httpDownload(
-        downloadService: RxJavaDownloadService,
+        downloadService: DownloadService,
         url: String,
         localFilePath: String
     ): Flowable<String> {
-        return downloadService.download(url).subscribeOn(Schedulers.io()).map {
+        return downloadService.rxJavaDownload(url).subscribeOn(Schedulers.io()).map {
             return@map writeCache(it, localFilePath)
         }
     }
-
 
 }

@@ -1,18 +1,13 @@
 package com.catchpig.mvvm.network.manager
 
-import android.util.ArrayMap
 import com.catchpig.mvvm.entity.DownloadProgress
 import com.catchpig.mvvm.listener.DownloadCallback
-import com.catchpig.mvvm.listener.DownloadProgressListener
 import com.catchpig.mvvm.listener.MultiDownloadCallback
-import com.catchpig.mvvm.network.api.CoroutinesDownloadService
+import com.catchpig.mvvm.network.api.DownloadService
 import com.catchpig.mvvm.network.download.DownloadSubscriber
 import com.catchpig.mvvm.network.download.MultiDownloadSubscriber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.net.URL
 
@@ -22,45 +17,13 @@ import java.net.URL
  * @date 2020/11/20 10:25
  */
 object CoroutinesDownloadManager : DownloadManager() {
-    private var downloadServiceMap: MutableMap<String, CoroutinesDownloadService> = ArrayMap()
 
-    private fun getDowLoadService(baseUrl: String): CoroutinesDownloadService {
-        return Retrofit
-            .Builder()
-            .baseUrl(baseUrl)
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .client(getOkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(CoroutinesDownloadService::class.java)
-    }
-
-    /**
-     * 初始化下载器接口类
-     * @param baseUrl String
-     * @param downloadProgressListener DownloadProgressListener
-     * @return DownloadService
-     */
-    private fun initDownloadService(
-        url: URL,
-        downloadProgressListener: DownloadProgressListener
-    ): CoroutinesDownloadService {
-        val baseUrl = "${url.protocol}://${url.host}/"
-        var downloadService = downloadServiceMap[baseUrl]
-        if (downloadService == null) {
-            downloadService = getDowLoadService(baseUrl)
-            downloadServiceMap[baseUrl] = downloadService
-        }
-        downloadInterceptor.addProgressListener(url.toString(), downloadProgressListener)
-        return downloadService
-    }
 
     /**
      * 多文件下载
      * @param downloadUrls Iterable<String>
      * @param callback Function1<[@kotlin.ParameterName] MutableList<String>, Unit>
      * @param progress Function4<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, [@kotlin.ParameterName] Int, [@kotlin.ParameterName] Int, Unit>?
-     * @return Disposable
      */
     suspend fun multiDownload(
         downloadUrls: Iterable<String>,
@@ -94,7 +57,6 @@ object CoroutinesDownloadManager : DownloadManager() {
      * 多文件下载
      * @param downloadUrls Iterable<String>
      * @param multiDownloadCallback MultiDownloadCallback
-     * @return Disposable
      */
     suspend fun multiDownload(
         downloadUrls: Iterable<String>,
@@ -140,7 +102,6 @@ object CoroutinesDownloadManager : DownloadManager() {
      * @param downloadUrl String
      * @param callback Function1<[@kotlin.ParameterName] File, Unit>
      * @param progress Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
-     * @return Disposable
      */
     suspend fun downloadFile(
         downloadUrl: String,
@@ -175,7 +136,6 @@ object CoroutinesDownloadManager : DownloadManager() {
      * @param downloadUrl String
      * @param callback Function1<[@kotlin.ParameterName] String, Unit>
      * @param progress Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
-     * @return Disposable
      */
     suspend fun download(
         downloadUrl: String,
@@ -209,7 +169,6 @@ object CoroutinesDownloadManager : DownloadManager() {
      * 单文件下载
      * @param downloadUrl String 下载地址
      * @param downloadCallback DownLoadCallback 下载回调接口,回调的方法已经切到主线程
-     * @return Disposable
      */
     suspend fun download(
         downloadUrl: String,
@@ -255,15 +214,15 @@ object CoroutinesDownloadManager : DownloadManager() {
      * @param downloadService DownloadService
      * @param url String
      * @param localFilePath String
-     * @return Flowable<String>
+     * @return Flow<String>
      */
     private suspend fun httpDownload(
-        downloadService: CoroutinesDownloadService,
+        downloadService: DownloadService,
         url: String,
         localFilePath: String
     ): Flow<String> {
         return flow {
-            emit(downloadService.download(url))
+            emit(downloadService.coroutinesDownload(url))
         }.map {
             return@map writeCache(it, localFilePath)
         }
