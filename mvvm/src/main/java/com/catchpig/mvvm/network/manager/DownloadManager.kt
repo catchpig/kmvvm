@@ -70,7 +70,7 @@ open class DownloadManager {
         }
 
         /**
-         * 设置下载路径
+         * 设置下载路径(如果不设置,会有默认的下载路径)
          * @param path String
          */
         fun setDownloadPath(path: String) {

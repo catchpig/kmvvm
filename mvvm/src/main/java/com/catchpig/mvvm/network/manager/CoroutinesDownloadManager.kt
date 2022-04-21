@@ -64,11 +64,7 @@ object CoroutinesDownloadManager : DownloadManager() {
     ) {
         val multiDownloadSubscriber =
             MultiDownloadSubscriber(downloadUrls.count(), multiDownloadCallback)
-        flow {
-            downloadUrls.forEach {
-                emit(it)
-            }
-        }.flatMapConcat {
+        downloadUrls.asFlow().flatMapConcat {
             val localFilePath = localFileName(it)
             val file = File(localFilePath)
             val url = URL(it)
@@ -193,11 +189,7 @@ object CoroutinesDownloadManager : DownloadManager() {
                 }
             }
             val downloadService = initDownloadService(url, downloadSubscriber)
-            return@flatMapConcat httpDownload(
-                downloadService,
-                url.file.substring(1),
-                localFilePath
-            )
+            return@flatMapConcat httpDownload(downloadService, url.file.substring(1), localFilePath)
         }.flowOn(Dispatchers.IO).onStart {
             downloadSubscriber.onStart()
         }.onCompletion {
