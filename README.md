@@ -20,13 +20,13 @@
 
 + ### 封装基类:BaseActivity、BaseVMActivity、BaseFragment、BaseVMFragment、RecycleAdapter、BaseViewModel
 
-+ ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
-
 + ### 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
 
 + ### 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
 
 + ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、Adapter、GlobalConfig、ServiceApi
+
++ ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
 
 ## 最低兼容:21
 
@@ -321,9 +321,8 @@ snackbar.setOnClickListener {
 
 ### 4. RecycleView
 
-+
-Adapter可以继承RecycleAdapter来使用,并在类上添加注解[Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)
-,RecycleAdapter使用了ViewBanding,只需要实现以下一个方法
++ Adapter可以继承RecycleAdapter来使用,并在类上添加注解[Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)
+  ,RecycleAdapter使用了ViewBanding,只需要实现以下一个方法
 
 > 使用示例
 
@@ -343,8 +342,7 @@ class UserAdapter(iPageControl: IPageControl) :
 ### 5.刷新分页控件([RefreshRecyclerView](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshRecyclerView.kt))
 
 + RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
-+
-不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
++ 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
 + 只需要设置LayoutManager和RecyclerAdapter,提供了setLayoutManager和setAdapter方法
 + 在获取到数据的时候调用updateData方法
 + 获取数据失败的时候调用updateError方法
@@ -440,9 +438,7 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 
 #### 6.2 Response转换器
 
-##### 6.2.1
-
-+ 一般Response发返回结果会是如下
+##### 6.2.1 一般Response发返回结果会是如下
 
 ```json
 {
@@ -452,7 +448,7 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 }
 ```
 
-+ 在code返回SUCEESSD的时候, 我们在Retrofit的Api接口里面只想拿到data的数据做返回,我们想在Converter里面处理掉code返回错误码的逻辑,就可以继承[BaseResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/BaseResponseBodyConverter.kt),内部已经实现了将response转化为data的逻辑
+##### 6.2.2 在code返回SUCEESSD的时候, 我们在Retrofit的Api接口里面只想拿到data的数据做返回,我们想在Converter里面处理掉code返回错误码的逻辑,就可以继承[BaseResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/BaseResponseBodyConverter.kt),内部已经实现了将response转化为data的逻辑
 
 > 代码示例
 
@@ -469,11 +465,9 @@ class ResponseBodyConverter :
 }
 ```
 
-+ 再将实现了BaseResponseBodyConverter的类加到ServiceApi注解的responseConverter属性上
+##### 6.2.3 再将实现了BaseResponseBodyConverter的类加到ServiceApi注解的responseConverter属性上
 
-##### 6.2.2
-
-+ 如果想直接拿response的结果作为网络请求的返回值,可以直接将[SerializationResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/SerializationResponseBodyConverter.kt)加到ServiceApi注解的responseConverter属性上
+##### 6.2.4 如果想直接拿response的结果作为网络请求的返回值,可以直接将[SerializationResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/SerializationResponseBodyConverter.kt)加到ServiceApi注解的responseConverter属性上
 
 #### 6.3 Activity和Fragment封装了网络请求方法(带lifecycleScope)
 
@@ -483,178 +477,11 @@ class ResponseBodyConverter :
 + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
 + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
-### 7. 注解使用
+### 7. [注解使用](./REMARD_ANNOTATION.md)
 
-#### 7.1 [Title](./annotation/src/main/java/com/catchpig/annotation/Title.kt)-标题
+### 8. [文件下载器](./REMARD_DOWNLOAD_MANAGER.md)
 
-|属性|类型|必须|默认|说明|
- |---|:---:|:---|:---|:---|
-|value|StringRes|是|无|标题内容|
-|backgroundColor|ColorRes|否|全局标题背景色|标题背景色|
-|textColor|ColorRes|否|全局标题文字颜色|标题文字颜色|
-|backIcon|DrawableRes|否|全局标题返回按钮图标|标题返回按钮图标|
-
-#### 7.2 [OnClickFirstDrawable](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstDrawable.kt)-标题上第一个图标按钮的点击事件
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|value|DrawableRes|是|无|按钮图片资源|
-
-#### 7.3 [OnClickFirstText](./annotation/src/main/java/com/catchpig/annotation/OnClickFirstText.kt)-标题上第一个文字按钮的点击事件
-
-|属性|类型|必须|默认|说明|
- |---|:---:|:---|:---|:---|
-|value|StringRes|是|无|按钮文字内容|
-
-#### 7.4 [OnClickSecondDrawable](./annotation/src/main/java/java/com/catchpig/annotation/OnClickSecondDrawable.kt)-标题上第二个图标按钮的点击事件
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|value|DrawableRes|是|无|按钮图片资源|
-
-#### 7.5 [OnClickSecondText](./annotation/src/main/java/com/catchpig/annotation/OnClickSecondText.kt)-标题上第二个文字按钮的点击事件
-
-|属性|类型|必须|默认|说明|
- |---|:---:|:---|:---|:---|
-|value|StringRes|是|无|按钮文字内容|
-
-#### 7.6 [StatusBar](./annotation/src/main/java/com/catchpig/annotation/StatusBar.kt)-状态栏
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|hide|boolean|否|false|隐藏状态栏|
-|enabled|boolean|否|false|状态栏是否可用|
-|transparent|boolean|否|false|状态栏透明|
-
-#### 7.7 [Prefs](./annotation/src/main/java/com/catchpig/annotation/Prefs.kt)-SharedPreferences注解生成器
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|value|String|否|""|别名|
-|mode|[PrefsMode](./annotation/src/main/java/com/catchpig/annotation/enums/PrefsMode.kt)|否|PrefsMode.MODE_PRIVATE|模式,对应PreferencesMode|
-
-#### 7.8 [PrefsField](./annotation/src/main/java/com/catchpig/annotation/PrefsField.kt)-SharedPreferences字段注解
-
-|属性|类型|必须|默认|说明|
-|---|:---:|:---|:---|:---|
-|value|String|否|""|字段别名,如果为空则取修饰字段的参数名称|
-
-#### 7.9 [FlowError](./annotation/src/main/java/com/catchpig/annotation/FlowError.kt)-Activity和Fragment中的Flow的onError方法统一处理
-
-#### 7.10 [Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)-RecyclerAdapter的继承类注解，加上此注解之后可以自动找到对应的layout资源
-
-#### 7.11 [GlobalConfig](./annotation/src/main/java/com/catchpig/annotation/GlobalConfig.kt)-全局参数配置
-
-+ 注解在IGlobalConfig接口的实现类上面
-
-#### 7.12 [ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
-
-| 属性              |    类型      | 必须 | 默认                 | 说明              |
-| --------------   | :---------: | :--- | :-------------------| :---------------- |
-| baseUrl          |   String    | 是   | 无                   | retrofit的baseurl |
-| responseConverter|   Converter | 是   | 无                   | 接收数据转换器        |
-| connectTimeout   |    Long     | 否   | 5000                 | http的超时时间    |
-| readTimeout      |    Long     | 否   | 5000                 | http读取超时时间  |
-| interceptors     | Interceptor | 否   | Interceptor          | http拦截器        |
-| debugInterceptors| Interceptor | 否   | Interceptor          | debug模式下的http拦截器,只有NetManager.setDebug(true),才会生效 |
-
-### 8. 文件下载器([DownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/manager/DownloadManager.kt))-支持协程方式和RxJava两种方式的下载([RxJavaDownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/listener/RxJavaDownloadManager.kt)、[CoroutinesDownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/listener/CoroutinesDownloadManager.kt))
-
-+ 设置下载路径
-
-  ```kotlin
-  DownloadManager.setDownloadPath("${ContextManager.context.externalCacheDir!!.absolutePath}/kmvvmDownload")
-  ```
-
-  
-
-+ 单文件下载方法download([DownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/DownloadCallback.kt))
-
-```kotlin
-RxJavaDownloadManager.download(downloadUrl, {
-        //下载完成回调
-    }, { downloadProgress ->
-        //下载进度回调
-    })
-```
-* DownloadCallback
-
-```kotlin
-interface DownloadCallback {
-        /**
-         * 开始下载
-         */
-        fun onStart()
-    
-        /**
-         * 下载成功
-         * @param path 本地保存的地址
-         */
-        fun onSuccess(path:String)
-    
-        /**
-         * 下载完成
-         */
-        fun onComplete()
-    
-		/**
-     	 * 下载进度
-         * @param downloadProgress DownloadProgress
-         */
-        fun onProgress(downloadProgress: DownloadProgress)
-    
-        /**
-         * 下载错误
-         * @param t 错误信息
-         */
-        fun onError(t:Throwable)
-    }
-```
-
-+ 多文件下载方法multiDownload([MultiDownloadCallback](./mvvm/src/main/java/com/catchpig/mvvm/listener/MultiDownloadCallback.kt))
-```kotlin
-DownloadManager.multiDownload(downloadUrls, {
-         //下载完成回调
-    }, { downloadProgress ->
-        //下载进度回调
-    })
-```
-* MultiDownloadCallback
-```kotlin
-interface MultiDownloadCallback {
-    /**
-    * 开始下载
-    */
-    fun onStart()
-      
-    /**
-    * 下载成功
-    * @param paths 本地保存的地址集
-    */
-    fun onSuccess(paths:MutableList<String>)
-    
-    /**
-     * 文件下载进度
-     * @param downloadProgress DownloadProgress
-     */
-    fun onProgress(downloadProgress: DownloadProgress)
-  
-    /**
-    * 下载完成
-    */
-    fun onComplete()
-      
-    /**
-    * 下载错误
-    * @param t 错误信息
-    */
-    fun onError(t:Throwable)
-}
-```
-
-### 9. 工具库
-
-[utils](./utils/README.md)
+### 9. [工具库](./utils/README.md)
 
 ### 混淆
 
