@@ -477,9 +477,9 @@ class ResponseBodyConverter :
 + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
 + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
-### 7. [注解使用](./REMARD_ANNOTATION.md)
+### 7. [注解使用](./annotation/REMARD_ANNOTATION.md)
 
-### 8. [文件下载器](./REMARD_DOWNLOAD_MANAGER.md)
+### 8. [文件下载器](./mvvm/REMARD_DOWNLOAD_MANAGER.md)
 
 ### 9. [工具库](./utils/README.md)
 
