@@ -1,0 +1,2235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://gitee.com/catchpig/kmvvm" targetNamespace="http://gitee.com/catchpig/kmvvm" elementFormDefault="qualified" attributeFormDefault="qualified">
+    <xs:simpleType name="alios.boolean">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="alios.size">
+        <xs:annotation>
+            <xs:documentation>
+                具体尺寸表达式格式为{dp(xxx)}或者{sdp(xxx)}或者{view.xxx}
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\{[s]{0,1}dp\(\d+\)\}" />
+            <xs:pattern value="\{view.[\w*]+\}" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="alios.text">
+        <xs:annotation>
+            <xs:documentation>
+                引用国际化资源:{string.xxx}
+            </xs:documentation>
+            <xs:documentation>
+                和Model数据数据:{{xxx}}
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\{string.\w+\}"></xs:pattern>
+            <xs:pattern value="\{\{\w+\}\}"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- 图片地址校验规则 -->
+    <xs:simpleType name="alios.image.src">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\{img\(\w+\)\}"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="alios.adapter.data">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\{\{\w+\}\}"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="alios.view.visibility">
+        <xs:annotation>
+            <xs:documentation>
+                -Visible 显示
+            </xs:documentation>
+            <xs:documentation>
+                -None 隐藏且不占位置
+            </xs:documentation>
+            <xs:documentation>
+                -Hidden 隐藏且要占位置
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="{enum.View.Visibility.Visible}" />
+            <xs:enumeration value="{enum.View.Visibility.None}" />
+            <xs:enumeration value="{enum.View.Visibility.Hidden}" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:attributeGroup name="view_attribute">
+        <xs:attribute name="id" type="xs:string" />
+        <xs:attribute name="enabled" type="alios.boolean" />
+        <xs:attribute name="visibility" type="alios.view.visibility" />
+        <xs:attribute name="width" type="alios.size" />
+        <xs:attribute name="height" type="alios.size" />
+        <xs:attribute name="left" type="alios.size" />
+        <xs:attribute name="right" type="alios.size" />
+        <xs:attribute name="top" type="alios.size" />
+        <xs:attribute name="bottom" type="alios.size" />
+        <xs:attribute name="maxWidth" type="alios.size" />
+        <xs:attribute name="minWidth" type="alios.size" />
+        <xs:attribute name="maxHeight" type="alios.size" />
+        <xs:attribute name="minHeight" type="alios.size" />
+        <xs:attribute name="opacity">
+            <xs:annotation>
+                <xs:documentation>
+                透明度,类型:float
+            </xs:documentation>
+                <xs:documentation>
+                取值范围只能是0到1
+            </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:float">
+                    <xs:minInclusive value="0" />
+                    <xs:maxInclusive value="1" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="voiceSelectMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.View.VoiceSelectMode.None}" />
+                    <xs:enumeration value="{enum.View.VoiceSelectMode.Number}" />
+                    <xs:enumeration value="{enum.View.VoiceSelectMode.Custom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="voiceEnabled" type="alios.boolean" />
+        <xs:attribute name="overlayViewEnabled" type="alios.boolean" />
+        <xs:attribute name="voiceControlEnabled" type="alios.boolean" />
+        <xs:attribute name="enableLayer" type="alios.boolean" />
+        <xs:attribute name="multiTouchEnabled" type="alios.boolean" />
+        <xs:attribute name="motionEnabled" type="alios.boolean" />
+        <xs:attribute name="focusInTouchMode" type="alios.boolean" />
+        <xs:attribute name="focusable" type="alios.boolean" />
+        <xs:attribute name="fitSystemWindows" type="alios.boolean" />
+        <xs:attribute name="soundEffectsEnabled" type="alios.boolean" />
+        <xs:attribute name="exclusiveTouch" type="alios.boolean" />
+        <xs:attribute name="responsive" type="alios.boolean" />
+        <xs:attribute name="ignoreSelfCoveredCheck" type="alios.boolean" />
+        <xs:attribute name="extraData" type="xs:string" />
+        <xs:attribute name="tag" type="xs:string" />
+        <xs:attribute name="multiState" type="xs:string" />
+        <xs:attribute name="multiStateTransition" type="xs:string" />
+        <xs:attribute name="background" type="xs:string" />
+        <xs:attribute name="borderWidth" type="xs:string" />
+        <xs:attribute name="borderColor" type="xs:string" />
+        <xs:attribute name="borderRadius" type="xs:string" />
+        <xs:attribute name="capInsets" type="xs:string" />
+        <xs:attribute name="backgroundRepeatMode" type="xs:string" />
+        <xs:attribute name="backgroundSourceSize" type="xs:string" />
+        <xs:attribute name="backgroundSourceRect" type="xs:string" />
+        <xs:attribute name="parent" type="xs:string" />
+        <xs:attribute name="translationX" type="xs:string" />
+        <xs:attribute name="translationY" type="xs:string" />
+        <xs:attribute name="translationZ" type="xs:string" />
+        <xs:attribute name="rotationX" type="xs:string" />
+        <xs:attribute name="rotationY" type="xs:string" />
+        <xs:attribute name="rotationZ" type="xs:string" />
+        <xs:attribute name="scaleX" type="xs:string" />
+        <xs:attribute name="scaleY" type="xs:string" />
+        <xs:attribute name="originX" type="xs:string" />
+        <xs:attribute name="originY" type="xs:string" />
+        <xs:attribute name="touchRegion" type="xs:string" />
+        <xs:attribute name="shadowOffsetX" type="xs:string" />
+        <xs:attribute name="shadowOffsetY" type="xs:string" />
+        <xs:attribute name="shadowRadius" type="xs:string" />
+        <xs:attribute name="shadowColor" type="xs:string" />
+        <xs:attribute name="isInAnimation" type="alios.boolean" />
+        <xs:attribute name="tabIndex" type="xs:string" />
+        <xs:attribute name="behindWindowsBlurLevel" type="xs:string" />
+        <xs:attribute name="enableBehindWindowsBlur" type="alios.boolean" />
+        <xs:attribute name="styleName" type="xs:string" />
+        <xs:attribute name="propertySetName" type="xs:string" />
+        <xs:attribute name="bottomLineColor" type="xs:string" />
+        <xs:attribute name="bottomLineHeight" type="xs:string" />
+        <xs:attribute name="bottomLineMargin" type="xs:string" />
+        <xs:attribute name="zorder" type="xs:string" />
+        <xs:attribute name="elevation" type="xs:string" />
+        <xs:attribute name="externalDrawingWidth" type="xs:string" />
+        <xs:attribute name="externalDrawingHeight" type="xs:string" />
+        <xs:attribute name="focusPreviousTarget" type="xs:string" />
+        <xs:attribute name="focusNextTarget" type="xs:string" />
+        <xs:attribute name="badge" type="xs:string" />
+        <xs:attribute name="overlayView" type="xs:string" />
+        <xs:attribute name="voiceCommands" type="xs:string" />
+        <xs:attribute name="propertyInTransition" type="xs:string" />
+        <xs:attribute name="voiceCustomCommands" type="xs:string" />
+        <xs:attribute name="voiceCustomDmCommands" type="xs:string" />
+        <xs:attribute name="context" type="xs:string" />
+        <xs:attribute name="selectIndex" type="xs:integer" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="viewstub_sttribute">
+        <xs:attributeGroup ref="view_attribute" />
+        <xs:attribute name="markup" type="xs:string" />
+        <xs:attribute name="inflateId" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="imageview_attribute">
+        <xs:attributeGroup ref="view_attribute" />
+        <xs:attribute name="scaleType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Center}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Matrix}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Fitxy}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Fitcenter}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Fitstart}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Fitend}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Centerinside}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Centercrop}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.Tile}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.TileHorizontally}" />
+                    <xs:enumeration value="{enum.ImageView.ScaleType.TileVertically}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="src" type="alios.image.src" />
+        <xs:attribute name="sourceSize" type="xs:string" />
+        <xs:attribute name="sourceRect" type="xs:string" />
+        <xs:attribute name="asynchronous" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="svgview_attribute">
+        <xs:attributeGroup ref="imageview_attribute" />
+        <xs:attribute name="repeat" type="alios.boolean" />
+        <xs:attribute name="inverted" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="spriteview_attribute">
+        <xs:attributeGroup ref="imageview_attribute" />
+        <xs:attribute name="frameWidth" type="xs:string" />
+        <xs:attribute name="frameHeight" type="xs:string" />
+        <xs:attribute name="frameDuration" type="xs:string" />
+        <xs:attribute name="frameCount" type="xs:string" />
+        <xs:attribute name="reversed" type="xs:string" />
+        <xs:attribute name="iterationCount" type="xs:string" />
+        <xs:attribute name="offsetLeft" type="xs:string" />
+        <xs:attribute name="offsetTop" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="richtextview_attribute">
+        <xs:attributeGroup ref="textview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="textview_attribute">
+        <xs:attributeGroup ref="view_attribute" />
+        <xs:attribute name="text" type="alios.text" />
+        <xs:attribute name="align">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enums.TextView.Align.Left}" />
+                    <xs:enumeration value="{enums.TextView.Align.Center}" />
+                    <xs:enumeration value="{enums.TextView.Align.Right}" />
+                    <xs:enumeration value="{enums.TextView.Align.Justify}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="verticalAlign">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.VerticalAlign.Top}" />
+                    <xs:enumeration value="{enum.TextView.VerticalAlign.Middle}" />
+                    <xs:enumeration value="{enum.TextView.VerticalAlign.Bottom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="lineHeight" type="xs:string" />
+        <xs:attribute name="lineHeightMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.LineHeightMode.ProportionalHeight}" />
+                    <xs:enumeration value="{enum.TextView.LineHeightMode.FixedHeight}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="color" type="xs:string" />
+        <xs:attribute name="fontFamily" type="xs:string" />
+        <xs:attribute name="fontSize" type="xs:string" />
+        <xs:attribute name="fontWeight">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.FontWeight.Normal}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.Light}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.DemiBold}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.Bold}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.Black}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="fontStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.FontStyle.Normal}" />
+                    <xs:enumeration value="{enum.TextView.FontStyle.Italic}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textDecoration">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.TextDecoration.None}" />
+                    <xs:enumeration value="{enum.TextView.TextDecoration.Underline}" />
+                    <xs:enumeration value="{enum.TextView.TextDecoration.Overline}" />
+                    <xs:enumeration value="{enum.TextView.TextDecoration.LineThrough}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textStyle" type="xs:string" />
+        <xs:attribute name="letterSpacing" type="xs:string" />
+        <xs:attribute name="wordSpacing" type="xs:string" />
+        <xs:attribute name="multiLine" type="alios.boolean">
+            <xs:annotation>
+                <xs:documentation>
+                是否支持多行显示
+            </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="wrapMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.WrapMode.WrapAtWordBoundaryOrAnywhere}" />
+                    <xs:enumeration value="{enum.TextView.WrapMode.WrapAnywhere}" />
+                    <xs:enumeration value="{enum.TextView.WrapMode.WordWrap}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="baseline" type="xs:string" />
+        <xs:attribute name="fontSizeMode" type="xs:string" />
+        <xs:attribute name="minFontSize" type="xs:string" />
+        <xs:attribute name="elideMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideLeft}" />
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideRight}" />
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideMiddle}" />
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideNone}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="paddingLeft" type="xs:string" />
+        <xs:attribute name="paddingRight" type="xs:string" />
+        <xs:attribute name="paddingTop" type="xs:string" />
+        <xs:attribute name="paddingBottom" type="xs:string" />
+        <xs:attribute name="maxLineCount" type="xs:string" />
+        <xs:attribute name="textShadowColor" type="xs:string" />
+        <xs:attribute name="linkPattern">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.linkPattern.None}" />
+                    <xs:enumeration value="{enum.TextView.linkPattern.Phone}" />
+                    <xs:enumeration value="{enum.TextView.linkPattern.Url}" />
+                    <xs:enumeration value="{enum.TextView.linkPattern.Email}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="linkColor" type="xs:string" />
+        <xs:attribute name="lineSpacing" type="xs:string" />
+        <xs:attribute name="textFormat" type="xs:string" />
+
+    </xs:attributeGroup>
+    <xs:attributeGroup name="textarea_attribute">
+        <xs:attributeGroup ref="textview_attribute" />
+        <xs:attribute name="placeholder" type="xs:string" />
+        <xs:attribute name="placeholderColor" type="xs:string" />
+        <xs:attribute name="inputType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextArea.InputType.None}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.HiddenText}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.SensitiveData}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.NoAutoUppercase}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.PreferNumbers}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.PreferUppercase}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.PreferLowercase}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.NoPredictiveText}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.FormattedNumbersOnly}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.UppercaseOnly}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.LowercaseOnly}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.DialableCharactersOnly}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.EmailCharactersOnly}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.UrlCharactersOnly}" />
+                    <xs:enumeration value="{enum.TextArea.InputType.NotShowOnFocus}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="cursorPosition" type="xs:string" />
+        <xs:attribute name="inputMethodReturnKeyType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeyDefault}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeyEnter}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeyDone}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeyGo}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeySend}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeySearch}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeyNext}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeyPrevious}" />
+                    <xs:enumeration value="{enum.TextArea.ReturnKeyType.ReturnKeyJoin}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="clipboard" type="alios.boolean" />
+        <xs:attribute name="cursorColor" type="xs:string" />
+        <xs:attribute name="selectionColor" type="xs:string" />
+        <xs:attribute name="scrollX" type="xs:string" />
+        <xs:attribute name="scrollY" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="textfield_attribute">
+        <xs:attributeGroup ref="textview_attribute" />
+        <xs:attribute name="placeholder" type="xs:string" />
+        <xs:attribute name="placeholderColor" type="xs:string" />
+        <xs:attribute name="clearable" type="alios.boolean" />
+        <xs:attribute name="echoMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextField.EchoMode.Normal}" />
+                    <xs:enumeration value="{enum.TextField.EchoMode.NoEcho}" />
+                    <xs:enumeration value="{enum.TextField.EchoMode.Password}" />
+                    <xs:enumeration value="{enum.TextField.EchoMode.PasswordEchoOnEdit}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="inputType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextField.InputType.None}" />
+                    <xs:enumeration value="{enum.TextField.InputType.HiddenText}" />
+                    <xs:enumeration value="{enum.TextField.InputType.SensitiveData}" />
+                    <xs:enumeration value="{enum.TextField.InputType.NoAutoUppercase}" />
+                    <xs:enumeration value="{enum.TextField.InputType.PreferNumbers}" />
+                    <xs:enumeration value="{enum.TextField.InputType.PreferUppercase}" />
+                    <xs:enumeration value="{enum.TextField.InputType.PreferLowercase}" />
+                    <xs:enumeration value="{enum.TextField.InputType.NoPredictiveText}" />
+                    <xs:enumeration value="{enum.TextField.InputType.FormattedNumbersOnly}" />
+                    <xs:enumeration value="{enum.TextField.InputType.UppercaseOnly}" />
+                    <xs:enumeration value="{enum.TextField.InputType.LowercaseOnly}" />
+                    <xs:enumeration value="{enum.TextField.InputType.DialableCharactersOnly}" />
+                    <xs:enumeration value="{enum.TextField.InputType.EmailCharactersOnly}" />
+                    <xs:enumeration value="{enum.TextField.InputType.UrlCharactersOnly}" />
+                    <xs:enumeration value="{enum.TextField.InputType.NotShowOnFocus}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="cursorPosition" type="xs:string" />
+        <xs:attribute name="passwordMaskDelay" type="xs:string" />
+        <xs:attribute name="maxLength" type="xs:string" />
+        <xs:attribute name="clipboard" type="alios.boolean" />
+        <xs:attribute name="inputMethodReturnKeyType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeyDefault}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeyEnter}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeyDone}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeyGo}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeySend}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeySearch}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeyNext}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeyPrevious}" />
+                    <xs:enumeration value="{enum.TextField.ReturnKeyType.ReturnKeyJoin}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="validator" type="xs:string" />
+        <xs:attribute name="inputMask" type="xs:string" />
+        <xs:attribute name="underLine" type="alios.boolean" />
+        <xs:attribute name="cursorColor" type="xs:string" />
+        <xs:attribute name="longPressMode" type="alios.boolean" />
+        <xs:attribute name="selectionColor" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="badge_attribute">
+        <xs:attributeGroup ref="textview_attribute" />
+        <xs:attribute name="value" type="xs:string" />
+        <xs:attribute name="minValue" type="xs:string" />
+        <xs:attribute name="maxValue" type="xs:string" />
+        <xs:attribute name="associateView" type="xs:string" />
+        <xs:attribute name="position">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Badge.Position.LeftTop}" />
+                    <xs:enumeration value="{enum.Badge.Position.RightTop}" />
+                    <xs:enumeration value="{enum.Badge.Position.LeftBottom}" />
+                    <xs:enumeration value="{enum.Badge.Position.RightBottom}" />
+                    <xs:enumeration value="{enum.Badge.Position.Custom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="button_attribute">
+        <xs:attributeGroup ref="textview_attribute" />
+        <xs:attribute name="buttonColor" type="xs:string" />
+        <xs:attribute name="styleType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Button.StyleType.Block}" />
+                    <xs:enumeration value="{enum.Button.StyleType.Border}" />
+                    <xs:enumeration value="{enum.Button.StyleType.None}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="sizeType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Button.SizeType.Small}" />
+                    <xs:enumeration value="{enum.Button.SizeType.Normal}" />
+                    <xs:enumeration value="{enum.Button.SizeType.Large}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="colorType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Button.ColorType.Primary}" />
+                    <xs:enumeration value="{enum.Button.ColorType.Secondary}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="backgroundPressed" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="imagebutton_attribute">
+        <xs:attributeGroup ref="imageview_attribute" />
+        <xs:attribute name="styleType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Button.ImageButton.Block}" />
+                    <xs:enumeration value="{enum.Button.ImageButton.Border}" />
+                    <xs:enumeration value="{enum.Button.ImageButton.None}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="sizeType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Button.ImageButton.Small}" />
+                    <xs:enumeration value="{enum.Button.ImageButton.Normal}" />
+                    <xs:enumeration value="{enum.Button.ImageButton.Large}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="loading_attribute">
+        <xs:attributeGroup ref="spriteview_attribute" />
+        <xs:attribute name="colorStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Loading.ColorStyle.Green}" />
+                    <xs:enumeration value="{enum.Loading.ColorStyle.White}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="sizeStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Loading.SizeStyle.Big}" />
+                    <xs:enumeration value="{enum.Loading.SizeStyle.Normal}" />
+                    <xs:enumeration value="{enum.Loading.SizeStyle.Middle}" />
+                    <xs:enumeration value="{enum.Loading.SizeStyle.Little}" />
+                    <xs:enumeration value="{enum.Loading.SizeStyle.Small}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="animationParams" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="scrollbar_attribute">
+        <xs:attributeGroup ref="view_attribute" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.SrollBar.Orientation.Vertical}" />
+                    <xs:enumeration value="{enum.SrollBar.Orientation.Horizontal}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="autoHidden" type="alios.boolean" />
+        <xs:attribute name="barColor" type="xs:string" />
+        <xs:attribute name="associatedView" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="tip_attribute">
+        <xs:attributeGroup ref="textview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="toast_attribute">
+        <xs:attributeGroup ref="textview_attribute" />
+        <xs:attribute name="duration" type="xs:long" />
+        <xs:attribute name="dockAlign">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Toast.DockAlign.Top}" />
+                    <xs:enumeration value="{enum.Toast.DockAlign.Center}" />
+                    <xs:enumeration value="{enum.Toast.DockAlign.Bottom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="compositeview_attribute">
+        <xs:attributeGroup ref="view_attribute" />
+        <xs:attribute name="layout" type="xs:string" />
+        <xs:attribute name="needLayoutNode" type="alios.boolean" />
+        <xs:attribute name="clipBound">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="true" />
+                    <xs:enumeration value="false" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="clipRadius" type="xs:string" />
+        <xs:attribute name="internalClipBound" type="alios.boolean" />
+        <xs:attribute name="focusMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.CompositeView.FocusMode.SelfFirst}" />
+                    <xs:enumeration value="{enum.CompositeView.FocusMode.DescendantFirst}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="lastFocusedChild" type="xs:string" />
+        <xs:attribute name="needRelayout" type="alios.boolean" />
+        <xs:attribute name="needSaveAbsoluteInfo" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="gifview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="src" type="alios.image.src" />
+        <xs:attribute name="async" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="scrollableview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="scrollX" type="xs:string" />
+        <xs:attribute name="scrollY" type="xs:string" />
+        <xs:attribute name="overScroll" type="alios.boolean" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.ScrollableView.Orientation.Both}" />
+                    <xs:enumeration value="{enum.ScrollableView.Orientation.Horizontal}" />
+                    <xs:enumeration value="{enum.ScrollableView.Orientation.Vertical}" />
+                    <xs:enumeration value="{enum.ScrollableView.Orientation.None}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="horizontalScrollBar" type="xs:string" />
+        <xs:attribute name="verticalScrollBar" type="xs:string" />
+        <xs:attribute name="verticalScrollBarPosition">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.ScrollableView.VerticalScrollBarPosition.Left}" />
+                    <xs:enumeration value="{enum.ScrollableView.VerticalScrollBarPosition.Right}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="horizontalScrollBarPosition">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.ScrollableView.HorizontalScrollBarPosition.Top}" />
+                    <xs:enumeration value="{enum.ScrollableView.HorizontalScrollBarPosition.Bottom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="stepScrollX" type="xs:string" />
+        <xs:attribute name="stepScrollY" type="xs:string" />
+        <xs:attribute name="scrollBarCustomized" type="alios.boolean" />
+        <xs:attribute name="verticalFadingEdgeEnabled" type="alios.boolean" />
+        <xs:attribute name="horizontalFadingEdgeEnabled" type="alios.boolean" />
+        <xs:attribute name="leftFadingEdgeRatio" type="xs:string" />
+        <xs:attribute name="rightFadingEdgeRatio" type="xs:string" />
+        <xs:attribute name="topFadingEdgeRatio" type="xs:string" />
+        <xs:attribute name="bottomFadingEdgeRatio" type="xs:string" />
+        <xs:attribute name="previousCommand" type="xs:string" />
+        <xs:attribute name="nextCommand" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="gridview_attribute">
+        <xs:attributeGroup ref="scrollableview_attribute" />
+        <xs:attribute name="adapter" type="xs:string" />
+        <xs:attribute name="adapter.data" type="alios.adapter.data" />
+        <xs:attribute name="cellWidth" type="xs:string" />
+        <xs:attribute name="cellHeight" type="xs:string" />
+        <xs:attribute name="columns" type="xs:string" />
+        <xs:attribute name="rows" type="xs:string" />
+        <xs:attribute name="columnSpacing" type="xs:string" />
+        <xs:attribute name="rowSpacing" type="xs:string" />
+        <xs:attribute name="spacing" type="xs:string" />
+        <xs:attribute name="paddingLeft" type="xs:string" />
+        <xs:attribute name="paddingRight" type="xs:string" />
+        <xs:attribute name="paddingTop" type="xs:string" />
+        <xs:attribute name="paddingBottom" type="xs:string" />
+        <xs:attribute name="focusPosition" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="listview_attribute">
+        <xs:attributeGroup ref="scrollableview_attribute" />
+        <xs:attribute name="adapter" type="xs:string" />
+        <xs:attribute name="adapter.data" type="alios.adapter.data" />
+        <xs:attribute name="focusIndex" type="xs:string" />
+        <xs:attribute name="focusPosition" type="xs:string" />
+        <xs:attribute name="dividerHeight" type="xs:string" />
+        <xs:attribute name="spacing" type="xs:string" />
+        <xs:attribute name="emptyView" type="xs:string" />
+        <xs:attribute name="layoutFromEnd" type="alios.boolean" />
+        <xs:attribute name="reuseItem" type="alios.boolean" />
+        <xs:attribute name="mscrollY" type="xs:string" />
+        <xs:attribute name="mscrollX" type="xs:string" />
+        <xs:attribute name="paddingLeft" type="xs:string" />
+        <xs:attribute name="paddingRight" type="xs:string" />
+        <xs:attribute name="paddingTop" type="xs:string" />
+        <xs:attribute name="paddingBottom" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="navigationbar_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="mode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.NavigationBar.Mode.Normal}" />
+                    <xs:enumeration value="{enum.NavigationBar.Mode.ImageCorner}" />
+                    <xs:enumeration value="{enum.NavigationBar.Mode.Customized}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="borderBottomColor" type="xs:string" />
+        <xs:attribute name="title" type="xs:string" />
+        <xs:attribute name="titleColor" type="xs:string" />
+        <xs:attribute name="subTitle" type="xs:string" />
+        <xs:attribute name="subTitleColor" type="xs:string" />
+        <xs:attribute name="leftItem" type="xs:string" />
+        <xs:attribute name="rightItem" type="xs:string" />
+        <xs:attribute name="titleItem" type="xs:string" />
+        <xs:attribute name="bottomLineWidth" type="xs:string" />
+        <xs:attribute name="safeModeEnable" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="navigationview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="showBackkeyOnRootView" type="alios.boolean" />
+        <xs:attribute name="needRebackAnimation" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="overlayview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="associateView" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="pathview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="adapter" type="xs:string" />
+        <xs:attribute name="path" type="xs:string" />
+        <xs:attribute name="pathItemCount" type="xs:string" />
+        <xs:attribute name="snapMode" type="xs:string" />
+        <xs:attribute name="preferredHighlightBegin" type="xs:string" />
+        <xs:attribute name="preferredHighlightEnd" type="xs:string" />
+        <xs:attribute name="currentIndex" type="xs:string" />
+        <xs:attribute name="interactive" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="richtexteditor_attribute">
+        <xs:attributeGroup ref="scrollableview_attribute" />
+        <xs:attribute name="text" type="xs:string" />
+        <xs:attribute name="placeholder" type="xs:string" />
+        <xs:attribute name="fontSize" type="xs:string" />
+        <xs:attribute name="color" type="xs:string" />
+        <xs:attribute name="fontFamily" type="xs:string" />
+        <xs:attribute name="fontWeight">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.RichTextEditor.FontWeight.Normal}" />
+                    <xs:enumeration value="{enum.RichTextEditor.FontWeight.Light}" />
+                    <xs:enumeration value="{enum.RichTextEditor.FontWeight.DemiBold}" />
+                    <xs:enumeration value="{enum.RichTextEditor.FontWeight.Bold}" />
+                    <xs:enumeration value="{enum.RichTextEditor.FontWeight.Black}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="fontStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.RichTextEditor.FontStyle.Normal}" />
+                    <xs:enumeration value="{enum.RichTextEditor.FontStyle.Italic}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textDecoration">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.RichTextEditor.TextDecoration.None}" />
+                    <xs:enumeration value="{enum.RichTextEditor.TextDecoration.Underline}" />
+                    <xs:enumeration value="{enum.RichTextEditor.TextDecoration.Overline}" />
+                    <xs:enumeration value="{enum.RichTextEditor.TextDecoration.LineThrough}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="wordSpacing" type="xs:string" />
+        <xs:attribute name="inputType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.None}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.HiddenText}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.SensitiveData}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.NoAutoUppercase}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.PreferNumbers}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.PreferUppercase}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.PreferLowercase}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.NoPredictiveText}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.FormattedNumbersOnly}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.UppercaseOnly}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.LowercaseOnly}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.DialableCharactersOnly}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.EmailCharactersOnly}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.UrlCharactersOnly}" />
+                    <xs:enumeration value="{enum.RichTextEditor.InputType.NotShowOnFocus}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="spacing" type="xs:string" />
+        <xs:attribute name="align" type="xs:string" />
+        <xs:attribute name="verticalAlign">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.RichTextEditor.VerticalAlign.Top}" />
+                    <xs:enumeration value="{enum.RichTextEditor.VerticalAlign.Middle}" />
+                    <xs:enumeration value="{enum.RichTextEditor.VerticalAlign.Bottom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="letterSpacing" type="xs:string" />
+        <xs:attribute name="cursorColor" type="xs:string" />
+        <xs:attribute name="selectionColor" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="stackview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="swipeable" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="settingview_attribute">
+        <xs:attributeGroup ref="stackview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="surfaceview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="surfaceType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.SurfaceView.SurfaceType.Local}" />
+                    <xs:enumeration value="{enum.SurfaceView.SurfaceType.Nested}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="initScale" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="swipeview_attribute">
+        <xs:attributeGroup ref="scrollableview_attribute" />
+        <xs:attribute name="currentIndex" type="xs:string" />
+        <xs:attribute name="loop" type="alios.boolean" />
+        <xs:attribute name="swipeByDirectionKey" type="alios.boolean" />
+        <xs:attribute name="mscrollX" type="xs:string" />
+        <xs:attribute name="mscrollY" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="tabbar_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="focusIndex" type="xs:string" />
+        <xs:attribute name="tabBackground" type="xs:string" />
+        <xs:attribute name="currentTextBold" type="alios.boolean" />
+        <xs:attribute name="colorStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TabBar.ColorStyle.Light}" />
+                    <xs:enumeration value="{enum.TabBar.ColorStyle.Dark}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="currentIndex" type="xs:string" />
+        <xs:attribute name="mode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TabBar.Mode.Segment}" />
+                    <xs:enumeration value="{enum.TabBar.Mode.Main}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="align">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TabBar.Align.Left}" />
+                    <xs:enumeration value="{enum.TabBar.Align.Right}" />
+                    <xs:enumeration value="{enum.TabBar.Align.Center}" />
+                    <xs:enumeration value="{enum.TabBar.Align.Top}" />
+                    <xs:enumeration value="{enum.TabBar.Align.Middle}" />
+                    <xs:enumeration value="{enum.TabBar.Align.Bottom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="marginStart" type="xs:string" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TabBar.Orientation.Horizontal}" />
+                    <xs:enumeration value="{enum.TabBar.Orientation.Vertical}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="itemWidth" type="xs:string" />
+        <xs:attribute name="itemHeight" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="tabview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="currentIndex" type="xs:string" />
+        <xs:attribute name="contentDraggable" type="alios.boolean" />
+        <xs:attribute name="mode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TabView.Mode.Segment}" />
+                    <xs:enumeration value="{enum.TabView.Mode.Main}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="animationEnabled" type="alios.boolean" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TabView.Orientation.Horizontal}" />
+                    <xs:enumeration value="{enum.TabView.Orientation.Vertical}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="webglview_attribute">
+        <xs:attributeGroup ref="surfaceview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="webview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="url" type="xs:string" />
+        <xs:attribute name="zoomFactor" type="xs:string" />
+        <xs:attribute name="client" type="xs:string" />
+        <xs:attribute name="remoteWebViewObserver" type="xs:string" />
+        <xs:attribute name="cover" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="window_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="title" type="xs:string" />
+        <xs:attribute name="autoOrientation" type="alios.boolean" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Window.Orientation.Portrait}" />
+                    <xs:enumeration value="{enum.Window.Orientation.LandscapeLeft}" />
+                    <xs:enumeration value="{enum.Window.Orientation.PortraitUpsideDown}" />
+                    <xs:enumeration value="{enum.Window.Orientation.LandscapeRight}" />
+                    <xs:enumeration value="{enum.Window.Orientation.FollowUnderWindow}" />
+                    <xs:enumeration value="{enum.Window.Orientation.LockBehind}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="secureMode" type="alios.boolean" />
+        <xs:attribute name="skipCapture" type="alios.boolean" />
+        <xs:attribute name="fullScreenMode" type="alios.boolean" />
+        <xs:attribute name="statusBarContentStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Window.StatusBarContentStyle.NORMAL}" />
+                    <xs:enumeration value="{enum.Window.StatusBarContentStyle.DISABLE_NOTIFICATION_ICONS}" />
+                    <xs:enumeration value="{enum.Window.StatusBarContentStyle.DISABLE_NOTIFICATION_TICKER}" />
+                    <xs:enumeration value="{enum.Window.StatusBarContentStyle.DISABLE_CLOCK}" />
+                    <xs:enumeration value="{enum.Window.StatusBarContentStyle.DISABLE_RECENT}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="statusBarColorStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Window.StatusBarColorStyle.BLACK}" />
+                    <xs:enumeration value="{enum.Window.StatusBarColorStyle.WHITE}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="statusBarActionStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Window.StatusBarActionStyle.NORMAL}" />
+                    <xs:enumeration value="{enum.Window.StatusBarActionStyle.DISABLE_NOTIFICATION_PANEL}" />
+                    <xs:enumeration value="{enum.Window.StatusBarActionStyle.DISABLE_QUICKSETTINGS_PANE}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="showWhenLocked" type="alios.boolean" />
+        <xs:attribute name="screenBrightness" type="xs:string" />
+        <xs:attribute name="softKeyboardMode" type="alios.boolean" />
+        <xs:attribute name="wakeupEnabled" type="alios.boolean" />
+        <xs:attribute name="quickWordsEnabled" type="alios.boolean" />
+        <xs:attribute name="specifiedMode" type="xs:string" />
+        <xs:attribute name="surfaceId" type="xs:string" />
+        <xs:attribute name="outsideTouchable" type="alios.boolean" />
+        <xs:attribute name="windowObject" type="xs:string" />
+        <xs:attribute name="layoutFlags" type="xs:string" />
+        <xs:attribute name="systemUiVisibility" type="xs:string" />
+        <xs:attribute name="closeOnTouchOutside" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="dialog_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="closeOnBackkey" type="alios.boolean" />
+        <xs:attribute name="closeOnTouchOutside" type="alios.boolean" />
+        <xs:attribute name="showingMask" type="alios.boolean" />
+        <xs:attribute name="dialogLevel" type="xs:string" />
+        <xs:attribute name="dialogType" type="xs:string" />
+        <xs:attribute name="showingAnimation" type="xs:string" />
+        <xs:attribute name="closingAnimation" type="xs:string" />
+        <xs:attribute name="mode" type="xs:string" />
+        <xs:attribute name="_stage" type="xs:string" />
+        <xs:attribute name="specifiedMode" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="actionmenu_attribute">
+        <xs:attributeGroup ref="dialog_attribute" />
+        <xs:attribute name="title" type="xs:string" />
+        <xs:attribute name="showAtTop" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="alertdialog_attribute">
+        <xs:attributeGroup ref="dialog_attribute" />
+        <xs:attribute name="title" type="xs:string" />
+        <xs:attribute name="message" type="xs:string" />
+        <xs:attribute name="buttons" type="xs:string" />
+        <xs:attribute name="takeOverMode" type="alios.boolean" />
+        <xs:attribute name="motionTransform" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="ball_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="forceArr" type="xs:string" />
+        <xs:attribute name="size" type="xs:string" />
+        <xs:attribute name="ballColor" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="barcodeview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="calendarview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="compoundbutton_attibute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="spacing" type="xs:string" />
+        <xs:attribute name="leftPadding" type="xs:string" />
+        <xs:attribute name="rightPadding" type="xs:string" />
+        <xs:attribute name="topPadding" type="xs:string" />
+        <xs:attribute name="bottomPadding" type="xs:string" />
+        <xs:attribute name="text" type="xs:string" />
+        <xs:attribute name="layoutType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.CompoundButton.LayoutType.NONE}" />
+                    <xs:enumeration value="{enum.CompoundButton.LayoutType.NOTEXT}" />
+                    <xs:enumeration value="{enum.CompoundButton.LayoutType.WITHTEXT}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textVisibility" type="alios.view.visibility" />
+        <xs:attribute name="color" type="xs:string" />
+        <xs:attribute name="elideMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideLeft}" />
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideRight}" />
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideMiddle}" />
+                    <xs:enumeration value="{enum.TextView.ElideMode.ElideNone}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="checkable" type="alios.boolean" />
+        <xs:attribute name="autoUnchecked" type="alios.boolean" />
+        <xs:attribute name="checked" type="xs:string" />
+        <xs:attribute name="fontFamily" type="xs:string" />
+        <xs:attribute name="fontSize" type="xs:string" />
+        <xs:attribute name="fontWeight">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.FontWeight.Normal}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.Light}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.DemiBold}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.Bold}" />
+                    <xs:enumeration value="{enum.TextView.FontWeight.Black}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="fontStyle">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.FontStyle.Normal}" />
+                    <xs:enumeration value="{enum.TextView.FontStyle.Italic}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textAlign">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enums.TextView.Align.Left}" />
+                    <xs:enumeration value="{enums.TextView.Align.Center}" />
+                    <xs:enumeration value="{enums.TextView.Align.Right}" />
+                    <xs:enumeration value="{enums.TextView.Align.Justify}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textVerticalAlign">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TextView.VerticalAlign.Top}" />
+                    <xs:enumeration value="{enum.TextView.VerticalAlign.Middle}" />
+                    <xs:enumeration value="{enum.TextView.VerticalAlign.Bottom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textWidth" type="xs:string" />
+        <xs:attribute name="stopPhasePropagation" type="alios.boolean" />
+        <xs:attribute name="interactionInterval" type="xs:string" />
+        <xs:attribute name="layoutDirection">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.CompoundButton.LayoutDirection.NONE}" />
+                    <xs:enumeration value="{enum.CompoundButton.LayoutDirection.LeftRight}" />
+                    <xs:enumeration value="{enum.CompoundButton.LayoutDirection.RIGHTLEFT}" />
+                    <xs:enumeration value="{enum.CompoundButton.LayoutDirection.TOPBOTTOM}" />
+                    <xs:enumeration value="{enum.CompoundButton.LayoutDirection.BOTTOMTOP}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="layoutWidth" type="xs:string" />
+        <xs:attribute name="layoutHeight" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="checkbox_attribute">
+        <xs:attributeGroup ref="compoundbutton_attibute" />
+        <xs:attribute name="isLightMode" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="checkmark_attribute">
+        <xs:attributeGroup ref="compoundbutton_attibute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="clipboardmenu_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="combobox_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="offsetX" type="xs:string" />
+        <xs:attribute name="offsetY" type="xs:string" />
+        <xs:attribute name="dropDownWidth" type="xs:string" />
+        <xs:attribute name="dropDownBackground" type="xs:string" />
+        <xs:attribute name="currentText" type="xs:string" />
+        <xs:attribute name="currentIndex" type="xs:string" />
+        <xs:attribute name="items" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="contextmenu_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="datepicker_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="count" type="xs:string" />
+        <xs:attribute name="minDate" type="xs:string" />
+        <xs:attribute name="maxDate" type="xs:string" />
+        <xs:attribute name="dividerTextColor" type="xs:string" />
+        <xs:attribute name="dividerTextSize" type="xs:string" />
+        <xs:attribute name="dividerOffsetLeft" type="xs:string" />
+        <xs:attribute name="currentDate" type="xs:string" />
+        <xs:attribute name="horizontalPadding" type="xs:string" />
+        <xs:attribute name="verticalPadding" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="datepickerdialog_attribute">
+        <xs:attributeGroup ref="alertdialog_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="drawerview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="contentView" type="xs:string" />
+        <xs:attribute name="leftView" type="xs:string" />
+        <xs:attribute name="rightView" type="xs:string" />
+        <xs:attribute name="leftDrawerLock">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.DrawerView.LockMode.UnLock}" />
+                    <xs:enumeration value="{enum.DrawerView.LockMode.Open}" />
+                    <xs:enumeration value="{enum.DrawerView.LockMode.Close}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="rightDrawerLock">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.DrawerView.LockMode.UnLock}" />
+                    <xs:enumeration value="{enum.DrawerView.LockMode.Open}" />
+                    <xs:enumeration value="{enum.DrawerView.LockMode.Close}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="maskColor" type="xs:string" />
+        <xs:attribute name="maskOpacity" type="xs:string" />
+        <xs:attribute name="edgeSize" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="facecollectingview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="filedialog_attribute">
+        <xs:attributeGroup ref="alertdialog_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="footer_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="max" type="xs:string" />
+        <xs:attribute name="itemWidth" type="xs:string" />
+        <xs:attribute name="itemHeight" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="gridinputview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="text" type="xs:string" />
+        <xs:attribute name="autoHideKeyBoard" type="alios.boolean" />
+        <xs:attribute name="autoToUpperCase" type="alios.boolean" />
+        <xs:attribute name="inputType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.GridInputView.InputType.None}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.HiddenText}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.SensitiveData}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.NoAutoUppercase}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.PreferNumbers}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.PreferUppercase}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.PreferLowercase}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.NoPredictiveText}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.FormattedNumbersOnly}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.UppercaseOnly}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.LowercaseOnly}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.DialableCharactersOnly}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.EmailCharactersOnly}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.UrlCharactersOnly}" />
+                    <xs:enumeration value="{enum.GridInputView.InputType.NotShowOnFocus}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="inputMethodReturnKeyType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeyDefault}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeyEnter}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeyDone}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeyGo}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeySend}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeySearch}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeyNext}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeyPrevious}" />
+                    <xs:enumeration value="{enum.GridInputView.ReturnKeyType.ReturnKeyJoin}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="indicator_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="count" type="xs:string" />
+        <xs:attribute name="margin" type="xs:string" />
+        <xs:attribute name="color" type="xs:string" />
+        <xs:attribute name="radius" type="xs:string" />
+        <xs:attribute name="styleType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Indicator.StyleType.Line}" />
+                    <xs:enumeration value="{enum.Indicator.StyleType.Circle}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="currentIndex" type="xs:string" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Indicator.Orientation.Horizontal}" />
+                    <xs:enumeration value="{enum.Indicator.Orientation.Vertical}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="listdialog_attribute">
+        <xs:attributeGroup ref="alertdialog_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="loadingdialog_attribute">
+        <xs:attributeGroup ref="dialog_attribute" />
+        <xs:attribute name="title" type="xs:string" />
+        <xs:attribute name="message" type="xs:string" />
+        <xs:attribute name="iconPosition">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.LoadingDialog.IconPosition.Left}" />
+                    <xs:enumeration value="{enum.LoadingDialog.IconPosition.Top}" />
+                    <xs:enumeration value="{enum.LoadingDialog.IconPosition.Right}" />
+                    <xs:enumeration value="{enum.LoadingDialog.IconPosition.Bottom}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="iconSpacing" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="loadingview_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="displayMode" type="xs:string" />
+        <xs:attribute name="loadingText" type="xs:string" />
+        <xs:attribute name="loadingTextStyle" type="xs:string" />
+        <xs:attribute name="errorImgSrc" type="alios.image.src" />
+        <xs:attribute name="errorText" type="xs:string" />
+        <xs:attribute name="retryButtonText" type="xs:string" />
+        <xs:attribute name="retryButtonVisible" type="xs:string" />
+        <xs:attribute name="errorTextStyle" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="modallayer_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="wakeupEnabled" type="xs:string" />
+        <xs:attribute name="quickWordsEnabled" type="xs:string" />
+        <xs:attribute name="softKeyboardMode" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="MotionDialog_attribute">
+        <xs:attributeGroup ref="dialog_attribute" />
+        <xs:attribute name="takeOverMode" type="alios.boolean" />
+        <xs:attribute name="closeWhenMoveOutofBounds">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="true" />
+                    <xs:enumeration value="false" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="colorMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.MotionDialog.ColorMode.Default}" />
+                    <xs:enumeration value="{enum.MotionDialog.ColorMode.RedRight}" />
+                    <xs:enumeration value="{enum.MotionDialog.ColorMode.GreenLeft}" />
+                    <xs:enumeration value="{enum.MotionDialog.ColorMode.CustomDefind}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="NumberPicker_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="count" type="xs:string" />
+        <xs:attribute name="textSize" type="xs:string" />
+        <xs:attribute name="selectedTextSize" type="xs:string" />
+        <xs:attribute name="lineColor" type="xs:string" />
+        <xs:attribute name="needLine" type="alios.boolean" />
+        <xs:attribute name="textColor" type="xs:string" />
+        <xs:attribute name="selectedTextColor" type="xs:string" />
+        <xs:attribute name="minOpacity" type="xs:string" />
+        <xs:attribute name="maxOpacity" type="xs:string" />
+        <xs:attribute name="minValue" type="xs:string" />
+        <xs:attribute name="maxValue" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+        <xs:attribute name="displayedValues" type="xs:string" />
+        <xs:attribute name="loopMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.NumberPicker.LoopMode.Loop}" />
+                    <xs:enumeration value="{enum.NumberPicker.LoopMode.NoLoop}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textAlign">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.NumberPicker.Align.Left}" />
+                    <xs:enumeration value="{enum.NumberPicker.Align.Right}" />
+                    <xs:enumeration value="{enum.NumberPicker.Align.Center}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="textPaddingLeft" type="xs:string" />
+        <xs:attribute name="textPaddingRight" type="xs:string" />
+        <xs:attribute name="scrollY" type="xs:string" />
+        <xs:attribute name="pos" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="NumberPickerDialog_attribute">
+        <xs:attributeGroup ref="alertdialog_attribute" />
+        <xs:attribute name="value" type="xs:string" />
+        <xs:attribute name="minValue" type="xs:string" />
+        <xs:attribute name="maxValue" type="xs:string" />
+        <xs:attribute name="displayedValues" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="Pagination_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="pagingBackground" type="xs:string" />
+        <xs:attribute name="spacing" type="xs:string" />
+        <xs:attribute name="preButtonText" type="xs:string" />
+        <xs:attribute name="nextButtonText" type="xs:string" />
+        <xs:attribute name="indexFormat" type="xs:string" />
+        <xs:attribute name="maxPageNum" type="xs:string" />
+        <xs:attribute name="currentPageNum" type="xs:string" />
+        <xs:attribute name="indexTextColor" type="xs:string" />
+        <xs:attribute name="indexFontSize" type="xs:string" />
+        <xs:attribute name="indexStyle" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="PopupDialog_attribute">
+        <xs:attributeGroup ref="dialog_attribute" />
+        <xs:attribute name="pointerType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.PopupDialog.PointerType.Hidden}" />
+                    <xs:enumeration value="{enum.PopupDialog.PointerType.Visible}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="anchorView" type="xs:string" />
+        <xs:attribute name="anchorRect" type="xs:string" />
+        <xs:attribute name="pointerDirection">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.PopupDialog.PointerDirection.Left}" />
+                    <xs:enumeration value="{enum.PopupDialog.PointerDirection.Up}" />
+                    <xs:enumeration value="{enum.PopupDialog.PointerDirection.Right}" />
+                    <xs:enumeration value="{enum.PopupDialog.PointerDirection.Down}" />
+                    <xs:enumeration value="{enum.PopupDialog.PointerDirection.Any}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="PopupMenu_attribute">
+        <xs:attributeGroup ref="PopupDialog_attribute" />
+        <xs:attribute name="title" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="ProgressBar_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="tipVisible">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.ProgressBar.TipVisible.None}" />
+                    <xs:enumeration value="{enum.ProgressBar.TipVisible.Visible}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="tipType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.ProgressBar.TipType.Center}" />
+                    <xs:enumeration value="{enum.ProgressBar.TipType.Float}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="tip" type="xs:string" />
+        <xs:attribute name="indeterminate" type="alios.boolean" />
+        <xs:attribute name="indeterminateSrc" type="xs:string" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.ProgressBar.Orientation.Horizontal}" />
+                    <xs:enumeration value="{enum.ProgressBar.Orientation.Vertical}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="inverted" type="alios.boolean" />
+        <xs:attribute name="progress" type="xs:string" />
+        <xs:attribute name="secondaryProgress" type="xs:string" />
+        <xs:attribute name="max" type="xs:string" />
+        <xs:attribute name="progressColor" type="xs:string" />
+        <xs:attribute name="secondaryProgressColor" type="xs:string" />
+        <xs:attribute name="progressBackground" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="ProgressDialog_attribute">
+        <xs:attributeGroup ref="alertdialog_attribute" />
+        <xs:attribute name="max" type="xs:string" />
+        <xs:attribute name="progress" type="xs:string" />
+        <xs:attribute name="indeterminate" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="PullRefreshGridView_attribute">
+        <xs:attributeGroup ref="gridview_attribute" />
+        <xs:attribute name="pullRefreshEnable" type="alios.boolean" />
+        <xs:attribute name="pullDirection" type="xs:string" />
+        <xs:attribute name="pullHeaderDistance" type="xs:string" />
+        <xs:attribute name="pullFooterDistance" type="xs:string" />
+        <xs:attribute name="pullHeaderView" type="xs:string" />
+        <xs:attribute name="pullFooterView" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="PullRefreshListView_attribute">
+        <xs:attributeGroup ref="listview_attribute" />
+        <xs:attribute name="pullRefreshEnable" type="alios.boolean" />
+        <xs:attribute name="pullDirection">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.PullRefreshListView.PullDirection.FromHeader}" />
+                    <xs:enumeration value="{enum.PullRefreshListView.PullDirection.FromFooter}" />
+                    <xs:enumeration value="{enum.PullRefreshListView.PullDirection.Both}" />
+                    <xs:enumeration value="{enum.PullRefreshListView.PullDirection.None}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="pullUpRefreshEnable" type="alios.boolean" />
+        <xs:attribute name="pullDownRefreshEnable" type="alios.boolean" />
+        <xs:attribute name="pullHeaderDistance" type="xs:string" />
+        <xs:attribute name="pullDownDistance" type="xs:string" />
+        <xs:attribute name="pullFooterDistance" type="xs:string" />
+        <xs:attribute name="pullUpDistance" type="xs:string" />
+        <xs:attribute name="pullHeaderView" type="xs:string" />
+        <xs:attribute name="pullDownView" type="xs:string" />
+        <xs:attribute name="pullFooterView" type="xs:string" />
+        <xs:attribute name="pullUpView" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="QuickIndex_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="showTip" type="alios.boolean" />
+        <xs:attribute name="tipCenter" type="xs:string" />
+        <xs:attribute name="sortSequence" type="xs:string" />
+        <xs:attribute name="orientation" type="alios.boolean" />
+        <xs:attribute name="quickIndexStr" type="xs:string" />
+        <xs:attribute name="fontStyle" type="xs:string" />
+        <xs:attribute name="fontSize" type="xs:string" />
+        <xs:attribute name="fontFamily" type="xs:string" />
+        <xs:attribute name="fontColor" type="xs:string" />
+        <xs:attribute name="invalidIndexColor" type="xs:string" />
+        <xs:attribute name="selectedIndexColor" type="xs:string" />
+        <xs:attribute name="indexItemSpacing" type="xs:string" />
+        <xs:attribute name="indexBeginPadding" type="xs:string" />
+        <xs:attribute name="hotData" type="xs:string" />
+        <xs:attribute name="currentIndex" type="xs:string" />
+        <xs:attribute name="data" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="RadioButton_attribute">
+        <xs:attributeGroup ref="compoundbutton_attibute" />
+        <xs:attribute name="group" type="xs:string" />
+        <xs:attribute name="frameSource" type="xs:string" />
+        <xs:attribute name="markSource" type="xs:string" />
+        <xs:attribute name="animationSequence" type="xs:string" />
+        <xs:attribute name="animationRate" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="RatingBar_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="value" type="xs:string" />
+        <xs:attribute name="count" type="xs:string" />
+        <xs:attribute name="step" type="xs:string" />
+        <xs:attribute name="spacing" type="xs:string" />
+        <xs:attribute name="itemWidth" type="xs:string" />
+        <xs:attribute name="itemHeight" type="xs:string" />
+        <xs:attribute name="itemBgSource" type="xs:string" />
+        <xs:attribute name="itemSource" type="xs:string" />
+        <xs:attribute name="isIndicator" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="RoundProgressBar_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="minValue" type="xs:string" />
+        <xs:attribute name="maxValue" type="xs:string" />
+        <xs:attribute name="progress" type="xs:string" />
+        <xs:attribute name="secondaryProgress" type="xs:string" />
+        <xs:attribute name="secondaryProgressBarVisible" type="alios.boolean" />
+        <xs:attribute name="sizeType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.RoundProgressBar.ImageButton.Small}" />
+                    <xs:enumeration value="{enum.RoundProgressBar.ImageButton.Normal}" />
+                    <xs:enumeration value="{enum.RoundProgressBar.ImageButton.Large}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="defaultSizes" type="xs:string" />
+        <xs:attribute name="progressBarInverted" type="alios.boolean" />
+        <xs:attribute name="secondaryProgressBarInverted" type="alios.boolean" />
+        <xs:attribute name="barStartRadian" type="xs:string" />
+        <xs:attribute name="format" type="xs:string" />
+        <xs:attribute name="textVisibility" type="xs:string" />
+        <xs:attribute name="frameColor" type="xs:string" />
+        <xs:attribute name="progressBarColor" type="xs:string" />
+        <xs:attribute name="secondaryProgressBarColor" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="SearchView_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="query" type="xs:string" />
+        <xs:attribute name="anchorView" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="Select_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="selectedIndex" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="SelectLayer_attribute">
+        <xs:attributeGroup ref="overlayview_attribute" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="Slider_attribute">
+        <xs:attributeGroup ref="overlayview_attribute" />
+        <xs:attribute name="tipVisible">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Slider.TipVisible.None}" />
+                    <xs:enumeration value="{enum.Slider.TipVisible.Visible}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="tipType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Slider.TipType.Center}" />
+                    <xs:enumeration value="{enum.Slider.TipType.Float}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="tip" type="xs:string" />
+        <xs:attribute name="decimalPlaces" type="xs:string" />
+        <xs:attribute name="minValue" type="xs:string" />
+        <xs:attribute name="maxValue" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+        <xs:attribute name="step" type="xs:string" />
+        <xs:attribute name="stopPhasePropagation" type="alios.boolean" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Slider.Orientation.Horizontal}" />
+                    <xs:enumeration value="{enum.Slider.Orientation.Vertical}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="SmartAction_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="shrinkDelayTime" type="xs:long" />
+        <xs:attribute name="actionState">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.SmartAction.ActionState.FirstEnterEmlarge}" />
+                    <xs:enumeration value="{enum.SmartAction.ActionState.Emlarge}" />
+                    <xs:enumeration value="{enum.SmartAction.ActionState.Narrow}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="Steppers_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="minValue" type="xs:string" />
+        <xs:attribute name="maxValue" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+        <xs:attribute name="step" type="xs:string" />
+        <xs:attribute name="spacing" type="xs:string" />
+        <xs:attribute name="format" type="xs:string" />
+        <xs:attribute name="orientation">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.Steppers.Orientation.Horizontal}" />
+                    <xs:enumeration value="{enum.Steppers.Orientation.Vertical}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="reversed" type="alios.boolean" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="Switch_attribute">
+        <xs:attributeGroup ref="compoundbutton_attibute" />
+        <xs:attribute name="value" type="alios.boolean" />
+        <xs:attribute name="animSkipOneTime" type="alios.boolean" />
+        <xs:attribute name="bindView" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="TimePicker_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="count" type="xs:string" />
+        <xs:attribute name="dividerTextColor" type="xs:string" />
+        <xs:attribute name="dividerTextSize" type="xs:string" />
+        <xs:attribute name="dividerOffsetLeft" type="xs:string" />
+        <xs:attribute name="hour" type="xs:string" />
+        <xs:attribute name="minute" type="xs:string" />
+        <xs:attribute name="timeMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TimePicker.TimeMode.Hour12}" />
+                    <xs:enumeration value="{enum.TimePicker.TimeMode.Hour24}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="horizontalPadding" type="xs:string" />
+        <xs:attribute name="verticalPadding" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="TimePickerDialog_attribute">
+        <xs:attributeGroup ref="alertdialog_attribute" />
+        <xs:attribute name="timeMode">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="{enum.TimePickerDialog.TimeMode.Hour12}" />
+                    <xs:enumeration value="{enum.TimePickerDialog.TimeMode.Hour24}" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="VideoView_attribute">
+        <xs:attributeGroup ref="surfaceview_attribute" />
+        <xs:attribute name="src" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="WebViewMediaControl_attribute">
+        <xs:attributeGroup ref="compositeview_attribute" />
+        <xs:attribute name="windowId" type="xs:string" />
+        <xs:attribute name="surfaceId" type="xs:string" />
+        <xs:attribute name="surfaceHandle" type="xs:string" />
+        <xs:attribute name="title" type="xs:string" />
+        <xs:attribute name="volume" type="xs:string" />
+        <xs:attribute name="brightness" type="xs:string" />
+        <xs:attribute name="currentTime" type="xs:string" />
+        <xs:attribute name="useImageRotation" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:attributeGroup name="include_attribute">
+        <xs:attribute name="markup" type="xs:string" use="required" />
+        <xs:anyAttribute />
+    </xs:attributeGroup>
+    <xs:group name="compositeview_element_group">
+        <xs:all>
+            <xs:element minOccurs="0" ref="include" />
+            <xs:element minOccurs="0" ref="ImageView" />
+            <xs:element minOccurs="0" ref="RichTextView" />
+            <xs:element minOccurs="0" ref="SVGView" />
+            <xs:element minOccurs="0" ref="SpriteView" />
+            <xs:element minOccurs="0" ref="TextArea" />
+            <xs:element minOccurs="0" ref="TextField" />
+            <xs:element minOccurs="0" ref="TextView" />
+            <xs:element minOccurs="0" ref="View" />
+            <xs:element minOccurs="0" ref="ViewStub" />
+            <xs:element minOccurs="0" ref="Badge" />
+            <xs:element minOccurs="0" ref="Button" />
+            <xs:element minOccurs="0" ref="ImageButton" />
+            <xs:element minOccurs="0" ref="Loading" />
+            <xs:element minOccurs="0" ref="ScrollBar" />
+            <xs:element minOccurs="0" ref="Tip" />
+            <xs:element minOccurs="0" ref="Toast" />
+            <xs:element minOccurs="0" ref="CompositeView" />
+            <xs:element minOccurs="0" ref="GifView" />
+            <xs:element minOccurs="0" ref="GridView" />
+            <xs:element minOccurs="0" ref="ListView" />
+            <xs:element minOccurs="0" ref="NavigationBar" />
+            <xs:element minOccurs="0" ref="NavigationView" />
+            <xs:element minOccurs="0" ref="OverlayView" />
+            <xs:element minOccurs="0" ref="PathView" />
+            <xs:element minOccurs="0" ref="RichTextEditor" />
+            <xs:element minOccurs="0" ref="ScrollableView" />
+            <xs:element minOccurs="0" ref="SettingView" />
+            <xs:element minOccurs="0" ref="StackView" />
+            <xs:element minOccurs="0" ref="SurfaceView" />
+            <xs:element minOccurs="0" ref="SwipeView" />
+            <xs:element minOccurs="0" ref="TabBar" />
+            <xs:element minOccurs="0" ref="TabView" />
+            <xs:element minOccurs="0" ref="WebGLView" />
+            <xs:element minOccurs="0" ref="WebView" />
+            <xs:element minOccurs="0" ref="Window" />
+            <xs:element minOccurs="0" ref="ActionMenu" />
+            <xs:element minOccurs="0" ref="AlertDialog" />
+            <xs:element minOccurs="0" ref="Ball" />
+            <xs:element minOccurs="0" ref="BarcodeView" />
+            <xs:element minOccurs="0" ref="CalendarView" />
+            <xs:element minOccurs="0" ref="CheckBox" />
+            <xs:element minOccurs="0" ref="Checkmark" />
+            <xs:element minOccurs="0" ref="ClipboardMenu" />
+            <xs:element minOccurs="0" ref="ComboBox" />
+            <xs:element minOccurs="0" ref="CompoundButton" />
+            <xs:element minOccurs="0" ref="ContextMenu" />
+            <xs:element minOccurs="0" ref="DatePicker" />
+            <xs:element minOccurs="0" ref="DatePickerDialog" />
+            <xs:element minOccurs="0" ref="Dialog" />
+            <xs:element minOccurs="0" ref="DrawerView" />
+            <xs:element minOccurs="0" ref="FaceCollectingView" />
+            <xs:element minOccurs="0" ref="FileDialog" />
+            <xs:element minOccurs="0" ref="Footer" />
+            <xs:element minOccurs="0" ref="GridInputView" />
+            <xs:element minOccurs="0" ref="Indicator" />
+            <xs:element minOccurs="0" ref="ListDialog" />
+            <xs:element minOccurs="0" ref="LoadingDialog" />
+            <xs:element minOccurs="0" ref="LoadingView" />
+            <xs:element minOccurs="0" ref="ModalLayer" />
+            <xs:element minOccurs="0" ref="MotionDialog" />
+            <xs:element minOccurs="0" ref="NumberPicker" />
+            <xs:element minOccurs="0" ref="NumberPickerDialog" />
+            <xs:element minOccurs="0" ref="Pagination" />
+            <xs:element minOccurs="0" ref="PopupDialog" />
+            <xs:element minOccurs="0" ref="PopupMenu" />
+            <xs:element minOccurs="0" ref="ProgressBar" />
+            <xs:element minOccurs="0" ref="ProgressDialog" />
+            <xs:element minOccurs="0" ref="PullRefreshGridView" />
+            <xs:element minOccurs="0" ref="PullRefreshListView" />
+            <xs:element minOccurs="0" ref="QuickIndex" />
+            <xs:element minOccurs="0" ref="RadioButton" />
+            <xs:element minOccurs="0" ref="RatingBar" />
+            <xs:element minOccurs="0" ref="RoundProgressBar" />
+            <xs:element minOccurs="0" ref="SearchView" />
+            <xs:element minOccurs="0" ref="Select" />
+            <xs:element minOccurs="0" ref="SelectLayer" />
+            <xs:element minOccurs="0" ref="Slider" />
+            <xs:element minOccurs="0" ref="SmartAction" />
+            <xs:element minOccurs="0" ref="Steppers" />
+            <xs:element minOccurs="0" ref="Switch" />
+            <xs:element minOccurs="0" ref="TimePicker" />
+            <xs:element minOccurs="0" ref="TimePickerDialog" />
+            <xs:element minOccurs="0" ref="VideoView" />
+            <xs:element minOccurs="0" ref="WebViewMediaControl" />
+        </xs:all>
+    </xs:group>
+    <xs:element name="ImageView">
+        <xs:complexType>
+            <xs:attributeGroup ref="imageview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichTextView">
+        <xs:complexType>
+            <xs:attributeGroup ref="richtextview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SVGView">
+        <xs:complexType>
+            <xs:attributeGroup ref="svgview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SpriteView">
+        <xs:complexType>
+            <xs:attributeGroup ref="spriteview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TextArea">
+        <xs:complexType>
+            <xs:attributeGroup ref="textarea_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TextField">
+        <xs:complexType>
+            <xs:attributeGroup ref="textfield_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TextView">
+        <xs:complexType>
+            <xs:attributeGroup ref="textview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="View">
+        <xs:complexType>
+            <xs:attributeGroup ref="view_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ViewStub">
+        <xs:complexType>
+            <xs:attributeGroup ref="viewstub_sttribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Badge">
+        <xs:complexType>
+            <xs:attributeGroup ref="badge_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Button">
+        <xs:complexType>
+            <xs:attributeGroup ref="button_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ImageButton">
+        <xs:complexType>
+            <xs:attributeGroup ref="imagebutton_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Loading">
+        <xs:complexType>
+            <xs:attributeGroup ref="loading_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ScrollBar">
+        <xs:complexType>
+            <xs:attributeGroup ref="scrollbar_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Tip">
+        <xs:complexType>
+            <xs:attributeGroup ref="tip_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Toast">
+        <xs:complexType>
+            <xs:attributeGroup ref="toast_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="asd">
+        <xs:sequence />
+    </xs:complexType>
+    <xs:element name="CompositeView">
+        <xs:complexType mixed="false">
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="compositeview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GifView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="gifview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GridView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="gridview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ListView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="listview_attribute" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="NavigationBar">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="navigationbar_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="NavigationView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="navigationview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="OverlayView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="overlayview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PathView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="pathview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RichTextEditor">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="richtexteditor_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ScrollableView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="scrollableview_attribute" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="SettingView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="stackview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="StackView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="stackview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SurfaceView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="surfaceview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SwipeView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="swipeview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TabBar">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="tabbar_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TabView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="tabview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="WebGLView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="webglview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="WebView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="webview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Window">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group"></xs:group>
+            <xs:attributeGroup ref="window_attribute" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ActionMenu">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="actionmenu_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="AlertDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="alertdialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Ball">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="ball_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="BarcodeView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="barcodeview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CalendarView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="calendarview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CheckBox">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="checkbox_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Checkmark">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="checkmark_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ClipboardMenu">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="clipboardmenu_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ComboBox">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="combobox_attribute" />
+
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CompoundButton">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="compoundbutton_attibute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ContextMenu">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="contextmenu_attribute" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DatePicker">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="datepicker_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DatePickerDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="datepickerdialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Dialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="dialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DrawerView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="drawerview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="FaceCollectingView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="facecollectingview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="FileDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="filedialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Footer">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="footer_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GridInputView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="gridinputview_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Indicator">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="indicator_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ListDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="listdialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="LoadingDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="loadingdialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="LoadingView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="loadingview_attribute" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ModalLayer">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="modallayer_attribute" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="MotionDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="MotionDialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="NumberPicker">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="NumberPicker_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="NumberPickerDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="NumberPickerDialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Pagination">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="Pagination_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PopupDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="PopupDialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PopupMenu">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="PopupMenu_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ProgressBar">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="ProgressBar_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ProgressDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="ProgressDialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PullRefreshGridView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="PullRefreshGridView_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PullRefreshListView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="PullRefreshListView_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="QuickIndex">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="QuickIndex_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RadioButton">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="RadioButton_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RatingBar">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="RatingBar_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="RoundProgressBar">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="RoundProgressBar_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SearchView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="SearchView_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Select">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="Select_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SelectLayer">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="SelectLayer_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Slider">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="Slider_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SmartAction">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="SmartAction_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Steppers">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="Steppers_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Switch">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="Switch_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TimePicker">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="TimePicker_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TimePickerDialog">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="TimePickerDialog_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="VideoView">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="VideoView_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="WebViewMediaControl">
+        <xs:complexType>
+            <xs:group ref="compositeview_element_group" />
+            <xs:attributeGroup ref="WebViewMediaControl_attribute" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="include">
+        <xs:complexType>
+            <xs:attributeGroup ref="include_attribute" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
