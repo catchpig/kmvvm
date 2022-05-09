@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://github.com/catchpig/kmvvm/blob/master" targetNamespace="https://github.com/catchpig/kmvvm/blob/master" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
     <xs:simpleType name="alios.boolean">
         <xs:restriction base="xs:string">
             <xs:enumeration value="true" />
