@@ -72,3 +72,4 @@
 | readTimeout       |    Long     | 否   | 5000        | http读取超时时间                                             |
 | interceptors      | Interceptor | 否   | Interceptor | http拦截器                                                   |
 | debugInterceptors | Interceptor | 否   | Interceptor | debug模式下的http拦截器,只有NetManager.setDebug(true),才会生效 |
+| rxJava            |   Boolean   | 是   | false       | 是否使用RxJava接收网络请求数据                               |
