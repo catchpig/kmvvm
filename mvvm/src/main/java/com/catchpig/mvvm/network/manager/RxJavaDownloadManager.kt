@@ -179,7 +179,7 @@ object RxJavaDownloadManager : DownloadManager() {
                     return@flatMap Flowable.just(localFilePath)
                 }
             }
-            val downloadService = initDownloadService(url, downloadSubscriber)
+            val downloadService = initDownloadService(url, downloadSubscriber, true)
             return@flatMap httpDownload(downloadService, url.file.substring(1), localFilePath)
         }.io2main().subscribeWith(downloadSubscriber)
         return downloadSubscriber

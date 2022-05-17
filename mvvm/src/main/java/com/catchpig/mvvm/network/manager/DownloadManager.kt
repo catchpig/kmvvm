@@ -77,11 +77,20 @@ open class DownloadManager {
             downloadPath = path
         }
 
-        private fun getDowLoadService(baseUrl: String): DownloadService {
+        private fun getDowLoadService(baseUrl: String, rxJava: Boolean): DownloadService {
+            if (rxJava) {
+                return Retrofit
+                    .Builder()
+                    .baseUrl(baseUrl)
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .client(getOkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(DownloadService::class.java)
+            }
             return Retrofit
                 .Builder()
                 .baseUrl(baseUrl)
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -96,19 +105,19 @@ open class DownloadManager {
          */
         fun initDownloadService(
             url: URL,
-            downloadProgressListener: DownloadProgressListener
+            downloadProgressListener: DownloadProgressListener,
+            rxJava: Boolean = false
         ): DownloadService {
             val baseUrl = "${url.protocol}://${url.host}/"
             var downloadService = downloadServiceMap[baseUrl]
             downloadService = downloadService.run {
-                getDowLoadService(baseUrl)
+                getDowLoadService(baseUrl, rxJava)
             }
             downloadServiceMap[baseUrl] = downloadService
             downloadInterceptor.addProgressListener(url.toString(), downloadProgressListener)
             return downloadService
         }
     }
-
 
     /**
      * 生成文件的地址

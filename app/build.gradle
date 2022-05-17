@@ -37,6 +37,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace 'com.catchpig.kmvvm'
 }
 
 dependencies {
@@ -54,6 +55,13 @@ dependencies {
     kapt project(path: ':compiler')
 //    implementation "com.gitee.catchpig.kmvvm:mvvm:$kotlin_mvvm"
 //    kapt "com.gitee.catchpig.kmvvm:compiler:$kotlin_mvvm"
+
+
+//    implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+
+    //rxjava3
+    implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
     //刷新-头部
     implementation "io.github.scwang90:refresh-header-material:$SmartRefreshLayout_version"
     //刷新-底部

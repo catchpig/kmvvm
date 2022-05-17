@@ -118,12 +118,13 @@ class ServiceApiProcessor : BaseProcessor() {
                 }
             }
             constructorBuilder = constructorBuilder.addStatement(
-                "serviceMap.put(%S, %T(%S, %L, %L, $interceptorName,$debugInterceptorName))",
+                "serviceMap.put(%S, %T(%S, %L, %L, $interceptorName,$debugInterceptorName,%L))",
                 "$packageName.$className",
                 CLASS_NAME_SERVICE_PARAM,
                 service.baseUrl,
                 service.connectTimeout,
                 service.readTimeout,
+                service.rxJava
             )
         }
         return constructorBuilder.build()

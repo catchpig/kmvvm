@@ -30,6 +30,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace 'com.catchpig.mvvm'
 }
 
 dependencies {
@@ -60,12 +61,12 @@ dependencies {
 
     //retrofit2
     api "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    api("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
     api("com.squareup.retrofit2:converter-gson:$retrofit2_version")
+    compileOnly("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
 
     //rxjava3
-    api "io.reactivex.rxjava3:rxjava:$rxjava_version"
-    api "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+    compileOnly "io.reactivex.rxjava3:rxjava:$rxjava_version"
+    compileOnly "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
 
 
     api "com.github.catch-pig:LoadingView:$loading_version"

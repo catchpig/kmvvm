@@ -24,14 +24,15 @@ object NetManager {
         val service = serviceMap[className]
         return if (service == null) {
             val serviceParam = KotlinMvvmCompiler.getServiceParam(className)
-            val newService = Retrofit
+            var builder = Retrofit
                 .Builder()
                 .baseUrl(serviceParam.baseUrl)
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .client(getClient(serviceParam))
                 .addConverterFactory(SerializationCoverterFactory.create(className))
-                .build()
-                .create(serviceClass)
+            if (serviceParam.rxJava) {
+                builder = builder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            }
+            val newService = builder.build().create(serviceClass)
             serviceMap[className] = newService!!
             newService
         } else {

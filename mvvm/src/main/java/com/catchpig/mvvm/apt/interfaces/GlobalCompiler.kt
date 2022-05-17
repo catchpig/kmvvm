@@ -17,7 +17,7 @@ interface GlobalCompiler {
     fun getGlobalConfig(): IGlobalConfig
 
     /**
-     * 发送Rxjava的异常到被注解FlowError修饰的接口实现类
+     * 发送Rxjava或者Flow的异常到被注解FlowError修饰的接口实现类
      * @param any Any
      * @param t Throwable
      */

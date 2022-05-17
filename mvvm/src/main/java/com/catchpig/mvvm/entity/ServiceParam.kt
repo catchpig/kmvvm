@@ -7,5 +7,6 @@ data class ServiceParam(
     val connectTimeout: Long,
     val readTimeout: Long,
     val interceptors: MutableList<Interceptor>,
-    val debugInterceptors: MutableList<Interceptor>
+    val debugInterceptors: MutableList<Interceptor>,
+    val rxJava:Boolean
 )
