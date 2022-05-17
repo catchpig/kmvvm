@@ -16,6 +16,18 @@
 
 #### 1. RxJava下载器-[RxJavaDownloadManager](./mvvm/src/main/java/com/catchpig/mvvm/listener/RxJavaDownloadManager.kt)
 
++ 使用RxJava下载器,必须要引入RxJava的依赖包和adapter-rxjava3依赖包
+
+  ```groovy
+  implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+  
+      //rxjava3
+  implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
+  implementation "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+  ```
+
+  
+
 ##### 单文件下载-回调返回下载路径和下载进度
 
 > download(

@@ -387,6 +387,16 @@ bodyBinding.refresh.run {
 
 #### 6.1只需要是接口类上加上注解[ServiceApi](./annotation/src/main/java/com/catchpig/annotation/ServiceApi.kt),并使用NetManager.getService()获取对应的接口类
 
++ 如果rxJava为true,必须要引入RxJava的依赖包和adapter-rxjava3依赖包
+
+  ```groovy
+  implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+  
+      //rxjava3
+  implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
+  implementation "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+  ```
+
 > 使用示例
 
 ```kotlin
@@ -394,7 +404,8 @@ bodyBinding.refresh.run {
     baseUrl = "https://www.wanandroid.com/",
     responseConverter = ResponseBodyConverter::class,
     interceptors = [RequestInterceptor::class],
-    debugInterceptors = [OkHttpProfilerInterceptor::class]
+    debugInterceptors = [OkHttpProfilerInterceptor::class],
+    rxJava = true
 )
 interface WanAndroidService {
     @GET("banner/json")
