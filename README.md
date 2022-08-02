@@ -566,4 +566,7 @@ class ResponseBodyConverter :
 
 ## 其他
 
+### QQ交流群
+<img src="./images/qq_qrcode.jpg" style="zoom:30%;" />
+
 ### 欢迎大家在issue上提出问题,我这边会不定时的看issue,解决问题
