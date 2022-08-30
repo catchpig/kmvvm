@@ -82,12 +82,12 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     override fun setContentView(view: View?) {
         rootBinding.layoutBody.let {
             it.addView(
-                    view,
-                    0,
-                    ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                    )
+                view,
+                0,
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.catchpig.annotation.enums
+package com.catchpig.utils.enums
 
 /**
  * 日志等级

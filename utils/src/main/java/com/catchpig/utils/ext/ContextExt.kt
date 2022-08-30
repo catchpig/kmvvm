@@ -13,13 +13,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
 
+private const val TAG = "ContextExt"
 /**
  * 安装apk
  * @receiver Context
  * @param apkPath String apk本地路径
  */
 fun Context.installApk(apkPath: String){
-    "apk本地路径:$apkPath".logi()
+    "apk本地路径:$apkPath".logi(TAG)
     var pFile = File(apkPath)
     val intent = Intent()
     intent.action = Intent.ACTION_VIEW

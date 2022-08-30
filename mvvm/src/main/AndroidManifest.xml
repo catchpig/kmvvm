@@ -5,8 +5,8 @@
 
     <application>
         <provider
-            android:authorities="${applicationId}.KotlinMvpContentProvider"
-            android:name=".provider.KotlinMvpContentProvider"
+            android:authorities="${applicationId}.KotlinMvvmContentProvider"
+            android:name=".provider.KotlinMvvmContentProvider"
             android:exported="false"/>
     </application>
 </manifest>

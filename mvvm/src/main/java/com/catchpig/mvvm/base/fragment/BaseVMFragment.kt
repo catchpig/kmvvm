@@ -21,6 +21,12 @@ import java.lang.reflect.ParameterizedType
  * @date 2019/4/6 11:25
  */
 abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragment<VB>(), BaseView {
+    companion object {
+        private const val TAG = "BaseVMFragment"
+    }
+
+    private val fullTag by lazy { "${javaClass.simpleName}_$TAG" }
+
     protected val viewModel: VM by lazy {
         var type = javaClass.genericSuperclass
         var modelClass: Class<VM> = (type as ParameterizedType).actualTypeArguments[1] as Class<VM>
@@ -44,7 +50,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
             flow.flowOn(Dispatchers.IO).catch {
                 refresh.updateError()
             }.onCompletion {
-                "lifecycleFlowRefresh:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
+                "lifecycleFlowRefresh:onCompletion".logd(fullTag)
             }.collect {
                 refresh.updateData(it)
             }
@@ -57,7 +63,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
             flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
             }.onCompletion {
-                "lifecycleFlow:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
+                "lifecycleFlow:onCompletion".logd(fullTag)
             }.collect {
                 callback(it)
             }
@@ -69,7 +75,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
             }.onCompletion {
-                "lifecycleFlowLoadingView:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
+                "lifecycleFlowLoadingView:onCompletion".logd(fullTag)
                 hideLoading()
             }.catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)

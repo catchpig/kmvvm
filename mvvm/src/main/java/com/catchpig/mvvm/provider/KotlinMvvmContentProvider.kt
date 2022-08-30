@@ -12,7 +12,7 @@ import com.catchpig.mvvm.manager.ContextManager
  * @author catchpig
  * @date 2019/10/21 00:21
  */
-class KotlinMvpContentProvider : ContentProvider() {
+class KotlinMvvmContentProvider : ContentProvider() {
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         return null

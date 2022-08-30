@@ -6,6 +6,7 @@ import com.catchpig.kmvvm.R
 import com.catchpig.mvvm.manager.ContextManager
 import com.catchpig.mvvm.network.manager.DownloadManager
 import com.catchpig.mvvm.network.manager.NetManager
+import com.catchpig.utils.LogUtils
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -30,6 +31,8 @@ class KotlinMvpApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        LogUtils.init(applicationContext)
+        LogUtils.w(javaClass.simpleName, "oncreate")
         NetManager.setDebug(BuildConfig.DEBUG)
         DownloadManager.setDownloadPath("${ContextManager.context.externalCacheDir!!.absolutePath}/kmvvmDownload")
     }
