@@ -488,11 +488,17 @@ class ResponseBodyConverter :
 + lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
 + lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
-### 7. [注解使用](./annotation/REMARD_ANNOTATION.md)
+### 7. 日志
 
-### 8. [文件下载器](./mvvm/REMARD_DOWNLOAD_MANAGER.md)
++ 在application的onCreate中调用LogUtils.init()方法,是log打印统一打印应用applicationId的tag前缀
++ 可以使用LogUtils.i,LogUtils.d等打印日志
++ 也可以使用LogExt的扩展方法打印日志
 
-### 9. [工具库](./utils/README.md)
+### 8. [注解使用](./annotation/REMARD_ANNOTATION.md)
+
+### 9. [文件下载器](./mvvm/REMARD_DOWNLOAD_MANAGER.md)
+
+### 10. [工具库](./utils/README.md)
 
 ### 混淆
 
