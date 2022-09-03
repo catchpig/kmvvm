@@ -64,6 +64,11 @@
 + String.jsonToClass - json转实体
 + Any.jsonToString - 实体转字符串
 
+## LogUtils
+
++ 日志工具类
++ 需在application的onCreate方式中调用LogUtils.init()方法
+
 ## LogExt(日志打印)
 
 + String.logv - Log.v的日志
