@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
+import com.catchpig.utils.ext.logi
 import com.scwang.smart.refresh.layout.constant.RefreshState
 
 
@@ -15,6 +16,10 @@ class RefreshRecyclerView(
     context: Context,
     attrs: AttributeSet
 ) : RefreshLayoutWrapper(context, attrs) {
+    companion object {
+        private const val TAG = "RefreshRecyclerView"
+    }
+
     private var recyclerBackground: Int
     private val recyclerView: RecyclerView
 
@@ -49,6 +54,9 @@ class RefreshRecyclerView(
             }
             RefreshState.Loading -> {
                 adapter.add(data)
+            }
+            else -> {
+                "state:$state".logi(TAG)
             }
         }
         updateSuccess(data)
