@@ -3,26 +3,29 @@
 apply from: 'version.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.7.20-Beta'
 
     repositories {
-        mavenCentral(){
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        mavenCentral() {
             allowInsecureProtocol = true
         }
-        google(){
+        google() {
             allowInsecureProtocol = true
         }
         maven { url 'https://jitpack.io' }
-        maven{
+        maven {
             url 'https://maven.aliyun.com/repository/google'
         }
-        maven{
+        maven {
             url "https://maven.aliyun.com/repository/central"
         }
-        maven{
+        maven {
             url 'https://maven.aliyun.com/repository/public'
         }
-        maven{
+        maven {
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
 
@@ -38,28 +41,30 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral(){
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        mavenCentral() {
             allowInsecureProtocol = true
         }
-        google(){
+        google() {
             allowInsecureProtocol = true
         }
         maven { url 'https://jitpack.io' }
-        maven{
+        maven {
             url 'https://maven.aliyun.com/repository/google'
         }
-        maven{
+        maven {
             url "https://maven.aliyun.com/repository/central"
         }
-        maven{
+        maven {
             url 'https://maven.aliyun.com/repository/public'
         }
-        maven{
+        maven {
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
     }
 }
-
 
 
 task clean(type: Delete) {

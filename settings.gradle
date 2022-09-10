@@ -1,1 +1,1 @@
-include ':app', ':mvvm', ':annotation', ':compiler', ':utils'
+include ':app', ':mvvm', ':annotation', ':compiler', ':utils', ':ksp-compiler'

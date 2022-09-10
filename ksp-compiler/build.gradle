@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+//java {
+//    sourceCompatibility = JavaVersion.VERSION_11
+//    targetCompatibility = JavaVersion.VERSION_11
+//}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.google.devtools.ksp:symbol-processing-api:$ksp_version"
+    implementation "com.squareup:kotlinpoet:$kotlinpoet_version"
+    implementation "com.squareup:kotlinpoet-ksp:$kotlinpoet_version"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation("com.squareup.okhttp3:logging-interceptor:$okhttp3_version")
+    api project(path: ':annotation')
+}
