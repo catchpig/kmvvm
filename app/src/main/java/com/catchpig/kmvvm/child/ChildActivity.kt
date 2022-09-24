@@ -5,7 +5,6 @@ import com.catchpig.annotation.*
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.ActivityChildBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
-import com.catchpig.mvvm.manager.SnackbarManager
 
 @Title(R.string.child_title)
 class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {

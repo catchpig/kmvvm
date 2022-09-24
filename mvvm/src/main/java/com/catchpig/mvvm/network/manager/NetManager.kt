@@ -10,8 +10,16 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import java.util.concurrent.TimeUnit
 
-object NetManager {
-    private const val TAG = "NetManager"
+class NetManager private constructor() {
+    companion object {
+        private const val TAG = "NetManager"
+        val instance = NetManagerHolder.holder
+    }
+
+    private object NetManagerHolder {
+        val holder = NetManager()
+    }
+
     private var debug = false
     private val serviceMap = hashMapOf<String, Any>()
 

@@ -1,14 +1,51 @@
 package com.catchpig.utils.ext
 
 import android.graphics.Rect
+import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
+import com.catchpig.utils.R
 import com.google.android.material.snackbar.Snackbar
+
+fun View.showSnackBar(text: CharSequence, @DrawableRes background: Int, gravity: Int = Gravity.BOTTOM) {
+    val snackbar = Snackbar.make(this, text, Snackbar.LENGTH_LONG)
+    snackbar.setBackgroundResource(background)
+    snackbar.setTextColorRes(R.color.color_black)
+    if (gravity == Gravity.BOTTOM) {
+        val parentView = snackbar.targetParent()
+        val bottom = 20 + context.px2dp((parentView.bottom - bottom))
+        snackbar.setMargin(20, 0, 20, bottom)
+    } else {
+        snackbar.setGravity(gravity)
+        snackbar.setMargin(20, 0, 20, 0)
+    }
+    snackbar.show()
+}
+
+fun View.showSnackBar(
+    @StringRes textRes: Int,
+    @DrawableRes background: Int,
+    gravity: Int = Gravity.BOTTOM
+) {
+    val snackbar = Snackbar.make(this, textRes, Snackbar.LENGTH_LONG)
+    snackbar.setBackgroundResource(background)
+    snackbar.setTextColorRes(R.color.color_black)
+    if (gravity == Gravity.BOTTOM) {
+        val parentView = snackbar.targetParent()
+        val bottom = 20 + context.px2dp((parentView.bottom - bottom))
+        snackbar.setMargin(20, 0, 20, bottom)
+    } else {
+        snackbar.setGravity(gravity)
+        snackbar.setMargin(20, 0, 20, 0)
+    }
+    snackbar.show()
+}
 
 /**
  * 设置文字的颜色

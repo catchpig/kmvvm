@@ -4,7 +4,15 @@ import android.app.Activity
 import android.content.Context
 import java.util.*
 
-object KTActivityManager {
+class KTActivityManager private constructor() {
+    companion object {
+        val instance = KTActivityManagerHolder.holder
+    }
+
+    private object KTActivityManagerHolder {
+        val holder = KTActivityManager()
+    }
+
     private var activities = LinkedList<Activity>()
 
     /**

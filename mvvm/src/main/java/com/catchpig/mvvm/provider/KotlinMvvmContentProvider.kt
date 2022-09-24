@@ -30,7 +30,7 @@ class KotlinMvvmContentProvider : ContentProvider() {
 
     override fun onCreate(): Boolean {
         val applicationContext = context!!.applicationContext
-        ContextManager.context = applicationContext
+        ContextManager.init(applicationContext)
         val application = applicationContext as Application
         application.registerActivityLifecycleCallbacks(ActivityLifeCycleCallbacksImpl())
         return true

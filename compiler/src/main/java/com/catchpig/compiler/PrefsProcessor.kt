@@ -220,7 +220,7 @@ class PrefsProcessor : BaseProcessor() {
         return CodeBlock
             .builder()
             .addStatement(
-                "sharedPrefs = %T.context.getSharedPreferences(\"SharedPrefs_$sharedPrefsName\",%L)",
+                "sharedPrefs = %T.getSharedPreferences(\"SharedPrefs_$sharedPrefsName\",%L)",
                 TYPE_CONTEXT_MANAGER,
                 prefs.mode.value
             )

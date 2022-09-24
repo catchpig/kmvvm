@@ -15,7 +15,7 @@ import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
-import com.catchpig.mvvm.manager.SnackbarManager
+import com.catchpig.utils.ext.showSnackBar
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -109,11 +109,11 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     }
 
     fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM) {
-        SnackbarManager.show(bodyBinding.root, text, gravity)
+        bodyBinding.root.showSnackBar(text, R.drawable.snackbar_bg, gravity)
     }
 
     fun snackBar(@StringRes textRes: Int, gravity: Int = Gravity.BOTTOM) {
-        SnackbarManager.show(bodyBinding.root, textRes, gravity)
+        bodyBinding.root.showSnackBar(textRes, R.drawable.snackbar_bg, gravity)
     }
 
     fun loadingDialog() {

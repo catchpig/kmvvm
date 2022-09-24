@@ -33,7 +33,7 @@ class KotlinMvpApp : Application() {
         super.onCreate()
         LogUtils.init(applicationContext)
         LogUtils.w(javaClass.simpleName, "oncreate")
-        NetManager.setDebug(BuildConfig.DEBUG)
-        DownloadManager.setDownloadPath("${ContextManager.context.externalCacheDir!!.absolutePath}/kmvvmDownload")
+        NetManager.instance.setDebug(BuildConfig.DEBUG)
+        DownloadManager.setDownloadPath("${ContextManager.getContext().externalCacheDir!!.absolutePath}/kmvvmDownload")
     }
 }

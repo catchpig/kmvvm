@@ -10,11 +10,12 @@ import androidx.annotation.Nullable
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
-import com.catchpig.mvvm.manager.SnackbarManager
+import com.catchpig.utils.ext.showSnackBar
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -52,27 +53,27 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
     @CallSuper
     @Nullable
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         rootBinding.layoutBody.addView(
-                bodyBinding.root,
-                0,
-                ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                )
+            bodyBinding.root,
+            0,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
         )
         return rootBinding.root
     }
 
     fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM) {
-        SnackbarManager.show(bodyBinding.root, text, gravity)
+        bodyBinding.root.showSnackBar(text, R.drawable.snackbar_bg, gravity)
     }
 
     fun snackBar(@StringRes textRes: Int, gravity: Int = Gravity.BOTTOM) {
-        SnackbarManager.show(bodyBinding.root, textRes, gravity)
+        bodyBinding.root.showSnackBar(textRes, R.drawable.snackbar_bg, gravity)
     }
 
     fun loadingView() {

@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 object WanAndroidRepository {
-    private val wanAndroidService = NetManager.getService(WanAndroidService::class.java)
-    private val otherService = NetManager.getService(OtherService::class.java)
+    private val wanAndroidService = NetManager.instance.getService(WanAndroidService::class.java)
+    private val otherService = NetManager.instance.getService(OtherService::class.java)
     fun getBanners(): Flow<MutableList<Banner>> {
         return flow {
             val result = otherService.queryBanner()
