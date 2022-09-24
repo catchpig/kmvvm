@@ -16,8 +16,16 @@ import java.net.URL
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-object CoroutinesDownloadManager : DownloadManager() {
+class CoroutinesDownloadManager : DownloadManager() {
+    companion object {
+        fun getInstance(): CoroutinesDownloadManager {
+            return CoroutinesDownloadManagerHolder.holder
+        }
+    }
 
+    private object CoroutinesDownloadManagerHolder {
+        val holder = CoroutinesDownloadManager()
+    }
 
     /**
      * 多文件下载

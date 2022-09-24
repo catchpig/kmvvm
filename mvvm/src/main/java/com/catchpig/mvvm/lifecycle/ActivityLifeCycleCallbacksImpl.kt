@@ -24,7 +24,7 @@ class ActivityLifeCycleCallbacksImpl : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityDestroyed(activity: Activity) {
         "${activity::class.java.simpleName}->onDestroy".logd(TAG)
-        KTActivityManager.instance.removeActivity(activity)
+        KTActivityManager.getInstance().removeActivity(activity)
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, p1: Bundle) {
@@ -37,7 +37,7 @@ class ActivityLifeCycleCallbacksImpl : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity, p1: Bundle?) {
         "${activity::class.java.simpleName}->onCreate".logd(TAG)
-        KTActivityManager.instance.addActivity(activity)
+        KTActivityManager.getInstance().addActivity(activity)
     }
 
     override fun onActivityResumed(activity: Activity) {

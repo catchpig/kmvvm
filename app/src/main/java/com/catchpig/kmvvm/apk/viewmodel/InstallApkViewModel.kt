@@ -35,14 +35,14 @@ class InstallApkViewModel : BaseViewModel() {
 //            }, { downloadProgress ->
 //                progressLiveData1.value = downloadProgress
 //            })
-            CoroutinesDownloadManager.clearFiles()
-            CoroutinesDownloadManager.download(downloadUrlpng, {
+            CoroutinesDownloadManager.getInstance().clearFiles()
+            CoroutinesDownloadManager.getInstance().download(downloadUrlpng, {
 
             }, { downloadProgress ->
                 progressLiveData.value = downloadProgress
             })
 
-            CoroutinesDownloadManager.multiDownload(listOf(downloadUrl, downloadUrlpng1), {
+            CoroutinesDownloadManager.getInstance().multiDownload(listOf(downloadUrl, downloadUrlpng1), {
 
             }, { downloadProgress ->
                 progressLiveData1.value = downloadProgress

@@ -13,7 +13,9 @@ import java.util.concurrent.TimeUnit
 class NetManager private constructor() {
     companion object {
         private const val TAG = "NetManager"
-        val instance = NetManagerHolder.holder
+        fun getInstance(): NetManager {
+            return NetManagerHolder.holder
+        }
     }
 
     private object NetManagerHolder {

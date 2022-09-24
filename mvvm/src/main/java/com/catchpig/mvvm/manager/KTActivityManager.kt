@@ -6,7 +6,9 @@ import java.util.*
 
 class KTActivityManager private constructor() {
     companion object {
-        val instance = KTActivityManagerHolder.holder
+        fun getInstance(): KTActivityManager {
+            return KTActivityManagerHolder.holder
+        }
     }
 
     private object KTActivityManagerHolder {

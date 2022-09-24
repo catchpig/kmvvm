@@ -18,7 +18,16 @@ import java.net.URL
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-object RxJavaDownloadManager : DownloadManager() {
+class RxJavaDownloadManager : DownloadManager() {
+    companion object {
+        fun getInstance(): RxJavaDownloadManager {
+            return RxJavaDownloadManagerHolder.holder
+        }
+    }
+
+    private object RxJavaDownloadManagerHolder {
+        val holder = RxJavaDownloadManager()
+    }
 
     /**
      * 多文件下载

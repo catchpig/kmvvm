@@ -4,8 +4,18 @@ import android.content.Context
 import android.util.Log
 import com.catchpig.utils.enums.LEVEL
 
-object LogUtils {
-    private const val INDEX_EXT = 5
+class LogUtils {
+    companion object {
+        private const val INDEX_EXT = 5
+        fun getInstance(): LogUtils {
+            return LogUtilsHolder.holder
+        }
+    }
+
+    private object LogUtilsHolder {
+        val holder = LogUtils()
+    }
+
     private var tag_prefix: String = "kotlin-mvvm"
     private var showLineNumber = false
 
