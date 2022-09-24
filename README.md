@@ -490,8 +490,8 @@ class ResponseBodyConverter :
 
 ### 7. 日志
 
-+ 在application的onCreate中调用LogUtils.init()方法,是log打印统一打印应用applicationId的tag前缀
-+ 可以使用LogUtils.i,LogUtils.d等打印日志
++ 在application的onCreate中调用LogUtils.getInstance().init()方法,是log打印统一打印应用applicationId的tag前缀
++ 可以使用LogUtils.getInstance().i,LogUtils.getInstance().d等打印日志
 + 也可以使用LogExt的扩展方法打印日志
 
 ### 8. [注解使用](./annotation/REMARD_ANNOTATION.md)

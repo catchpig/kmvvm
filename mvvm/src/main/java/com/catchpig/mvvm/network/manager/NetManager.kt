@@ -2,7 +2,7 @@ package com.catchpig.mvvm.network.manager
 
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.entity.ServiceParam
-import com.catchpig.mvvm.network.factory.SerializationCoverterFactory
+import com.catchpig.mvvm.network.factory.SerializationConverterFactory
 import com.catchpig.utils.ext.logd
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,7 +38,7 @@ class NetManager private constructor() {
                 .Builder()
                 .baseUrl(serviceParam.baseUrl)
                 .client(getClient(serviceParam))
-                .addConverterFactory(SerializationCoverterFactory.create(className))
+                .addConverterFactory(SerializationConverterFactory.create(className))
             if (serviceParam.rxJava) {
                 builder = builder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             }

@@ -44,7 +44,7 @@
 
 ### v0.3.8(2021.12.16)
 
-+ 将网络请求的GsonConverterFactory替换为SerializationCoverterFactory
++ 将网络请求的GsonConverterFactory替换为SerializationConverterFactory
 
 ### v0.3.7(2021.12.11)
 
