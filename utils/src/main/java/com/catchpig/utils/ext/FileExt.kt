@@ -10,7 +10,7 @@ private fun deleteFile(file: File) {
     if (file.isFile) {
         file.delete()
     } else if (file.isDirectory) {
-        file.listFiles().forEach {
+        file.listFiles()?.forEach {
             deleteFile(it)
         }
     }

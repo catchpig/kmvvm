@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name="com.catchpig.kmvvm.app.KotlinMvpApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true"
         android:label="@string/app_name"
         android:maxAspectRatio="2.4"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name="com.catchpig.kmvvm.recycle.RecycleActivity"></activity>
         <activity android:name="com.catchpig.kmvvm.fullscreen.FullScreenActivity" />
         <activity android:name="com.catchpig.kmvvm.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
         <activity
-            android:name="com.catchpig.kmvvm.main.view.MainActivity">
+            android:name="com.catchpig.kmvvm.main.view.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +31,7 @@
         </activity>
         <!-- 适配小米（xiaomi）刘海屏 -->
         <activity android:name="com.catchpig.kmvvm.child.ChildActivity" />
-        <activity android:name="com.catchpig.kmvvm.apk.view.InstallApkActivity"/>
+        <activity android:name="com.catchpig.kmvvm.apk.view.InstallApkActivity" />
 
         <meta-data
             android:name="android.notch_support"

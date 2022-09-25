@@ -7,7 +7,8 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "com.catchpig.kmvvm"
         minSdkVersion rootProject.minSdkVersion
@@ -37,6 +38,7 @@ android {
         viewBinding = true
     }
     namespace 'com.catchpig.kmvvm'
+
 }
 
 dependencies {

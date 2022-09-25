@@ -4,9 +4,12 @@ import androidx.viewpager.widget.ViewPager
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kmvvm.adapter.MainAdapter
 import com.catchpig.kmvvm.databinding.ActivityMainBinding
+import com.catchpig.kmvvm.fullscreen.FullScreenActivity
 import com.catchpig.kmvvm.main.viewmodel.MainViewModel
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.catchpig.utils.ext.logd
+import com.catchpig.utils.ext.startKtActivity
+import com.catchpig.utils.ext.startKtActivityForResult
 import com.gyf.immersionbar.ktx.immersionBar
 
 @StatusBar(transparent = true)

@@ -11,16 +11,15 @@ import androidx.core.widget.addTextChangedListener
  */
 fun EditText.keepDecimalListener(number: Int, callback: (text: String) -> Unit) {
     addTextChangedListener {
-        val text = it.toString()
-        if (text.isNotEmpty()) {
-            if (text.substring(0, 1) == ".") {
-                val text = "0$text"
-                setText(text)
-                setSelection(text.length)
+        val txt = it.toString()
+        if (txt.isNotEmpty()) {
+            if (txt.substring(0, 1) == ".") {
+                val num = "0$txt"
+                setText(num)
+                setSelection(num.length)
                 return@addTextChangedListener
-            }
-            if (text.contains(".")) {
-                var list = text.split(".")
+            } else if (txt.contains(".")) {
+                var list = txt.split(".")
                 if (list[1].length > number) {
                     val text = "${list[0]}.${list[1].subSequence(0, number)}"
                     setText(text)
@@ -28,7 +27,7 @@ fun EditText.keepDecimalListener(number: Int, callback: (text: String) -> Unit) 
                     return@addTextChangedListener
                 }
             }
-            callback(text)
+            callback(txt)
         }
     }
 }
@@ -39,16 +38,15 @@ fun EditText.keepDecimalListener(number: Int, callback: (text: String) -> Unit) 
  */
 fun EditText.keepDecimal(number: Int) {
     addTextChangedListener {
-        val text = it.toString()
-        if (text.isNotEmpty()) {
-            if (text.substring(0, 1) == ".") {
-                val text = "0$text"
-                setText(text)
-                setSelection(text.length)
+        val txt = it.toString()
+        if (txt.isNotEmpty()) {
+            if (txt.substring(0, 1) == ".") {
+                val num = "0$txt"
+                setText(num)
+                setSelection(num.length)
                 return@addTextChangedListener
-            }
-            if (text.contains(".")) {
-                var list = text.split(".")
+            } else if (txt.contains(".")) {
+                var list = txt.split(".")
                 if (list[1].length > number) {
                     val text = "${list[0]}.${list[1].subSequence(0, number)}"
                     setText(text)

@@ -9,7 +9,7 @@ const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
  */
 fun String.date(format:String=DATE_FORMAT):Date{
     val dateFormat = SimpleDateFormat(format)
-    return dateFormat.parse(this)
+    return dateFormat.parse(this)!!
 }
 
 /**
