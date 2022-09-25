@@ -1,6 +1,8 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'kotlin-kapt' // 使用 kapt 注解处理工具
+}
 apply from: '../publish_jar.gradle'
 
 dependencies {

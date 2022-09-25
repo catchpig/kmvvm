@@ -48,11 +48,16 @@ inline fun <reified T : Activity> Fragment.startKtActivity(
     }
 }
 
+/**
+ * startActivityForResult已经被废弃
+ * @receiver Activity
+ * @param requestCode Int
+ * @param intent Intent
+ */
 @Deprecated(
     "当前方法已废弃,请使用startKtActivity",
     replaceWith = ReplaceWith(
-        expression = "startKtActivity<T>(intent){\n}",
-        imports = ["androidx.activity.result.ActivityResultCallback"]
+        expression = "startKtActivity<T>(intent){\n}"
     )
 )
 inline fun <reified T : Activity> Activity.startKtActivityForResult(
@@ -63,11 +68,16 @@ inline fun <reified T : Activity> Activity.startKtActivityForResult(
     startActivityForResult(intent, requestCode)
 }
 
+/**
+ * startActivityForResult已经被废弃
+ * @receiver Fragment
+ * @param requestCode Int
+ * @param intent Intent
+ */
 @Deprecated(
     "当前方法已废弃,请使用startKtActivity",
     replaceWith = ReplaceWith(
         expression = "startKtActivity<T>(intent){\n}",
-        imports = ["androidx.activity.result.ActivityResultCallback"]
     )
 )
 inline fun <reified T : Activity> Fragment.startKtActivityForResult(

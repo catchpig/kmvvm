@@ -1,10 +1,13 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
 
-apply plugin: 'kotlin-android'
+    id 'kotlin-android'
 
-apply plugin: 'kotlinx-serialization'
+    id 'kotlinx-serialization'
 
-apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
+    id 'kotlin-kapt' // 使用 kapt 注解处理工具
+}
+
 
 android {
     compileSdk rootProject.compileSdkVersion
