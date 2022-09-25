@@ -29,7 +29,7 @@ class NetManager private constructor() {
         this.debug = debug
     }
 
-    fun <S> getService(serviceClass: Class<S>): S {
+    fun <S : Any> getService(serviceClass: Class<S>): S {
         val className = serviceClass.name
         val service = serviceMap[className]
         return if (service == null) {
