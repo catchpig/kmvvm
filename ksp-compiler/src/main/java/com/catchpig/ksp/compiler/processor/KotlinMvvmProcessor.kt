@@ -44,14 +44,15 @@ class KotlinMvvmProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         logger.warn("$TAG")
         val symbols = resolver.getSymbolsWithAnnotation(ServiceApi::class.qualifiedName!!)
-        logger.warn(TAG + ":" + ServiceApi::class.java.name)
-        val list = symbols.filter {
-            it is KSClassDeclaration && it.validate()
-        }.map { it as KSClassDeclaration }.toList()
+        val list = symbols.filterIsInstance<KSClassDeclaration>().filter {
+            it.validate()
+        }.toList()
         if (list.isNotEmpty()) {
             generate(list)
         }
-        return symbols.filter { !it.validate() }.toList()
+        val sysmbolsList = symbols.filter { !it.validate() }.toList()
+        logger.warn("${sysmbolsList.size}")
+        return sysmbolsList
     }
 
     @OptIn(KotlinPoetKspPreview::class)
@@ -105,7 +106,10 @@ class KotlinMvvmProcessor(
             if (inteceptors.isNotEmpty()) {
                 inteceptors.filterIsInstance<KSType>().forEach { interceptor ->
                     constructorBuilder =
-                        constructorBuilder.addStatement("$interceptorName.add(%T())", interceptor.toClassName())
+                        constructorBuilder.addStatement(
+                            "$interceptorName.add(%T())",
+                            interceptor.toClassName()
+                        )
                 }
             }
 

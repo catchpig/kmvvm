@@ -3,12 +3,9 @@
 apply from: 'version.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.7.20-Beta'
+    ext.kotlin_version = '1.7.10'
 
     repositories {
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
         mavenCentral() {
             allowInsecureProtocol = true
         }
@@ -41,9 +38,6 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
         mavenCentral() {
             allowInsecureProtocol = true
         }
