@@ -2,9 +2,7 @@ package com.catchpig.ksp.compiler.processor
 
 import com.catchpig.annotation.ServiceApi
 import com.catchpig.annotation.interfaces.SerializationConverter
-import com.google.devtools.ksp.KspExperimental
-import com.google.devtools.ksp.getAnnotationsByType
-import com.google.devtools.ksp.getClassDeclarationByName
+import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -12,7 +10,6 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
@@ -47,6 +44,7 @@ class KotlinMvvmProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         logger.warn("$TAG")
         val symbols = resolver.getSymbolsWithAnnotation(ServiceApi::class.qualifiedName!!)
+        logger.warn(TAG + ":" + ServiceApi::class.java.name)
         val list = symbols.filter {
             it is KSClassDeclaration && it.validate()
         }.map { it as KSClassDeclaration }.toList()
@@ -65,7 +63,7 @@ class KotlinMvvmProcessor(
             .primaryConstructor(initConstructor(list))
             .addProperty(initServiceProperty())
             .addFunction(getServiceParamFun())
-//            .addFunction(getResponseBodyConverterFun(list))
+            .addFunction(getResponseBodyConverterFun(list))
             .build()
         val fullPackageName = CLASS_NAME_SERVICE_API_COMPILER.packageName
         var fileSpecBuilder = FileSpec
@@ -84,15 +82,16 @@ class KotlinMvvmProcessor(
             val packageName = clsName.packageName
             logger.warn("${TAG}:${className}被ServiceApi注解")
             val service = ksClassDeclaration.getAnnotationsByType(ServiceApi::class).first()
-            val inteceptors = service.interceptors
-
-
-
-//            val debugInteceptors = try {
-//                service.debugInterceptors
-//            } catch (e: KSTypesNotPresentException) {
-//                e.ksTypes
-//            }
+            val inteceptors = try {
+                service.interceptors.asList()
+            } catch (e: KSTypesNotPresentException) {
+                e.ksTypes
+            }
+            val debugInteceptors = try {
+                service.debugInterceptors.asList()
+            } catch (e: KSTypesNotPresentException) {
+                e.ksTypes
+            }
             val interceptorName = "interceptor$index"
             val debugInterceptorName = "debugInterceptor$index"
             constructorBuilder =
@@ -103,22 +102,23 @@ class KotlinMvvmProcessor(
                     "val $debugInterceptorName = mutableListOf<%T>()",
                     CLASS_NAME_INTERCEPTOR
                 )
-//            if (inteceptors) {
-//                inteceptors.forEach { interceptor ->
-//                    constructorBuilder =
-//                        constructorBuilder.addStatement("$interceptorName.add(%T())", interceptor)
-//                }
-//            }
-//
-//            if (debugInteceptors.isNotEmpty()) {
-//                debugInteceptors.forEach { interceptor ->
-//                    constructorBuilder =
-//                        constructorBuilder.addStatement(
-//                            "$debugInterceptorName.add(%T())",
-//                            interceptor
-//                        )
-//                }
-//            }
+            if (inteceptors.isNotEmpty()) {
+                inteceptors.filterIsInstance<KSType>().forEach { interceptor ->
+                    constructorBuilder =
+                        constructorBuilder.addStatement("$interceptorName.add(%T())", interceptor.toClassName())
+                }
+            }
+
+            if (debugInteceptors.isNotEmpty()) {
+                debugInteceptors.filterIsInstance<KSType>().forEach { interceptor ->
+                    logger.warn("${interceptor.toClassName()}")
+                    constructorBuilder =
+                        constructorBuilder.addStatement(
+                            "$debugInterceptorName.add(%T())",
+                            interceptor.toClassName()
+                        )
+                }
+            }
             constructorBuilder = constructorBuilder.addStatement(
                 "serviceMap.put(%S, %T(%S, %L, %L, $interceptorName,$debugInterceptorName,%L))",
                 "$packageName.$className",
@@ -172,12 +172,12 @@ class KotlinMvvmProcessor(
             val service = typeElement.getAnnotationsByType(ServiceApi::class).first()
             val converter = try {
                 service.responseConverter
-            } catch (e: MirroredTypeException) {
-                e.typeMirror
+            } catch (e: KSTypeNotPresentException) {
+                e.ksType
             }
             funSpecBuilder = funSpecBuilder
                 .addStatement("  \"$packageName.$className\" ->{")
-                .addStatement("    %T()", converter)
+                .addStatement("    %T()", (converter as KSType).toClassName())
                 .addStatement("  }")
         }
         funSpecBuilder = funSpecBuilder
