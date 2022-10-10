@@ -27,7 +27,7 @@ class PrefsProcessor : BaseProcessor() {
         private val CLASS_NAME_SHARED_PREFERENCES =
             ClassName("android.content", "SharedPreferences")
 
-        private val TYPE_CONTEXT_MANAGER = Class.forName("com.catchpig.mvvm.manager.ContextManager")
+        private val CLASS_NAME_CONTEXT_MANAGER = ClassName("com.catchpig.mvvm.manager","ContextManager")
 
         private const val JAVA_STRING = "java.lang.String"
 
@@ -220,8 +220,8 @@ class PrefsProcessor : BaseProcessor() {
         return CodeBlock
             .builder()
             .addStatement(
-                "sharedPrefs = %T.getSharedPreferences(\"SharedPrefs_$sharedPrefsName\",%L)",
-                TYPE_CONTEXT_MANAGER,
+                "sharedPrefs = %T.getInstance().getSharedPreferences(\"SharedPrefs_$sharedPrefsName\",%L)",
+                CLASS_NAME_CONTEXT_MANAGER,
                 prefs.mode.value
             )
             .addStatement("sharedEditor = sharedPrefs.edit()")

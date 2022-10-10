@@ -136,10 +136,10 @@ open class DownloadManager {
         }
         val path = if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
             //有SD卡,拿到SD卡的/storage/sdcard0/Android/data/包名/cash目录
-            ContextManager.getContext().externalCacheDir!!.absolutePath
+            ContextManager.getInstance().getContext().externalCacheDir!!.absolutePath
         } else {
             //没有SD卡的,拿到/data/data/包名/cash目录
-            ContextManager.getContext().cacheDir.absolutePath
+            ContextManager.getInstance().getContext().cacheDir.absolutePath
         }
         return "$path/download"
     }

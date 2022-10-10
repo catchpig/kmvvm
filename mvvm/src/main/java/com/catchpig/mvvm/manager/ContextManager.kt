@@ -5,18 +5,26 @@ import android.content.SharedPreferences
 
 class ContextManager {
     companion object {
-        private lateinit var context: Context
-
-        fun init(context: Context) {
-            this.context = context
+        fun getInstance(): ContextManager {
+            return ContextManagerHolder.holder
         }
+    }
 
-        fun getContext(): Context {
-            return context
-        }
+    private object ContextManagerHolder {
+        val holder = ContextManager()
+    }
 
-        fun getSharedPreferences(name: String, mode: Int): SharedPreferences {
-            return context.getSharedPreferences(name, mode)
-        }
+    private lateinit var context: Context
+
+    fun init(context: Context) {
+        this.context = context
+    }
+
+    fun getContext(): Context {
+        return context
+    }
+
+    fun getSharedPreferences(name: String, mode: Int): SharedPreferences {
+        return context.getSharedPreferences(name, mode)
     }
 }
