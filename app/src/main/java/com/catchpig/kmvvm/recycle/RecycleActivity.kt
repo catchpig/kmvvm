@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kmvvm.R
+import com.catchpig.kmvvm.adapter.UserAdapter
 import com.catchpig.kmvvm.databinding.ActivityRecycleBinding
 import com.catchpig.kmvvm.databinding.LayoutFooterBinding
 import com.catchpig.kmvvm.databinding.LayoutHeaderBinding

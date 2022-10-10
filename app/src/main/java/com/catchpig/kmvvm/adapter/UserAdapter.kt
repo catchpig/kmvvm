@@ -1,4 +1,4 @@
-package com.catchpig.kmvvm.recycle
+package com.catchpig.kmvvm.adapter
 
 import com.catchpig.annotation.Adapter
 import com.catchpig.kmvvm.databinding.ItemUserBinding

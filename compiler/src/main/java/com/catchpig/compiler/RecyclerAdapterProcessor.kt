@@ -11,8 +11,8 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.DeclaredType
 
-@AutoService(Processor::class)
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+//@AutoService(Processor::class)
+//@SupportedSourceVersion(SourceVersion.RELEASE_8)
 class RecyclerAdapterProcessor : BaseProcessor() {
     companion object {
         private const val TAG = "RecyclerAdapterProcessor"

@@ -1,11 +1,11 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-        maven {
-            url "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/bootstrap/"
-        }
-    }
-}
+//pluginManagement {
+//    repositories {
+//        gradlePluginPortal()
+//        mavenCentral()
+//        maven {
+//            url "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/bootstrap/"
+//        }
+//    }
+//}
 
 include ':app', ':mvvm', ':annotation', ':compiler', ':utils', ':ksp-compiler'

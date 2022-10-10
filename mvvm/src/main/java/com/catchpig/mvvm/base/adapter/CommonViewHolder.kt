@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
  * @author catchpig
  * @date 2019/7/21 0021
  */
-class CommonViewHolder<VB : ViewBinding>(itemView: View) :
+class CommonViewHolder<out VB : ViewBinding>(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
     private var itemViewBinding: VB? = null
 
