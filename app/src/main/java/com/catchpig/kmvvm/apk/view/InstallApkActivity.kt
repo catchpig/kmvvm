@@ -34,14 +34,14 @@ class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkV
                     viewModel.download()
                 }
             }
-        viewModel.progressLiveData.observe(this, {
+        viewModel.progressLiveData.observe(this) {
             bodyBinding.progressBar.progress = (it.readLength * 100 / it.totalCount).toInt()
-        })
-        viewModel.progressLiveData1.observe(this, {
+        }
+        viewModel.progressLiveData1.observe(this) {
             "${(it.readLength * 100 / it.countLength).toInt()}".logd(TAG)
             bodyBinding.progressBar1.progress = (it.readLength * 100 / it.countLength).toInt()
             bodyBinding.progressText.text = "${it.completeCount}/${it.totalCount}"
-        })
+        }
     }
 
     override fun initFlow() {

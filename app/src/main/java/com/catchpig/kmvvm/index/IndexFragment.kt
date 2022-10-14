@@ -47,6 +47,9 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
     }
 
     override fun initFlow() {
+//        lifecycleFlow(viewModel.queryBanners()){
+//
+//        }
         viewModel.queryBanners().lifecycle(this) {
             val images = mutableListOf<String>()
             this.forEach {
@@ -77,6 +80,9 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                 startKtActivity<InstallApkActivity>()
             }
             R.id.handler_error -> {
+                lifecycleFlowLoadingDialog(viewModel.handlerError(),{
+
+                }){}
                 viewModel.handlerError().lifecycleLoadingDialog(this, {
                     if (it is HttpServerException) {
                         snackBar(it.message!!)
