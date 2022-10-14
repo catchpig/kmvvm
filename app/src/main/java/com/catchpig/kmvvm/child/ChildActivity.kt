@@ -5,6 +5,8 @@ import com.catchpig.annotation.*
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.ActivityChildBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
+import com.catchpig.mvvm.ext.lifecycleLoadingDialog
+import com.catchpig.mvvm.ext.lifecycleLoadingView
 
 @Title(R.string.child_title)
 class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
@@ -48,7 +50,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * dialog形式的loading
      */
     fun loadingDialog(v: View) {
-        lifecycleFlowLoadingDialog(viewModel.loadingDialog()) {
+        viewModel.loadingDialog().lifecycleLoadingDialog(this) {
             snackBar(this)
         }
 
@@ -58,7 +60,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * 标题栏以下的loading
      */
     fun loadingView(v: View) {
-        lifecycleFlowLoadingView(viewModel.loadingView()) {
+        viewModel.loadingView().lifecycleLoadingView(this) {
             snackBar(this)
         }
     }

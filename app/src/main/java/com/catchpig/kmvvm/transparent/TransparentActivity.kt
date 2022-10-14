@@ -4,7 +4,7 @@ import com.bumptech.glide.Glide
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kmvvm.databinding.ActivityTransparentBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
-import kotlinx.coroutines.flow.*
+import com.catchpig.mvvm.ext.lifecycleLoadingDialog
 
 @StatusBar(transparent = true)
 class TransparentActivity : BaseVMActivity<ActivityTransparentBinding, TransparentViewModel>() {
@@ -17,7 +17,7 @@ class TransparentActivity : BaseVMActivity<ActivityTransparentBinding, Transpare
     }
 
     override fun initFlow() {
-        lifecycleFlowLoadingDialog(viewModel.banner()) {
+        viewModel.banner().lifecycleLoadingDialog(this) {
             Glide.with(this@TransparentActivity).load(imagePath).into(bodyBinding.banner)
             snackBar(title)
         }

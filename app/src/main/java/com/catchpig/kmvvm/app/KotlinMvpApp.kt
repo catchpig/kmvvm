@@ -31,8 +31,9 @@ class KotlinMvpApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        LogUtils.getInstance().init(applicationContext)
+        LogUtils.getInstance().init(applicationContext, BuildConfig.DEBUG)
         NetManager.getInstance().setDebug(BuildConfig.DEBUG)
-        DownloadManager.setDownloadPath("${ContextManager.getInstance().getContext().externalCacheDir!!.absolutePath}/kmvvmDownload")
+        val downloadPath = "${ContextManager.getInstance().getContext().externalCacheDir!!.absolutePath}/kmvvmDownload"
+        DownloadManager.setDownloadPath(downloadPath)
     }
 }

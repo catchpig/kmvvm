@@ -128,7 +128,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         }
     }
 
-    fun hideLoadingView() {
+    fun hideLoading() {
         loadingViewController?.let {
             it.hideLoading()
         }

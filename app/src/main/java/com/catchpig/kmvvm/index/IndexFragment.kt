@@ -11,6 +11,8 @@ import com.catchpig.kmvvm.fullscreen.FullScreenActivity
 import com.catchpig.kmvvm.recycle.RecycleActivity
 import com.catchpig.kmvvm.transparent.TransparentActivity
 import com.catchpig.mvvm.base.fragment.BaseVMFragment
+import com.catchpig.mvvm.ext.lifecycle
+import com.catchpig.mvvm.ext.lifecycleLoadingDialog
 import com.catchpig.utils.ext.startKtActivity
 
 class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), View.OnClickListener {
@@ -45,7 +47,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
     }
 
     override fun initFlow() {
-        lifecycleFlow(viewModel.queryBanners()) {
+        viewModel.queryBanners().lifecycle(this) {
             val images = mutableListOf<String>()
             this.forEach {
                 images.add(it.imagePath)
@@ -75,7 +77,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                 startKtActivity<InstallApkActivity>()
             }
             R.id.handler_error -> {
-                lifecycleFlowLoadingDialog(viewModel.handlerError(), {
+                viewModel.handlerError().lifecycleLoadingDialog(this, {
                     if (it is HttpServerException) {
                         snackBar(it.message!!)
                     }
