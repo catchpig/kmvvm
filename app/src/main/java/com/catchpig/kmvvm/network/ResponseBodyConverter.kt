@@ -1,5 +1,6 @@
 package com.catchpig.kmvvm.network
 
+import com.catchpig.kmvvm.exception.HttpServerException
 import com.catchpig.mvvm.network.converter.BaseResponseBodyConverter
 import com.catchpig.mvvm.network.data.IResponseData
 import kotlinx.serialization.json.Json
@@ -17,6 +18,6 @@ class ResponseBodyConverter :
     }
 
     override fun handlerErrorCode(errorCode: String, msg: String): Exception {
-        return NullPointerException()
+        return HttpServerException(errorCode,msg)
     }
 }

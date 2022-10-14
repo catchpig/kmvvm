@@ -24,6 +24,7 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
     companion object {
         private const val TAG = "BaseVMActivity"
     }
+
     private val fullTag by lazy {
         "${javaClass.simpleName}_${TAG}"
     }
@@ -58,42 +59,64 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
         }
     }
 
-    override fun <T> lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit) {
+    override fun <T> lifecycleFlow(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)?,
+        callback: T.() -> Unit
+    ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
             }.onCompletion {
                 "lifecycleFlow:onCompletion".logd(fullTag)
+            }.catch { t ->
+                errorCallback?.let {
+                    errorCallback(t)
+                }
             }.collect {
                 callback(it)
             }
         }
     }
 
-    override fun <T> lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
+    override fun <T> lifecycleFlowLoadingView(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)?,
+        callback: T.() -> Unit
+    ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
             }.onCompletion {
                 "lifecycleFlowLoadingView:onCompletion".logd(fullTag)
                 hideLoadingView()
-            }.catch { t: Throwable ->
+            }.catch { t ->
                 KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
+                errorCallback?.let {
+                    errorCallback(t)
+                }
             }.collect {
                 callback(it)
             }
         }
     }
 
-    override fun <T> lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
+    override fun <T> lifecycleFlowLoadingDialog(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)?,
+        callback: T.() -> Unit
+    ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingDialog()
             }.onCompletion {
                 "lifecycleFlowLoadingDialog:onCompletion".logd(fullTag)
                 hideLoadingView()
-            }.catch { t: Throwable ->
+            }.catch { t ->
                 KotlinMvvmCompiler.onError(this@BaseVMActivity, t)
+                errorCallback?.let {
+                    errorCallback(t)
+                }
             }.collect {
                 callback(it)
             }

@@ -6,6 +6,7 @@ import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.apk.view.InstallApkActivity
 import com.catchpig.kmvvm.child.ChildActivity
 import com.catchpig.kmvvm.databinding.FragmentIndexBinding
+import com.catchpig.kmvvm.exception.HttpServerException
 import com.catchpig.kmvvm.fullscreen.FullScreenActivity
 import com.catchpig.kmvvm.recycle.RecycleActivity
 import com.catchpig.kmvvm.transparent.TransparentActivity
@@ -39,6 +40,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
             fullScreen.setOnClickListener(this@IndexFragment)
             recycle.setOnClickListener(this@IndexFragment)
             installApk.setOnClickListener(this@IndexFragment)
+            handlerError.setOnClickListener(this@IndexFragment)
         }
     }
 
@@ -71,6 +73,13 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
             }
             R.id.installApk -> {
                 startKtActivity<InstallApkActivity>()
+            }
+            R.id.handler_error -> {
+                lifecycleFlowLoadingDialog(viewModel.handlerError(), {
+                    if (it is HttpServerException) {
+                        snackBar(it.message!!)
+                    }
+                }) {}
             }
             else -> {
             }

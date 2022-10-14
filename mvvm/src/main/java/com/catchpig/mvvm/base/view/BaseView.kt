@@ -13,9 +13,21 @@ interface BaseView {
 
     fun <T> lifecycleFlowRefresh(flow: Flow<MutableList<T>>, refresh: RefreshRecyclerView)
 
-    fun <T> lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)
+    fun <T> lifecycleFlow(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)? = null,
+        callback: T.() -> Unit
+    )
 
-    fun <T> lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)
+    fun <T> lifecycleFlowLoadingView(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)? = null,
+        callback: T.() -> Unit
+    )
 
-    fun <T> lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)
+    fun <T> lifecycleFlowLoadingDialog(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)? = null,
+        callback: T.() -> Unit
+    )
 }

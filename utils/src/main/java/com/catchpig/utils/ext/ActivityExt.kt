@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.activity.result.ActivityResult as ActivityResult
+import androidx.activity.result.ActivityResult
 
 inline fun <reified T : Activity> Context.startKtActivity(
     intent: Intent = Intent()

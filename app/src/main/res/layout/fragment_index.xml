@@ -66,4 +66,12 @@
         android:layout_marginTop="10dp"
         android:clickable="true"
         android:text="下载并安装apk" />
+
+    <Button
+        android:id="@+id/handler_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:text="异常处理" />
 </LinearLayout>

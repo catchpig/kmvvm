@@ -57,28 +57,43 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
         }
     }
 
-    override fun <T> lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit) {
+    override fun <T> lifecycleFlow(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)?,
+        callback: T.() -> Unit
+    ) {
         lifecycleScope.launch(Dispatchers.Main)
         {
             flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
             }.onCompletion {
                 "lifecycleFlow:onCompletion".logd(fullTag)
+            }.catch { t ->
+                errorCallback?.let {
+                    errorCallback(t)
+                }
             }.collect {
                 callback(it)
             }
         }
     }
 
-    override fun <T> lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit) {
+    override fun <T> lifecycleFlowLoadingView(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)?,
+        callback: T.() -> Unit
+    ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingView()
             }.onCompletion {
                 "lifecycleFlowLoadingView:onCompletion".logd(fullTag)
                 hideLoading()
-            }.catch { t: Throwable ->
+            }.catch { t ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
+                errorCallback?.let {
+                    errorCallback(t)
+                }
             }.collect {
                 callback(it)
             }
@@ -86,15 +101,22 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
 
     }
 
-    override fun <T> lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit) {
+    override fun <T> lifecycleFlowLoadingDialog(
+        flow: Flow<T>,
+        errorCallback: ((t: Throwable) -> Unit)?,
+        callback: T.() -> Unit
+    ) {
         lifecycleScope.launch(Dispatchers.Main) {
             flow.flowOn(Dispatchers.IO).onStart {
                 loadingDialog()
             }.onCompletion {
                 "lifecycleFlowLoadingDialog:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
                 hideLoading()
-            }.catch { t: Throwable ->
+            }.catch { t ->
                 KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
+                errorCallback?.let {
+                    errorCallback(t)
+                }
             }.collect {
                 callback(it)
             }
