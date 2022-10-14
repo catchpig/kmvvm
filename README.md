@@ -484,9 +484,9 @@ class ResponseBodyConverter :
 
 + lifecycleFlowRefresh(flow: Flow<MutableList<T>>,refresh: RefreshRecyclerView)
   -刷新+RecycleView的网络请求封装
-+ lifecycleFlow(flow: Flow<T>, callback: T.() -> Unit)-不带loading的网络请求封装
-+ lifecycleFlowLoadingView(flow: Flow<T>, callback: T.() -> Unit)-带loadingView的网络请求封装
-+ lifecycleFlowLoadingDialog(flow: Flow<T>, callback: T.() -> Unit)-带loadingDialog的网络请求封装
++ lifecycleFlow(flow: Flow<T>, errorCallback: ((t: Throwable) -> Unit)? = null, callback: T.() -> Unit)-不带loading的网络请求封装
++ lifecycleFlowLoadingView(flow: Flow<T>, errorCallback: ((t: Throwable) -> Unit)? = null, callback: T.() -> Unit)-带loadingView的网络请求封装
++ lifecycleFlowLoadingDialog(flow: Flow<T>, errorCallback: ((t: Throwable) -> Unit)? = null, callback: T.() -> Unit)-带loadingDialog的网络请求封装
 
 ### 7. 日志
 
