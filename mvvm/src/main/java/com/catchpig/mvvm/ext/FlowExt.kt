@@ -10,15 +10,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+private const val TAG = "FlowExt"
 fun <T> Flow<MutableList<T>>.lifecycleRefresh(
-    base: BaseVMFragment<*, *>,
-    refreshLayoutWrapper: RefreshRecyclerView
+    base: BaseVMFragment<*, *>, refreshLayoutWrapper: RefreshRecyclerView
 ) {
     base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycleRefresh.flowOn(Dispatchers.IO).catch {
             refreshLayoutWrapper.updateError()
         }.onCompletion {
-            "lifecycleRefresh:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycleRefresh:onCompletion".logd(base::class.simpleName!!)
         }.collect {
             refreshLayoutWrapper.updateData(it)
         }
@@ -32,7 +32,7 @@ fun <T> Flow<T>.lifecycle(
 ) {
     base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
-            "lifecycle:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycle:onCompletion".logd(base::class.simpleName!!)
         }.catch { t ->
             KotlinMvvmCompiler.onError(base, t)
             errorCallback?.let {
@@ -53,7 +53,7 @@ fun <T> Flow<T>.lifecycleLoadingDialog(
         this@lifecycleLoadingDialog.flowOn(Dispatchers.IO).onStart {
             base.loadingDialog()
         }.onCompletion {
-            "lifecycleLoadingDialog:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycleLoadingDialog:onCompletion".logd(base::class.simpleName!!)
             base.hideLoading()
         }.catch { t ->
             KotlinMvvmCompiler.onError(base, t)
@@ -75,7 +75,7 @@ fun <T> Flow<T>.lifecycleLoadingView(
         this@lifecycleLoadingView.flowOn(Dispatchers.IO).onStart {
             base.loadingView()
         }.onCompletion {
-            "lifecycleLoadingView:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycleLoadingView:onCompletion".logd(base::class.simpleName!!)
             base.hideLoading()
         }.catch { t ->
             KotlinMvvmCompiler.onError(base, t)
@@ -89,14 +89,13 @@ fun <T> Flow<T>.lifecycleLoadingView(
 }
 
 fun <T> Flow<MutableList<T>>.lifecycleRefresh(
-    base: BaseVMActivity<*, *>,
-    refreshLayoutWrapper: RefreshRecyclerView
+    base: BaseVMActivity<*, *>, refreshLayoutWrapper: RefreshRecyclerView
 ) {
     base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycleRefresh.flowOn(Dispatchers.IO).catch {
             refreshLayoutWrapper.updateError()
         }.onCompletion {
-            "lifecycleRefresh:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycleRefresh:onCompletion".logd(base::class.simpleName!!)
         }.collect {
             refreshLayoutWrapper.updateData(it)
         }
@@ -110,7 +109,7 @@ fun <T> Flow<T>.lifecycle(
 ) {
     base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
-            "lifecycle:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycle:onCompletion".logd(base::class.simpleName!!)
         }.catch { t ->
             KotlinMvvmCompiler.onError(base, t)
             errorCallback?.let {
@@ -131,7 +130,7 @@ fun <T> Flow<T>.lifecycleLoadingDialog(
         this@lifecycleLoadingDialog.flowOn(Dispatchers.IO).onStart {
             base.loadingDialog()
         }.onCompletion {
-            "lifecycleLoadingDialog:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycleLoadingDialog:onCompletion".logd(base::class.simpleName!!)
             base.hideLoading()
         }.catch { t ->
             KotlinMvvmCompiler.onError(base, t)
@@ -153,7 +152,7 @@ fun <T> Flow<T>.lifecycleLoadingView(
         this@lifecycleLoadingView.flowOn(Dispatchers.IO).onStart {
             base.loadingView()
         }.onCompletion {
-            "lifecycleLoadingView:onCompletion".logd(base::class.simpleName!!)
+            "$TAG:lifecycleLoadingView:onCompletion".logd(base::class.simpleName!!)
             base.hideLoading()
         }.catch { t ->
             KotlinMvvmCompiler.onError(base, t)

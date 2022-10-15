@@ -6,7 +6,8 @@ import com.catchpig.utils.enums.LEVEL
 
 class LogUtils {
     companion object {
-        private const val INDEX_EXT = 5
+        private const val INDEX_EXT = 6
+        private const val SEPARATOR = "*";
         fun getInstance(): LogUtils {
             return LogUtilsHolder.holder
         }
@@ -16,7 +17,7 @@ class LogUtils {
         val holder = LogUtils()
     }
 
-    private var tag_prefix: String = "kotlin-mvvm"
+    private var prefixTag: String = "kotlin-mvvm"
     private var showLineNumber = false
 
     /**
@@ -24,7 +25,7 @@ class LogUtils {
      * @param context Context
      */
     fun init(context: Context) {
-        tag_prefix = context.packageName
+        prefixTag = context.packageName
         this.showLineNumber = showLineNumber
     }
 
@@ -37,7 +38,7 @@ class LogUtils {
     }
 
     fun v(tag: String, msg: String) {
-        log(LEVEL.V, getTag(tag), msg)
+        log(LEVEL.V, tag, msg)
     }
 
     /**
@@ -46,11 +47,11 @@ class LogUtils {
      * @param msg String
      */
     internal fun vExt(tag: String, msg: String) {
-        log(LEVEL.V, getTag(tag, INDEX_EXT), msg)
+        log(LEVEL.V, tag, msg)
     }
 
     fun i(tag: String, msg: String) {
-        log(LEVEL.I, getTag(tag), msg)
+        log(LEVEL.I, tag, msg)
     }
 
     /**
@@ -59,11 +60,11 @@ class LogUtils {
      * @param msg String
      */
     internal fun iExt(tag: String, msg: String) {
-        log(LEVEL.I, getTag(tag, INDEX_EXT), msg)
+        log(LEVEL.I, tag, msg)
     }
 
     fun d(tag: String, msg: String) {
-        log(LEVEL.D, getTag(tag), msg)
+        log(LEVEL.D, tag, msg)
     }
 
     /**
@@ -72,11 +73,11 @@ class LogUtils {
      * @param msg String
      */
     internal fun dExt(tag: String, msg: String) {
-        log(LEVEL.D, getTag(tag, INDEX_EXT), msg)
+        log(LEVEL.D, tag, msg)
     }
 
     fun w(tag: String, msg: String) {
-        log(LEVEL.W, getTag(tag), msg)
+        log(LEVEL.W, tag, msg)
     }
 
     /**
@@ -85,11 +86,11 @@ class LogUtils {
      * @param msg String
      */
     internal fun wExt(tag: String, msg: String) {
-        log(LEVEL.W, getTag(tag, INDEX_EXT), msg)
+        log(LEVEL.W, tag, msg)
     }
 
     fun e(tag: String, msg: String) {
-        log(LEVEL.D, getTag(tag), msg)
+        log(LEVEL.D, tag, msg)
     }
 
     /**
@@ -98,27 +99,54 @@ class LogUtils {
      * @param msg String
      */
     internal fun eExt(tag: String, msg: String) {
-        log(LEVEL.D, getTag(tag, INDEX_EXT), msg)
+        log(LEVEL.D, tag, msg)
     }
 
     private fun log(level: LEVEL, tag: String, message: String) {
-        when (level) {
-            LEVEL.V -> Log.v(tag, message)
-            LEVEL.D -> Log.d(tag, message)
-            LEVEL.I -> Log.i(tag, message)
-            LEVEL.W -> Log.w(tag, message)
-            LEVEL.E -> Log.e(tag, message)
+        if (showLineNumber) {
+            var newMessage = "$tag:$message"
+            val messagelen = newMessage.length
+            var lineNumber = getLineNumber(INDEX_EXT)
+            val lineNumberLen = lineNumber.length
+            var len = messagelen.coerceAtLeast(lineNumberLen) + 3
+            var startEndMessage = ""
+            for (i in 0..len) {
+                startEndMessage += SEPARATOR
+            }
+            for (i in 0 until (len - lineNumberLen)) {
+                lineNumber += " "
+            }
+            lineNumber += SEPARATOR
+            for (i in 0 until (len - messagelen)) {
+                newMessage += " "
+            }
+            newMessage += SEPARATOR
+            log(level, startEndMessage)
+            log(level, lineNumber)
+            log(level, newMessage)
+            log(level, startEndMessage)
+        } else {
+            log(level, "$tag:$message")
         }
     }
 
-    private fun getTag(tag: String, index: Int = 5): String {
-        if (showLineNumber) {
-            val elements = Thread.currentThread().stackTrace
-            val element = elements[index]
-            val className = element.methodName
-            val lineNumber = element.lineNumber
-            return "${tag_prefix}:${tag}->${className}(line:${lineNumber})"
+    private fun log(level: LEVEL, message: String) {
+        when (level) {
+            LEVEL.V -> Log.v(prefixTag, message)
+            LEVEL.D -> Log.d(prefixTag, message)
+            LEVEL.I -> Log.i(prefixTag, message)
+            LEVEL.W -> Log.w(prefixTag, message)
+            LEVEL.E -> Log.e(prefixTag, message)
         }
-        return "${tag_prefix}:${tag}"
+    }
+
+    private fun getLineNumber(index: Int = 5): String {
+        val elements = Thread.currentThread().stackTrace
+        val element = elements[index]
+        var className = element.className
+        className = className.substring(className.lastIndexOf(".") + 1)
+        val methodName = element.methodName
+        val lineNumber = element.lineNumber
+        return "$className:$methodName(line:$lineNumber)"
     }
 }
