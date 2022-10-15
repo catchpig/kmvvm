@@ -3,7 +3,7 @@ package com.catchpig.mvvm.base.view
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
 import kotlinx.coroutines.flow.Flow
 
-interface BaseView {
+internal interface BaseView {
 
     fun initParam()
 

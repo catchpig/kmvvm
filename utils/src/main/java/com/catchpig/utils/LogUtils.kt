@@ -22,10 +22,17 @@ class LogUtils {
     /**
      * 初始化
      * @param context Context
-     * @param showLineNumber Boolean 是否展示行号
      */
-    fun init(context: Context, showLineNumber: Boolean = false) {
+    fun init(context: Context) {
         tag_prefix = context.packageName
+        this.showLineNumber = showLineNumber
+    }
+
+    /**
+     * 是否显示代码行数
+     * @param showLineNumber Boolean
+     */
+    fun showLineNumber(showLineNumber: Boolean) {
         this.showLineNumber = showLineNumber
     }
 

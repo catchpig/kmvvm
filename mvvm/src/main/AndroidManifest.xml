@@ -1,12 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!--读写文件权限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application>
         <provider
-            android:authorities="${applicationId}.KotlinMvvmContentProvider"
-            android:name=".provider.KotlinMvvmContentProvider"
-            android:exported="false"/>
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false">
+            <meta-data
+                android:name="com.catchpig.mvvm.initializer.KotlinMvvmInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 </manifest>

@@ -41,6 +41,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.startup:startup-runtime:$startup_runtime_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation "androidx.recyclerview:recyclerview:$recycleview_version"
