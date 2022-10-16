@@ -43,6 +43,14 @@ open class BaseFragment<VB : ViewBinding> : Fragment() {
         return rootBinding
     }
 
+    fun rootBinding(block: ViewRootBinding.() -> Unit) {
+        rootBinding.run(block)
+    }
+
+    fun bodyBinding(block: VB.() -> Unit) {
+        bodyBinding.run(block)
+    }
+
     fun baseActivity(): BaseActivity<*>? {
         if (activity is BaseActivity<*>) {
             return activity as BaseActivity<*>

@@ -66,6 +66,14 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         return rootBinding
     }
 
+    fun rootBinding(block: ViewRootBinding.() -> Unit) {
+        rootBinding.run(block)
+    }
+
+    fun bodyBinding(block: VB.() -> Unit) {
+        bodyBinding.run(block)
+    }
+
     @CallSuper
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)

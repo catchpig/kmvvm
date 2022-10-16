@@ -48,7 +48,7 @@ class KTActivityManager private constructor() {
     /**
      * 删除除最上层之外的所有activity
      */
-    fun finishAllActivitesExceptTop() {
+    fun finishAllActivitiesExceptTop() {
         var topActivity = getTopActivity()
         var iterator = activities.iterator()
         while (iterator.hasNext()) {

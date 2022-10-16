@@ -21,13 +21,22 @@ class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>
     }
 
     override fun initView() {
-        getRootBanding().topView.let {
-            it.setBackgroundResource(R.color.colorPrimary);
-            it.post {
-                it.layoutParams.height = statusBarHeight
+        rootBinding {
+            topView.setBackgroundResource(R.color.colorPrimary);
+            topView.post {
+                topView.layoutParams.height = statusBarHeight
             }
         }
         articleAdapter = ArticleAdapter()
+        bodyBinding {
+            refreshView.apply {
+                val linearLayoutManager = LinearLayoutManager(context)
+                linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+                setLayoutManager(linearLayoutManager)
+                setAdapter(articleAdapter)
+                autoRefresh()
+            }
+        }
         bodyBinding.refreshView.apply {
             val linearLayoutManager = LinearLayoutManager(context)
             linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -40,7 +49,7 @@ class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>
     override fun initFlow() {
         bodyBinding.refreshView.run {
             setOnRefreshLoadMoreListener { nextPageIndex ->
-                viewModel.queryArticles(nextPageIndex).lifecycleRefresh(this@ArticleFragment,this)
+                viewModel.queryArticles(nextPageIndex).lifecycleRefresh(this@ArticleFragment, this)
             }
         }
     }

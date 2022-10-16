@@ -11,8 +11,10 @@ internal interface BaseView {
 
     fun initFlow()
 
+    @Deprecated("")
     fun <T> lifecycleFlowRefresh(flow: Flow<MutableList<T>>, refresh: RefreshRecyclerView)
 
+    @Deprecated("")
     fun <T> lifecycleFlow(
         flow: Flow<T>,
         errorCallback: ((t: Throwable) -> Unit)? = null,
