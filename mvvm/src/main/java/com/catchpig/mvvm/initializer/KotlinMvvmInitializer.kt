@@ -12,7 +12,6 @@ internal class KotlinMvvmInitializer : Initializer<Boolean> {
     override fun create(context: Context): Boolean {
         val applicationContext = context!!.applicationContext
         initContext(applicationContext)
-        initDownload(applicationContext)
         initLog(applicationContext)
         return true
     }
@@ -21,11 +20,6 @@ internal class KotlinMvvmInitializer : Initializer<Boolean> {
         ContextManager.getInstance().init(applicationContext)
         val application = applicationContext as Application
         application.registerActivityLifecycleCallbacks(ActivityLifeCycleCallbacksImpl())
-    }
-
-    private fun initDownload(context: Context) {
-        val downloadPath = "${context.externalCacheDir!!.absolutePath}/kmvvmDownload"
-        DownloadManager.setDownloadPath(downloadPath)
     }
 
     private fun initLog(context: Context) {

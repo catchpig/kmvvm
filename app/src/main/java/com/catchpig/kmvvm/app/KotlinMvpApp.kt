@@ -3,6 +3,7 @@ package com.catchpig.kmvvm.app
 import android.app.Application
 import com.catchpig.kmvvm.BuildConfig
 import com.catchpig.kmvvm.R
+import com.catchpig.mvvm.network.manager.DownloadManager
 import com.catchpig.mvvm.network.manager.NetManager
 import com.catchpig.utils.LogUtils
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -33,5 +34,14 @@ class KotlinMvpApp : Application() {
         // 框架内部已经初始化了,如果不需要打印日志的代码行数,就不需要再次初始化
         LogUtils.getInstance().showLineNumber(debug)
         NetManager.getInstance().setDebug(debug)
+        initDownload()
+    }
+
+    /**
+     * 不是必须要设置下载路径,内部有默认的下载路径,如果需要变下载路径,请重新设置
+     */
+    private fun initDownload(){
+        val downloadPath = "${applicationContext.externalCacheDir!!.absolutePath}/kmvvmDownload"
+        DownloadManager.setDownloadPath(downloadPath)
     }
 }

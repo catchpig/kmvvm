@@ -22,7 +22,7 @@
 
 + ### 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
 
-+ ### 将在Application中初始化移至到ContentProvider中,从而不用封装BaseApplication
++ ### 使用startup库将在Application中初始化移至到[KotlinMvvmInitializer](./mvvm/src/main/java/com/catchpig/mvvm/initializer/KotlinMvvmInitializer.kt)中,从而不用封装BaseApplication
 
 + ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、Adapter、GlobalConfig、ServiceApi
 
@@ -342,11 +342,12 @@ class UserAdapter(iPageControl: IPageControl) :
 ### 5.刷新分页控件([RefreshRecyclerView](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshRecyclerView.kt))
 
 + RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
-+ 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
++
+不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
 + 只需要设置LayoutManager和RecyclerAdapter,提供了setLayoutManager和setAdapter方法
 + 在获取到数据的时候调用updateData方法
 + 获取数据失败的时候调用updateError方法
-+ 如果使用了lifecycleFlowRefresh方法,updateData方法和updateError方法都不用关心
++ 如果使用了lifecycleRefresh方法,updateData方法和updateError方法都不用关心
 + 提供自定义属性recycler_background(设置RecyclerView的背景色)
 
 ```
@@ -360,16 +361,17 @@ class UserAdapter(iPageControl: IPageControl) :
 ```xml
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+              android:layout_height="match_parent" android:orientation="vertical">
 
     <TextView android:layout_width="match_parent" android:layout_height="50dp"
-        android:background="@color/colorPrimary" android:gravity="center" android:text="文章"
-        android:textColor="@color/color_white" />
+              android:background="@color/colorPrimary" android:gravity="center" android:text="文章"
+              android:textColor="@color/color_white"/>
 
     <com.catchpig.mvvm.widget.refresh.RefreshRecyclerView android:id="@+id/refresh"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        app:recycler_background="#445467">
+                                                          android:layout_width="match_parent"
+                                                          android:layout_height="match_parent"
+                                                          app:recycler_background="#445467">
 
     </com.catchpig.mvvm.widget.refresh.RefreshRecyclerView>
 </LinearLayout>
@@ -378,7 +380,7 @@ class UserAdapter(iPageControl: IPageControl) :
 ```kotlin
 bodyBinding.refresh.run {
     setOnRefreshLoadMoreListener { nextPageIndex ->
-        lifecycleFlowRefresh(viewModel.queryArticles(nextPageIndex), this)
+        viewModel.queryArticles(nextPageIndex).lifecycleRefresh(this@ArticleFragment,this)
     }
 }
 ```
@@ -435,7 +437,7 @@ class IndexViewModel : BaseViewModel() {
 
 ```kotlin
 //Activity或者Fragment
-lifecycleFlowLoadingView(viewModel.queryBanners()) {
+viewModel.queryBanners().lifecycle(this) {
     val images = mutableListOf<String>()
     this.forEach {
         images.add(it.imagePath)
@@ -453,13 +455,13 @@ lifecycleFlowLoadingView(viewModel.queryBanners()) {
 
 ```json
 {
-	code:"SUCCESS",
-	errorMsg:"成功",
-	data:...
+  code: "SUCCESS",
+  errorMsg: "成功",
+  data: ...
 }
 ```
 
-##### 6.2.2 在code返回SUCEESSD的时候, 我们在Retrofit的Api接口里面只想拿到data的数据做返回,我们想在Converter里面处理掉code返回错误码的逻辑,就可以继承[BaseResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/BaseResponseBodyConverter.kt),内部已经实现了将response转化为data的逻辑
+##### 6.2.2 在code返回SUCEESSD的时候, 我们在Retrofit的Api接口里面只想拿到data的数据做返回,我们想在Converter里面处理掉code返回错误码的逻辑,就可以继承[BaseResponseBodyConverter](./mvvm/src/main/java/com/catchpig/mvvm/network/converter/BaseResponseBodyConverter.kt),内部已经实现了将response转化为data的逻辑
 
 > 代码示例
 
@@ -478,21 +480,55 @@ class ResponseBodyConverter :
 
 ##### 6.2.3 再将实现了BaseResponseBodyConverter的类加到ServiceApi注解的responseConverter属性上
 
-##### 6.2.4 如果想直接拿response的结果作为网络请求的返回值,可以直接将[SerializationResponseBodyConverter](./mvvm/src/main/java/com/catchpig/network/converter/SerializationResponseBodyConverter.kt)加到ServiceApi注解的responseConverter属性上
+##### 6.2.4 如果想直接拿response的结果作为网络请求的返回值,可以直接将[SerializationResponseBodyConverter](./mvvm/src/main/java/com/catchpig/mvvm/network/converter/SerializationResponseBodyConverter.kt)加到ServiceApi注解的responseConverter属性上
 
-#### 6.3 Activity和Fragment封装了网络请求方法(带lifecycleScope)
-
-+ lifecycleFlowRefresh(flow: Flow<MutableList<T>>,refresh: RefreshRecyclerView)
-  -刷新+RecycleView的网络请求封装
-+ lifecycleFlow(flow: Flow<T>, errorCallback: ((t: Throwable) -> Unit)? = null, callback: T.() -> Unit)-不带loading的网络请求封装
-+ lifecycleFlowLoadingView(flow: Flow<T>, errorCallback: ((t: Throwable) -> Unit)? = null, callback: T.() -> Unit)-带loadingView的网络请求封装
-+ lifecycleFlowLoadingDialog(flow: Flow<T>, errorCallback: ((t: Throwable) -> Unit)? = null, callback: T.() -> Unit)-带loadingDialog的网络请求封装
+#### 6.3 FlowExt中扩展了网络请求方法(带lifecycleScope)
++ 刷新+RecycleView的网络请求封装
+  - lifecycleRefresh(
+      base: BaseVMFragment<*, *>, refreshLayoutWrapper: RefreshRecyclerView
+  )
+  - lifecycleRefresh(
+      base: BaseVMActivity<*, *>, refreshLayoutWrapper: RefreshRecyclerView
+  )
++ 不带loading的网络请求封装
+  - lifecycle(
+    base: BaseVMFragment<*, *>,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+    )
+  - lifecycle(
+    base: BaseVMActivity<*, *>,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+    )
++ 带loadingView的网络请求封装
+  - lifecycleLoadingDialog(
+      base: BaseVMFragment<*, *>,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+  )
+  - lifecycleLoadingDialog(
+        base: BaseVMActivity<*, *>,
+        errorCallback: ((t: Throwable) -> Unit)? = null,
+        callback: T.() -> Unit
+    )
++ 带loadingDialog的网络请求封装
+  - lifecycleLoadingView(
+    base: BaseVMFragment<*, *>,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+    )
+  - - lifecycleLoadingView(
+    base: BaseVMActivity<*, *>,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+    )
 
 ### 7. 日志
 
-+ 在application的onCreate中调用LogUtils.getInstance().init()方法,是log打印统一打印应用applicationId的tag前缀
-+ 可以使用LogUtils.getInstance().i,LogUtils.getInstance().d等打印日志
-+ 也可以使用LogExt的扩展方法打印日志
++ 不需要在Application中初始化,因为LogUtils已经在[KotlinMvvmInitializer](./mvvm/src/main/java/com/catchpig/mvvm/initializer/KotlinMvvmInitializer.kt)中初始化了
++ 可以使用LogUtils.getInstance().i,LogUtils.getInstance().d等打印日志(不建议)
++ 也可以使用LogExt的扩展方法打印日志(建议)
 
 ### 8. [注解使用](./annotation/REMARD_ANNOTATION.md)
 
@@ -504,42 +540,33 @@ class ResponseBodyConverter :
 
 ```properties
 -keep class com.catchpig.annotation.enums.**
-
 -keep class com.google.android.material.snackbar.Snackbar {*;}
-
 -keep @com.catchpig.annotation.Adapter class * {*;}
 -keep @com.catchpig.annotation.ServiceApi class * {*;}
-
 -keep public class **.databinding.*Binding {*;}
-
 -keep class **.*_Compiler {*;}
-
 -keep class com.gyf.immersionbar.* {*;}
 -dontwarn com.gyf.immersionbar.**
-
 #序列化混淆
 -if @kotlinx.serialization.Serializable class **
 -keepclassmembers class <1> {
-    static <1>$Companion Companion;
+static <1>$Companion Companion;
 }
-
 # Keep `serializer()` on companion objects (both default and named) of serializable classes.
 -if @kotlinx.serialization.Serializable class ** {
-    static **$* *;
+static **$* *;
 }
 -keepclassmembers class <1>$<3> {
-    kotlinx.serialization.KSerializer serializer(...);
+kotlinx.serialization.KSerializer serializer(...);
 }
-
 # Keep `INSTANCE.serializer()` of serializable objects.
 -if @kotlinx.serialization.Serializable class ** {
-    public static ** INSTANCE;
+public static ** INSTANCE;
 }
 -keepclassmembers class <1> {
-    public static <1> INSTANCE;
-    kotlinx.serialization.KSerializer serializer(...);
+public static <1> INSTANCE;
+kotlinx.serialization.KSerializer serializer(...);
 }
-
 # @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
 ```
@@ -573,6 +600,7 @@ class ResponseBodyConverter :
 ## 其他
 
 ### QQ交流群
+
 <img src="./images/qq_qrcode.jpg" style="zoom:10%;" />
 
 ### 欢迎大家在issue上提出问题,我这边会不定时的看issue,解决问题
