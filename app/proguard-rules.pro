@@ -37,9 +37,6 @@
 
 -keep class **.*_Compiler {*;}
 
--keep class com.gyf.immersionbar.* {*;}
--dontwarn com.gyf.immersionbar.**
-
 #序列化混淆
 -if @kotlinx.serialization.Serializable class **
 -keepclassmembers class <1> {

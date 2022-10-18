@@ -76,11 +76,11 @@ dependencies {
     api "com.github.catch-pig:LoadingView:$loading_version"
 
     // 基础依赖包，必须要依赖
-    api "com.gyf.immersionbar:immersionbar:$immersionbar_version"
+    api "com.geyifeng.immersionbar:immersionbar:$immersionbar_version"
     // fragment快速实现（可选）
-//    api "com.gyf.immersionbar:immersionbar-components:$immersionbar_version"
+//    api "com.geyifeng.immersionbar:immersionbar-components:$immersionbar_version"
     // kotlin扩展（可选）
-    api "com.gyf.immersionbar:immersionbar-ktx:$immersionbar_version"
+    api "com.geyifeng.immersionbar:immersionbar-ktx:$immersionbar_version"
     //刷新
     api "io.github.scwang90:refresh-layout-kernel:$SmartRefreshLayout_version"
 }
