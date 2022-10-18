@@ -1,3 +1,8 @@
+|  [Gitee](https://gitee.com/catchpig/kmvvm)  |[![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm)|
+|:-------------------------------------------:|:---------------------------------------------------------------------------------------------------:|
+| [Github](https://github.com/catchpig/kmvvm) |[![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)|
+
+
 ### 注解
 
 #### 1. [Title](./src/main/java/com/catchpig/annotation/Title.kt)-标题

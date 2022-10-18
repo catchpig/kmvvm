@@ -1,6 +1,6 @@
-## Gitee  [![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm)
-
-## Github  [![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)
+|  [Gitee](https://gitee.com/catchpig/kmvvm)  |[![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm)|
+|:-------------------------------------------:|:---------------------------------------------------------------------------------------------------:|
+| [Github](https://github.com/catchpig/kmvvm) |[![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)|
 
 ## ActivityExt
 
