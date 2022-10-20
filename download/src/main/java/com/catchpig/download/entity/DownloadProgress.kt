@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.entity
+package com.catchpig.download.entity
 
 data class DownloadProgress(
     /**

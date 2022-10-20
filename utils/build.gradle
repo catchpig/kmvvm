@@ -5,8 +5,8 @@ plugins {
 
 
 android {
+    namespace 'com.catchpig.utils'
     compileSdkVersion rootProject.compileSdkVersion
-
 
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
@@ -22,7 +22,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'com.catchpig.utils'
 
 }
 
@@ -36,6 +35,10 @@ dependencies {
     api project(path: ':annotation')
     //gson
     api "com.google.code.gson:gson:$gson_version"
+
+    //rxjava3
+    compileOnly "io.reactivex.rxjava3:rxjava:$rxjava_version"
+    compileOnly "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
 }
 
 apply from: '../publish_aar.gradle'

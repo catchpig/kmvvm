@@ -4,8 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 import com.catchpig.mvvm.lifecycle.ActivityLifeCycleCallbacksImpl
-import com.catchpig.mvvm.manager.ContextManager
-import com.catchpig.mvvm.network.manager.DownloadManager
+import com.catchpig.utils.manager.ContextManager
 import com.catchpig.utils.LogUtils
 
 internal class KotlinMvvmInitializer : Initializer<Boolean> {

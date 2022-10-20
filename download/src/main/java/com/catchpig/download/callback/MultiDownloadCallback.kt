@@ -1,6 +1,6 @@
-package com.catchpig.mvvm.listener
+package com.catchpig.download.callback
 
-import com.catchpig.mvvm.entity.DownloadProgress
+import com.catchpig.download.entity.DownloadProgress
 
 /**
  * 下载回调接口

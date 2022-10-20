@@ -1,12 +1,12 @@
-package com.catchpig.mvvm.network.download
+package com.catchpig.download.subscriber
 
-import com.catchpig.mvvm.entity.DownloadProgress
-import com.catchpig.mvvm.listener.DownloadCallback
-import com.catchpig.mvvm.listener.DownloadProgressListener
+import com.catchpig.download.callback.DownloadCallback
+import com.catchpig.download.callback.DownloadProgressListener
+import com.catchpig.download.entity.DownloadProgress
 import com.catchpig.utils.ext.logd
+import com.catchpig.utils.ext.loge
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 
 /**
@@ -36,7 +36,7 @@ class DownloadSubscriber(private val downloadCallback: DownloadCallback) :
             if (t is Exception) {
                 t.printStackTrace()
             }
-            "onError(${it})".logd(TAG)
+            "onError(${it})".loge(TAG)
             downloadCallback.onError(it)
         }
     }

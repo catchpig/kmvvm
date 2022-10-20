@@ -1,9 +1,9 @@
 package com.catchpig.kmvvm.app
 
 import android.app.Application
+import com.catchpig.download.manager.DownloadManager
 import com.catchpig.kmvvm.BuildConfig
 import com.catchpig.kmvvm.R
-import com.catchpig.mvvm.network.manager.DownloadManager
 import com.catchpig.mvvm.network.manager.NetManager
 import com.catchpig.utils.LogUtils
 import com.scwang.smart.refresh.footer.ClassicsFooter

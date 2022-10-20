@@ -1,15 +1,13 @@
-package com.catchpig.mvvm.network.manager
+package com.catchpig.download.manager
 
-import com.catchpig.mvvm.entity.DownloadProgress
-import com.catchpig.mvvm.ext.io2main
-import com.catchpig.mvvm.listener.DownloadCallback
-import com.catchpig.mvvm.listener.MultiDownloadCallback
-import com.catchpig.mvvm.network.api.DownloadService
-import com.catchpig.mvvm.network.download.DownloadSubscriber
-import com.catchpig.mvvm.network.download.MultiDownloadSubscriber
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import com.catchpig.download.api.DownloadService
+import com.catchpig.download.callback.DownloadCallback
+import com.catchpig.download.callback.MultiDownloadCallback
+import com.catchpig.download.entity.DownloadProgress
+import com.catchpig.download.subscriber.DownloadSubscriber
+import com.catchpig.download.subscriber.MultiDownloadSubscriber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import java.io.File
 import java.net.URL
 
@@ -18,15 +16,15 @@ import java.net.URL
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-class RxJavaDownloadManager : DownloadManager() {
+class CoroutinesDownloadManager : DownloadManager() {
     companion object {
-        fun getInstance(): RxJavaDownloadManager {
-            return RxJavaDownloadManagerHolder.holder
+        fun getInstance(): CoroutinesDownloadManager {
+            return CoroutinesDownloadManagerHolder.holder
         }
     }
 
-    private object RxJavaDownloadManagerHolder {
-        val holder = RxJavaDownloadManager()
+    private object CoroutinesDownloadManagerHolder {
+        val holder = CoroutinesDownloadManager()
     }
 
     /**
@@ -34,14 +32,13 @@ class RxJavaDownloadManager : DownloadManager() {
      * @param downloadUrls Iterable<String>
      * @param callback Function1<[@kotlin.ParameterName] MutableList<String>, Unit>
      * @param progress Function4<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, [@kotlin.ParameterName] Int, [@kotlin.ParameterName] Int, Unit>?
-     * @return Disposable
      */
-    fun multiDownload(
+    suspend fun multiDownload(
         downloadUrls: Iterable<String>,
         callback: (paths: MutableList<String>) -> Unit,
         progress: ((downloadProgress: DownloadProgress) -> Unit)? = null
-    ): Disposable {
-        return multiDownload(downloadUrls, object : MultiDownloadCallback {
+    ) {
+        multiDownload(downloadUrls, object : MultiDownloadCallback {
             override fun onStart() {
 
             }
@@ -68,15 +65,14 @@ class RxJavaDownloadManager : DownloadManager() {
      * 多文件下载
      * @param downloadUrls Iterable<String>
      * @param multiDownloadCallback MultiDownloadCallback
-     * @return Disposable
      */
-    fun multiDownload(
+    suspend fun multiDownload(
         downloadUrls: Iterable<String>,
         multiDownloadCallback: MultiDownloadCallback
-    ): Disposable {
+    ) {
         val multiDownloadSubscriber =
             MultiDownloadSubscriber(downloadUrls.count(), multiDownloadCallback)
-        return Flowable.fromIterable(downloadUrls).concatMap {
+        downloadUrls.asFlow().flatMapConcat {
             val localFilePath = localFileName(it)
             val file = File(localFilePath)
             val url = URL(it)
@@ -85,12 +81,24 @@ class RxJavaDownloadManager : DownloadManager() {
                 val contentLength = url.openConnection().contentLength
                 if (fileLength == contentLength.toLong()) {
                     multiDownloadSubscriber.update(fileLength, fileLength, true)
-                    return@concatMap Flowable.just(localFilePath)
+                    return@flatMapConcat flowOf(localFilePath)
                 }
             }
-            val downloadService = initDownloadService(url, multiDownloadSubscriber)
-            return@concatMap httpDownload(downloadService, url.file.substring(1), localFilePath)
-        }.io2main().subscribeWith(multiDownloadSubscriber)
+            val downloadService = initDownloadService(url, multiDownloadSubscriber, false)
+            return@flatMapConcat httpDownload(
+                downloadService,
+                url.file.substring(1),
+                localFilePath
+            )
+        }.flowOn(Dispatchers.IO).onStart {
+            multiDownloadSubscriber.onStart()
+        }.onCompletion {
+            multiDownloadSubscriber.onComplete()
+        }.catch { t: Throwable ->
+            multiDownloadSubscriber.onError(t)
+        }.collect {
+            multiDownloadSubscriber.onNext(it)
+        }
     }
 
     /**
@@ -98,14 +106,13 @@ class RxJavaDownloadManager : DownloadManager() {
      * @param downloadUrl String
      * @param callback Function1<[@kotlin.ParameterName] File, Unit>
      * @param progress Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
-     * @return Disposable
      */
-    fun downloadFile(
+    suspend fun downloadFile(
         downloadUrl: String,
         callback: (file: File) -> Unit,
         progress: ((downloadProgress: DownloadProgress) -> Unit)? = null
-    ): Disposable {
-        return download(downloadUrl, object : DownloadCallback {
+    ) {
+        download(downloadUrl, object : DownloadCallback {
             override fun onStart() {
 
             }
@@ -133,14 +140,13 @@ class RxJavaDownloadManager : DownloadManager() {
      * @param downloadUrl String
      * @param callback Function1<[@kotlin.ParameterName] String, Unit>
      * @param progress Function2<[@kotlin.ParameterName] Long, [@kotlin.ParameterName] Long, Unit>
-     * @return Disposable
      */
-    fun download(
+    suspend fun download(
         downloadUrl: String,
         callback: (path: String) -> Unit,
         progress: ((downloadProgress: DownloadProgress) -> Unit)? = null
-    ): Disposable {
-        return download(downloadUrl, object : DownloadCallback {
+    ) {
+        download(downloadUrl, object : DownloadCallback {
             override fun onStart() {
 
             }
@@ -167,11 +173,13 @@ class RxJavaDownloadManager : DownloadManager() {
      * 单文件下载
      * @param downloadUrl String 下载地址
      * @param downloadCallback DownLoadCallback 下载回调接口,回调的方法已经切到主线程
-     * @return Disposable
      */
-    fun download(downloadUrl: String, downloadCallback: DownloadCallback): Disposable {
+    suspend fun download(
+        downloadUrl: String,
+        downloadCallback: DownloadCallback
+    ) {
         val downloadSubscriber = DownloadSubscriber(downloadCallback)
-        Flowable.just(downloadUrl).flatMap {
+        flowOf(downloadUrl).flatMapConcat {
             /**
              * 判断本地是否存在下载的文件,
              * 如果存在,文件的大小和远程文件大小一样,直接返回本地文件的路劲给回调,
@@ -185,13 +193,20 @@ class RxJavaDownloadManager : DownloadManager() {
                 val contentLength = url.openConnection().contentLength
                 if (fileLength == contentLength.toLong()) {
                     downloadSubscriber.update(fileLength, fileLength, true)
-                    return@flatMap Flowable.just(localFilePath)
+                    return@flatMapConcat flowOf(localFilePath).flowOn(Dispatchers.IO)
                 }
             }
-            val downloadService = initDownloadService(url, downloadSubscriber, true)
-            return@flatMap httpDownload(downloadService, url.file.substring(1), localFilePath)
-        }.io2main().subscribeWith(downloadSubscriber)
-        return downloadSubscriber
+            val downloadService = initDownloadService(url, downloadSubscriber, false)
+            return@flatMapConcat httpDownload(downloadService, url.file.substring(1), localFilePath)
+        }.flowOn(Dispatchers.IO).onStart {
+            downloadSubscriber.onStart()
+        }.onCompletion {
+            downloadSubscriber.onComplete()
+        }.catch { t: Throwable ->
+            downloadSubscriber.onError(t)
+        }.collect {
+            downloadSubscriber.onNext(it)
+        }
     }
 
     /**
@@ -199,16 +214,17 @@ class RxJavaDownloadManager : DownloadManager() {
      * @param downloadService DownloadService
      * @param url String
      * @param localFilePath String
-     * @return Flowable<String>
+     * @return Flow<String>
      */
-    private fun httpDownload(
+    private suspend fun httpDownload(
         downloadService: DownloadService,
         url: String,
         localFilePath: String
-    ): Flowable<String> {
-        return downloadService.rxJavaDownload(url).subscribeOn(Schedulers.io()).map {
+    ): Flow<String> {
+        return flow {
+            emit(downloadService.coroutinesDownload(url))
+        }.map {
             return@map writeCache(it, localFilePath)
         }
     }
-
 }

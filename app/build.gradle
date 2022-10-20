@@ -55,13 +55,14 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation project(path: ':download')
     implementation project(path: ':mvvm')
     kapt project(path: ':compiler')
 //    implementation "com.gitee.catchpig.kmvvm:mvvm:$kotlin_mvvm"
 //    kapt "com.gitee.catchpig.kmvvm:compiler:$kotlin_mvvm"
 
 
-//    implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
 
     //rxjava3
     implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"

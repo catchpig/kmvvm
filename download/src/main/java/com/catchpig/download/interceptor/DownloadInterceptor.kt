@@ -1,18 +1,20 @@
-package com.catchpig.mvvm.network.interceptor
+package com.catchpig.download.interceptor
 
-import com.catchpig.mvvm.network.download.DownloadResponseBody
-import com.catchpig.mvvm.listener.DownloadProgressListener
+import com.catchpig.download.callback.DownloadProgressListener
+import com.catchpig.download.response.DownloadResponseBody
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 import okhttp3.Interceptor
+import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
+
 /**
  * 下载拦截器
   * @author catchpig
  * @date 2020/11/20 10:25
  */
 class DownloadInterceptor:Interceptor {
-    private var downloadProgressListenerMap = mutableMapOf<String,DownloadProgressListener?>()
+    private var downloadProgressListenerMap = mutableMapOf<String, DownloadProgressListener?>()
     fun addProgressListener(key: String, downloadProgressListener: DownloadProgressListener){
         downloadProgressListenerMap[key] = downloadProgressListener
         clearInvalidProgressListener()
@@ -43,8 +45,9 @@ class DownloadInterceptor:Interceptor {
     }
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val response: Response = chain.proceed(chain.request())
-        val url = response.request.url.toUrl().toString()
+        val request = chain.request();
+        val response: Response = chain.proceed(request)
+        val url = request.url.toUrl().toString()
         val downloadProgressListener = downloadProgressListenerMap[url]
         return response.newBuilder()
                 .body(DownloadResponseBody(response.body!!, downloadProgressListener))

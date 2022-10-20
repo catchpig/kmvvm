@@ -1,12 +1,12 @@
-package com.catchpig.mvvm.network.manager
+package com.catchpig.download.manager
 
 import android.os.Environment
 import android.util.ArrayMap
-import com.catchpig.mvvm.listener.DownloadProgressListener
-import com.catchpig.mvvm.manager.ContextManager
-import com.catchpig.mvvm.network.api.DownloadService
-import com.catchpig.mvvm.network.interceptor.DownloadInterceptor
+import com.catchpig.download.api.DownloadService
+import com.catchpig.download.callback.DownloadProgressListener
+import com.catchpig.download.interceptor.DownloadInterceptor
 import com.catchpig.utils.ext.deleteAll
+import com.catchpig.utils.manager.ContextManager
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -77,17 +77,25 @@ open class DownloadManager {
             downloadPath = path
         }
 
-        private fun getDowLoadService(baseUrl: String, rxJava: Boolean): DownloadService {
+        private fun getDownloadService(baseUrl: String, rxJava: Boolean): DownloadService {
             if (rxJava) {
-                return Retrofit
-                    .Builder()
-                    .baseUrl(baseUrl)
-                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                    .client(getOkHttpClient())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(DownloadService::class.java)
+                return getRxjavaDownloadService(baseUrl)
             }
+            return getCoroutinesDownloadService(baseUrl)
+        }
+
+        private fun getRxjavaDownloadService(baseUrl: String): DownloadService {
+            return Retrofit
+                .Builder()
+                .baseUrl(baseUrl)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .client(getOkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(DownloadService::class.java)
+        }
+
+        private fun getCoroutinesDownloadService(baseUrl: String): DownloadService {
             return Retrofit
                 .Builder()
                 .baseUrl(baseUrl)
@@ -106,12 +114,12 @@ open class DownloadManager {
         fun initDownloadService(
             url: URL,
             downloadProgressListener: DownloadProgressListener,
-            rxJava: Boolean = false
+            rxJava: Boolean
         ): DownloadService {
             val baseUrl = "${url.protocol}://${url.host}/"
             var downloadService = downloadServiceMap[baseUrl]
             downloadService = downloadService.run {
-                getDowLoadService(baseUrl, rxJava)
+                getDownloadService(baseUrl, rxJava)
             }
             downloadServiceMap[baseUrl] = downloadService
             downloadInterceptor.addProgressListener(url.toString(), downloadProgressListener)

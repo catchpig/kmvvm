@@ -6,6 +6,7 @@ import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.apk.viewmodel.InstallApkViewModel
 import com.catchpig.kmvvm.databinding.ActivityInstallApkBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
+import com.catchpig.utils.ext.installApk
 import com.catchpig.utils.ext.logd
 import com.tbruyelle.rxpermissions3.RxPermissions
 
@@ -34,17 +35,19 @@ class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkV
                     viewModel.download()
                 }
             }
+    }
+
+    override fun initFlow() {
         viewModel.progressLiveData.observe(this) {
-            bodyBinding.progressBar.progress = (it.readLength * 100 / it.totalCount).toInt()
+            bodyBinding.progressBar.progress = (it.readLength * 100 / it.countLength).toInt()
         }
         viewModel.progressLiveData1.observe(this) {
             "${(it.readLength * 100 / it.countLength).toInt()}".logd(TAG)
             bodyBinding.progressBar1.progress = (it.readLength * 100 / it.countLength).toInt()
             bodyBinding.progressText.text = "${it.completeCount}/${it.totalCount}"
         }
-    }
-
-    override fun initFlow() {
-
+        viewModel.installApkLiveData.observe(this) {
+            installApk(it)
+        }
     }
 }

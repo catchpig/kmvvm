@@ -1,9 +1,10 @@
-package com.catchpig.mvvm.network.download
+package com.catchpig.download.subscriber
 
-import com.catchpig.mvvm.entity.DownloadProgress
-import com.catchpig.mvvm.listener.DownloadProgressListener
-import com.catchpig.mvvm.listener.MultiDownloadCallback
+import com.catchpig.download.callback.DownloadProgressListener
+import com.catchpig.download.callback.MultiDownloadCallback
+import com.catchpig.download.entity.DownloadProgress
 import com.catchpig.utils.ext.logd
+import com.catchpig.utils.ext.loge
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
@@ -38,7 +39,7 @@ class MultiDownloadSubscriber(
             if (t is Exception) {
                 t.printStackTrace()
             }
-            "onError($t)".logd(TAG)
+            "onError($t)".loge(TAG)
             multiDownloadCallback.onError(it)
         }
     }
@@ -51,13 +52,15 @@ class MultiDownloadSubscriber(
 
     override fun update(read: Long, count: Long, done: Boolean) {
         Flowable.just(done).subscribeOn(AndroidSchedulers.mainThread()).subscribe {
-            val completeCount = paths.size
-            val downloadProgress = if (done && (completeCount + 1) == totalCount) {
+            val completeCount = paths.size + 1
+            val downloadProgress = if (done && completeCount == totalCount) {
                 DownloadProgress(read, count, totalCount, totalCount)
             } else {
                 DownloadProgress(read, count, completeCount, totalCount)
             }
-            "update($read,$count,$done)".logd(TAG)
+            "update->read:$read,count:$count,done:$done,completeCount:$completeCount,totalCount:$totalCount".logd(
+                TAG
+            )
             multiDownloadCallback.onProgress(downloadProgress)
         }
     }

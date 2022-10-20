@@ -4,7 +4,6 @@ import com.catchpig.annotation.interfaces.SerializationConverter
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import okhttp3.ResponseBody
-import retrofit2.Converter
 import java.lang.reflect.Type
 
 class SerializationResponseBodyConverter : SerializationConverter<ResponseBody, Any> {

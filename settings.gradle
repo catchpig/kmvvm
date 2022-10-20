@@ -47,5 +47,10 @@ dependencyResolutionManagement {
     }
 }
 
+include ':app'
+include ':mvvm'
+include ':annotation'
+include ':compiler'
+include ':download'
+include ':utils'
 rootProject.name = "kmvvm"
-include ':app', ':mvvm', ':annotation', ':compiler', ':utils'

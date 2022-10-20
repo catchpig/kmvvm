@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.manager
+package com.catchpig.utils.manager
 
 import android.content.Context
 import android.content.SharedPreferences

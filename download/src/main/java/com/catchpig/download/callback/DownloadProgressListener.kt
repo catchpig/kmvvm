@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.listener
+package com.catchpig.download.callback
 /**
  * 下载进度回调接口
   * @author catchpig

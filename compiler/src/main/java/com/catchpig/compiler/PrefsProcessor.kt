@@ -27,7 +27,7 @@ class PrefsProcessor : BaseProcessor() {
         private val CLASS_NAME_SHARED_PREFERENCES =
             ClassName("android.content", "SharedPreferences")
 
-        private val CLASS_NAME_CONTEXT_MANAGER = ClassName("com.catchpig.mvvm.manager","ContextManager")
+        private val CLASS_NAME_CONTEXT_MANAGER = ClassName("com.catchpig.utils.manager","ContextManager")
 
         private const val JAVA_STRING = "java.lang.String"
 

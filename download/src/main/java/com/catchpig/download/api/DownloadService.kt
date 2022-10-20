@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.network.api
+package com.catchpig.download.api
 
 import io.reactivex.rxjava3.core.Flowable
 import okhttp3.ResponseBody

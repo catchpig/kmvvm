@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.ext
+package com.catchpig.utils.ext
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
