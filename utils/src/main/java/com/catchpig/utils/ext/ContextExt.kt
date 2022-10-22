@@ -12,10 +12,13 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
+import java.util.jar.Manifest
 
 private const val TAG = "ContextExt"
 /**
  * 安装apk
+ * 需要添加android.permission.REQUEST_INSTALL_PACKAGES权限
+ * @see android.Manifest.permission.REQUEST_INSTALL_PACKAGES
  * @receiver Context
  * @param apkPath String apk本地路径
  */
