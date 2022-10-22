@@ -4,6 +4,12 @@
 + 下载模块改成单独的module
 + utils移除android.permission.REQUEST_INSTALL_PACKAGES权限
 
+### v0.5.1(2022.10.15)
+
++ 使用startup替换自定义ContentProvider,优化启动
++ 将BaseVMActivity和BaseVMFragment的lifecycle一系列协程方法抽成Flow的扩展方法
++ 调整日志输出格式
+
 ### v0.5.0(2022.10.14)
 
 + lifecycleFlow函数增加异常的回调
