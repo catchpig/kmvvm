@@ -1,4 +1,9 @@
 # CHANGE LOG
+### v0.5.3(2022.10.14)
+
++ 下载模块改成单独的module
++ utils移除android.permission.REQUEST_INSTALL_PACKAGES权限
+
 ### v0.5.0(2022.10.14)
 
 + lifecycleFlow函数增加异常的回调
