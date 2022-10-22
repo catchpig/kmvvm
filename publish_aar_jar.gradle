@@ -1,7 +1,10 @@
 apply plugin: 'signing'
 apply plugin: 'maven-publish'
 
-
+def properties = new Properties()
+properties.load(rootProject.file("local.properties").newDataInputStream())
+def ossrhUsername = properties.getProperty("ossrhUsername")
+def ossrhPassword = properties.getProperty("ossrhPassword")
 task sourcesJar(type: Jar) {
     if (project.hasProperty("kotlin") && project.plugins.hasPlugin("java-library")) {
         from sourceSets.main.java.getSrcDirs()

@@ -1,3 +1,6 @@
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=download-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fdownload%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=download-snapshot&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fdownload%2Fmaven-metadata.xml)
+
 ### 文件下载器
 
 + 支持RxJava和协程两种方式的文件下载,两种方式的接口是一样的,只是内部使用的逻辑不一样

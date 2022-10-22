@@ -1,7 +1,5 @@
-|  [Gitee](https://gitee.com/catchpig/kmvvm)  | [![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm) |
-|:-------------------------------------------:|:------------------------------------------------------------------------------------------------------:|
-| [Github](https://github.com/catchpig/kmvvm) |           [![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)           |
-
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=annotation-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fannotation%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=annotation-snapshot&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fannotation%2Fmaven-metadata.xml)
 
 ### 注解
 
