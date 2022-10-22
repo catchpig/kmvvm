@@ -25,14 +25,18 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven {
+            url "${rootProject.projectDir}/build/"
+        }
+        maven {
+            // mavenCentral的快照地址
+            url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+        }
         mavenCentral() {
             allowInsecureProtocol = true
         }
         google() {
             allowInsecureProtocol = true
-        }
-        maven{
-            url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
         }
         maven { url 'https://jitpack.io' }
         maven {
