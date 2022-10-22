@@ -1,5 +1,5 @@
 # CHANGE LOG
-### v0.5.3(2022.10.14)
+### v0.5.3(2022.10.22)
 
 + 下载模块改成单独的module
 + utils移除android.permission.REQUEST_INSTALL_PACKAGES权限
