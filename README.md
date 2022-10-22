@@ -1,9 +1,18 @@
+## 正式版本
 
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=mvvm-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fmvvm%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=download-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fdownload%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=annotation-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fannotation%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=compiler-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fcompiler%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=utils-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Futils%2Fmaven-metadata.xml)
+
+## 快照版本
+
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=mvvm-snapshot&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fmvvm%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=download-snapshot&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fdownload%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=annotation-snapshot&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fannotation%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=compiler-snapshot&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fcompiler%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=utils-snapshot&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Futils%2Fmaven-metadata.xml)
 
 ## [CHANGE LOG](./CHANGE_lOG.md)
 
@@ -27,24 +36,15 @@
 
 ## Gradle
 
-### 1. 在Project的build.gradle中添加
 
-```groovy
-allprojects {
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
-
-### 2. 在app的build.gradle的添加
+### 1. 在app的build.gradle的添加
 
 ```groovy
 apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
 apply plugin: 'kotlinx-serialization' //序列化
 ```
 
-### 3. 在app的build.gradle的android下添加
+### 2. 在app的build.gradle的android下添加
 
 ```groovy
 buildFeatures {
@@ -52,17 +52,26 @@ buildFeatures {
 }
 ```
 
-### 4. 添加依赖
+### 3. 添加依赖
 
 ```groovy
 implementation "io.github.catchpig.kmvvm:mvvm:last_version"
 kapt "io.github.catchpig.kmvvm:compiler:last_version"
 ```
 
-> 需要使用下载功能
+> 需要使用下载功能,请单独添加如下依赖
 
 ```groovy
 implementation "io.github.catchpig.kmvvm:download:last_version"
+```
+
+### 4. 使用快照版本的,需要添加如下maven地址
+
+```groovy
+maven {
+    // mavenCentral的快照地址
+    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+}
 ```
 
 ## 使用
