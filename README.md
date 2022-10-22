@@ -1,6 +1,9 @@
-|  [Gitee](https://gitee.com/catchpig/kmvvm)  |[![](https://jitpack.io/v/com.gitee.catchpig/kmvvm.svg)](https://jitpack.io/#com.gitee.catchpig/kmvvm)|
-|:-------------------------------------------:|:---------------------------------------------------------------------------------------------------:|
-| [Github](https://github.com/catchpig/kmvvm) |[![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)|
+
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=mvvm-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fmvvm%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=download-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fdownload%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=annotation-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fannotation%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=compiler-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fcompiler%2Fmaven-metadata.xml)
+![](https://img.shields.io/badge/dynamic/xml?color=green&label=utils-release&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Futils%2Fmaven-metadata.xml)
 
 ## [CHANGE LOG](./CHANGE_lOG.md)
 
@@ -51,18 +54,15 @@ buildFeatures {
 
 ### 4. 添加依赖
 
-> Gitee
-
 ```groovy
-implementation "com.gitee.catchpig.kmvvm:mvvm:last_version"
-kapt "com.gitee.catchpig.kmvvm:compiler:last_version"
+implementation "io.github.catchpig.kmvvm:mvvm:last_version"
+kapt "io.github.catchpig.kmvvm:compiler:last_version"
 ```
 
-> Github
+> 需要使用下载功能
 
 ```groovy
-implementation "com.github.catchpig.kmvvm:mvvm:last_version"
-kapt "com.github.catchpig.kmvvm:compiler:last_version"
+implementation "io.github.catchpig.kmvvm:download:last_version"
 ```
 
 ## 使用
