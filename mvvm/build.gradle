@@ -85,4 +85,4 @@ dependencies {
     api "io.github.scwang90:refresh-layout-kernel:$SmartRefreshLayout_version"
 }
 
-apply from: '../publish_aar.gradle'
+apply from: '../publish_aar_jar.gradle'

@@ -41,4 +41,4 @@ dependencies {
     compileOnly "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
 }
 
-apply from: '../publish_aar.gradle'
+apply from: '../publish_aar_jar.gradle'

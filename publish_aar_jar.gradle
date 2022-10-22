@@ -1,0 +1,131 @@
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
+
+
+task sourcesJar(type: Jar) {
+    if (project.hasProperty("kotlin") && project.plugins.hasPlugin("java-library")) {
+        from sourceSets.main.java.getSrcDirs()
+    } else if (project.hasProperty("android") && project.plugins.hasPlugin("com.android.library")) {
+        from android.sourceSets.main.java.getSrcDirs()
+    } else {
+        from sourceSets.main.allJava
+    }
+    classifier = 'sources'
+}
+
+if (project.plugins.hasPlugin("java-library")) {
+    task javadocJar(type: Jar) {
+        from javadoc
+        classifier = 'javadoc'
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+//            jitpack(MavenPublication) {
+//                from components.java
+//                def projectName = project.name
+//                groupId = 'com.gitee.catchpig.kmvvm'
+//                artifactId = projectName
+//                version = rootProject.kotlin_mvvm
+//            }
+            release(MavenPublication) {
+                if (project.plugins.hasPlugin("com.android.library")) {
+                    from components.release
+                } else if (project.plugins.hasPlugin("java-library")) {
+                    from components.java
+                    artifact javadocJar
+                }
+                def projectName = project.name
+                groupId = 'io.github.catchpig.kmvvm'
+                artifactId = projectName
+                version = rootProject.kotlin_mvvm
+
+                artifact sourcesJar
+
+                pom {
+                    name = 'kmvvm'
+                    description = 'kmvvm'
+                    url = 'https://github.com/catchpig/kmvvm'
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'zhuazhu'
+                            name = 'zhuazhu'
+                            email = '327785185@qq.com'
+                        }
+                    }
+                    scm {
+                        connection = 'https://github.com/catchpig/kmvvm'
+                        developerConnection = 'https://github.com/catchpig/kmvvm.git'
+                        url = 'https://github.com/catchpig/kmvvm'
+                    }
+                }
+            }
+//            snapshot(MavenPublication) {
+//                from components.java
+//                def projectName = project.name
+//                groupId = 'io.github.catchpig.kmvvm'
+//                artifactId = projectName
+//                version = "${rootProject.kotlin_mvvm}-SNAPSHOT"
+//                pom {
+//                    name = 'kmvvm'
+//                    description = 'kmvvm'
+//                    url = 'https://github.com/catchpig/kmvvm'
+//                    licenses {
+//                        license {
+//                            name='The Apache Software License, Version 2.0'
+//                            url='http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                        }
+//                    }
+//                    developers {
+//                        developer {
+//                            id = 'zhuazhu'
+//                            name = 'zhuazhu'
+//                            email = '327785185@qq.com'
+//                        }
+//                    }
+//                    scm {
+//                        connection = 'https://github.com/catchpig/kmvvm'
+//                        developerConnection = 'https://github.com/catchpig/kmvvm.git'
+//                        url = 'https://github.com/catchpig/kmvvm'
+//                    }
+//                }
+//            }
+
+        }
+        repositories {
+            maven {
+                name 'local'
+                url "${rootProject.buildDir}"
+            }
+            maven {
+                name 'mavenCentrol'
+                url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                }
+            }
+
+            maven {
+                name 'mavenCentrol-Snapshots'
+                url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                }
+            }
+        }
+    }
+    signing {
+        sign publishing.publications.release /*, publishing.publications.snapshot*/
+    }
+}
