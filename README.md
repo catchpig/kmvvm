@@ -533,7 +533,7 @@ class ResponseBodyConverter :
 
 ### 8. [注解使用](./annotation/REMARD_ANNOTATION.md)
 
-### 9. [文件下载器](./mvvm/REMARD_DOWNLOAD_MANAGER.md)
+### 9. [文件下载器](./download/REMARD_DOWNLOAD_MANAGER.md)
 
 ### 10. [工具库](./utils/README.md)
 
