@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.subscribers.ResourceSubscriber
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-class DownloadSubscriber(private val downloadCallback: DownloadCallback) :
+internal class DownloadSubscriber(private val downloadCallback: DownloadCallback) :
     ResourceSubscriber<String>(), DownloadProgressListener {
     companion object {
         const val TAG = "DownloadSubscriber"

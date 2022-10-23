@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.subscribers.ResourceSubscriber
  * @author catchpig
  * @date 2020/12/3 17:11
  */
-class MultiDownloadSubscriber(
+internal class MultiDownloadSubscriber(
     private val totalCount: Int,
     private val multiDownloadCallback: MultiDownloadCallback
 ) : ResourceSubscriber<String>(), DownloadProgressListener {

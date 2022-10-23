@@ -13,7 +13,7 @@ import java.io.IOException
   * @author catchpig
  * @date 2020/11/20 10:25
  */
-class DownloadInterceptor:Interceptor {
+internal class DownloadInterceptor:Interceptor {
     private var downloadProgressListenerMap = mutableMapOf<String, DownloadProgressListener?>()
     fun addProgressListener(key: String, downloadProgressListener: DownloadProgressListener){
         downloadProgressListenerMap[key] = downloadProgressListener

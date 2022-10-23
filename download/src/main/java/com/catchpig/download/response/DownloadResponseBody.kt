@@ -11,7 +11,7 @@ import java.io.IOException
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-class DownloadResponseBody(
+internal class DownloadResponseBody(
     private val responseBody: ResponseBody,
     private val progressListener: DownloadProgressListener?
 ) : ResponseBody() {
