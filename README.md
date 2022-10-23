@@ -22,7 +22,7 @@
 + ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
 
 ## 架构图
-<image src="./images/架构图.png"/>
+<image src="./images/架构图.png" style="zoom:80%;"/>
 
 ## 最低兼容:21
 
