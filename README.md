@@ -1,8 +1,28 @@
 ![](https://img.shields.io/badge/license-Apache--2.0-blue)
-![](https://img.shields.io/badge/dynamic/json?color=yellow&label=stars&query=%24.stargazers_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
-![](https://img.shields.io/badge/dynamic/json?color=yellowgreen&label=forks&query=%24.forks&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
+![](https://img.shields.io/badge/android-21%2B-brightgreen?logo=android)
 ![](https://img.shields.io/badge/maven--central-release-brightgreen)
 ![](https://img.shields.io/badge/maven--central-snapshot-green)
+![](https://img.shields.io/badge/dynamic/json?style=social&logo=github&color=yellow&label=stars&query=%24.stargazers_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
+![](https://img.shields.io/badge/dynamic/json?style=social&logo=github&color=yellowgreen&label=forks&query=%24.forks&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
+
+## 技术要点
+
++ ### 支持Flow+Retrofit+OkHttp实现链式http请求
+
++ ### 支持Rxjava+Retrofit+OkHttp实现链式http请求
+
++ ### 封装基类:BaseActivity、BaseVMActivity、BaseFragment、BaseVMFragment、RecycleAdapter、BaseViewModel
+
++ ### 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
+
++ ### 使用startup库将在Application中初始化移至到[KotlinMvvmInitializer](./mvvm/src/main/java/com/catchpig/mvvm/initializer/KotlinMvvmInitializer.kt)中,从而不用封装BaseApplication
+
++ ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、Adapter、GlobalConfig、ServiceApi
+
++ ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
+
+## 最低兼容:21
+
 
 ## release版本
 
@@ -25,24 +45,6 @@
 # [Github](https://github.com/catchpig/kmvvm)
 
 ## [CHANGE LOG](./CHANGE_lOG.md)
-
-## 技术要点
-
-+ ### 支持Flow+Retrofit+OkHttp实现链式http请求
-
-+ ### 支持Rxjava+Retrofit+OkHttp实现链式http请求
-
-+ ### 封装基类:BaseActivity、BaseVMActivity、BaseFragment、BaseVMFragment、RecycleAdapter、BaseViewModel
-
-+ ### 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
-
-+ ### 使用startup库将在Application中初始化移至到[KotlinMvvmInitializer](./mvvm/src/main/java/com/catchpig/mvvm/initializer/KotlinMvvmInitializer.kt)中,从而不用封装BaseApplication
-
-+ ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、Adapter、GlobalConfig、ServiceApi
-
-+ ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
-
-## 最低兼容:21
 
 ## Gradle
 
