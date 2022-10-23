@@ -1,10 +1,11 @@
 ![](https://img.shields.io/badge/license-Apache--2.0-blue)
 ![](https://img.shields.io/badge/dynamic/json?color=yellow&label=stars&query=%24.stargazers_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
 ![](https://img.shields.io/badge/dynamic/json?color=yellowgreen&label=forks&query=%24.forks&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
+![](https://img.shields.io/badge/maven--central-release-brightgreen)
+![](https://img.shields.io/badge/maven--central-snapshot-green)
 
 ## release版本
 
-![](https://img.shields.io/badge/maven--central-release-brightgreen)
 ![](https://img.shields.io/badge/dynamic/xml?color=brightgreen&label=mvvm&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fmvvm%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=brightgreen&label=download&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fdownload%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=brightgreen&label=annotation&query=%2F%2Fmetadata%2Fversioning%2Frelease&url=https%3A%2F%2Frepo1.maven.org%2Fmaven2%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fannotation%2Fmaven-metadata.xml)
@@ -13,7 +14,6 @@
 
 ## snapshot版本
 
-![](https://img.shields.io/badge/maven--central-snapshot-green)
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=mvvm&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fmvvm%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=downloadt&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fdownload%2Fmaven-metadata.xml)
 ![](https://img.shields.io/badge/dynamic/xml?color=green&label=annotation&query=%2F%2Fmetadata%2Fversioning%2Flatest&url=https%3A%2F%2Fs01.oss.sonatype.org%2Fcontent%2Frepositories%2Fsnapshots%2Fio%2Fgithub%2Fcatchpig%2Fkmvvm%2Fannotation%2Fmaven-metadata.xml)
