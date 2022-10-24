@@ -17,6 +17,7 @@ object WanAndroidRepository {
     fun getBanners(): Flow<MutableList<Banner>> {
         return flow {
             val result = otherService.queryBanner()
+            wanAndroidService.register(mapOf("1" to "1"))
             wanAndroidService.login("zhuazhu","123456")
             emit(wanAndroidService.queryBanner())
         }

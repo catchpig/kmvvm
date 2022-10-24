@@ -11,7 +11,7 @@ import retrofit2.http.Url
  * @author catchpig
  * @date 2020/11/20 10:25
  */
-internal interface DownloadService {
+interface DownloadService {
     /**
      * 可以断点续传(Rxjava)
      * @param url 下载地址
