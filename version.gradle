@@ -1,7 +1,7 @@
 ext {
     kotlin_mvvm = '0.5.3'
 //    kotlin_mvvm = '0.5.2.1-SNAPSHOT'
-    kotlin_version = '1.7.10'
+    kotlin_version = '1.7.20'
     compileSdkVersion = 31
     buildToolsVersion = '31.0.0'
     minSdkVersion = 21
