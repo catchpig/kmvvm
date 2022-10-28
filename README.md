@@ -615,7 +615,7 @@ kotlinx.serialization.KSerializer serializer(...);
 
 ## 其他
 
-### QQ交流群
+### QQ交流群(228014675)
 
 <img src="./images/qq_qrcode.jpg" style="zoom:10%;" />
 
