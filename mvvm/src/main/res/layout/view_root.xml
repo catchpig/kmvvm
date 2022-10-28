@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/top_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="0.1dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ViewStub
         android:id="@+id/title_bar_view_stub"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout="@layout/layout_title_bar" />
+        android:inflatedId="@id/title_bar_view_stub"
+        android:layout="@layout/layout_title_bar"
+        app:layout_constraintBottom_toTopOf="@id/layout_body"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_view" />
 
     <FrameLayout
         android:id="@+id/layout_body"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar_view_stub">
 
         <ViewStub
             android:id="@+id/loading_view_stub"
@@ -27,4 +40,4 @@
             android:layout_height="match_parent"
             android:layout="@layout/layout_loading" />
     </FrameLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
