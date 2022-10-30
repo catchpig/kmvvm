@@ -5,6 +5,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.viewbinding.ViewBinding
+import com.catchpig.mvvm.manager.ContextManager
 
 interface IGlobalConfig {
     /**
@@ -73,10 +74,14 @@ interface IGlobalConfig {
      * 刷新每页加载个数
      * @return Int
      */
-    fun getPageSize():Int
+    fun getPageSize(): Int
 
     /**
      * 刷新起始页的index(有些后台设置的0,有些后台设置1)
      */
-    fun getStartPageIndex():Int
+    fun getStartPageIndex(): Int
+
+    fun packageName(): String {
+        return ContextManager.context.packageName
+    }
 }

@@ -21,7 +21,7 @@ ext {
     loading_version = '1.0.2'
     SmartRefreshLayout_version = '2.0.5'
     auto_service_version = '1.0.1'
-    kotlinpoet_version = '1.11.0'
+    kotlinpoet_version = '1.12.0'
     rxpermissions_version = "0.12"
     recycleview_version = "1.2.1"
     UIViewPager_version = "0.1.8"

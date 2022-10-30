@@ -294,7 +294,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder<VB> {
-        val adapterBinding = KotlinMvvmCompiler.viewBanding(this, parent)
         val view = when (ItemViewType.enumOfValue(viewType)) {
             TYPE_HEADER -> {
                 headerView!!
@@ -304,16 +303,19 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
             }
             TYPE_EMPTY -> {
                 if (emptyView == null) {
-                    emptyView = adapterBinding.emptyBanding.root
+                    emptyView =
+                        KotlinMvvmCompiler.globalConfig().getRecyclerEmptyBanding(parent).root
                 }
                 emptyView!!
             }
             else -> {
-                return CommonViewHolder(adapterBinding.normalBinding as VB)
+                return CommonViewHolder(viewBinding(parent))
             }
         }
         return CommonViewHolder(view)
     }
+
+    abstract fun viewBinding(parent: ViewGroup): VB
 
     /**
      * 获取需要viewHolder的view

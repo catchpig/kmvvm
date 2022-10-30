@@ -1,7 +1,6 @@
 package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.ServiceApi
-import com.catchpig.ksp.compiler.className
 import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -11,7 +10,6 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 import java.lang.reflect.Type
@@ -46,10 +44,9 @@ class ServiceApiGenerator(
         if (list.isNotEmpty()) {
             generate(list)
         }
-        return symbols.filter { !it.validate() }.toList()
+        return emptyList()
     }
 
-    @OptIn(KotlinPoetKspPreview::class)
     private fun generate(list: List<KSClassDeclaration>) {
         val typeSpec = TypeSpec
             .classBuilder("ServiceApi_Compiler")
@@ -68,7 +65,7 @@ class ServiceApiGenerator(
             .writeTo(codeGenerator, false)
     }
 
-    @OptIn(KotlinPoetKspPreview::class, KspExperimental::class)
+    @OptIn(KspExperimental::class)
     private fun initConstructor(list: List<KSClassDeclaration>): FunSpec {
         var constructorBuilder = FunSpec.constructorBuilder()
         list.forEachIndexed { index, ksClassDeclaration ->
@@ -153,7 +150,7 @@ class ServiceApiGenerator(
         return funSpecBuilder.build()
     }
 
-    @OptIn(KotlinPoetKspPreview::class, KspExperimental::class)
+    @OptIn(KspExperimental::class)
     private fun getResponseBodyConverterFun(list: List<KSClassDeclaration>): FunSpec {
         var funSpecBuilder = FunSpec
             .builder("getResponseBodyConverter")

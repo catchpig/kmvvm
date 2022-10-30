@@ -60,7 +60,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation project(path: ':mvvm')
-    kapt project(path: ':compiler')
+//    kapt project(path: ':compiler')
     ksp project(path: ':ksp-compiler')
 //    implementation "com.gitee.catchpig.kmvvm:mvvm:$kotlin_mvvm"
 //    kapt "com.gitee.catchpig.kmvvm:compiler:$kotlin_mvvm"

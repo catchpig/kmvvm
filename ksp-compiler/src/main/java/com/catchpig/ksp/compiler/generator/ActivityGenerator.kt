@@ -12,7 +12,6 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
@@ -58,7 +57,6 @@ class ActivityGenerator(
         return emptyList()
     }
 
-    @OptIn(KotlinPoetKspPreview::class)
     private fun generate(list: Set<KSClassDeclaration>) {
         list.forEach {
             val title = it.getAnnotation<Title>()
@@ -93,7 +91,6 @@ class ActivityGenerator(
     /**
      * 初始化标题栏的点击事件
      */
-    @OptIn(KotlinPoetKspPreview::class)
     private fun initTitleMenuOnClick(
         ksClassDeclaration: KSClassDeclaration,
         title: Title?
@@ -313,7 +310,6 @@ class ActivityGenerator(
             .build()
     }
 
-    @OptIn(KotlinPoetKspPreview::class)
     private fun initGlobalConfigProperty(): PropertySpec {
         if (globalConfigClassDeclarations.isEmpty()) {
             val message = "必须实现IGlobalConfig接口,并在Class上加上注解GlobalConfig"

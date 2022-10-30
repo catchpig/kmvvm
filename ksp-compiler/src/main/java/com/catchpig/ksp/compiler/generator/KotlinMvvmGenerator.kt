@@ -10,7 +10,6 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 
@@ -54,10 +53,9 @@ class KotlinMvvmGenerator(
                 generate(list[0])
             }
         }
-        return symbols.filter { !it.validate() }.toList()
+        return emptyList()
     }
 
-    @OptIn(KotlinPoetKspPreview::class)
     private fun generate(ksClassDeclaration: KSClassDeclaration) {
         val className = ksClassDeclaration.toClassName().simpleName
         warning(TAG, "${className}被GlobalConfig注解")
@@ -79,7 +77,6 @@ class KotlinMvvmGenerator(
             .writeTo(codeGenerator, false)
     }
 
-    @OptIn(KotlinPoetKspPreview::class)
     private fun initConstructor(): FunSpec {
         var constructorBuilder = FunSpec.constructorBuilder()
         flowErrorsClassDeclaration.forEach {
@@ -98,7 +95,6 @@ class KotlinMvvmGenerator(
     }
 
 
-    @OptIn(KotlinPoetKspPreview::class)
     private fun initGlobalConfigProperty(ksClassDeclaration: KSClassDeclaration): PropertySpec {
         var builder = PropertySpec
             .builder("globalConfig", CLASS_NAME_I_GLOBAL_CONFIG_MODEL)

@@ -1,6 +1,9 @@
 package com.catchpig.ksp.compiler.processor
 
-import com.catchpig.ksp.compiler.generator.*
+import com.catchpig.ksp.compiler.generator.ActivityGenerator
+import com.catchpig.ksp.compiler.generator.KotlinMvvmGenerator
+import com.catchpig.ksp.compiler.generator.PrefsGenerator
+import com.catchpig.ksp.compiler.generator.ServiceApiGenerator
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -19,7 +22,6 @@ class KotlinMvvmProcessor(
     private val serviceApiGenerator = ServiceApiGenerator(codeGenerator, logger)
     private val prefsGenerator = PrefsGenerator(codeGenerator, logger)
 
-        private val recyclerAdapterGenerator = RecyclerAdapterGenerator(codeGenerator, logger)
     private val kotlinMvvmGenerator = KotlinMvvmGenerator(codeGenerator, logger)
     private val activityGenerator = ActivityGenerator(codeGenerator, logger)
 
@@ -30,7 +32,6 @@ class KotlinMvvmProcessor(
         annotateds.addAll(prefsGenerator.process(resolver))
         annotateds.addAll(kotlinMvvmGenerator.process(resolver))
         annotateds.addAll(activityGenerator.process(resolver))
-        annotateds.addAll(recyclerAdapterGenerator.process(resolver))
         return annotateds
     }
 

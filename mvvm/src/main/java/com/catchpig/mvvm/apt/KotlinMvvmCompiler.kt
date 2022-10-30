@@ -4,10 +4,8 @@ import android.app.Activity
 import android.view.ViewGroup
 import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
 import com.catchpig.mvvm.apt.interfaces.GlobalCompiler
-import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
 import com.catchpig.mvvm.apt.interfaces.ServiceApiCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
-import com.catchpig.mvvm.entity.AdapterBinding
 import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.exception.AptAdapterException
 import com.catchpig.mvvm.interfaces.IGlobalConfig
@@ -47,21 +45,6 @@ object KotlinMvvmCompiler {
 
     fun onError(any: Any, t: Throwable) {
         globalCompiler.onError(any, t)
-    }
-
-    fun viewBanding(recyclerAdapter: RecyclerAdapter<*, *>, parent: ViewGroup): AdapterBinding {
-        val className = recyclerAdapter.javaClass.name
-        try {
-            val compilerClass = Class.forName("${className}_Compiler")
-            compilerClass.let {
-                val recyclerAdapterCompiler = compilerClass.newInstance() as RecyclerAdapterCompiler
-                return recyclerAdapterCompiler.viewBanding(parent)
-            }
-        } catch (exception: ClassNotFoundException) {
-            val msg = "${className}必须使用注解Adapter"
-            msg.logd(TAG)
-            throw AptAdapterException(msg)
-        }
     }
 
     fun globalConfig(): IGlobalConfig {

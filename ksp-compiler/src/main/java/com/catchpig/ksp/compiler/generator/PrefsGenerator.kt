@@ -13,7 +13,6 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 
@@ -45,10 +44,10 @@ class PrefsGenerator(
         if (list.isNotEmpty()) {
             generate(list)
         }
-        return symbols.filter { !it.validate() }.toList()
+        return emptyList()
     }
 
-    @OptIn(KspExperimental::class, KotlinPoetKspPreview::class)
+    @OptIn(KspExperimental::class)
     private fun generate(list: List<KSClassDeclaration>) {
         list.forEach {
             val prefs = it.getAnnotationsByType(Prefs::class).first()
@@ -72,7 +71,7 @@ class PrefsGenerator(
         }
     }
 
-    @OptIn(KotlinPoetKspPreview::class, KspExperimental::class)
+    @OptIn(KspExperimental::class)
     private fun addFuns(ksClassDeclaration: KSClassDeclaration): MutableList<FunSpec> {
         val className = ksClassDeclaration.toClassName().simpleName
         var funSpecs = ArrayList<FunSpec>()

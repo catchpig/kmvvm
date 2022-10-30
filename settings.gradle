@@ -8,4 +8,4 @@
 //    }
 //}
 
-include ':app', ':mvvm', ':annotation', ':compiler', ':utils', ':ksp-compiler'
+include ':app', ':mvvm', ':annotation', ':utils', ':ksp-compiler'
