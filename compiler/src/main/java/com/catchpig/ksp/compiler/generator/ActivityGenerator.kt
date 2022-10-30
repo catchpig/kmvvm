@@ -1,21 +1,27 @@
-package com.catchpig.compiler
+package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.*
 import com.catchpig.compiler.exception.KAptException
-import com.google.auto.service.AutoService
+import com.catchpig.ksp.compiler.ext.getAnnotation
+import com.catchpig.ksp.compiler.ext.getAnnotations
+import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
+import com.catchpig.ksp.compiler.getAnnotation
+import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
-import javax.annotation.processing.Processor
-import javax.annotation.processing.RoundEnvironment
-import javax.annotation.processing.SupportedSourceVersion
-import javax.lang.model.SourceVersion
-import javax.lang.model.element.ExecutableElement
-import javax.lang.model.element.TypeElement
+import com.squareup.kotlinpoet.ksp.toClassName
+import com.squareup.kotlinpoet.ksp.toTypeName
+import com.squareup.kotlinpoet.ksp.writeTo
 
-@AutoService(Processor::class)
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
-class ActivityProcessor : BaseProcessor() {
+class ActivityGenerator(
+    codeGenerator: CodeGenerator,
+    logger: KSPLogger
+) : BaseGenerator(codeGenerator, logger) {
     companion object {
-        private const val TAG = "ActivityProcessor"
+        private const val TAG = "ActivityGenerator"
         private val CLASS_NAME_TITLE_PARAM = ClassName("com.catchpig.mvvm.entity", "TitleParam")
         private val CLASS_NAME_STATUS_BAR_PARAM =
             ClassName("com.catchpig.mvvm.entity", "StatusBarParam")
@@ -25,64 +31,47 @@ class ActivityProcessor : BaseProcessor() {
             ClassName("com.catchpig.mvvm.base.activity", "BaseActivity")
         private val CLASS_NAME_ACTIVITY = ClassName("android.app", "Activity")
 
-        private val TYPE_VIEW_STUB = Class.forName("android.view.ViewStub")
+        private val TYPE_VIEW_STUB = ClassName("android.view", "ViewStub")
         private val TYPE_TITLE_BAR_CONTROLLER =
-            Class.forName("com.catchpig.mvvm.controller.TitleBarController")
+            ClassName("com.catchpig.mvvm.controller", "TitleBarController")
         private val TYPE_STATUS_BAR_CONTROLLER =
-            Class.forName("com.catchpig.mvvm.controller.StatusBarController")
-        private val TYPE_TEXT_VIEW = Class.forName("android.widget.TextView")
-        private val TYPE_IMAGE_VIEW = Class.forName("android.widget.ImageView")
-        private val TYPE_VIEW = Class.forName("android.view.View")
+            ClassName("com.catchpig.mvvm.controller", "StatusBarController")
+        private val TYPE_TEXT_VIEW = ClassName("android.widget", "TextView")
+        private val TYPE_IMAGE_VIEW = ClassName("android.widget", "ImageView")
+        private val TYPE_VIEW = ClassName("android.view", "View")
         private val CLASS_NAME_I_GLOBAL_CONFIG =
             ClassName("com.catchpig.mvvm.interfaces", "IGlobalConfig")
         private val CLASS_NAME_LOADING_VIEW_CONTROLLER =
             ClassName("com.catchpig.mvvm.controller", "LoadingViewController")
-
-
     }
 
-    override fun getSupportedAnnotationTypes(): MutableSet<String> {
-        var set = HashSet<String>()
-        set.add(Title::class.java.canonicalName)
-        set.add(StatusBar::class.java.canonicalName)
-        set.add(OnClickFirstDrawable::class.java.canonicalName)
-        set.add(OnClickFirstText::class.java.canonicalName)
-        set.add(OnClickSecondDrawable::class.java.canonicalName)
-        set.add(OnClickSecondText::class.java.canonicalName)
-        return set
+    private lateinit var globalConfigClassDeclarations: List<KSClassDeclaration>
+
+    override fun process(resolver: Resolver): List<KSAnnotated> {
+        globalConfigClassDeclarations = resolver.getKSClassDeclarations<GlobalConfig>()
+        val statusBarClassDeclarations = resolver.getKSClassDeclarations<StatusBar>()
+        val titleClassDeclarations = resolver.getKSClassDeclarations<Title>()
+        val ksClassDeclarations = statusBarClassDeclarations.toMutableSet()
+        ksClassDeclarations.addAll(titleClassDeclarations)
+        generate(ksClassDeclarations)
+        return emptyList()
     }
 
-    override fun process(
-        annotations: MutableSet<out TypeElement>,
-        roundEnv: RoundEnvironment
-    ): Boolean {
-        val allElements = roundEnv.rootElements
-        val elements = allElements.filter {
-            if (it is TypeElement) {
-                if (it.getAnnotation(Title::class.java) != null
-                    || it.getAnnotation(StatusBar::class.java) != null
-                    || superClassIsBaseActivity(it)
-                ) {
-                    return@filter true
-                }
-            }
-            return@filter false
-        }.map {
-            it as TypeElement
-        }
-        elements.forEach {
-            val title = it.getAnnotation(Title::class.java)
-            val statusBar = it.getAnnotation(StatusBar::class.java)
+    private fun generate(list: Set<KSClassDeclaration>) {
+        list.forEach {
+            val title = it.getAnnotation<Title>()
+            val statusBar = it.getAnnotation<StatusBar>()
 
-            val className = it.simpleName.toString()
-            val fullPackageName = elementUtils.getPackageOf(it).qualifiedName.toString()
+            val className = it.toClassName().simpleName
+            val fullPackageName = it.toClassName().packageName
+
             val typeSpecBuilder = TypeSpec
                 .classBuilder("${className}_Compiler")
                 .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
                 .addSuperinterface(CLASS_NAME_ACTIVITY_COMPILER)
                 .addProperty(initTitleProperty(title, className))
                 .addProperty(initStatusBarProperty(statusBar, className))
-                .addProperty(initGlobalConfigProperty(roundEnv))
+                .addProperty(initGlobalConfigProperty())
             val funSpec = initTitleMenuOnClick(it, title)
             funSpec?.let { fsc ->
                 typeSpecBuilder.addFunction(fsc)
@@ -95,16 +84,18 @@ class ActivityProcessor : BaseProcessor() {
                 .addType(typeSpec)
                 .addImport("com.catchpig.mvvm", "R")
                 .build()
-                .writeTo(filer)
+                .writeTo(codeGenerator, false)
         }
-        return true
     }
 
     /**
      * 初始化标题栏的点击事件
      */
-    private fun initTitleMenuOnClick(element: TypeElement, title: Title?): FunSpec? {
-        val elements = elementUtils.getAllMembers(element)
+    private fun initTitleMenuOnClick(
+        ksClassDeclaration: KSClassDeclaration,
+        title: Title?
+    ): FunSpec? {
+        val functions = ksClassDeclaration.getAllFunctions()
 
         /**
          * OnClickFirstText,OnClickFirstDrawable,OnClickSecondText,OnClickSecondDrawable是否有注解
@@ -114,17 +105,14 @@ class ActivityProcessor : BaseProcessor() {
         var flag = false
         var builder = FunSpec
             .builder("initTitleMenuOnClick")
-            .addParameter("activity", element.asType().asTypeName())
+            .addParameter("activity", ksClassDeclaration.toClassName())
             .addModifiers(KModifier.PRIVATE)
         title?.let {
-
             //第一个文字按钮
-            elements.find {
-                return@find it.getAnnotation(OnClickFirstText::class.java) != null
-            }?.let {
-                it as ExecutableElement
+            functions.find {
+                return@find it.getAnnotations<OnClickFirstText>().isNotEmpty()
             }?.run {
-                val onClickFirstText = getAnnotation(OnClickFirstText::class.java)
+                val onClickFirstText = getAnnotation<OnClickFirstText>()
                 if (onClickFirstText != null) {
                     flag = true
                     builder = builder
@@ -136,14 +124,15 @@ class ActivityProcessor : BaseProcessor() {
                         .addStatement("rightFirstText.setText(%L)", onClickFirstText.value)
                         .addStatement("rightFirstText.visibility = %T.VISIBLE", TYPE_VIEW)
                         .addStatement("rightFirstText.setOnClickListener {")
+                    val funcName = simpleName.getShortName()
                     when (parameters.size) {
                         0 -> {
-                            builder = builder.addStatement("  activity.${simpleName}()")
+                            builder = builder.addStatement("  activity.${funcName}()")
                         }
                         1 -> {
-                            val paramType = parameters[0].asType().toString()
-                            if (paramType == TYPE_VIEW.typeName) {
-                                builder = builder.addStatement("  activity.${simpleName}(it)")
+                            val paramType = parameters.first().type.toTypeName().toString()
+                            if (paramType == TYPE_VIEW.canonicalName) {
+                                builder = builder.addStatement("  activity.${funcName}(it)")
                             } else {
                                 error(TAG, "OnClickFirstText注解修饰的参数类型只能为View")
                             }
@@ -156,12 +145,10 @@ class ActivityProcessor : BaseProcessor() {
                 }
             }
             //第一个图片按钮
-            elements.find {
-                return@find it.getAnnotation(OnClickFirstDrawable::class.java) != null
-            }?.let {
-                it as ExecutableElement
+            functions.find {
+                return@find it.getAnnotations<OnClickFirstDrawable>().isNotEmpty()
             }?.run {
-                val onClickFirstDrawable = getAnnotation(OnClickFirstDrawable::class.java)
+                val onClickFirstDrawable = getAnnotation<OnClickFirstDrawable>()
                 if (onClickFirstDrawable != null) {
                     flag = true
                     builder = builder
@@ -176,14 +163,15 @@ class ActivityProcessor : BaseProcessor() {
                         )
                         .addStatement("rightFirstDrawable.visibility = %T.VISIBLE", TYPE_VIEW)
                         .addStatement("rightFirstDrawable.setOnClickListener {")
+                    val funcName = simpleName.getShortName()
                     when (parameters.size) {
                         0 -> {
-                            builder = builder.addStatement("  activity.${simpleName}()")
+                            builder = builder.addStatement("  activity.${funcName}()")
                         }
                         1 -> {
-                            val paramType = parameters[0].asType().toString()
-                            if (paramType == TYPE_VIEW.typeName) {
-                                builder = builder.addStatement("  activity.${simpleName}(it)")
+                            val paramType = parameters.first().type.toTypeName().toString()
+                            if (paramType == TYPE_VIEW.canonicalName) {
+                                builder = builder.addStatement("  activity.${funcName}(it)")
                             } else {
                                 error(TAG, "OnClickFirstDrawable注解修饰的参数类型只能为View")
                             }
@@ -196,12 +184,10 @@ class ActivityProcessor : BaseProcessor() {
                 }
             }
             //第二个文字按钮
-            elements.find {
-                return@find it.getAnnotation(OnClickSecondText::class.java) != null
-            }?.let {
-                it as ExecutableElement
+            functions.find {
+                return@find it.getAnnotations<OnClickSecondText>().isNotEmpty()
             }?.run {
-                val onClickSecondText = getAnnotation(OnClickSecondText::class.java)
+                val onClickSecondText = getAnnotation<OnClickSecondText>()
                 if (onClickSecondText != null) {
                     flag = true
                     builder = builder
@@ -213,14 +199,15 @@ class ActivityProcessor : BaseProcessor() {
                         .addStatement("rightSecondText.setText(%L)", onClickSecondText.value)
                         .addStatement("rightSecondText.visibility = %T.VISIBLE", TYPE_VIEW)
                         .addStatement("rightSecondText.setOnClickListener {")
+                    val funcName = simpleName.getShortName()
                     when (parameters.size) {
                         0 -> {
-                            builder = builder.addStatement("  activity.${simpleName}()")
+                            builder = builder.addStatement("  activity.${funcName}()")
                         }
                         1 -> {
-                            val paramType = parameters[0].asType().toString()
-                            if (paramType == TYPE_VIEW.typeName) {
-                                builder = builder.addStatement("  activity.${simpleName}(it)")
+                            val paramType = parameters.first().type.toTypeName().toString()
+                            if (paramType == TYPE_VIEW.canonicalName) {
+                                builder = builder.addStatement("  activity.${funcName}(it)")
                             } else {
                                 error(TAG, "OnClickSecondText注解修饰的参数类型只能为View")
                             }
@@ -233,16 +220,15 @@ class ActivityProcessor : BaseProcessor() {
                 }
             }
             //第二个图片按钮
-            elements.find {
-                return@find it.getAnnotation(OnClickSecondDrawable::class.java) != null
-            }?.let {
-                it as ExecutableElement
+            functions.find {
+                return@find it.getAnnotations<OnClickSecondDrawable>().isNotEmpty()
             }?.run {
-                val onClickSecondDrawable = getAnnotation(OnClickSecondDrawable::class.java)
+                val onClickSecondDrawable = getAnnotation<OnClickSecondDrawable>()
                 if (onClickSecondDrawable != null) {
                     flag = true
                     builder = builder
                         .addStatement("//第二个图片按钮")
+
                         .addStatement(
                             "var rightSecondDrawable = activity.findViewById<%T>(R.id.rightSecondDrawable)",
                             TYPE_IMAGE_VIEW
@@ -253,14 +239,15 @@ class ActivityProcessor : BaseProcessor() {
                         )
                         .addStatement("rightSecondDrawable.visibility = %T.VISIBLE", TYPE_VIEW)
                         .addStatement("rightSecondDrawable.setOnClickListener {")
+                    val funcName = simpleName.getShortName()
                     when (parameters.size) {
                         0 -> {
-                            builder = builder.addStatement("  activity.${simpleName}()")
+                            builder = builder.addStatement("  activity.${funcName}()")
                         }
                         1 -> {
-                            val paramType = parameters[0].asType().toString()
-                            if (paramType == TYPE_VIEW.typeName) {
-                                builder = builder.addStatement("  activity.${simpleName}(it)")
+                            val paramType = parameters.first().type.toTypeName().toString()
+                            if (paramType == TYPE_VIEW.canonicalName) {
+                                builder = builder.addStatement("  activity.${funcName}(it)")
                             } else {
                                 error(TAG, "OnClickSecondDrawable注解修饰的参数类型只能为View")
                             }
@@ -279,7 +266,6 @@ class ActivityProcessor : BaseProcessor() {
         } else {
             null
         }
-
     }
 
     private fun injectFun(className: String, isInitMenuFun: Boolean): FunSpec {
@@ -324,23 +310,22 @@ class ActivityProcessor : BaseProcessor() {
             .build()
     }
 
-    private fun initGlobalConfigProperty(roundEnv: RoundEnvironment): PropertySpec {
-        val elements = roundEnv.getElementsAnnotatedWith(GlobalConfig::class.java)
-        if (elements.isEmpty()) {
+    private fun initGlobalConfigProperty(): PropertySpec {
+        if (globalConfigClassDeclarations.isEmpty()) {
             val message = "必须实现IGlobalConfig接口,并在Class上加上注解GlobalConfig"
             error(TAG, message)
             throw KAptException(message)
         }
-        if (elements.size > 1) {
+        if (globalConfigClassDeclarations.size > 1) {
             val message = "只能有一个类被注解GlobalConfig修饰"
             error(TAG, message)
             throw KAptException(message)
         }
-        val element = elements.toList()[0] as TypeElement
+        val ksClassDeclaration = globalConfigClassDeclarations.first()
         return PropertySpec
             .builder("globalConfig", CLASS_NAME_I_GLOBAL_CONFIG)
             .addModifiers(KModifier.PRIVATE)
-            .initializer("%T()", element.asClassName())
+            .initializer("%T()", ksClassDeclaration.toClassName())
             .build()
     }
 
@@ -387,17 +372,4 @@ class ActivityProcessor : BaseProcessor() {
                 .build()
         }
     }
-
-    /**
-     * 判断父类是否是BaseActivity
-     */
-    private fun superClassIsBaseActivity(typeElement: TypeElement): Boolean {
-        val className = typeElement.superclass.toString()
-        if (className.contains("com.catchpig.mvvm.base.activity")) {
-            return true
-        }
-        return false
-    }
-
-
 }

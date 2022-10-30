@@ -1,15 +1,10 @@
 package com.catchpig.mvvm.apt
 
 import android.app.Activity
-import android.view.ViewGroup
 import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
 import com.catchpig.mvvm.apt.interfaces.GlobalCompiler
-import com.catchpig.mvvm.apt.interfaces.RecyclerAdapterCompiler
 import com.catchpig.mvvm.apt.interfaces.ServiceApiCompiler
-import com.catchpig.mvvm.base.adapter.RecyclerAdapter
-import com.catchpig.mvvm.entity.AdapterBinding
 import com.catchpig.mvvm.entity.ServiceParam
-import com.catchpig.mvvm.exception.AptAdapterException
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 import com.catchpig.utils.ext.logd
 import okhttp3.ResponseBody
@@ -23,12 +18,14 @@ import java.lang.reflect.Type
 object KotlinMvvmCompiler {
     private const val TAG = "KotlinMvvmCompiler"
     private val globalCompiler: GlobalCompiler by lazy {
-        var compilerClass = Class.forName("com.catchpig.mvvm.apt.interfaces.Global_Compiler")
+        var compilerClass =
+            Class.forName("${GlobalCompiler::class.java.`package`.name}.Global_Compiler")
         compilerClass.newInstance() as GlobalCompiler
     }
 
     private val serviceApiCompiler: ServiceApiCompiler by lazy {
-        var compilerClass = Class.forName("com.catchpig.mvvm.apt.interfaces.ServiceApi_Compiler")
+        var compilerClass =
+            Class.forName("${ServiceApiCompiler::class.java.`package`.name}.ServiceApi_Compiler")
         compilerClass.newInstance() as ServiceApiCompiler
     }
 
@@ -47,21 +44,6 @@ object KotlinMvvmCompiler {
 
     fun onError(any: Any, t: Throwable) {
         globalCompiler.onError(any, t)
-    }
-
-    fun viewBanding(recyclerAdapter: RecyclerAdapter<*, *>, parent: ViewGroup): AdapterBinding {
-        val className = recyclerAdapter.javaClass.name
-        try {
-            val compilerClass = Class.forName("${className}_Compiler")
-            compilerClass.let {
-                val recyclerAdapterCompiler = compilerClass.newInstance() as RecyclerAdapterCompiler
-                return recyclerAdapterCompiler.viewBanding(parent)
-            }
-        } catch (exception: ClassNotFoundException) {
-            val msg = "${className}必须使用注解Adapter"
-            msg.logd(TAG)
-            throw AptAdapterException(msg)
-        }
     }
 
     fun globalConfig(): IGlobalConfig {
