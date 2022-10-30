@@ -2,12 +2,12 @@ package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.FlowError
 import com.catchpig.annotation.GlobalConfig
+import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.ksp.toClassName
@@ -37,19 +37,12 @@ class KotlinMvvmGenerator(
     private lateinit var flowErrorsClassDeclaration: List<KSClassDeclaration>
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        flowErrorsClassDeclaration =
-            resolver.getSymbolsWithAnnotation(FlowError::class.qualifiedName!!)
-                .filterIsInstance<KSClassDeclaration>().filter {
-                it.validate()
-            }.toList()
-        val symbols = resolver.getSymbolsWithAnnotation(GlobalConfig::class.qualifiedName!!)
-        val list = symbols.filterIsInstance<KSClassDeclaration>().filter {
-            it.validate()
-        }.toList()
+        flowErrorsClassDeclaration = resolver.getKSClassDeclarations<FlowError>()
+        val list = resolver.getKSClassDeclarations<GlobalConfig>()
         if (list.isNotEmpty()) {
             if (list.size > 1) {
                 error(TAG, "只能有一个类被注解GlobalConfig修饰")
-            }else{
+            } else {
                 generate(list[0])
             }
         }

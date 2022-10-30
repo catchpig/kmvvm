@@ -21,12 +21,10 @@ class KotlinMvvmProcessor(
 
     private val serviceApiGenerator = ServiceApiGenerator(codeGenerator, logger)
     private val prefsGenerator = PrefsGenerator(codeGenerator, logger)
-
     private val kotlinMvvmGenerator = KotlinMvvmGenerator(codeGenerator, logger)
     private val activityGenerator = ActivityGenerator(codeGenerator, logger)
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        logger.warn("$TAG")
         val annotateds = mutableListOf<KSAnnotated>()
         annotateds.addAll(serviceApiGenerator.process(resolver))
         annotateds.addAll(prefsGenerator.process(resolver))

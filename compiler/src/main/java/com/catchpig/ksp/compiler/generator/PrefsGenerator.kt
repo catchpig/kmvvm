@@ -2,6 +2,7 @@ package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.Prefs
 import com.catchpig.annotation.PrefsField
+import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getAnnotationsByType
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -37,10 +38,7 @@ class PrefsGenerator(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         ksBuiltIns = resolver.builtIns
-        val symbols = resolver.getSymbolsWithAnnotation(Prefs::class.qualifiedName!!)
-        val list = symbols.filterIsInstance<KSClassDeclaration>().filter {
-            it.validate()
-        }.toList()
+        val list = resolver.getKSClassDeclarations<Prefs>()
         if (list.isNotEmpty()) {
             generate(list)
         }

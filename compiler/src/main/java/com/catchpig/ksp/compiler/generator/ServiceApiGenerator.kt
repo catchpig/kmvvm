@@ -1,6 +1,7 @@
 package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.ServiceApi
+import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
 import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -15,9 +16,9 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import java.lang.reflect.Type
 
 class ServiceApiGenerator(
-    private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
-) {
+    codeGenerator: CodeGenerator,
+    logger: KSPLogger
+) : BaseGenerator(codeGenerator, logger) {
 
     companion object {
         private const val TAG = "ServiceApiGenerator"
@@ -36,11 +37,8 @@ class ServiceApiGenerator(
             CLASS_NAME_CONVERTER.parameterizedBy(CLASS_NAME_RESPONSE_BODY, ANY)
     }
 
-    fun process(resolver: Resolver): List<KSAnnotated> {
-        val symbols = resolver.getSymbolsWithAnnotation(ServiceApi::class.qualifiedName!!)
-        val list = symbols.filterIsInstance<KSClassDeclaration>().filter {
-            it.validate()
-        }.toList()
+    override fun process(resolver: Resolver): List<KSAnnotated> {
+        val list = resolver.getKSClassDeclarations<ServiceApi>()
         if (list.isNotEmpty()) {
             generate(list)
         }
@@ -71,7 +69,7 @@ class ServiceApiGenerator(
         list.forEachIndexed { index, ksClassDeclaration ->
             val className = ksClassDeclaration.toClassName().simpleName
             val packageName = ksClassDeclaration.toClassName().packageName
-            logger.warn("${TAG}:${className}被ServiceApi注解")
+            warning(TAG, "${className}被ServiceApi注解")
             val service = ksClassDeclaration.getAnnotationsByType(ServiceApi::class).first()
             val inteceptors = try {
                 service.interceptors.asList()
@@ -105,7 +103,7 @@ class ServiceApiGenerator(
 
             if (debugInteceptors.isNotEmpty()) {
                 debugInteceptors.filterIsInstance<KSType>().forEach { interceptor ->
-                    logger.warn("${interceptor.toClassName()}")
+                    warning(TAG, "${interceptor.toClassName()}")
                     constructorBuilder =
                         constructorBuilder.addStatement(
                             "$debugInterceptorName.add(%T())",

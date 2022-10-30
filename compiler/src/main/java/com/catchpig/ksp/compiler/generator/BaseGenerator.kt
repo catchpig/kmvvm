@@ -6,7 +6,7 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotated
 
 abstract class BaseGenerator(
-    val codeGenerator: CodeGenerator,
+    open val codeGenerator: CodeGenerator,
     private val logger: KSPLogger
 ) {
 
