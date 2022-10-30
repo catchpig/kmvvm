@@ -16,7 +16,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     }
 
     @OnClickFirstText(R.string.more)
-    fun clickFirstText() {
+    fun clickFirstText(v:View) {
         snackBar("第一个文字按钮点击生效")
         updateTitle("第一文字")
     }

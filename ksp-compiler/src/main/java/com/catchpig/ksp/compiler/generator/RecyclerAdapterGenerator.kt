@@ -2,13 +2,12 @@ package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.Adapter
 import com.catchpig.annotation.GlobalConfig
+import com.catchpig.ksp.compiler.ext.getKSClassDeclaration
 import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.Modifier
+import com.google.devtools.ksp.symbol.*
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.*
 
@@ -46,7 +45,7 @@ class RecyclerAdapterGenerator(codeGenerator: CodeGenerator, kspLogger: KSPLogge
                 .classBuilder("${className}_Compiler")
                 .addModifiers(KModifier.FINAL, KModifier.PUBLIC)
                 .addSuperinterface(CLASS_NAME_RECYCLER_ADAPTER_COMPILER)
-                .addProperty(globalConfigProperty())
+//                .addProperty(globalConfigProperty())
                 .addFunction(onViewBandingFun(it))
 
             val typeSpec = typeSpecBuilder.build()
@@ -61,8 +60,7 @@ class RecyclerAdapterGenerator(codeGenerator: CodeGenerator, kspLogger: KSPLogge
     @OptIn(KotlinPoetKspPreview::class)
     private fun globalConfigProperty(): PropertySpec {
         val ksClassDeclaration =
-            resolver.getSymbolsWithAnnotation(GlobalConfig::class.qualifiedName!!)
-                .toList()[0] as KSClassDeclaration
+            resolver.getKSClassDeclaration<GlobalConfig>()
         return PropertySpec
             .builder("globalConfig", ksClassDeclaration.toClassName())
             .addModifiers(KModifier.PRIVATE)
@@ -77,8 +75,19 @@ class RecyclerAdapterGenerator(codeGenerator: CodeGenerator, kspLogger: KSPLogge
         }.map {
             it.resolve().declaration as KSClassDeclaration
         }.first()
-        val ks = bindingName.superTypes.first().resolve().declaration as KSClassDeclaration
-        warning(TAG,"${ks.typeParameters.first().toTypeVariableName()}")
+        val classTypeParams = bindingName.typeParameters.toTypeParameterResolver()
+        val ksFunctionDeclaration = bindingName.getDeclaredProperties().find {
+            it.simpleName.getShortName()=="vb"
+        } as KSPropertyDeclaration
+        warning(TAG,"${ksFunctionDeclaration.type.toTypeName(classTypeParams)}")
+        var ks = bindingName.superTypes.first().resolve().declaration as KSClassDeclaration
+//        val classTypeParams = ks.typeParameters.toTypeParameterResolver()
+        warning(TAG,"${ks.simpleName.getShortName()}")
+        val vbKSPropertyDeclaration = ks.getAllProperties().find {
+            warning(TAG,"${it.simpleName.getShortName()}")
+            it.simpleName.getShortName() == "itemViewBinding"
+        } as KSPropertyDeclaration
+        warning(TAG,"${vbKSPropertyDeclaration.type.toTypeName(classTypeParams)}")
         var funSpecBuilder = FunSpec
             .builder("viewBanding")
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)

@@ -18,4 +18,8 @@ abstract class BaseGenerator(
     fun warning(tag: String, msg: String) {
         logger.warn("$tag:$msg")
     }
+
+    fun error(tag: String, msg: String) {
+        logger.error("$tag:$msg")
+    }
 }

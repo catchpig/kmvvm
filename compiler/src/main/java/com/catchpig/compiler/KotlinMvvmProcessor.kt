@@ -12,8 +12,8 @@ import javax.annotation.processing.SupportedSourceVersion
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 
-@AutoService(Processor::class)
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+//@AutoService(Processor::class)
+//@SupportedSourceVersion(SourceVersion.RELEASE_8)
 class KotlinMvvmProcessor : BaseProcessor() {
     companion object {
         private const val TAG = "KotlinMvvmProcessor"

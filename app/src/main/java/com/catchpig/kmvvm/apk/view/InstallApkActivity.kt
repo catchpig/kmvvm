@@ -1,6 +1,7 @@
 package com.catchpig.kmvvm.apk.view
 
 import android.Manifest
+import com.catchpig.annotation.StatusBar
 import com.catchpig.annotation.Title
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.apk.viewmodel.InstallApkViewModel
@@ -15,6 +16,7 @@ import com.tbruyelle.rxpermissions3.RxPermissions
  * @date 2020/11/20 15:50
  */
 @Title(R.string.download_install_apk)
+@StatusBar
 class InstallApkActivity : BaseVMActivity<ActivityInstallApkBinding, InstallApkViewModel>() {
     private val rxPermissions by lazy { RxPermissions(this) }
 

@@ -19,7 +19,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 
 class PrefsGenerator(
     codeGenerator: CodeGenerator,
-    logger: KSPLogger,
+    logger: KSPLogger
 ) : BaseGenerator(codeGenerator, logger) {
 
     companion object {
