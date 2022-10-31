@@ -57,12 +57,12 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-//    implementation project(path: ':download')
-//    implementation project(path: ':mvvm')
-//    ksp project(path: ':compiler')
-    implementation "io.github.catchpig.kmvvm:download:$kotlin_mvvm"
-    implementation "io.github.catchpig.kmvvm:mvvm:$kotlin_mvvm"
-    ksp "io.github.catchpig.kmvvm:compiler:$kotlin_mvvm"
+    implementation project(path: ':download')
+    implementation project(path: ':mvvm')
+    ksp project(path: ':compiler')
+//    implementation "io.github.catchpig.kmvvm:download:$kmvvm_version"
+//    implementation "io.github.catchpig.kmvvm:mvvm:$kmvvm_version"
+//    ksp "io.github.catchpig.kmvvm:compiler:$kmvvm_version"
 
 
     implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")

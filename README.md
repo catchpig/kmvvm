@@ -17,7 +17,7 @@
 
 + ### 使用startup库将在Application中初始化移至到[KotlinMvvmInitializer](./mvvm/src/main/java/com/catchpig/mvvm/initializer/KotlinMvvmInitializer.kt)中,从而不用封装BaseApplication
 
-+ ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、Adapter、GlobalConfig、ServiceApi
++ ### APT(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、GlobalConfig、ServiceApi
 
 + ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
 
@@ -51,15 +51,25 @@
 
 ## Gradle
 
-
-### 1. 在app的build.gradle的添加
+### 1. 在根目录的build.gradle中添加
+```groovy
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "1.7.20" apply false
+    id 'org.jetbrains.kotlin.multiplatform' version '1.7.20' apply false
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20' apply false
+}
+```
+### 2. 在app的build.gradle中添加
 
 ```groovy
-apply plugin: 'kotlin-kapt' // 使用 kapt 注解处理工具
-apply plugin: 'kotlinx-serialization' //序列化
+plugins {
+    id 'kotlinx-serialization'
+
+    id "com.google.devtools.ksp" version "1.7.20-1.0.7"
+}
 ```
 
-### 2. 在app的build.gradle的android下添加
+### 3. 在app的build.gradle的android下添加
 
 ```groovy
 buildFeatures {
@@ -67,11 +77,11 @@ buildFeatures {
 }
 ```
 
-### 3. 添加依赖
+### 4. 添加依赖
 
 ```groovy
 implementation "io.github.catchpig.kmvvm:mvvm:last_version"
-kapt "io.github.catchpig.kmvvm:compiler:last_version"
+ksp "io.github.catchpig.kmvvm:compiler:last_version"
 ```
 
 > 需要使用下载功能,请单独添加如下依赖
@@ -80,7 +90,7 @@ kapt "io.github.catchpig.kmvvm:compiler:last_version"
 implementation "io.github.catchpig.kmvvm:download:last_version"
 ```
 
-### 4. 使用快照版本的,需要添加如下maven地址
+### 5. 使用快照版本的,需要添加如下maven地址
 
 ```groovy
 maven {
@@ -337,15 +347,17 @@ snackbar.setOnClickListener {
 
 ### 4. RecycleView
 
-+ Adapter可以继承RecycleAdapter来使用,并在类上添加注解[Adapter](./annotation/src/main/java/com/catchpig/annotation/Adapter.kt)
-  ,RecycleAdapter使用了ViewBanding,只需要实现以下一个方法
++ Adapter可以继承[RecycleAdapter](./mvvm/src/main/java/com/catchpig/mvvm/base/adapter/RecyclerAdapter.kt)来使用,RecycleAdapter使用了ViewBanding,只需要实现以下两个个方法
 
 > 使用示例
 
 ```kotlin
-@Adapter
 class UserAdapter(iPageControl: IPageControl) :
     RecyclerAdapter<User, ItemUserBinding>(iPageControl) {
+    
+    override fun viewBinding(parent: ViewGroup): ItemUserBinding {
+        return ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
 
     override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
         holder.viewBanding {
@@ -557,12 +569,9 @@ class ResponseBodyConverter :
 ```properties
 -keep class com.catchpig.annotation.enums.**
 -keep class com.google.android.material.snackbar.Snackbar {*;}
--keep @com.catchpig.annotation.Adapter class * {*;}
 -keep @com.catchpig.annotation.ServiceApi class * {*;}
 -keep public class **.databinding.*Binding {*;}
 -keep class **.*_Compiler {*;}
--keep class com.gyf.immersionbar.* {*;}
--dontwarn com.gyf.immersionbar.**
 #序列化混淆
 -if @kotlinx.serialization.Serializable class **
 -keepclassmembers class <1> {
