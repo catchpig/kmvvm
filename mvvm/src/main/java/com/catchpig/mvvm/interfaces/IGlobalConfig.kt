@@ -1,9 +1,11 @@
 package com.catchpig.mvvm.interfaces
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
 import androidx.viewbinding.ViewBinding
 
 interface IGlobalConfig {
@@ -70,13 +72,27 @@ interface IGlobalConfig {
     fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
 
     /**
+     * 网络请求失败的显示页面
+     * @param layoutInflater LayoutInflater
+     * @return ViewBinding
+     */
+    fun getFailedBinding(layoutInflater: LayoutInflater): ViewBinding?
+
+    /**
+     * 失败页面,需要重新加载的点击事件的id
+     * @return Int
+     */
+    @IdRes
+    fun onFailedReloadClickId(): Int
+
+    /**
      * 刷新每页加载个数
      * @return Int
      */
-    fun getPageSize():Int
+    fun getPageSize(): Int
 
     /**
      * 刷新起始页的index(有些后台设置的0,有些后台设置1)
      */
-    fun getStartPageIndex():Int
+    fun getStartPageIndex(): Int
 }

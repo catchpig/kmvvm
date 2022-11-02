@@ -10,9 +10,12 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.utils.ext.showSnackBar
@@ -45,7 +48,7 @@ import java.lang.reflect.ParameterizedType
  * @author catchpig
  * @date 2019/4/4 00:09
  */
-open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
+open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
     protected val bodyBinding: VB by lazy {
         var type = javaClass.genericSuperclass
         var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
@@ -58,12 +61,53 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     private lateinit var loadingViewController: LoadingViewController
 
+    private var failedBinding: ViewBinding? = null
+
     fun initLoadingViewController(loadingViewController: LoadingViewController) {
         this.loadingViewController = loadingViewController
     }
 
     fun getRootBanding(): ViewRootBinding {
         return rootBinding
+    }
+
+    inline fun <reified FVB : ViewBinding> failedBinding(block: FVB.() -> Unit) {
+        getFailedBinding()?.let {
+            (it as FVB).run(block)
+        }
+    }
+
+    fun getFailedBinding(): ViewBinding? {
+        if (failedBinding == null) {
+            failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater)
+        }
+        return failedBinding
+    }
+
+    fun onFailedReload(block: View.() -> Unit) {
+        val failedBinding = getFailedBinding()
+        failedBinding?.let { viewBinding ->
+            val failedRootView = viewBinding.root
+            val clickView = failedRootView.findViewById<View>(
+                KotlinMvvmCompiler.globalConfig().onFailedReloadClickId()
+            )
+            clickView.setOnClickListener {
+                rootBinding.layoutBody.removeView(failedRootView)
+                it.run(block)
+            }
+        }
+    }
+
+    override fun scope(): LifecycleCoroutineScope {
+        return lifecycleScope
+    }
+
+    override fun showFailedView() {
+        getFailedBinding()?.let {
+            rootBinding {
+                layoutBody.addView(it.root)
+            }
+        }
     }
 
     fun rootBinding(block: ViewRootBinding.() -> Unit) {
@@ -90,11 +134,8 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     override fun setContentView(view: View?) {
         rootBinding.layoutBody.let {
             it.addView(
-                view,
-                0,
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+                view, 0, ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
                 )
             )
         }
@@ -124,19 +165,19 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         bodyBinding.root.showSnackBar(textRes, R.drawable.snackbar_bg, gravity)
     }
 
-    fun loadingDialog() {
+    override fun loadingDialog() {
         loadingViewController?.let {
             it.loadingDialog()
         }
     }
 
-    fun loadingView() {
+    override fun loadingView() {
         loadingViewController?.let {
             it.loadingView()
         }
     }
 
-    fun hideLoading() {
+    override fun hideLoading() {
         loadingViewController?.let {
             it.hideLoading()
         }

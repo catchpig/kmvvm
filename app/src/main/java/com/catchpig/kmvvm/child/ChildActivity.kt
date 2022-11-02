@@ -43,17 +43,22 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     }
 
     override fun initFlow() {
-
+        onFailedReload {
+            loadingDialog1()
+        }
     }
 
     /**
      * dialog形式的loading
      */
     fun loadingDialog(v: View) {
-        viewModel.loadingDialog().lifecycleLoadingDialog(this) {
+        loadingDialog1()
+    }
+
+    private fun loadingDialog1(){
+        viewModel.loadingDialog().lifecycleLoadingDialog(this, showFailedView = true) {
             snackBar(this)
         }
-
     }
 
     /**

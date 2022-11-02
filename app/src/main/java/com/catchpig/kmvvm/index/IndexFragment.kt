@@ -83,7 +83,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                 lifecycleFlowLoadingDialog(viewModel.handlerError(),{
 
                 }){}
-                viewModel.handlerError().lifecycleLoadingDialog(this, {
+                viewModel.handlerError().lifecycleLoadingDialog(this, errorCallback = {
                     if (it is HttpServerException) {
                         snackBar(it.message!!)
                     }

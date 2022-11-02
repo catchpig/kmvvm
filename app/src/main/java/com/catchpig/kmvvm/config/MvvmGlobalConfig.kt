@@ -6,6 +6,7 @@ import androidx.viewbinding.ViewBinding
 import com.catchpig.annotation.GlobalConfig
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.LayoutEmptyBinding
+import com.catchpig.kmvvm.databinding.LayoutErrorBinding
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 
 @GlobalConfig
@@ -44,6 +45,14 @@ class MvvmGlobalConfig : IGlobalConfig {
 
     override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
         return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
+
+    override fun getFailedBinding(layoutInflater: LayoutInflater): ViewBinding? {
+        return LayoutErrorBinding.inflate(layoutInflater)
+    }
+
+    override fun onFailedReloadClickId(): Int {
+        return R.id.failed_reload
     }
 
     override fun getPageSize(): Int {

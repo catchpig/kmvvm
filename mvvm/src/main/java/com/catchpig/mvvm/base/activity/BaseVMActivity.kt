@@ -2,11 +2,12 @@ package com.catchpig.mvvm.base.activity
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
-import com.catchpig.mvvm.base.fragment.BaseVMFragment
+import com.catchpig.mvvm.base.view.BaseVMView
 import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
@@ -20,7 +21,7 @@ import java.lang.reflect.ParameterizedType
  * @author catchpig
  * @date 2019/4/6 11:07
  */
-abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivity<VB>(), BaseView {
+abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivity<VB>(), BaseVMView {
     companion object {
         private const val TAG = "BaseVMActivity"
     }
@@ -32,7 +33,7 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
     val viewModel: VM by lazy {
         var type = javaClass.genericSuperclass
         var modelClass: Class<VM> = (type as ParameterizedType).actualTypeArguments[1] as Class<VM>
-        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(modelClass)
+        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[modelClass]
     }
 
     @CallSuper
@@ -43,6 +44,8 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
         initView()
         initFlow()
     }
+
+
 
     @Deprecated(
         "当前方法已废弃,请使用FlowExt.lifecycleRefresh()",
