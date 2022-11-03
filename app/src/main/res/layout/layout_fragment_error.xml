@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:clickable="true">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/failed_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="加载失败"
+        android:text="fragment加载失败"
         android:textColor="@color/color_black"
         android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@id/failed_reload"
@@ -23,7 +23,7 @@
         android:id="@+id/failed_reload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="重新加载"
+        android:text="刷新"
         android:textColor="@color/colorPrimary"
         android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="parent"

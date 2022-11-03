@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.catchpig.annotation.GlobalConfig
 import com.catchpig.kmvvm.R
+import com.catchpig.kmvvm.databinding.LayoutActivityErrorBinding
 import com.catchpig.kmvvm.databinding.LayoutEmptyBinding
-import com.catchpig.kmvvm.databinding.LayoutErrorBinding
+import com.catchpig.kmvvm.databinding.LayoutFragmentErrorBinding
+import com.catchpig.mvvm.base.activity.BaseActivity
+import com.catchpig.mvvm.base.fragment.BaseFragment
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 
 @GlobalConfig
@@ -47,8 +50,18 @@ class MvvmGlobalConfig : IGlobalConfig {
         return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 
-    override fun getFailedBinding(layoutInflater: LayoutInflater): ViewBinding? {
-        return LayoutErrorBinding.inflate(layoutInflater)
+    override fun getFailedBinding(layoutInflater: LayoutInflater, any: Any): ViewBinding? {
+        return when (any) {
+            is BaseActivity<*> -> {
+                LayoutActivityErrorBinding.inflate(layoutInflater)
+            }
+            is BaseFragment<*> -> {
+                LayoutFragmentErrorBinding.inflate(layoutInflater)
+            }
+            else -> {
+                null
+            }
+        }
     }
 
     override fun onFailedReloadClickId(): Int {

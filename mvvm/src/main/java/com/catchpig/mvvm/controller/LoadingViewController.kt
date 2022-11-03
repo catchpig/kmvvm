@@ -7,9 +7,11 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import com.catchpig.loading.view.LoadingView
 import com.catchpig.mvvm.R
+import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 import com.gyf.immersionbar.ImmersionBar
+import com.gyf.immersionbar.ktx.destroyImmersionBar
 
 /**
  *
@@ -55,12 +57,19 @@ class LoadingViewController(
         dialog?.run {
             setCancelable(false)
             setContentView(R.layout.layout_loading)
-            val loadingFrame = findViewById<FrameLayout>(R.id.loading_frame);
+            val loadingFrame = findViewById<FrameLayout>(R.id.loading_frame)
             val loadingView = findViewById<LoadingView>(R.id.loading_view)
             loadingFrame.visibility = View.VISIBLE
             loadingView.setLoadColor(iGlobalConfig.getLoadingColor())
-            ImmersionBar.with(activity, this).transparentBar().init()
+            ImmersionBar.with(activity, this).transparentStatusBar().init()
             show()
+            setOnDismissListener {
+                activity.destroyImmersionBar(this)
+                if (activity is BaseActivity<*>) {
+                    activity.resetStatusBar()
+                }
+
+            }
             window?.run {
                 var layoutParams = attributes
                 layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
@@ -74,6 +83,7 @@ class LoadingViewController(
     fun hideLoading() {
         dialog?.let {
             it.dismiss()
+            dialog = null
         }
         if (isLoadingInflate) {
             loadingFrame.visibility = View.GONE

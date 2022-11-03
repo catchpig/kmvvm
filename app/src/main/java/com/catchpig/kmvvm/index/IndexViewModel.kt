@@ -6,11 +6,17 @@ import com.catchpig.kmvvm.repository.WanAndroidRepository
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class IndexViewModel : BaseViewModel() {
+    private var failed = true;
     fun queryBanners(): Flow<MutableList<Banner>> {
+        if (failed) {
+            failed = false
+            return flow { throw NullPointerException() }
+        }
         return WanAndroidRepository.getBanners()
     }
 

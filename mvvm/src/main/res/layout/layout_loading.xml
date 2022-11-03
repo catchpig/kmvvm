@@ -2,15 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/loading_frame"
-    android:visibility="gone"
-    android:clickable="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:visibility="gone">
+
     <com.catchpig.loading.view.LoadingView
         android:id="@+id/loading_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        app:loading_view_size="50dp"
-        app:loading_view_color="@android:color/holo_blue_light"/>
+        app:loading_view_color="@android:color/holo_blue_light"
+        app:loading_view_size="50dp" />
 </FrameLayout>

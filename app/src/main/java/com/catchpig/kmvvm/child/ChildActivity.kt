@@ -44,7 +44,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
 
     override fun initFlow() {
         onFailedReload {
-            loadingDialog1()
+            loadingViewError(bodyBinding.root)
         }
     }
 
@@ -52,11 +52,13 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
      * dialog形式的loading
      */
     fun loadingDialog(v: View) {
-        loadingDialog1()
+        viewModel.loadingDialog().lifecycleLoadingDialog(this) {
+            snackBar(this)
+        }
     }
 
-    private fun loadingDialog1(){
-        viewModel.loadingDialog().lifecycleLoadingDialog(this, showFailedView = true) {
+    fun loadingViewError(v: View) {
+        viewModel.loadingViewError().lifecycleLoadingView(this, showFailedView = true) {
             snackBar(this)
         }
     }

@@ -17,6 +17,7 @@ import com.catchpig.mvvm.R
 import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.controller.LoadingViewController
+import com.catchpig.mvvm.controller.StatusBarController
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.utils.ext.showSnackBar
 import java.lang.reflect.ParameterizedType
@@ -61,10 +62,20 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
 
     private lateinit var loadingViewController: LoadingViewController
 
+    private lateinit var statusBarController: StatusBarController
+
     private var failedBinding: ViewBinding? = null
 
     fun initLoadingViewController(loadingViewController: LoadingViewController) {
         this.loadingViewController = loadingViewController
+    }
+
+    fun initStatusBarController(statusBarController: StatusBarController) {
+        this.statusBarController = statusBarController
+    }
+
+    fun resetStatusBar() {
+        statusBarController.checkStatusBar()
     }
 
     fun getRootBanding(): ViewRootBinding {
@@ -79,7 +90,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
 
     fun getFailedBinding(): ViewBinding? {
         if (failedBinding == null) {
-            failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater)
+            failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater, this)
         }
         return failedBinding
     }
@@ -92,7 +103,6 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
                 KotlinMvvmCompiler.globalConfig().onFailedReloadClickId()
             )
             clickView.setOnClickListener {
-                rootBinding.layoutBody.removeView(failedRootView)
                 it.run(block)
             }
         }
@@ -107,6 +117,12 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
             rootBinding {
                 layoutBody.addView(it.root)
             }
+        }
+    }
+
+    override fun removeFailedView() {
+        failedBinding?.let {
+            rootBinding.layoutBody.removeView(it.root)
         }
     }
 

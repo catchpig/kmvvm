@@ -11,7 +11,8 @@ import kotlinx.coroutines.launch
 private const val TAG = "FlowExt"
 
 fun <T> Flow<MutableList<T>>.lifecycleRefresh(
-    base: BaseView, refreshLayoutWrapper: RefreshRecyclerView
+    base: BaseView,
+    refreshLayoutWrapper: RefreshRecyclerView
 ) {
     base.scope().launch(Dispatchers.Main) {
         this@lifecycleRefresh.flowOn(Dispatchers.IO).catch {
@@ -56,6 +57,9 @@ fun <T> Flow<T>.lifecycleLoadingDialog(
     base.scope().launch(Dispatchers.Main) {
         this@lifecycleLoadingDialog.flowOn(Dispatchers.IO).onStart {
             base.loadingDialog()
+            if (showFailedView) {
+                base.removeFailedView()
+            }
         }.onCompletion {
             "$TAG:lifecycleLoadingDialog:onCompletion".logd(base::class.simpleName!!)
             base.hideLoading()
@@ -82,6 +86,9 @@ fun <T> Flow<T>.lifecycleLoadingView(
     base.scope().launch(Dispatchers.Main) {
         this@lifecycleLoadingView.flowOn(Dispatchers.IO).onStart {
             base.loadingView()
+            if (showFailedView) {
+                base.removeFailedView()
+            }
         }.onCompletion {
             "$TAG:lifecycleLoadingView:onCompletion".logd(base::class.simpleName!!)
             base.hideLoading()

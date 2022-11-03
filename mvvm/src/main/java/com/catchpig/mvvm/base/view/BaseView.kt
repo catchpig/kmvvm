@@ -16,5 +16,5 @@ interface BaseView {
 
     fun hideLoading()
 
-
+    fun removeFailedView()
 }

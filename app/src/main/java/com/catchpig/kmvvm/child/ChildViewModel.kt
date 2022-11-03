@@ -18,7 +18,20 @@ class ChildViewModel : BaseViewModel() {
     fun loadingDialog(): Flow<String> {
         return flowOf("loadingDialog").map {
             delay(2000)
-            throw NullPointerException()
+            it
+        }
+    }
+
+    private var index = 0
+    fun loadingViewError(): Flow<String> {
+        index++
+        return flowOf("loadingViewError").map {
+            delay(2000)
+            if (index % 2 == 0) {
+                it
+            } else {
+                throw NullPointerException()
+            }
         }
     }
 }

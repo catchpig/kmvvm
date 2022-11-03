@@ -81,9 +81,15 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         }
     }
 
+    override fun removeFailedView() {
+        failedBinding?.let {
+            rootBinding.layoutBody.removeView(it.root)
+        }
+    }
+
     fun getFailedBinding(): ViewBinding? {
         if (failedBinding == null) {
-            failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater)
+            failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater, this)
         }
         return failedBinding
     }
@@ -96,7 +102,6 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
                 KotlinMvvmCompiler.globalConfig().onFailedReloadClickId()
             )
             clickView.setOnClickListener {
-                rootBinding.layoutBody.removeView(failedRootView)
                 it.run(block)
             }
         }

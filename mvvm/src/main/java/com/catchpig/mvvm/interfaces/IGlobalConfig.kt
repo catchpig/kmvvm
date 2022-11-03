@@ -74,9 +74,10 @@ interface IGlobalConfig {
     /**
      * 网络请求失败的显示页面
      * @param layoutInflater LayoutInflater
+     * @param any Any BaseActivity or BaseFragment
      * @return ViewBinding
      */
-    fun getFailedBinding(layoutInflater: LayoutInflater): ViewBinding?
+    fun getFailedBinding(layoutInflater: LayoutInflater, any: Any): ViewBinding?
 
     /**
      * 失败页面,需要重新加载的点击事件的id

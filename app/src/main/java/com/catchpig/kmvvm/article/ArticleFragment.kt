@@ -49,9 +49,9 @@ class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>
     override fun initFlow() {
         bodyBinding.refreshView.run {
             setOnRefreshLoadMoreListener { nextPageIndex ->
-                viewModel.queryArticles(nextPageIndex).lifecycleRefresh(this@ArticleFragment, this)
+                viewModel.queryArticles(nextPageIndex)
+                    .lifecycleRefresh(this@ArticleFragment, this)
             }
         }
     }
-
 }

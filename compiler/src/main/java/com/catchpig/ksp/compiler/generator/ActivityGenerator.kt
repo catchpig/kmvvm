@@ -305,6 +305,7 @@ class ActivityGenerator(
                 "val statusBarController = %T(baseActivity,globalConfig,title,statusBar)",
                 TYPE_STATUS_BAR_CONTROLLER
             )
+            .addStatement("baseActivity.initStatusBarController(statusBarController)")
             .addStatement("statusBarController.checkStatusBar()")
 
             .build()
