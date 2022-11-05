@@ -35,7 +35,7 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
     }
 
     private val loadingViewController: LoadingViewController by lazy {
-        LoadingViewController(requireActivity(), KotlinMvvmCompiler.globalConfig(), rootBinding)
+        LoadingViewController(requireActivity(), rootBinding)
     }
 
     private val rootBinding: ViewRootBinding by lazy {
@@ -87,24 +87,11 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         }
     }
 
-    fun getFailedBinding(): ViewBinding? {
+    override fun getFailedBinding(): ViewBinding? {
         if (failedBinding == null) {
             failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater, this)
         }
         return failedBinding
-    }
-
-    fun onFailedReload(block: View.() -> Unit) {
-        val failedBinding = getFailedBinding()
-        failedBinding?.let { viewBinding ->
-            val failedRootView = viewBinding.root
-            val clickView = failedRootView.findViewById<View>(
-                KotlinMvvmCompiler.globalConfig().onFailedReloadClickId()
-            )
-            clickView.setOnClickListener {
-                it.run(block)
-            }
-        }
     }
 
     @CallSuper

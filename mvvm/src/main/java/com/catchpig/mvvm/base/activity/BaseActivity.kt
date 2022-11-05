@@ -88,24 +88,11 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         }
     }
 
-    fun getFailedBinding(): ViewBinding? {
+    override fun getFailedBinding(): ViewBinding? {
         if (failedBinding == null) {
             failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater, this)
         }
         return failedBinding
-    }
-
-    fun onFailedReload(block: View.() -> Unit) {
-        val failedBinding = getFailedBinding()
-        failedBinding?.let { viewBinding ->
-            val failedRootView = viewBinding.root
-            val clickView = failedRootView.findViewById<View>(
-                KotlinMvvmCompiler.globalConfig().onFailedReloadClickId()
-            )
-            clickView.setOnClickListener {
-                it.run(block)
-            }
-        }
     }
 
     override fun scope(): LifecycleCoroutineScope {

@@ -43,7 +43,7 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     }
 
     override fun initFlow() {
-        onFailedReload {
+        onFailedReload(false) {
             loadingViewError(bodyBinding.root)
         }
     }
@@ -58,6 +58,10 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     }
 
     fun loadingViewError(v: View) {
+        loadingViewError()
+    }
+
+    private fun loadingViewError() {
         viewModel.loadingViewError().lifecycleLoadingView(this, showFailedView = true) {
             snackBar(this)
         }

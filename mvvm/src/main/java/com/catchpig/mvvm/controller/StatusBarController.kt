@@ -2,6 +2,7 @@ package com.catchpig.mvvm.controller
 
 import android.app.Activity
 import com.catchpig.mvvm.R
+import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.config.Config
 import com.catchpig.mvvm.entity.StatusBarParam
 import com.catchpig.mvvm.entity.TitleParam
@@ -17,10 +18,10 @@ import com.gyf.immersionbar.ktx.immersionBar
  */
 class StatusBarController(
     private val activity: Activity,
-    private val iGlobalConfig: IGlobalConfig,
     private val title: TitleParam?,
     private val statusBar: StatusBarParam?
 ) {
+    private val globalConfig: IGlobalConfig = KotlinMvvmCompiler.globalConfig()
 
     fun checkStatusBar() {
         //状态栏注解设置为不可用
@@ -33,7 +34,7 @@ class StatusBarController(
                 autoStatusBarDarkModeEnable(true, 0.2f)
                 //设置状态栏颜色
                 if (title == null || title.backgroundColor == Config.NO_ASSIGNMENT) {
-                    statusBarColor(iGlobalConfig.getTitleBackground())
+                    statusBarColor(globalConfig.getTitleBackground())
                 } else {
                     statusBarColor(title.backgroundColor)
                 }
@@ -64,7 +65,7 @@ class StatusBarController(
         } else {
             immersionBar.statusBarView(R.id.top_view)
             immersionBar.autoStatusBarDarkModeEnable(true, 0.2f)
-            immersionBar.statusBarColor(iGlobalConfig.getTitleBackground())
+            immersionBar.statusBarColor(globalConfig.getTitleBackground())
         }
     }
 }

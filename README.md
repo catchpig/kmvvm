@@ -68,6 +68,11 @@ plugins {
     id "com.google.devtools.ksp" version "1.7.20-1.0.7"
 }
 ```
+### 3. 在app的gradle.properties中添加
+
+```properties
+ksp.incremental=true
+```
 
 ### 3. 在app的build.gradle的android下添加
 
@@ -167,6 +172,21 @@ interface IGlobalConfig {
      */
     fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
 
+    /**
+     * 网络请求失败的显示页面
+     * @param layoutInflater LayoutInflater
+     * @param any Any BaseActivity or BaseFragment
+     * @return ViewBinding
+     */
+    fun getFailedBinding(layoutInflater: LayoutInflater, any: Any): ViewBinding?
+
+    /**
+     * 失败页面,需要重新加载的点击事件的id
+     * @return Int
+     */
+    @IdRes
+    fun onFailedReloadClickId(): Int
+    
     /**
      * 刷新每页加载个数
      * @return Int
@@ -324,6 +344,26 @@ fun clickSecondDrawable(v: View) {
 ```
 
 <img src="./images/activity_snackbar.jpg" style="zoom:30%;" />
+
+#### 2.5 加载失败页面
+
++ 网络请求失败可展示失败页面,并有刷新按钮可以重新加载数据
++ 在lifecycleLoadingView扩展函数中将showFailedView设置为true,数据请求失败了,就会显示失败页面
++ 在onFailedReload的闭包中再次调用网络请求的接口,就可以重新再加载数据了
+
+```kotlin
+override fun initFlow() {
+    onFailedReload {
+        loadingViewError(bodyBinding.root)
+    }
+}
+
+fun loadingViewError(v: View) {
+    viewModel.loadingViewError().lifecycleLoadingView(this, showFailedView = true) {
+        snackBar(this)
+    }
+}
+```
 
 ### 3. Fragment
 

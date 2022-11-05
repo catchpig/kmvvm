@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.catchpig.mvvm.R
+import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.config.Config
 import com.catchpig.mvvm.databinding.LayoutTitleBarBinding
 import com.catchpig.mvvm.entity.TitleMenuParam
@@ -21,15 +22,15 @@ import com.catchpig.utils.ext.colorResToInt
  */
 class TitleBarController(
     private val activity: Activity,
-    private val iGlobalConfig: IGlobalConfig,
     private val title: TitleParam
 ) : View.OnClickListener {
+    private val globalConfig: IGlobalConfig = KotlinMvvmCompiler.globalConfig()
 
     fun initTitleBar(view: View) {
         val titleBarBinding = LayoutTitleBarBinding.bind(view)
         titleBarBinding.titleBar.let {
             val titleBarHeight =
-                activity.resources.getDimensionPixelOffset(iGlobalConfig.getTitleHeight())
+                activity.resources.getDimensionPixelOffset(globalConfig.getTitleHeight())
             it.post {
                 var layoutParams = it.layoutParams
                 layoutParams.height = titleBarHeight
@@ -52,9 +53,9 @@ class TitleBarController(
     }
 
     private fun drawLine(line: View) {
-        if (iGlobalConfig.isShowTitleLine()) {
+        if (globalConfig.isShowTitleLine()) {
             line.visibility = View.VISIBLE
-            val lineColor = iGlobalConfig.getTitleLineColor()
+            val lineColor = globalConfig.getTitleLineColor()
             if (lineColor != 0) {
                 line.setBackgroundResource(lineColor)
             }
@@ -123,8 +124,8 @@ class TitleBarController(
      * 设置背景色
      */
     private fun drawBackground(titleBar: RelativeLayout) {
-        val backgroundColor = if (title!!.backgroundColor == Config.NO_ASSIGNMENT) {
-            iGlobalConfig.getTitleBackground()
+        val backgroundColor = if (title.backgroundColor == Config.NO_ASSIGNMENT) {
+            globalConfig.getTitleBackground()
         } else {
             title.backgroundColor
         }
@@ -135,8 +136,8 @@ class TitleBarController(
      * 设置文字颜色
      */
     private fun drawTextColor(titleBarBinding: LayoutTitleBarBinding) {
-        var textColor = if (title!!.textColor == Config.NO_ASSIGNMENT) {
-            activity.colorResToInt(iGlobalConfig.getTitleTextColor())
+        var textColor = if (title.textColor == Config.NO_ASSIGNMENT) {
+            activity.colorResToInt(globalConfig.getTitleTextColor())
         } else {
             activity.colorResToInt(title.textColor)
         }
@@ -149,8 +150,8 @@ class TitleBarController(
      * 设置返回按钮图标
      */
     private fun drawBackIcon(backIcon: ImageView) {
-        if (title!!.backIcon == Config.NO_ASSIGNMENT) {
-            backIcon.setImageResource(iGlobalConfig.getTitleBackIcon())
+        if (title.backIcon == Config.NO_ASSIGNMENT) {
+            backIcon.setImageResource(globalConfig.getTitleBackIcon())
         } else {
             backIcon.setImageResource(title.backIcon)
         }

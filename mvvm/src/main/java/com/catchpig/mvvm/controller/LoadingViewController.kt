@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import com.catchpig.loading.view.LoadingView
 import com.catchpig.mvvm.R
+import com.catchpig.mvvm.apt.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.interfaces.IGlobalConfig
@@ -19,9 +20,9 @@ import com.gyf.immersionbar.ktx.destroyImmersionBar
  **/
 class LoadingViewController(
     private val activity: Activity,
-    private val iGlobalConfig: IGlobalConfig,
     private val rootBinding: ViewRootBinding
 ) {
+    private val globalConfig: IGlobalConfig = KotlinMvvmCompiler.globalConfig()
     private var dialog: Dialog? = null
     private var isLoadingInflate = false
     private lateinit var loadingFrame: FrameLayout
@@ -30,17 +31,17 @@ class LoadingViewController(
         rootBinding.layoutBody.run {
             if (isLoadingInflate) {
                 loadingFrame.visibility = View.VISIBLE
-                loadingFrame.setBackgroundResource(iGlobalConfig.getLoadingBackground())
-                loadingView.setLoadColor(iGlobalConfig.getLoadingColor())
+                loadingFrame.setBackgroundResource(globalConfig.getLoadingBackground())
+                loadingView.setLoadColor(globalConfig.getLoadingColor())
             } else {
                 //setOnInflateListener监听器一定要在inflate()之前,不然会报空指针
                 rootBinding.loadingViewStub.setOnInflateListener { _, view ->
                     isLoadingInflate = true
                     loadingFrame = view.findViewById(R.id.loading_frame);
                     loadingFrame.visibility = View.VISIBLE
-                    loadingFrame.setBackgroundResource(iGlobalConfig.getLoadingBackground())
+                    loadingFrame.setBackgroundResource(globalConfig.getLoadingBackground())
                     loadingView = view.findViewById(R.id.loading_view)
-                    loadingView.setLoadColor(iGlobalConfig.getLoadingColor())
+                    loadingView.setLoadColor(globalConfig.getLoadingColor())
                 }
                 rootBinding.loadingViewStub.inflate()
             }
@@ -60,7 +61,7 @@ class LoadingViewController(
             val loadingFrame = findViewById<FrameLayout>(R.id.loading_frame)
             val loadingView = findViewById<LoadingView>(R.id.loading_view)
             loadingFrame.visibility = View.VISIBLE
-            loadingView.setLoadColor(iGlobalConfig.getLoadingColor())
+            loadingView.setLoadColor(globalConfig.getLoadingColor())
             ImmersionBar.with(activity, this).transparentStatusBar().init()
             show()
             setOnDismissListener {

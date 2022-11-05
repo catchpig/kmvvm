@@ -39,16 +39,11 @@ class ActivityGenerator(
         private val TYPE_TEXT_VIEW = ClassName("android.widget", "TextView")
         private val TYPE_IMAGE_VIEW = ClassName("android.widget", "ImageView")
         private val TYPE_VIEW = ClassName("android.view", "View")
-        private val CLASS_NAME_I_GLOBAL_CONFIG =
-            ClassName("com.catchpig.mvvm.interfaces", "IGlobalConfig")
         private val CLASS_NAME_LOADING_VIEW_CONTROLLER =
             ClassName("com.catchpig.mvvm.controller", "LoadingViewController")
     }
 
-    private lateinit var globalConfigClassDeclarations: List<KSClassDeclaration>
-
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        globalConfigClassDeclarations = resolver.getKSClassDeclarations<GlobalConfig>()
         val statusBarClassDeclarations = resolver.getKSClassDeclarations<StatusBar>()
         val titleClassDeclarations = resolver.getKSClassDeclarations<Title>()
         val ksClassDeclarations = statusBarClassDeclarations.toMutableSet()
@@ -71,7 +66,6 @@ class ActivityGenerator(
                 .addSuperinterface(CLASS_NAME_ACTIVITY_COMPILER)
                 .addProperty(initTitleProperty(title, className))
                 .addProperty(initStatusBarProperty(statusBar, className))
-                .addProperty(initGlobalConfigProperty())
             val funSpec = initTitleMenuOnClick(it, title)
             funSpec?.let { fsc ->
                 typeSpecBuilder.addFunction(fsc)
@@ -275,7 +269,7 @@ class ActivityGenerator(
             .addParameter("activity", CLASS_NAME_ACTIVITY)
             .addStatement("val baseActivity = activity as %T<*>", CLASS_NAME_BASE_ACTIVITY)
             .addStatement(
-                "baseActivity.initLoadingViewController(%T(baseActivity,globalConfig,baseActivity.getRootBanding()))",
+                "baseActivity.initLoadingViewController(%T(baseActivity,baseActivity.getRootBanding()))",
                 CLASS_NAME_LOADING_VIEW_CONTROLLER
             )
             .addStatement("//加载标题栏")
@@ -288,7 +282,7 @@ class ActivityGenerator(
 
 
             .addStatement(
-                "    val titleBarController = %T(baseActivity,globalConfig,it)",
+                "    val titleBarController = %T(baseActivity,it)",
                 TYPE_TITLE_BAR_CONTROLLER
             )
             .addStatement("    titleBarController.initTitleBar(view)")
@@ -302,31 +296,12 @@ class ActivityGenerator(
             .addStatement("}")
             .addStatement("//加载状态栏")
             .addStatement(
-                "val statusBarController = %T(baseActivity,globalConfig,title,statusBar)",
+                "val statusBarController = %T(baseActivity,title,statusBar)",
                 TYPE_STATUS_BAR_CONTROLLER
             )
             .addStatement("baseActivity.initStatusBarController(statusBarController)")
             .addStatement("statusBarController.checkStatusBar()")
 
-            .build()
-    }
-
-    private fun initGlobalConfigProperty(): PropertySpec {
-        if (globalConfigClassDeclarations.isEmpty()) {
-            val message = "必须实现IGlobalConfig接口,并在Class上加上注解GlobalConfig"
-            error(TAG, message)
-            throw KAptException(message)
-        }
-        if (globalConfigClassDeclarations.size > 1) {
-            val message = "只能有一个类被注解GlobalConfig修饰"
-            error(TAG, message)
-            throw KAptException(message)
-        }
-        val ksClassDeclaration = globalConfigClassDeclarations.first()
-        return PropertySpec
-            .builder("globalConfig", CLASS_NAME_I_GLOBAL_CONFIG)
-            .addModifiers(KModifier.PRIVATE)
-            .initializer("%T()", ksClassDeclaration.toClassName())
             .build()
     }
 

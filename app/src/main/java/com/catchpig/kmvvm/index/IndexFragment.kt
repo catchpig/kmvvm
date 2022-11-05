@@ -45,17 +45,17 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
             installApk.setOnClickListener(this@IndexFragment)
             handlerError.setOnClickListener(this@IndexFragment)
         }
+
+    }
+
+    override fun initFlow() {
         onFailedReload {
             loadBanners()
         }
     }
 
-    override fun initFlow() {
-        loadBanners()
-    }
-
     private fun loadBanners(){
-        viewModel.queryBanners().lifecycleLoadingView(this, true) {
+        viewModel.queryBanners().lifecycleLoadingDialog(this, true) {
             val images = mutableListOf<String>()
             this.forEach {
                 images.add(it.imagePath)
