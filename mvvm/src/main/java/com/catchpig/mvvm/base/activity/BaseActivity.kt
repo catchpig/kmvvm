@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.controller.StatusBarController
@@ -113,11 +113,11 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         }
     }
 
-    fun rootBinding(block: ViewRootBinding.() -> Unit) {
+    open fun rootBinding(block: ViewRootBinding.() -> Unit) {
         rootBinding.run(block)
     }
 
-    fun bodyBinding(block: VB.() -> Unit) {
+    open fun bodyBinding(block: VB.() -> Unit) {
         bodyBinding.run(block)
     }
 

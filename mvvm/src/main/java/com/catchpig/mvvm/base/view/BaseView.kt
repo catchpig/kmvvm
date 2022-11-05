@@ -3,7 +3,7 @@ package com.catchpig.mvvm.base.view
 import android.view.View
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 
 interface BaseView {
 

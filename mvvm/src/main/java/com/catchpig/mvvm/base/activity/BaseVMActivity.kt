@@ -2,13 +2,11 @@ package com.catchpig.mvvm.base.activity
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseVMView
-import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
 import com.catchpig.utils.ext.logd

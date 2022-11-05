@@ -1,4 +1,4 @@
-package com.catchpig.mvvm.apt.interfaces
+package com.catchpig.mvvm.ksp.interfaces
 
 import com.catchpig.mvvm.entity.ServiceParam
 import okhttp3.ResponseBody

@@ -1,6 +1,6 @@
 package com.catchpig.mvvm.ext
 
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
 import com.catchpig.utils.ext.logd

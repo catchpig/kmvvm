@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.*
 
 

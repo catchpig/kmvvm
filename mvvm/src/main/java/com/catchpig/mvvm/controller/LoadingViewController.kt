@@ -7,7 +7,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import com.catchpig.loading.view.LoadingView
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.interfaces.IGlobalConfig

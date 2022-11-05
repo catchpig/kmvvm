@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.config.Config
 import com.catchpig.mvvm.databinding.LayoutTitleBarBinding
 import com.catchpig.mvvm.entity.TitleMenuParam

@@ -1,7 +1,5 @@
-package com.catchpig.mvvm.apt.interfaces
+package com.catchpig.mvvm.ksp.interfaces
 
-import android.app.Activity
-import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 
 /**

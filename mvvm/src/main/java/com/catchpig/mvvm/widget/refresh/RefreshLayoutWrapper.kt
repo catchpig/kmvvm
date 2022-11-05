@@ -3,7 +3,7 @@ package com.catchpig.mvvm.widget.refresh
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 

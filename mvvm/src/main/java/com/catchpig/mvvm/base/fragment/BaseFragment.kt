@@ -13,7 +13,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.controller.LoadingViewController
@@ -48,11 +48,11 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         return rootBinding
     }
 
-    fun rootBinding(block: ViewRootBinding.() -> Unit) {
+    open fun rootBinding(block: ViewRootBinding.() -> Unit) {
         rootBinding.run(block)
     }
 
-    fun bodyBinding(block: VB.() -> Unit) {
+    open fun bodyBinding(block: VB.() -> Unit) {
         bodyBinding.run(block)
     }
 

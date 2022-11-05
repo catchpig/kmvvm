@@ -26,7 +26,7 @@ class ActivityGenerator(
         private val CLASS_NAME_STATUS_BAR_PARAM =
             ClassName("com.catchpig.mvvm.entity", "StatusBarParam")
         private val CLASS_NAME_ACTIVITY_COMPILER =
-            ClassName("com.catchpig.mvvm.apt.interfaces", "ActivityCompiler")
+            ClassName("com.catchpig.mvvm.ksp.interfaces", "ActivityCompiler")
         private val CLASS_NAME_BASE_ACTIVITY =
             ClassName("com.catchpig.mvvm.base.activity", "BaseActivity")
         private val CLASS_NAME_ACTIVITY = ClassName("android.app", "Activity")

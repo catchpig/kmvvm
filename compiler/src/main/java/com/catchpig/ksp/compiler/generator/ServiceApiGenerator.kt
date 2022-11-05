@@ -23,7 +23,7 @@ class ServiceApiGenerator(
     companion object {
         private const val TAG = "ServiceApiGenerator"
         private val CLASS_NAME_SERVICE_API_COMPILER =
-            ClassName("com.catchpig.mvvm.apt.interfaces", "ServiceApiCompiler")
+            ClassName("com.catchpig.mvvm.ksp.interfaces", "ServiceApiCompiler")
         private val CLASS_NAME_MAP = ClassName("kotlin.collections", "HashMap")
         private val CLASS_NAME_SERVICE_PARAM = ClassName("com.catchpig.mvvm.entity", "ServiceParam")
         private val CLASS_NAME_INTERCEPTOR = ClassName("okhttp3", "Interceptor")

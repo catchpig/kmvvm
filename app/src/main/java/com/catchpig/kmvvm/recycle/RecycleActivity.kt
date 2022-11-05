@@ -10,7 +10,7 @@ import com.catchpig.kmvvm.databinding.ActivityRecycleBinding
 import com.catchpig.kmvvm.databinding.LayoutFooterBinding
 import com.catchpig.kmvvm.databinding.LayoutHeaderBinding
 import com.catchpig.kmvvm.entity.User
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.gyf.immersionbar.ktx.immersionBar
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

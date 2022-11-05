@@ -22,7 +22,7 @@ class KotlinMvvmGenerator(
         private val CLASS_NAME_I_GLOBAL_CONFIG_MODEL =
             ClassName("com.catchpig.mvvm.interfaces", "IGlobalConfig")
         private val CLASS_NAME_KOTLIN_MVVM_COMPILER =
-            ClassName("com.catchpig.mvvm.apt.interfaces", "GlobalCompiler")
+            ClassName("com.catchpig.mvvm.ksp.interfaces", "GlobalCompiler")
         private val CLASS_NAME_I_OBSERVER_ERROR =
             ClassName("com.catchpig.mvvm.interfaces", "IFlowError")
         private val CLASS_NAME_LIST = ClassName("kotlin.collections", "ArrayList")

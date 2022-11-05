@@ -1,6 +1,6 @@
 package com.catchpig.mvvm.network.manager
 
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.network.factory.SerializationConverterFactory
 import com.catchpig.utils.ext.logd

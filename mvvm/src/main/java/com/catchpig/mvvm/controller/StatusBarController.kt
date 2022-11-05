@@ -2,7 +2,7 @@ package com.catchpig.mvvm.controller
 
 import android.app.Activity
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.config.Config
 import com.catchpig.mvvm.entity.StatusBarParam
 import com.catchpig.mvvm.entity.TitleParam

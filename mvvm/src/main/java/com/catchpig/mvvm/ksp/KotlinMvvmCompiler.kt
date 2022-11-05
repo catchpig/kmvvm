@@ -1,9 +1,9 @@
-package com.catchpig.mvvm.apt
+package com.catchpig.mvvm.ksp
 
 import android.app.Activity
-import com.catchpig.mvvm.apt.interfaces.ActivityCompiler
-import com.catchpig.mvvm.apt.interfaces.GlobalCompiler
-import com.catchpig.mvvm.apt.interfaces.ServiceApiCompiler
+import com.catchpig.mvvm.ksp.interfaces.ActivityCompiler
+import com.catchpig.mvvm.ksp.interfaces.GlobalCompiler
+import com.catchpig.mvvm.ksp.interfaces.ServiceApiCompiler
 import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.interfaces.IGlobalConfig
 import com.catchpig.utils.ext.logd

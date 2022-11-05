@@ -1,6 +1,6 @@
 package com.catchpig.mvvm.network.factory
 
-import com.catchpig.mvvm.apt.KotlinMvvmCompiler
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.network.converter.SerializationRequestBodyConverter
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
