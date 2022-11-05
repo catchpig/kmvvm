@@ -1,6 +1,6 @@
 ext {
-    kmvvm_version = '1.0.0'
-//    kmvvm_version = '0.5.3-SNAPSHOT'
+    kmvvm_version = '1.0.1'
+//    kmvvm_version = '1.0.0-SNAPSHOT'
     kotlin_version = '1.7.20'
     compileSdkVersion = 31
     buildToolsVersion = '31.0.0'

@@ -243,6 +243,24 @@ class MvvmGlobalConfig : IGlobalConfig {
     override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
         return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
+    
+    override fun getFailedBinding(layoutInflater: LayoutInflater, any: Any): ViewBinding? {
+        return when (any) {
+            is BaseActivity<*> -> {
+                LayoutActivityErrorBinding.inflate(layoutInflater)
+            }
+            is BaseFragment<*> -> {
+                LayoutFragmentErrorBinding.inflate(layoutInflater)
+            }
+            else -> {
+                null
+            }
+        }
+    }
+
+    override fun onFailedReloadClickId(): Int {
+        return R.id.failed_reload
+    }
 
     override fun getPageSize(): Int {
         return 16
@@ -349,7 +367,18 @@ fun clickSecondDrawable(v: View) {
 
 + 网络请求失败可展示失败页面,并有刷新按钮可以重新加载数据
 + 在lifecycleLoadingView扩展函数中将showFailedView设置为true,数据请求失败了,就会显示失败页面
-+ 在onFailedReload的闭包中再次调用网络请求的接口,就可以重新再加载数据了
++ 在[onFailedReload](./mvvm/src/main/java/com/catchpig/mvvm/base/view/BaseView.kt)的闭包中再次调用网络请求的接口,就可以重新再加载数据了
+
+```kotlin
+/**
+ * 加载失败后展示失败页面,点击自定义失败页面的刷新按钮,重新请求数据
+ * @param autoFirstLoad Boolean 第一次是否自动加载
+ * @param block [@kotlin.ExtensionFunctionType] Function1<View, Unit>
+ */
+fun onFailedReload(autoFirstLoad: Boolean = true, block: View.() -> Unit){
+    .....
+}
+```
 
 ```kotlin
 override fun initFlow() {
@@ -380,6 +409,44 @@ fun loadingViewError(v: View) {
 ```kotlin
 snackbar.setOnClickListener {
     snackBar("提示框")
+}
+```
+
+#### 3.2 加载失败页面
+
++ 网络请求失败可展示失败页面,并有刷新按钮可以重新加载数据
++ 在lifecycleLoadingView扩展函数中将showFailedView设置为true,数据请求失败了,就会显示失败页面
++ 在[onFailedReload](./mvvm/src/main/java/com/catchpig/mvvm/base/view/BaseView.kt)的闭包中再次调用网络请求的接口,就可以重新再加载数据了
+
+```kotlin
+/**
+ * 加载失败后展示失败页面,点击自定义失败页面的刷新按钮,重新请求数据
+ * @param autoFirstLoad Boolean 第一次是否自动加载
+ * @param block [@kotlin.ExtensionFunctionType] Function1<View, Unit>
+ */
+fun onFailedReload(autoFirstLoad: Boolean = true, block: View.() -> Unit){
+    .....
+}
+```
+
+```kotlin
+override fun initFlow() {
+    onFailedReload {
+        loadBanners()
+    }
+}
+
+private fun loadBanners(){
+    viewModel.queryBanners().lifecycleLoadingDialog(this, true) {
+        val images = mutableListOf<String>()
+        this.forEach {
+            images.add(it.imagePath)
+        }
+        bodyBinding.banner.run {
+            setImages(images)
+            start()
+        }
+    }
 }
 ```
 
@@ -553,41 +620,26 @@ class ResponseBodyConverter :
 #### 6.3 FlowExt中扩展了网络请求方法(带lifecycleScope)
 + 刷新+RecycleView的网络请求封装
   - lifecycleRefresh(
-      base: BaseVMFragment<*, *>, refreshLayoutWrapper: RefreshRecyclerView
-  )
-  - lifecycleRefresh(
-      base: BaseVMActivity<*, *>, refreshLayoutWrapper: RefreshRecyclerView
+      base: BaseView, refreshLayoutWrapper: RefreshRecyclerView
   )
 + 不带loading的网络请求封装
   - lifecycle(
-    base: BaseVMFragment<*, *>,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-    )
-  - lifecycle(
-    base: BaseVMActivity<*, *>,
+    base: BaseView,
+    showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
     )
 + 带loadingView的网络请求封装
   - lifecycleLoadingDialog(
-      base: BaseVMFragment<*, *>,
+      base: BaseView,
+    showFailedView: Boolean = false,
       errorCallback: ((t: Throwable) -> Unit)? = null,
       callback: T.() -> Unit
   )
-  - lifecycleLoadingDialog(
-        base: BaseVMActivity<*, *>,
-        errorCallback: ((t: Throwable) -> Unit)? = null,
-        callback: T.() -> Unit
-    )
 + 带loadingDialog的网络请求封装
   - lifecycleLoadingView(
-    base: BaseVMFragment<*, *>,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-    )
-  - - lifecycleLoadingView(
-    base: BaseVMActivity<*, *>,
+    base: BaseView,
+    showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
     )
