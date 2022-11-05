@@ -11,6 +11,10 @@
 
 + ### 支持Rxjava+Retrofit+OkHttp实现链式http请求
 
++ ### 全局配置网络加载错误页面,并支持重新加载数据
+
++ ### 全局配置列表空页面
+
 + ### 封装基类:BaseActivity、BaseVMActivity、BaseFragment、BaseVMFragment、RecycleAdapter、BaseViewModel
 
 + ### 引入LifeCycle，将ViewModel和Activity的生命周期绑定在一起
