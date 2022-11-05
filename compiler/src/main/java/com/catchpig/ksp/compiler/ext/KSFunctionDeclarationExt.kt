@@ -9,6 +9,10 @@ inline fun <reified T : Annotation> KSFunctionDeclaration.getAnnotations(): List
     return getAnnotationsByType(T::class).toList()
 }
 
-inline fun <reified T : Annotation> KSFunctionDeclaration.getAnnotation(): T {
-    return getAnnotations<T>().first()
+inline fun <reified T : Annotation> KSFunctionDeclaration.getAnnotation(): T? {
+    val annotations = getAnnotations<T>()
+    if (annotations.isEmpty()) {
+        return null
+    }
+    return annotations.first()
 }

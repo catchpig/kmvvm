@@ -15,7 +15,10 @@ class IndexViewModel : BaseViewModel() {
     fun queryBanners(): Flow<MutableList<Banner>> {
         if (failed) {
             failed = false
-            return flow { throw NullPointerException() }
+            return flow {
+                delay(2000)
+                throw NullPointerException()
+            }
         }
         return WanAndroidRepository.getBanners()
     }
