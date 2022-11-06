@@ -2,14 +2,14 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
-
+def sdkVersion = rootProject.sdkVersion
 android {
     namespace 'com.catchpig.download'
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk sdkVersion["compile"]
 
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion sdkVersion["min"]
+        targetSdkVersion sdkVersion["target"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -30,6 +30,7 @@ android {
     }
 }
 
+def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
 
     testImplementation 'junit:junit:4.13.2'
@@ -38,28 +39,28 @@ dependencies {
 
     api project(path: ':utils')
 
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.appcompat:appcompat:${dependenciesVersion["appcompat"]}"
+    implementation "androidx.core:core-ktx:${dependenciesVersion["core_ktx"]}"
 
     // 协程核心库
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${dependenciesVersion["coroutines"]}"
     // 协程Android支持库
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${dependenciesVersion["coroutines"]}"
     // 协程Java8支持库
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
-    api "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${dependenciesVersion["coroutines"]}"
+    api "org.jetbrains.kotlinx:kotlinx-serialization-json:${dependenciesVersion["serialization"]}"
     //okhttp3
-    api "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    implementation("com.squareup.okhttp3:logging-interceptor:$okhttp3_version")
+    api "com.squareup.okhttp3:okhttp:${dependenciesVersion["okhttp3"]}"
+    implementation("com.squareup.okhttp3:logging-interceptor:${dependenciesVersion["okhttp3"]}")
 
     //retrofit2
-    api "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    api("com.squareup.retrofit2:converter-gson:$retrofit2_version")
-    compileOnly("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+    api "com.squareup.retrofit2:retrofit:${dependenciesVersion["retrofit2"]}"
+    api("com.squareup.retrofit2:converter-gson:${dependenciesVersion["retrofit2"]}")
+    compileOnly("com.squareup.retrofit2:adapter-rxjava3:${dependenciesVersion["retrofit2"]}")
 
     //rxjava3
-    compileOnly "io.reactivex.rxjava3:rxjava:$rxjava_version"
-    compileOnly "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+    compileOnly "io.reactivex.rxjava3:rxjava:${dependenciesVersion["rxjava"]}"
+    compileOnly "io.reactivex.rxjava3:rxandroid:${dependenciesVersion["rxandroid"]}"
 }
 
 apply from: '../publish_aar_jar.gradle'

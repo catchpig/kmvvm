@@ -7,17 +7,17 @@ plugins {
 
     id 'kotlin-kapt' // 使用 kapt 注解处理工具
 
-    id "com.google.devtools.ksp" version "$ksp_version"
+    id "com.google.devtools.ksp" version "$ksp"
 }
 
-
+def sdkVersion = rootProject.sdkVersion
 android {
-    compileSdk rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdk sdkVersion["compile"]
+    buildToolsVersion sdkVersion["buildTools"]
     defaultConfig {
         applicationId "com.catchpig.kmvvm"
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion sdkVersion["min"]
+        targetSdkVersion sdkVersion["target"]
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -46,39 +46,44 @@ android {
 
 }
 
+def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.recyclerview:recyclerview:$recycleview_version"
-    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayout_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${dependenciesVersion["kotlin"]}"
+    implementation "androidx.appcompat:appcompat:${dependenciesVersion["appcompat"]}"
+    implementation "androidx.core:core-ktx:${dependenciesVersion["core_ktx"]}"
+    implementation "androidx.recyclerview:recyclerview:${dependenciesVersion["recycleview"]}"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:${dependenciesVersion["coordinatorlayout"]}"
+    implementation "androidx.constraintlayout:constraintlayout:${dependenciesVersion["constraintlayout"]}"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-//    implementation project(path: ':download')
-//    implementation project(path: ':mvvm')
-//    ksp project(path: ':compiler')
-//    implementation "io.github.catchpig.kmvvm:download:$kmvvm_version"
-//    implementation "io.github.catchpig.kmvvm:mvvm:$kmvvm_version"
-//    ksp "io.github.catchpig.kmvvm:compiler:$kmvvm_version"
+    if (rootProject.frame["importSourceCode"]) {
+        implementation project(path: ':download')
+        implementation project(path: ':mvvm')
+        ksp project(path: ':compiler')
+    } else {
+        def kmvvm_version = rootProject.kmvvmVersion
+        implementation "io.github.catchpig.kmvvm:download:$kmvvm_version"
+        implementation "io.github.catchpig.kmvvm:mvvm:$kmvvm_version"
+        ksp "io.github.catchpig.kmvvm:compiler:$kmvvm_version"
+    }
 
 
-    implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:${dependenciesVersion["retrofit2"]}")
 
     //rxjava3
-    implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
-    implementation "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava3:rxjava:${dependenciesVersion["rxjava"]}"
+    implementation "io.reactivex.rxjava3:rxandroid:${dependenciesVersion["rxandroid"]}"
     //刷新-头部
-    implementation "io.github.scwang90:refresh-header-material:$SmartRefreshLayout_version"
+    implementation "io.github.scwang90:refresh-header-material:${dependenciesVersion["SmartRefreshLayout"]}"
     //刷新-底部
-    implementation "io.github.scwang90:refresh-footer-classics:$SmartRefreshLayout_version"
+    implementation "io.github.scwang90:refresh-footer-classics:${dependenciesVersion["SmartRefreshLayout"]}"
     //图片加载框架
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation "com.github.bumptech.glide:glide:${dependenciesVersion["glide"]}"
+    kapt "com.github.bumptech.glide:compiler:${dependenciesVersion["glide"]}"
     //权限
-    implementation "com.github.tbruyelle:rxpermissions:$rxpermissions_version"
-    implementation "com.gitee.catchpig:UIViewPager:$UIViewPager_version"
-    implementation "com.localebro:okhttpprofiler:$okhttpprofiler_version"
+    implementation "com.github.tbruyelle:rxpermissions:${dependenciesVersion["rxpermissions"]}"
+    implementation "com.gitee.catchpig:UIViewPager:${dependenciesVersion["UIViewPager"]}"
+    implementation "com.localebro:okhttpprofiler:${dependenciesVersion["okhttpprofiler"]}"
 }

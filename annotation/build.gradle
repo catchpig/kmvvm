@@ -4,11 +4,12 @@ plugins {
 }
 apply from: '../publish_aar_jar.gradle'
 
+def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.annotation:annotation:$annotation_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compileOnly "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    compileOnly("com.squareup.okhttp3:okhttp:$okhttp3_version")
-    compileOnly "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version"
+    implementation "androidx.annotation:annotation:${dependenciesVersion["annotation"]}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${dependenciesVersion["kotlin"]}"
+    compileOnly "com.squareup.retrofit2:retrofit:${dependenciesVersion["retrofit2"]}"
+    compileOnly("com.squareup.okhttp3:okhttp:${dependenciesVersion["okhttp3"]}")
+    compileOnly "org.jetbrains.kotlinx:kotlinx-serialization-json:${dependenciesVersion["serialization"]}"
 }

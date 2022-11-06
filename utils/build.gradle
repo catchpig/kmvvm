@@ -3,14 +3,14 @@ plugins {
     id 'kotlin-android'
 }
 
-
+def sdkVersion = rootProject.sdkVersion
 android {
     namespace 'com.catchpig.utils'
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk sdkVersion["compile"]
 
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion sdkVersion["min"]
+        targetSdkVersion sdkVersion["target"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -25,20 +25,21 @@ android {
 
 }
 
+def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    api("com.google.android.material:material:$material_version")
+    implementation "androidx.appcompat:appcompat:${dependenciesVersion["appcompat"]}"
+    implementation "androidx.core:core-ktx:${dependenciesVersion["core_ktx"]}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${dependenciesVersion["kotlin"]}"
+    api("com.google.android.material:material:${dependenciesVersion["material"]}")
 
     api project(path: ':annotation')
     //gson
-    api "com.google.code.gson:gson:$gson_version"
+    api "com.google.code.gson:gson:${dependenciesVersion["gson"]}"
 
     //rxjava3
-    compileOnly "io.reactivex.rxjava3:rxjava:$rxjava_version"
-    compileOnly "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+    compileOnly "io.reactivex.rxjava3:rxjava:${dependenciesVersion["rxjava"]}"
+    compileOnly "io.reactivex.rxjava3:rxandroid:${dependenciesVersion["rxandroid"]}"
 }
 
 apply from: '../publish_aar_jar.gradle'

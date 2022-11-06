@@ -23,7 +23,7 @@ if (project.plugins.hasPlugin("java-library")) {
     }
 }
 
-String kmvvm_version = rootProject.kmvvm_version
+def kmvvm_version = rootProject.kmvvmVersion
 
 afterEvaluate {
     publishing {

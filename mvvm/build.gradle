@@ -9,13 +9,14 @@ plugins{
     id 'kotlin-kapt' // 使用 kapt 注解处理工具
 }
 
+def sdkVersion = rootProject.sdkVersion
 android {
     namespace 'com.catchpig.mvvm'
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk sdkVersion["compile"]
 
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion sdkVersion["min"]
+        targetSdkVersion sdkVersion["target"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -36,53 +37,54 @@ android {
     }
 }
 
+def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.startup:startup-runtime:$startup_runtime_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:${dependenciesVersion["appcompat"]}"
+    implementation "androidx.core:core-ktx:${dependenciesVersion["core_ktx"]}"
+    implementation "androidx.startup:startup-runtime:${dependenciesVersion["startup_runtime"]}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${dependenciesVersion["kotlin"]}"
 
-    implementation "androidx.recyclerview:recyclerview:$recycleview_version"
+    implementation "androidx.recyclerview:recyclerview:${dependenciesVersion["recycleview"]}"
 
     // 协程核心库
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${dependenciesVersion["coroutines"]}"
     // 协程Android支持库
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${dependenciesVersion["coroutines"]}"
     // 协程Java8支持库
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
-    api "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version"
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${dependenciesVersion["coroutines"]}"
+    api "org.jetbrains.kotlinx:kotlinx-serialization-json:${dependenciesVersion["serialization"]}"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:${dependenciesVersion["lifecycle"]}"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:${dependenciesVersion["lifecycle"]}"
 
     api project(path: ':annotation')
     api project(path: ':utils')
 
     //okhttp3
-    api "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    implementation("com.squareup.okhttp3:logging-interceptor:$okhttp3_version")
+    api "com.squareup.okhttp3:okhttp:${dependenciesVersion["okhttp3"]}"
+    implementation("com.squareup.okhttp3:logging-interceptor:${dependenciesVersion["okhttp3"]}")
 
     //retrofit2
-    api "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    api("com.squareup.retrofit2:converter-gson:$retrofit2_version")
-    compileOnly("com.squareup.retrofit2:adapter-rxjava3:$retrofit2_version")
+    api "com.squareup.retrofit2:retrofit:${dependenciesVersion["retrofit2"]}"
+    api("com.squareup.retrofit2:converter-gson:${dependenciesVersion["retrofit2"]}")
+    compileOnly("com.squareup.retrofit2:adapter-rxjava3:${dependenciesVersion["retrofit2"]}")
 
     //rxjava3
-    compileOnly "io.reactivex.rxjava3:rxjava:$rxjava_version"
-    compileOnly "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+    compileOnly "io.reactivex.rxjava3:rxjava:${dependenciesVersion["rxjava"]}"
+    compileOnly "io.reactivex.rxjava3:rxandroid:${dependenciesVersion["rxandroid"]}"
 
 
-    api "com.github.catch-pig:LoadingView:$loading_version"
+    api "com.github.catch-pig:LoadingView:${dependenciesVersion["loading"]}"
 
     // 基础依赖包，必须要依赖
-    api "com.geyifeng.immersionbar:immersionbar:$immersionbar_version"
+    api "com.geyifeng.immersionbar:immersionbar:${dependenciesVersion["immersionbar"]}"
     // fragment快速实现（可选）
-//    api "com.geyifeng.immersionbar:immersionbar-components:$immersionbar_version"
+//    api "com.geyifeng.immersionbar:immersionbar-components:${dependenciesVersion["immersionbar"]}"
     // kotlin扩展（可选）
-    api "com.geyifeng.immersionbar:immersionbar-ktx:$immersionbar_version"
+    api "com.geyifeng.immersionbar:immersionbar-ktx:${dependenciesVersion["immersionbar"]}"
     //刷新
-    api "io.github.scwang90:refresh-layout-kernel:$SmartRefreshLayout_version"
+    api "io.github.scwang90:refresh-layout-kernel:${dependenciesVersion["SmartRefreshLayout"]}"
 }
 
 apply from: '../publish_aar_jar.gradle'
