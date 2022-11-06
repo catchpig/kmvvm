@@ -11,7 +11,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 class IndexViewModel : BaseViewModel() {
-    private var failed = true;
+    companion object {
+        private const val TAG = "IndexViewModel"
+    }
+
+    private var failed = true
     fun queryBanners(): Flow<MutableList<Banner>> {
         if (failed) {
             failed = false

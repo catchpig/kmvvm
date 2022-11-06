@@ -1,9 +1,9 @@
 package com.catchpig.mvvm.base.viewmodel
 
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.rxjava3.disposables.Disposable
 
 /**
@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.disposables.Disposable
  * date 2021/9/13
  * description:
  */
-interface IBaseViewModel : LifecycleObserver {
+interface IBaseViewModel : DefaultLifecycleObserver, LifecycleEventObserver {
     /**
      * 添加disposable到CompositeDisposable
      * @param disposable Disposable
@@ -24,29 +24,50 @@ interface IBaseViewModel : LifecycleObserver {
      */
     fun remove(disposable: Disposable)
 
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        onAny(source, event)
+    }
+
     /**
      * 此函数可以监听Activity的全部Event事件
      * @param owner
      * @param event
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
-    fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?)
+    fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?) {}
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate()
+    override fun onCreate(owner: LifecycleOwner) {
+        onCreate()
+    }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart()
+    fun onCreate() {}
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume()
+    override fun onStart(owner: LifecycleOwner) {
+        onStart()
+    }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause()
+    fun onStart() {}
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop()
+    override fun onResume(owner: LifecycleOwner) {
+        onResume()
+    }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroy()
+    fun onResume() {}
+
+    override fun onPause(owner: LifecycleOwner) {
+        onPause()
+    }
+
+    fun onPause() {}
+
+    override fun onStop(owner: LifecycleOwner) {
+        onStop()
+    }
+
+    fun onStop() {}
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        onDestroy()
+    }
+
+    fun onDestroy() {}
 }

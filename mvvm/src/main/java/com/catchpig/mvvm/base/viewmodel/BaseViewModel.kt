@@ -28,34 +28,6 @@ open class BaseViewModel : ViewModel(), IBaseViewModel {
         compositeDisposable.remove(disposable)
     }
 
-    override fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?) {
-
-    }
-
-    override fun onCreate() {
-
-    }
-
-    override fun onStart() {
-
-    }
-
-    override fun onResume() {
-
-    }
-
-    override fun onPause() {
-
-    }
-
-    override fun onStop() {
-
-    }
-
-    override fun onDestroy() {
-
-    }
-
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
