@@ -36,7 +36,7 @@ class KotlinMvvmGenerator(
 
     private lateinit var flowErrorsClassDeclaration: List<KSClassDeclaration>
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
+    override fun process(resolver: Resolver) {
         flowErrorsClassDeclaration = resolver.getKSClassDeclarations<FlowError>()
         val list = resolver.getKSClassDeclarations<GlobalConfig>()
         if (list.isNotEmpty()) {
@@ -46,7 +46,6 @@ class KotlinMvvmGenerator(
                 generate(list[0])
             }
         }
-        return emptyList()
     }
 
     private fun generate(ksClassDeclaration: KSClassDeclaration) {

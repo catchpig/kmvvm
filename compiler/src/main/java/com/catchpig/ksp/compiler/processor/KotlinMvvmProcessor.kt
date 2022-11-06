@@ -25,12 +25,11 @@ class KotlinMvvmProcessor(
     private val activityGenerator = ActivityGenerator(codeGenerator, logger)
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val annotateds = mutableListOf<KSAnnotated>()
-        annotateds.addAll(serviceApiGenerator.process(resolver))
-        annotateds.addAll(prefsGenerator.process(resolver))
-        annotateds.addAll(kotlinMvvmGenerator.process(resolver))
-        annotateds.addAll(activityGenerator.process(resolver))
-        return annotateds
+        kotlinMvvmGenerator.process(resolver)
+        serviceApiGenerator.process(resolver)
+        prefsGenerator.process(resolver)
+        activityGenerator.process(resolver)
+        return emptyList()
     }
 
 

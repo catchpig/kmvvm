@@ -7,7 +7,6 @@ import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.*
@@ -38,12 +37,11 @@ class ServiceApiGenerator(
             CLASS_NAME_CONVERTER.parameterizedBy(CLASS_NAME_RESPONSE_BODY, ANY)
     }
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
+    override fun process(resolver: Resolver) {
         val list = resolver.getKSClassDeclarations<ServiceApi>()
         if (list.isNotEmpty()) {
             generate(list)
         }
-        return emptyList()
     }
 
     private fun generate(list: List<KSClassDeclaration>) {

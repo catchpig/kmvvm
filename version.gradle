@@ -14,7 +14,7 @@ ext {
             /**
              * 是否是快照版本
              */
-            "snapshot"        : true,
+            "snapshot"        : false,
             "kmvvm"           : '1.0.1'
     ]
     kmvvmVersion = kmvvmVersion()

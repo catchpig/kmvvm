@@ -43,13 +43,12 @@ class ActivityGenerator(
             ClassName("com.catchpig.mvvm.controller", "LoadingViewController")
     }
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
+    override fun process(resolver: Resolver) {
         val statusBarClassDeclarations = resolver.getKSClassDeclarations<StatusBar>()
         val titleClassDeclarations = resolver.getKSClassDeclarations<Title>()
         val ksClassDeclarations = statusBarClassDeclarations.toMutableSet()
         ksClassDeclarations.addAll(titleClassDeclarations)
         generate(ksClassDeclarations)
-        return emptyList()
     }
 
     private fun generate(list: Set<KSClassDeclaration>) {

@@ -10,7 +10,7 @@ abstract class BaseGenerator(
     private val logger: KSPLogger
 ) {
 
-    abstract fun process(resolver: Resolver): List<KSAnnotated>
+    abstract fun process(resolver: Resolver)
 
     fun warning(tag: String, msg: String) {
         logger.warn("$tag:$msg")

@@ -17,7 +17,7 @@ annotation class ServiceApi(
      */
     val baseUrl: String,
     /**
-     * 接收数据转换器(封装的有基类-@see BaseResponseBodyConverter)
+     * 接收数据转换器(封装的有基类{@see BaseResponseBodyConverter}
      * 也可以不使用基类,直接继承{@see SerializationConverter}
      */
     val responseConverter: KClass<out SerializationConverter<*, *>>,

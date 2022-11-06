@@ -36,13 +36,12 @@ class PrefsGenerator(
 
     lateinit var ksBuiltIns: KSBuiltIns
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
+    override fun process(resolver: Resolver) {
         ksBuiltIns = resolver.builtIns
         val list = resolver.getKSClassDeclarations<Prefs>()
         if (list.isNotEmpty()) {
             generate(list)
         }
-        return emptyList()
     }
 
     @OptIn(KspExperimental::class)

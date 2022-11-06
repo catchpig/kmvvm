@@ -61,6 +61,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.7.20" apply false
     id 'org.jetbrains.kotlin.multiplatform' version '1.7.20' apply false
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20' apply false
+    id 'com.google.devtools.ksp' version '1.7.20-1.0.7' apply false
 }
 ```
 ### 2. 在app的build.gradle中添加
@@ -69,13 +70,8 @@ plugins {
 plugins {
     id 'kotlinx-serialization'
 
-    id "com.google.devtools.ksp" version "1.7.20-1.0.7"
+    id 'com.google.devtools.ksp'
 }
-```
-### 3. 在app的gradle.properties中添加
-+ 停用ksp增量编译
-```properties
-ksp.incremental=false
 ```
 
 ### 3. 在app的build.gradle的android下添加
@@ -279,7 +275,7 @@ class MvvmGlobalConfig : IGlobalConfig {
 ### 2. Activity
 
 * 使用MVVM的继承BaseVMActivity
-* 不使用MVVM的继承BaseActivity'
+* 不使用MVVM的继承BaseActivity
 
 #### 2.1 标题注解使用
 
