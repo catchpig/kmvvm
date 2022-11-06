@@ -5,7 +5,6 @@ ext {
             "min"       : 21,
             "target"    : 31
     ]
-    ksp = '1.7.20-1.0.7'
     frame = [
             /**
              * true:引用源码
@@ -47,10 +46,11 @@ ext {
             'coroutines'        : '1.6.4',
             'serialization'     : '1.4.1',
             'lifecycle'         : '2.4.1',
+            "ksp"               : '1.7.20-1.0.7'
     ]
 }
 
-def kmvvmVersion()  {
+def kmvvmVersion() {
     def kmvvm_version = rootProject.frame["kmvvm"]
     if (rootProject.frame["snapshot"]) {
         kmvvm_version = "$kmvvm_version-SNAPSHOT"

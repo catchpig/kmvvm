@@ -7,6 +7,7 @@ import com.catchpig.download.entity.DownloadProgress
 import com.catchpig.download.subscriber.DownloadSubscriber
 import com.catchpig.download.subscriber.MultiDownloadSubscriber
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import java.io.File
 import java.net.URL
@@ -66,6 +67,7 @@ class CoroutinesDownloadManager : DownloadManager() {
      * @param downloadUrls Iterable<String>
      * @param multiDownloadCallback MultiDownloadCallback
      */
+    @OptIn(FlowPreview::class)
     suspend fun multiDownload(
         downloadUrls: Iterable<String>,
         multiDownloadCallback: MultiDownloadCallback
@@ -174,6 +176,7 @@ class CoroutinesDownloadManager : DownloadManager() {
      * @param downloadUrl String 下载地址
      * @param downloadCallback DownLoadCallback 下载回调接口,回调的方法已经切到主线程
      */
+    @OptIn(FlowPreview::class)
     suspend fun download(
         downloadUrl: String,
         downloadCallback: DownloadCallback

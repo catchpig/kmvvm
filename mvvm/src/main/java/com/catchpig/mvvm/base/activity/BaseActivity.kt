@@ -169,19 +169,19 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
     }
 
     override fun loadingDialog() {
-        loadingViewController?.let {
+        loadingViewController.let {
             it.loadingDialog()
         }
     }
 
     override fun loadingView() {
-        loadingViewController?.let {
+        loadingViewController.let {
             it.loadingView()
         }
     }
 
     override fun hideLoading() {
-        loadingViewController?.let {
+        loadingViewController.let {
             it.hideLoading()
         }
     }

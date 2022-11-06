@@ -190,7 +190,7 @@ open class DownloadManager {
         }
         responseBody.byteStream().close()
         fileChannel?.close()
-        randomAccessFile?.close()
+        randomAccessFile.close()
         return fileName
     }
 }

@@ -2,6 +2,7 @@ package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.ServiceApi
 import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
+import com.catchpig.ksp.compiler.getAnnotation
 import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -70,7 +71,7 @@ class ServiceApiGenerator(
             val className = ksClassDeclaration.toClassName().simpleName
             val packageName = ksClassDeclaration.toClassName().packageName
             warning(TAG, "${className}被ServiceApi注解")
-            val service = ksClassDeclaration.getAnnotationsByType(ServiceApi::class).first()
+            val service = ksClassDeclaration.getAnnotation<ServiceApi>()!!
             val inteceptors = try {
                 service.interceptors.asList()
             } catch (e: KSTypesNotPresentException) {
@@ -157,11 +158,11 @@ class ServiceApiGenerator(
             .addParameter("type", Type::class)
             .addStatement("val bodyConverter = when(className){")
 
-        list.forEach { typeElement ->
-            val clsName = typeElement.toClassName()
+        list.forEach { ksClassDeclaration ->
+            val clsName = ksClassDeclaration.toClassName()
             val className = clsName.simpleName
             val packageName = clsName.packageName
-            val service = typeElement.getAnnotationsByType(ServiceApi::class).first()
+            val service = ksClassDeclaration.getAnnotation<ServiceApi>()!!
             val converter = try {
                 service.responseConverter
             } catch (e: KSTypeNotPresentException) {
