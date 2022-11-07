@@ -5,16 +5,16 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-
 import android.os.Build
+import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
-import java.util.jar.Manifest
 
 private const val TAG = "ContextExt"
+
 /**
  * 安装apk
  * 需要添加android.permission.REQUEST_INSTALL_PACKAGES权限
@@ -22,7 +22,7 @@ private const val TAG = "ContextExt"
  * @receiver Context
  * @param apkPath String apk本地路径
  */
-fun Context.installApk(apkPath: String){
+fun Context.installApk(apkPath: String) {
     "apk本地路径:$apkPath".logi(TAG)
     var pFile = File(apkPath)
     val intent = Intent()
@@ -43,8 +43,8 @@ fun Context.installApk(apkPath: String){
  * ColorRes 转 ColorInt
  */
 @ColorInt
-fun Context.colorResToInt(@ColorRes colorRes: Int):Int{
-    return ContextCompat.getColor(this,colorRes)
+fun Context.colorResToInt(@ColorRes colorRes: Int): Int {
+    return ContextCompat.getColor(this, colorRes)
 }
 
 /**
@@ -55,4 +55,8 @@ fun Context.copyClipboard(charSequence: CharSequence) {
         getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clipData = ClipData.newPlainText(null, charSequence)
     clipboardManager.setPrimaryClip(clipData)
+}
+
+fun Context.layoutInflater(): LayoutInflater {
+    return LayoutInflater.from(this);
 }

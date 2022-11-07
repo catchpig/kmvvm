@@ -11,6 +11,7 @@ import com.catchpig.kmvvm.databinding.LayoutFragmentErrorBinding
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.base.fragment.BaseFragment
 import com.catchpig.mvvm.interfaces.IGlobalConfig
+import com.catchpig.utils.ext.layoutInflater
 
 @GlobalConfig
 class MvvmGlobalConfig : IGlobalConfig {
@@ -47,7 +48,7 @@ class MvvmGlobalConfig : IGlobalConfig {
     }
 
     override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
-        return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return LayoutEmptyBinding.inflate(parent.layoutInflater(), parent, false)
     }
 
     override fun getFailedBinding(layoutInflater: LayoutInflater, any: Any): ViewBinding? {

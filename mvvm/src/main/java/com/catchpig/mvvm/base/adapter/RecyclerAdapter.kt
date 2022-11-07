@@ -316,16 +316,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
 
     abstract fun viewBinding(parent: ViewGroup): VB
 
-    /**
-     * 获取需要viewHolder的view
-     *
-     * @param layoutId 布局文件
-     */
-    private fun inflate(layoutId: Int, group: ViewGroup): View {
-        val inflater = LayoutInflater.from(group.context)
-        return inflater.inflate(layoutId, group, false)
-    }
-
     override fun onBindViewHolder(holder: CommonViewHolder<VB>, position: Int) {
         var index = position
         when (ItemViewType.enumOfValue(getItemViewType(position))) {
