@@ -74,7 +74,14 @@ plugins {
 }
 ```
 
-### 3. 在app的build.gradle的android下添加
+### 3. 在app的gradle.properties中添加
+
++ 停用ksp增量编译
+```properties
+ksp.incremental=false
+```
+
+### 4. 在app的build.gradle的android下添加
 
 ```groovy
 buildFeatures {
@@ -82,7 +89,7 @@ buildFeatures {
 }
 ```
 
-### 4. 添加依赖
+### 5. 添加依赖
 
 ```groovy
 implementation "io.github.catchpig.kmvvm:mvvm:last_version"
@@ -95,7 +102,7 @@ ksp "io.github.catchpig.kmvvm:compiler:last_version"
 implementation "io.github.catchpig.kmvvm:download:last_version"
 ```
 
-### 5. 使用快照版本的,需要添加如下maven地址
+### 6. 使用快照版本的,需要添加如下maven地址
 
 ```groovy
 maven {
