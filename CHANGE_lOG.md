@@ -1,4 +1,8 @@
 # CHANGE LOG
+### v1.0.3(2022.12.7)
+
++ 下载进度分发有rxjava改为handler
+
 ### v1.0.2(2022.11.8)
 
 + 修复ksp编译ServiceApi注解异常问题

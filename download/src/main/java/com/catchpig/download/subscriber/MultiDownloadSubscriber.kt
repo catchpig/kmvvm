@@ -1,12 +1,12 @@
 package com.catchpig.download.subscriber
 
+import android.os.Handler
+import android.os.Looper
 import com.catchpig.download.callback.DownloadProgressListener
 import com.catchpig.download.callback.MultiDownloadCallback
 import com.catchpig.download.entity.DownloadProgress
 import com.catchpig.utils.ext.logd
 import com.catchpig.utils.ext.loge
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subscribers.ResourceSubscriber
 
 /**
@@ -21,6 +21,8 @@ internal class MultiDownloadSubscriber(
     companion object {
         private const val TAG = "MultiDownloadSubscriber"
     }
+
+    private val handler = Handler(Looper.getMainLooper())
 
     private var paths = arrayListOf<String>()
     public override fun onStart() {
@@ -51,7 +53,7 @@ internal class MultiDownloadSubscriber(
     }
 
     override fun update(read: Long, count: Long, done: Boolean) {
-        Flowable.just(done).subscribeOn(AndroidSchedulers.mainThread()).subscribe {
+        handler.post {
             val completeCount = paths.size + 1
             val downloadProgress = if (done && completeCount == totalCount) {
                 DownloadProgress(read, count, totalCount, totalCount)
