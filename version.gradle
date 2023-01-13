@@ -10,12 +10,12 @@ ext {
              * true:引用源码
              * false:引用maven仓库
              */
-            "importSourceCode": false,
+            "importSourceCode": true,
             /**
              * 是否是快照版本
              */
             "snapshot"        : false,
-            "kmvvm"           : '1.0.3'
+            "kmvvm"           : '1.0.4'
     ]
     kmvvmVersion = kmvvmVersion()
     dependenciesVersion = [

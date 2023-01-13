@@ -1,4 +1,9 @@
 # CHANGE LOG
+
+### v1.0.4(2023.1.13)
+
++ 增加RecyclerAdapter获取全部数据源的方法
+
 ### v1.0.3(2022.12.7)
 
 + 下载进度分发有rxjava改为handler

@@ -48,20 +48,12 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
 
         companion object {
             fun enumOfValue(value: Int): ItemViewType {
-                return when (value) {
-                    TYPE_HEADER.value -> {
-                        TYPE_HEADER
-                    }
-                    TYPE_FOOTER.value -> {
-                        TYPE_FOOTER
-                    }
-                    TYPE_EMPTY.value -> {
-                        TYPE_EMPTY
-                    }
-                    else -> {
-                        TYPE_NORMAL
+                values().forEach {
+                    if (it.value == value) {
+                        return it
                     }
                 }
+                return TYPE_NORMAL
             }
         }
     }
@@ -187,7 +179,18 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
         notifyDataSetChanged()
     }
 
+    /**
+     * 获取数据源
+     * @return MutableList<M>
+     */
+    fun getData(): MutableList<M> {
+        return data
+    }
 
+    /**
+     * 设置数据源
+     * @param list MutableList<M>?
+     */
     fun set(list: MutableList<M>?) {
         firstLoad = false
         if (list != null) {
@@ -221,7 +224,11 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     lateinit var recyclerView: RecyclerView
         private set
 
-
+    /**
+     * 获取单个数据源
+     * @param position Int 下表
+     * @return M?
+     */
     fun get(position: Int): M? {
         check(position > 0 && position < data.size) {
             "position必须大于0,且不能大于data.size"
