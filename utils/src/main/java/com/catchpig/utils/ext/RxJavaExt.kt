@@ -9,6 +9,6 @@ private const val TAG = "RxJavaExt"
 /**
  * 被观察者在io线程中执行,观察者在主线程中执行
  */
-fun <T> Flowable<T>.io2main(): Flowable<T> {
+fun <T : Any> Flowable<T>.io2main(): Flowable<T> {
     return this.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 }
