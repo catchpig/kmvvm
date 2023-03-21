@@ -1,4 +1,7 @@
 # CHANGE LOG
+### v1.0.5(2023.3.21)
+
++ 修复FragmentTransaction.replace异常
 
 ### v1.0.4(2023.1.13)
 
