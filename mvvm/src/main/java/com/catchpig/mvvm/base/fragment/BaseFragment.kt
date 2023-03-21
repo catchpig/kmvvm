@@ -38,9 +38,7 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         LoadingViewController(requireActivity(), rootBinding)
     }
 
-    private val rootBinding: ViewRootBinding by lazy {
-        ViewRootBinding.inflate(layoutInflater)
-    }
+    private lateinit var rootBinding: ViewRootBinding
 
     private var failedBinding: ViewBinding? = null
 
@@ -101,6 +99,7 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        rootBinding = ViewRootBinding.inflate(inflater,container,false)
         rootBinding.layoutBody.addView(
             bodyBinding.root,
             0,
