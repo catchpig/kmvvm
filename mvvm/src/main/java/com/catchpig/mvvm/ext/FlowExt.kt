@@ -1,9 +1,10 @@
 package com.catchpig.mvvm.ext
 
-import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseView
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
 import com.catchpig.utils.ext.logd
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -97,6 +98,23 @@ fun <T> Flow<T>.lifecycleLoadingView(
                 base.showFailedView()
             }
             KotlinMvvmCompiler.onError(base, t)
+            errorCallback?.let {
+                errorCallback(t)
+            }
+        }.collect {
+            callback(it)
+        }
+    }
+}
+
+fun <T> Flow<T>.lifecycle(
+    viewModelScope: CoroutineScope,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+) {
+    viewModelScope.launch(Dispatchers.Main) {
+        this@lifecycle.flowOn(Dispatchers.IO).catch { t ->
+            KotlinMvvmCompiler.onError(viewModelScope, t)
             errorCallback?.let {
                 errorCallback(t)
             }

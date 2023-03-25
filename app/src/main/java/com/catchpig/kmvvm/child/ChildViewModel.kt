@@ -1,10 +1,13 @@
 package com.catchpig.kmvvm.child
 
+import androidx.lifecycle.viewModelScope
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class ChildViewModel : BaseViewModel() {
 
