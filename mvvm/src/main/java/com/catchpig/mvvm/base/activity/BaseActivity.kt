@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.contains
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
@@ -102,14 +103,20 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
     override fun showFailedView() {
         getFailedBinding()?.let {
             rootBinding {
-                layoutBody.addView(it.root)
+                if (!layoutBody.contains(it.root)) {
+                    layoutBody.addView(it.root)
+                }
             }
         }
     }
 
     override fun removeFailedView() {
         failedBinding?.let {
-            rootBinding.layoutBody.removeView(it.root)
+            rootBinding{
+                if (layoutBody.contains(it.root)) {
+                    layoutBody.removeView(it.root)
+                }
+            }
         }
     }
 

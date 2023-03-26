@@ -11,9 +11,7 @@ import com.catchpig.kmvvm.fullscreen.FullScreenActivity
 import com.catchpig.kmvvm.recycle.RecycleActivity
 import com.catchpig.kmvvm.transparent.TransparentActivity
 import com.catchpig.mvvm.base.fragment.BaseVMFragment
-import com.catchpig.mvvm.ext.lifecycle
 import com.catchpig.mvvm.ext.lifecycleLoadingDialog
-import com.catchpig.mvvm.ext.lifecycleLoadingView
 import com.catchpig.utils.ext.startKtActivity
 
 class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), View.OnClickListener {

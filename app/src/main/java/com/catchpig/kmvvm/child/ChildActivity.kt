@@ -39,12 +39,23 @@ class ChildActivity : BaseVMActivity<ActivityChildBinding, ChildViewModel>() {
     }
 
     override fun initView() {
-
+        bodyBinding {
+            loadingDialogViewModel.setOnClickListener {
+                viewModel.loadingDialogViewModel()
+            }
+            loadingViewViewModel.setOnClickListener {
+                viewModel.loadingViewViewModel()
+            }
+            loadingViewErrorViewModel.setOnClickListener {
+                viewModel.loadingViewErrorViewModel()
+            }
+        }
     }
 
     override fun initFlow() {
         onFailedReload(false) {
             loadingViewError(bodyBinding.root)
+            viewModel.loadingViewErrorViewModel()
         }
     }
 

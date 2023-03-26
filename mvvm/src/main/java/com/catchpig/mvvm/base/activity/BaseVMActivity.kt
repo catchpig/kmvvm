@@ -5,9 +5,9 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseVMView
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
 import com.catchpig.utils.ext.logd
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,8 @@ import java.lang.reflect.ParameterizedType
  * @author catchpig
  * @date 2019/4/6 11:07
  */
-abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivity<VB>(), BaseVMView {
+abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivity<VB>(),
+    BaseVMView {
     companion object {
         private const val TAG = "BaseVMActivity"
     }
@@ -39,10 +40,40 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
         super.onCreate(savedInstanceState)
         initParam()
         lifecycle.addObserver(viewModel)
+        initLoadingObserver()
         initView()
         initFlow()
     }
 
+    private fun initLoadingObserver() {
+        viewModel.loadingDialogLiveData.observe(this) {
+            if (it) {
+                loadingDialog()
+            }
+        }
+        viewModel.loadingViewLiveData.observe(this) {
+            if (it) {
+                loadingView()
+            }
+        }
+        viewModel.hideLoadingLiveData.observe(this) {
+            if (it) {
+                hideLoading()
+            }
+        }
+        viewModel.errorLiveData.observe(this) {
+            if (it != null) {
+                KotlinMvvmCompiler.onError(this, it)
+            }
+        }
+        viewModel.showFailedViewLiveData.observe(this){
+            if (it) {
+                showFailedView()
+            }else{
+                removeFailedView()
+            }
+        }
+    }
 
 
     @Deprecated(
