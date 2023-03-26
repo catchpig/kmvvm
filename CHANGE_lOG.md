@@ -1,4 +1,8 @@
 # CHANGE LOG
+### v1.0.6(2023.3.26)
+
++ ViewModel增加Flow的lifecycle扩展方法
+
 ### v1.0.5(2023.3.21)
 
 + 修复FragmentTransaction.replace异常

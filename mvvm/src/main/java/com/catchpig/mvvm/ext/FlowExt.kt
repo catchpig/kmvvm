@@ -12,6 +12,12 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "FlowExt"
 
+/**
+ * 列表刷新的lifecycle
+ * @receiver Flow<MutableList<T>>
+ * @param base BaseView
+ * @param refreshLayoutWrapper RefreshRecyclerView
+ */
 fun <T> Flow<MutableList<T>>.lifecycleRefresh(
     base: BaseView,
     refreshLayoutWrapper: RefreshRecyclerView
@@ -27,6 +33,14 @@ fun <T> Flow<MutableList<T>>.lifecycleRefresh(
     }
 }
 
+/**
+ * 不带loading的lifecycle
+ * @receiver Flow<T>
+ * @param base BaseView
+ * @param showFailedView Boolean 是否显示请求失败的页面
+ * @param errorCallback Function1<[@kotlin.ParameterName] Throwable, Unit>? 异常的回调
+ * @param callback [@kotlin.ExtensionFunctionType] Function1<T, Unit> 正常数据的回调
+ */
 fun <T> Flow<T>.lifecycle(
     base: BaseView,
     showFailedView: Boolean = false,
@@ -50,6 +64,14 @@ fun <T> Flow<T>.lifecycle(
     }
 }
 
+/**
+ * 带loadingDialog的lifecycle
+ * @receiver Flow<T>
+ * @param base BaseView
+ * @param showFailedView Boolean 是否显示请求失败的页面
+ * @param errorCallback Function1<[@kotlin.ParameterName] Throwable, Unit>? 异常的回调
+ * @param callback [@kotlin.ExtensionFunctionType] Function1<T, Unit> 正常数据的回调
+ */
 fun <T> Flow<T>.lifecycleLoadingDialog(
     base: BaseView,
     showFailedView: Boolean = false,
@@ -79,6 +101,14 @@ fun <T> Flow<T>.lifecycleLoadingDialog(
     }
 }
 
+/**
+ * 带loadingView的lifecycle
+ * @receiver Flow<T>
+ * @param base BaseView
+ * @param showFailedView Boolean 是否显示请求失败的页面
+ * @param errorCallback Function1<[@kotlin.ParameterName] Throwable, Unit>? 异常的回调
+ * @param callback [@kotlin.ExtensionFunctionType] Function1<T, Unit> 正常数据的回调
+ */
 fun <T> Flow<T>.lifecycleLoadingView(
     base: BaseView,
     showFailedView: Boolean = false,
@@ -108,6 +138,14 @@ fun <T> Flow<T>.lifecycleLoadingView(
     }
 }
 
+/**
+ * 不带loading的lifecycle
+ * @receiver Flow<T>
+ * @param baseViewModel BaseViewModel
+ * @param showFailedView Boolean 是否显示请求失败的页面
+ * @param errorCallback Function1<[@kotlin.ParameterName] Throwable, Unit>? 异常的回调
+ * @param callback [@kotlin.ExtensionFunctionType] Function1<T, Unit> 正常数据的回调
+ */
 fun <T> Flow<T>.lifecycle(
     baseViewModel: BaseViewModel,
     showFailedView: Boolean = false,
@@ -131,6 +169,14 @@ fun <T> Flow<T>.lifecycle(
     }
 }
 
+/**
+ * 带loadingDialog的lifecycle
+ * @receiver Flow<T>
+ * @param baseViewModel BaseViewModel
+ * @param showFailedView Boolean 是否显示请求失败的页面
+ * @param errorCallback Function1<[@kotlin.ParameterName] Throwable, Unit>? 异常的回调
+ * @param callback [@kotlin.ExtensionFunctionType] Function1<T, Unit> 正常数据的回调
+ */
 fun <T> Flow<T>.lifecycleLoadingView(
     baseViewModel: BaseViewModel,
     showFailedView: Boolean = false,
@@ -161,7 +207,14 @@ fun <T> Flow<T>.lifecycleLoadingView(
     }
 }
 
-
+/**
+ * 带loadingView的lifecycle
+ * @receiver Flow<T>
+ * @param baseViewModel BaseViewModel
+ * @param showFailedView Boolean 是否显示请求失败的页面
+ * @param errorCallback Function1<[@kotlin.ParameterName] Throwable, Unit>? 异常的回调
+ * @param callback [@kotlin.ExtensionFunctionType] Function1<T, Unit> 正常数据的回调
+ */
 fun <T> Flow<T>.lifecycleLoadingDialog(
     baseViewModel: BaseViewModel,
     showFailedView: Boolean = false,

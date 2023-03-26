@@ -636,16 +636,34 @@ class ResponseBodyConverter :
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
     )
+  - lifecycle(
+    baseViewModel: BaseViewModel,
+    showFailedView: Boolean = false,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+    )
 + 带loadingView的网络请求封装
   - lifecycleLoadingDialog(
-      base: BaseView,
+    base: BaseView,
     showFailedView: Boolean = false,
-      errorCallback: ((t: Throwable) -> Unit)? = null,
-      callback: T.() -> Unit
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+  )
+  - lifecycleLoadingDialog(
+    baseViewModel: BaseViewModel,
+    showFailedView: Boolean = false,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
   )
 + 带loadingDialog的网络请求封装
   - lifecycleLoadingView(
     base: BaseView,
+    showFailedView: Boolean = false,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    callback: T.() -> Unit
+    )
+  - lifecycleLoadingView(
+    baseViewModel: BaseViewModel,
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
