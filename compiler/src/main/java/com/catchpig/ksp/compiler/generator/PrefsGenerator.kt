@@ -9,10 +9,8 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSBuiltIns
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
-import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
@@ -24,6 +22,7 @@ class PrefsGenerator(
 
     companion object {
         private const val TAG = "PrefsGenerator"
+        private const val DEFAULT_VALUE = "defaultValue"
         private val CLASS_NAME_SHARED_PREFERENCES_EDITOR =
             ClassName("android.content.SharedPreferences", "Editor")
         private val CLASS_NAME_SHARED_PREFERENCES =
@@ -82,12 +81,13 @@ class PrefsGenerator(
                     val prefsKey = prefsField.value.ifEmpty {
                         fieldName
                     }
-                    val funName = fieldName.substring(0, 1).uppercase() + fieldName.substring(1)
                     if (isCreateMethod(it)) {
-                        //set方法
-                        funSpecs.add(createSetFunction(it, funName, fieldName, prefsKey))
+                        //apply方法
+                        funSpecs.add(createApplyFunction(it, fieldName, prefsKey))
+                        //commit方法
+                        funSpecs.add(createCommitFunction(it, fieldName, prefsKey))
                         //get方法
-                        funSpecs.add(createGetFunction(it, funName, prefsKey))
+                        funSpecs.add(createGetFunction(it, fieldName, prefsKey))
                     } else {
                         error("${fieldName}的类型不支持,只支持Double,Float,Int,Long,String,Boolean")
                     }
@@ -110,47 +110,64 @@ class PrefsGenerator(
      */
     private fun createGetFunction(
         ksPropertyDeclaration: KSPropertyDeclaration,
-        funName: String,
+        fieldName: String,
         prefsKey: String
     ): FunSpec {
+        var funName =
+            if (fieldName.startsWith("is")) {
+                fieldName
+            } else {
+                "get${fieldName.substring(0, 1).uppercase()}${fieldName.substring(1)}"
+            }
         var getFunSpecBuilder = FunSpec
-            .builder("get${funName}")
+            .builder(funName)
 
         when (ksPropertyDeclaration.type.resolve()) {
             ksBuiltIns.booleanType -> {
                 getFunSpecBuilder = getFunSpecBuilder
-                    .addStatement("return sharedPrefs.getBoolean(%S,false)", prefsKey)
+                    .addBooleanParameter(false)
+                    .addStatement("return sharedPrefs.getBoolean(%S,${DEFAULT_VALUE})", prefsKey)
                     .returns(BOOLEAN)
             }
+
             ksBuiltIns.floatType -> {
                 getFunSpecBuilder = getFunSpecBuilder
-                    .addStatement("return sharedPrefs.getFloat(%S,0f)", prefsKey)
+                    .addFloatParameter(0f)
+                    .addStatement("return sharedPrefs.getFloat(%S,${DEFAULT_VALUE})", prefsKey)
                     .returns(FLOAT)
             }
+
             ksBuiltIns.intType -> {
                 getFunSpecBuilder = getFunSpecBuilder
                     .returns(INT)
-                    .addStatement("return sharedPrefs.getInt(%S,0)", prefsKey)
+                    .addIntParameter(0)
+                    .addStatement("return sharedPrefs.getInt(%S,${DEFAULT_VALUE})", prefsKey)
             }
+
             ksBuiltIns.longType -> {
                 getFunSpecBuilder = getFunSpecBuilder
                     .returns(LONG)
-                    .addStatement("return sharedPrefs.getLong(%S,0)", prefsKey)
+                    .addLongParameter(0L)
+                    .addStatement("return sharedPrefs.getLong(%S,${DEFAULT_VALUE})", prefsKey)
             }
+
             ksBuiltIns.doubleType -> {
                 getFunSpecBuilder = getFunSpecBuilder
                     .returns(DOUBLE)
+                    .addDoubleParameter(0.0)
                     .addStatement(
-                        "return sharedPrefs.getString(%S,%S)!!.toDouble()",
-                        prefsKey,
-                        "0.0"
+                        "return sharedPrefs.getString(%S,${DEFAULT_VALUE}.toString())!!.toDouble()",
+                        prefsKey
                     )
             }
+
             ksBuiltIns.stringType -> {
                 getFunSpecBuilder = getFunSpecBuilder
                     .returns(STRING)
-                    .addStatement("return sharedPrefs.getString(%S,%S)!!", prefsKey, "")
+                    .addStringParameter("")
+                    .addStatement("return sharedPrefs.getString(%S,${DEFAULT_VALUE})!!", prefsKey)
             }
+
             else -> {
             }
         }
@@ -158,54 +175,189 @@ class PrefsGenerator(
     }
 
     /**
-     * 创建set方法
+     * 创建apply方法
      */
-    private fun createSetFunction(
+    private fun createApplyFunction(
         ksPropertyDeclaration: KSPropertyDeclaration,
-        funName: String,
         fieldName: String,
         prefsKey: String
     ): FunSpec {
-        var setFunSpecBuilder = FunSpec
-            .builder("set${funName}")
+        var funName =
+            if (fieldName.startsWith("is")) {
+                fieldName.substring(2)
+            } else {
+                "${fieldName.substring(0, 1).uppercase()}${fieldName.substring(1)}"
+            }
+        var applyFunSpecBuilder = FunSpec.builder("apply${funName}")
+        val remark = "异步存储"
         when (ksPropertyDeclaration.type.resolve()) {
             ksBuiltIns.booleanType -> {
-                setFunSpecBuilder = setFunSpecBuilder
+                applyFunSpecBuilder = applyFunSpecBuilder
                     .addParameter(fieldName, BOOLEAN)
+                    .addComment(remark)
                     .addStatement("sharedEditor.putBoolean(%S,$fieldName).apply()", prefsKey)
             }
+
             ksBuiltIns.floatType -> {
-                setFunSpecBuilder = setFunSpecBuilder
+                applyFunSpecBuilder = applyFunSpecBuilder
                     .addParameter(fieldName, FLOAT)
+                    .addComment(remark)
                     .addStatement("sharedEditor.putFloat(%S,$fieldName).apply()", prefsKey)
             }
+
             ksBuiltIns.intType -> {
-                setFunSpecBuilder = setFunSpecBuilder
+                applyFunSpecBuilder = applyFunSpecBuilder
                     .addParameter(fieldName, INT)
+                    .addComment(remark)
                     .addStatement("sharedEditor.putInt(%S,$fieldName).apply()", prefsKey)
             }
+
             ksBuiltIns.longType -> {
-                setFunSpecBuilder = setFunSpecBuilder
+                applyFunSpecBuilder = applyFunSpecBuilder
                     .addParameter(fieldName, LONG)
+                    .addComment(remark)
                     .addStatement("sharedEditor.putLong(%S,$fieldName).apply()", prefsKey)
             }
+
             ksBuiltIns.doubleType -> {
-                setFunSpecBuilder = setFunSpecBuilder
+                applyFunSpecBuilder = applyFunSpecBuilder
                     .addParameter(fieldName, DOUBLE)
+                    .addComment(remark)
                     .addStatement(
                         "sharedEditor.putString(%S,${fieldName}.toString()).apply()",
                         prefsKey
                     )
             }
+
             ksBuiltIns.stringType -> {
-                setFunSpecBuilder = setFunSpecBuilder
+                applyFunSpecBuilder = applyFunSpecBuilder
                     .addParameter(fieldName, STRING)
+                    .addComment(remark)
                     .addStatement("sharedEditor.putString(%S,${fieldName}).apply()", prefsKey)
             }
+
             else -> {
             }
         }
-        return setFunSpecBuilder.build()
+        return applyFunSpecBuilder.build()
+    }
+
+    /**
+     * 创建apply方法
+     */
+    private fun createCommitFunction(
+        ksPropertyDeclaration: KSPropertyDeclaration,
+        fieldName: String,
+        prefsKey: String
+    ): FunSpec {
+        var funName =
+            if (fieldName.startsWith("is")) {
+                fieldName.substring(2)
+            } else {
+                "${fieldName.substring(0, 1).uppercase()}${fieldName.substring(1)}"
+            }
+        var commitFunSpecBuilder = FunSpec.builder("commit${funName}")
+        val remark = "同步存储"
+        when (ksPropertyDeclaration.type.resolve()) {
+            ksBuiltIns.booleanType -> {
+                commitFunSpecBuilder = commitFunSpecBuilder
+                    .addParameter(fieldName, BOOLEAN)
+                    .addComment(remark)
+                    .returns(BOOLEAN)
+                    .addStatement(
+                        "return sharedEditor.putBoolean(%S,$fieldName).commit()",
+                        prefsKey
+                    )
+            }
+
+            ksBuiltIns.floatType -> {
+                commitFunSpecBuilder = commitFunSpecBuilder
+                    .addParameter(fieldName, FLOAT)
+                    .addComment(remark)
+                    .returns(BOOLEAN)
+                    .addStatement("return sharedEditor.putFloat(%S,$fieldName).commit()", prefsKey)
+            }
+
+            ksBuiltIns.intType -> {
+                commitFunSpecBuilder = commitFunSpecBuilder
+                    .addParameter(fieldName, INT)
+                    .addComment(remark)
+                    .returns(BOOLEAN)
+                    .addStatement("return sharedEditor.putInt(%S,$fieldName).commit()", prefsKey)
+            }
+
+            ksBuiltIns.longType -> {
+                commitFunSpecBuilder = commitFunSpecBuilder
+                    .addParameter(fieldName, LONG)
+                    .addComment(remark)
+                    .returns(BOOLEAN)
+                    .addStatement("return sharedEditor.putLong(%S,$fieldName).commit()", prefsKey)
+            }
+
+            ksBuiltIns.doubleType -> {
+                commitFunSpecBuilder = commitFunSpecBuilder
+                    .addParameter(fieldName, DOUBLE)
+                    .addComment(remark)
+                    .returns(BOOLEAN)
+                    .addStatement(
+                        "return sharedEditor.putString(%S,${fieldName}.toString()).commit()",
+                        prefsKey
+                    )
+            }
+
+            ksBuiltIns.stringType -> {
+                commitFunSpecBuilder = commitFunSpecBuilder
+                    .addParameter(fieldName, STRING)
+                    .addComment(remark)
+                    .returns(BOOLEAN)
+                    .addStatement(
+                        "return sharedEditor.putString(%S,${fieldName}).commit()",
+                        prefsKey
+                    )
+            }
+
+            else -> {
+            }
+        }
+        return commitFunSpecBuilder.build()
+    }
+
+    private inline fun <reified T : Any> FunSpec.Builder.addBooleanParameter(defaultValue: T): FunSpec.Builder {
+        return addParameter(
+            ParameterSpec.builder(DEFAULT_VALUE, T::class).defaultValue("%L", defaultValue).build()
+        )
+    }
+
+    private inline fun <reified T : Any> FunSpec.Builder.addFloatParameter(defaultValue: T): FunSpec.Builder {
+        return addParameter(
+            ParameterSpec.builder(DEFAULT_VALUE, T::class).defaultValue("%LF", defaultValue)
+                .build()
+        )
+    }
+
+    private inline fun <reified T : Any> FunSpec.Builder.addIntParameter(defaultValue: T): FunSpec.Builder {
+        return addParameter(
+            ParameterSpec.builder(DEFAULT_VALUE, T::class).defaultValue("%L", defaultValue).build()
+        )
+    }
+
+    private inline fun <reified T : Any> FunSpec.Builder.addLongParameter(defaultValue: T): FunSpec.Builder {
+        return addParameter(
+            ParameterSpec.builder(DEFAULT_VALUE, T::class).defaultValue("%LL", defaultValue)
+                .build()
+        )
+    }
+
+    private inline fun <reified T : Any> FunSpec.Builder.addDoubleParameter(defaultValue: T): FunSpec.Builder {
+        return addParameter(
+            ParameterSpec.builder(DEFAULT_VALUE, T::class).defaultValue("%L", defaultValue).build()
+        )
+    }
+
+    private inline fun <reified T : Any> FunSpec.Builder.addStringParameter(defaultValue: T): FunSpec.Builder {
+        return addParameter(
+            ParameterSpec.builder(DEFAULT_VALUE, T::class).defaultValue("%S", defaultValue).build()
+        )
     }
 
     /**
@@ -255,10 +407,12 @@ class PrefsGenerator(
      * 只有类型为Double,Float,Int,Long,String,Boolean才能生成方法
      */
     private fun isCreateMethod(ksPropertyDeclaration: KSPropertyDeclaration): Boolean {
+        warning(TAG, "ksPropertyDeclaration.type.resolve():" + ksPropertyDeclaration.type.resolve())
         return when (ksPropertyDeclaration.type.resolve()) {
             ksBuiltIns.booleanType, ksBuiltIns.floatType, ksBuiltIns.intType, ksBuiltIns.longType, ksBuiltIns.doubleType, ksBuiltIns.stringType -> {
                 true
             }
+
             else -> {
                 false
             }

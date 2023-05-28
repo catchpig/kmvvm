@@ -1,7 +1,6 @@
 package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.*
-import com.catchpig.compiler.exception.KAptException
 import com.catchpig.ksp.compiler.ext.getAnnotation
 import com.catchpig.ksp.compiler.ext.getAnnotations
 import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
@@ -9,7 +8,6 @@ import com.catchpig.ksp.compiler.getAnnotation
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toClassName
@@ -54,6 +52,7 @@ class ActivityGenerator(
     private fun generate(list: Set<KSClassDeclaration>) {
         list.forEach {
             val title = it.getAnnotation<Title>()
+
             val statusBar = it.getAnnotation<StatusBar>()
 
             val className = it.toClassName().simpleName
@@ -122,6 +121,7 @@ class ActivityGenerator(
                         0 -> {
                             builder = builder.addStatement("  activity.${funcName}()")
                         }
+
                         1 -> {
                             val paramType = parameters.first().type.toTypeName().toString()
                             if (paramType == TYPE_VIEW.canonicalName) {
@@ -130,8 +130,12 @@ class ActivityGenerator(
                                 error(TAG, "OnClickFirstText注解修饰的参数类型只能为View")
                             }
                         }
+
                         else -> {
-                            error(TAG, "OnClickFirstText注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(
+                                TAG,
+                                "OnClickFirstText注解修饰的参数个数只能<=1,且类型类型只能为View"
+                            )
                         }
                     }
                     builder = builder.addStatement("}")
@@ -161,6 +165,7 @@ class ActivityGenerator(
                         0 -> {
                             builder = builder.addStatement("  activity.${funcName}()")
                         }
+
                         1 -> {
                             val paramType = parameters.first().type.toTypeName().toString()
                             if (paramType == TYPE_VIEW.canonicalName) {
@@ -169,8 +174,12 @@ class ActivityGenerator(
                                 error(TAG, "OnClickFirstDrawable注解修饰的参数类型只能为View")
                             }
                         }
+
                         else -> {
-                            error(TAG, "OnClickFirstDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(
+                                TAG,
+                                "OnClickFirstDrawable注解修饰的参数个数只能<=1,且类型类型只能为View"
+                            )
                         }
                     }
                     builder = builder.addStatement("}")
@@ -197,6 +206,7 @@ class ActivityGenerator(
                         0 -> {
                             builder = builder.addStatement("  activity.${funcName}()")
                         }
+
                         1 -> {
                             val paramType = parameters.first().type.toTypeName().toString()
                             if (paramType == TYPE_VIEW.canonicalName) {
@@ -205,8 +215,12 @@ class ActivityGenerator(
                                 error(TAG, "OnClickSecondText注解修饰的参数类型只能为View")
                             }
                         }
+
                         else -> {
-                            error(TAG, "OnClickSecondText注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(
+                                TAG,
+                                "OnClickSecondText注解修饰的参数个数只能<=1,且类型类型只能为View"
+                            )
                         }
                     }
                     builder = builder.addStatement("}")
@@ -237,6 +251,7 @@ class ActivityGenerator(
                         0 -> {
                             builder = builder.addStatement("  activity.${funcName}()")
                         }
+
                         1 -> {
                             val paramType = parameters.first().type.toTypeName().toString()
                             if (paramType == TYPE_VIEW.canonicalName) {
@@ -245,8 +260,12 @@ class ActivityGenerator(
                                 error(TAG, "OnClickSecondDrawable注解修饰的参数类型只能为View")
                             }
                         }
+
                         else -> {
-                            error(TAG, "OnClickSecondDrawable注解修饰的参数个数只能<=1,且类型类型只能为View")
+                            error(
+                                TAG,
+                                "OnClickSecondDrawable注解修饰的参数个数只能<=1,且类型类型只能为View"
+                            )
                         }
                     }
                     builder = builder.addStatement("}")
@@ -336,6 +355,7 @@ class ActivityGenerator(
                 .initializer("null")
                 .build()
         } else {
+            warning(TAG, "$className.title.value${title.value}")
             builder
                 .initializer(
                     "TitleParam(%L,%L,%L,%L)",

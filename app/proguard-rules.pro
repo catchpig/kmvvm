@@ -26,7 +26,6 @@
 
 -keep class com.google.android.material.snackbar.Snackbar {*;}
 
--keep @com.catchpig.annotation.Adapter class * {*;}
 -keep @com.catchpig.annotation.ServiceApi class * {*;}
 #-keep public class * extends com.catchpig.mvvm.base.activity.BaseVMActivity
 #-keep public class * extends com.catchpig.mvvm.base.activity.BaseActivity

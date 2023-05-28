@@ -5,21 +5,20 @@ def properties = new Properties()
 properties.load(rootProject.file("local.properties").newDataInputStream())
 def ossrhUsername = properties.getProperty("ossrhUsername")
 def ossrhPassword = properties.getProperty("ossrhPassword")
-task sourcesJar(type: Jar) {
-    if (project.hasProperty("kotlin") && project.plugins.hasPlugin("java-library")) {
-        from sourceSets.main.java.getSrcDirs()
-    } else if (project.hasProperty("android") && project.plugins.hasPlugin("com.android.library")) {
-        from android.sourceSets.main.java.getSrcDirs()
-    } else {
-        from sourceSets.main.allJava
-    }
-    classifier = 'sources'
-}
 
 if (project.plugins.hasPlugin("java-library")) {
     task javadocJar(type: Jar) {
         from javadoc
         classifier = 'javadoc'
+    }
+    task javaSourcesJar(type: Jar) {
+        from sourceSets.main.java.srcDirs
+        classifier = 'sources'
+    }
+} else if (project.plugins.hasPlugin("com.android.library")) {
+    task androidSourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+//        classifier = 'sources'
     }
 }
 
@@ -31,16 +30,16 @@ afterEvaluate {
             release(MavenPublication) {
                 if (project.plugins.hasPlugin("com.android.library")) {
                     from components.release
+                    artifact androidSourcesJar
                 } else if (project.plugins.hasPlugin("java-library")) {
                     from components.java
                     artifact javadocJar
+                    artifact javaSourcesJar
                 }
                 def projectName = project.name
                 groupId = 'io.github.catchpig.kmvvm'
                 artifactId = projectName
                 version = kmvvm_version
-
-                artifact sourcesJar
 
                 pom {
                     name = 'kmvvm'

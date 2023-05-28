@@ -47,7 +47,7 @@ class MvvmGlobalConfig : IGlobalConfig {
         return R.color.white
     }
 
-    override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
+    override fun getRecyclerEmptyBinding(parent: ViewGroup): ViewBinding {
         return LayoutEmptyBinding.inflate(parent.layoutInflater(), parent, false)
     }
 

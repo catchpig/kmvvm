@@ -1,6 +1,10 @@
 # CHANGE LOG
 ### v1.0.6(2023.3.26)
 
++ PrefsGenerator增加同步和异步保存数据方法
++ 
+### v1.0.6(2023.3.26)
+
 + ViewModel增加Flow的lifecycle扩展方法
 
 ### v1.0.5(2023.3.21)

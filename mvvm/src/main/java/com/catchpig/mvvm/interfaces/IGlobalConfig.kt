@@ -69,7 +69,7 @@ interface IGlobalConfig {
      * @param parent ViewGroup
      * @return ViewBinding
      */
-    fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding
+    fun getRecyclerEmptyBinding(parent: ViewGroup): ViewBinding
 
     /**
      * 网络请求失败的显示页面

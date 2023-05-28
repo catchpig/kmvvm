@@ -310,7 +310,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
             TYPE_EMPTY -> {
                 if (emptyView == null) {
                     emptyView =
-                        KotlinMvvmCompiler.globalConfig().getRecyclerEmptyBanding(parent).root
+                        KotlinMvvmCompiler.globalConfig().getRecyclerEmptyBinding(parent).root
                 }
                 emptyView!!
             }

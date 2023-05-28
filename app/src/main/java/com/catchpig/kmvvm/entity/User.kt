@@ -24,5 +24,7 @@ data class User(
 
         @PrefsField
         val money: Double = 12.0,
+        @PrefsField
+        val time:Long = 1L,
         val nu: MutableList<String> = mutableListOf()
 )

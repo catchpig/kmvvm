@@ -12,6 +12,7 @@ java {
 
 def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
+    api project(path: ':annotation')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.google.devtools.ksp:symbol-processing-api:${dependenciesVersion["ksp"]}"
     implementation "com.squareup:kotlinpoet:${dependenciesVersion["kotlinpoet"]}"

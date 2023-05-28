@@ -4,6 +4,7 @@ import androidx.viewpager.widget.ViewPager
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kmvvm.adapter.MainAdapter
 import com.catchpig.kmvvm.databinding.ActivityMainBinding
+import com.catchpig.kmvvm.entity.UserSharedPrefs
 import com.catchpig.kmvvm.main.viewmodel.MainViewModel
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.catchpig.utils.ext.logd
@@ -24,6 +25,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun initView() {
+        UserSharedPrefs.isMan()
         mainAdapter = MainAdapter(supportFragmentManager)
         bodyBinding.run {
             viewPager.adapter = mainAdapter
