@@ -42,6 +42,7 @@ class TitleBarController(
             //设置背景色
             drawBackground(it)
         }
+        drawTitleTextStyle(titleBarBinding)
         //设置文字颜色
         drawTextColor(titleBarBinding)
         //设置返回按钮图标
@@ -133,6 +134,9 @@ class TitleBarController(
         titleBar.setBackgroundResource(backgroundColor)
     }
 
+    private fun drawTitleTextStyle(titleBarBinding: LayoutTitleBarBinding){
+        titleBarBinding.titleText.typeface = Typeface.defaultFromStyle(globalConfig.getTitleTextStyle())
+    }
     /**
      * 设置文字颜色
      */

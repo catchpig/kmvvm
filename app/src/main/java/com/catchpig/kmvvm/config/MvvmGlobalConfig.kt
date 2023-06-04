@@ -1,9 +1,11 @@
 package com.catchpig.kmvvm.config
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.catchpig.annotation.GlobalConfig
+import com.catchpig.annotation.TextStyle
 import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.databinding.LayoutActivityErrorBinding
 import com.catchpig.kmvvm.databinding.LayoutEmptyBinding
@@ -29,6 +31,10 @@ class MvvmGlobalConfig : IGlobalConfig {
 
     override fun getTitleTextColor(): Int {
         return R.color.white
+    }
+
+    override fun getTitleTextStyle(): Int {
+        return TextStyle.BOLD
     }
 
     override fun isShowTitleLine(): Boolean {

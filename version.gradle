@@ -1,9 +1,9 @@
 ext {
     sdkVersion = [
-            "compile"   : 31,
-            "buildTools": '31.0.0',
+            "compile"   : 33,
+            "buildTools": '33.0.0',
             "min"       : 21,
-            "target"    : 31
+            "target"    : 33
     ]
     frame = [
             /**
@@ -15,7 +15,7 @@ ext {
              * 是否是快照版本
              */
             "snapshot"        : true,
-            "kmvvm"           : '1.0.7.11'
+            "kmvvm"           : '1.0.7.12'
     ]
     kmvvmVersion = kmvvmVersion()
     dependenciesVersion = [

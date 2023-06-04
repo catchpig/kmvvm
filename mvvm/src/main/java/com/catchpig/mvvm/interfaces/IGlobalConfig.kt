@@ -1,5 +1,6 @@
 package com.catchpig.mvvm.interfaces
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
@@ -7,6 +8,7 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.viewbinding.ViewBinding
+import com.catchpig.annotation.TextStyle
 
 interface IGlobalConfig {
     /**
@@ -36,6 +38,13 @@ interface IGlobalConfig {
      */
     @ColorRes
     fun getTitleTextColor(): Int
+
+    /**
+     * 标题字体演示
+     * @return Int
+     */
+    @TextStyle
+    fun getTitleTextStyle():Int
 
     /**
      * 标题栏下方是否需要横线
