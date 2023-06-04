@@ -14,8 +14,8 @@ ext {
             /**
              * 是否是快照版本
              */
-            "snapshot"        : false,
-            "kmvvm"           : '1.0.7'
+            "snapshot"        : true,
+            "kmvvm"           : '1.0.7.11'
     ]
     kmvvmVersion = kmvvmVersion()
     dependenciesVersion = [
@@ -45,7 +45,7 @@ ext {
             'okhttpprofiler'    : '1.0.8',
             'coroutines'        : '1.6.4',
             'serialization'     : '1.4.1',
-            'lifecycle'         : '2.4.1',
+            'lifecycle'         : '2.6.1',
             "ksp"               : '1.8.21-1.0.11'
     ]
 }

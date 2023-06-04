@@ -12,7 +12,7 @@ data class StatusBarParam (
         /**
          * 状态栏注解是否可用
          */
-        val enabled:Boolean = false,
+        val enabled:Boolean = true,
         /**
          * 状态栏透明
          */

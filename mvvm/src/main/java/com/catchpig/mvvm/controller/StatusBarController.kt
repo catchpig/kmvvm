@@ -25,7 +25,7 @@ class StatusBarController(
 
     fun checkStatusBar() {
         //状态栏注解设置为不可用
-        if (statusBar != null && statusBar.enabled) {
+        if (statusBar != null && !statusBar.enabled) {
             return
         }
         activity.immersionBar {

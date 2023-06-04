@@ -1,6 +1,7 @@
 package com.catchpig.mvvm.controller
 
 import android.app.Activity
+import android.graphics.Typeface
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
