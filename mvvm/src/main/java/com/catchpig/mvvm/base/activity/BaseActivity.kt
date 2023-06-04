@@ -15,37 +15,37 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.controller.StatusBarController
 import com.catchpig.mvvm.databinding.ViewRootBinding
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.utils.ext.showSnackBar
 import java.lang.reflect.ParameterizedType
 
 /**
- * --------------状态栏----------------
- * 请使用注解[com.catchpig.annotation.StatusBar]
- * 想让注解不可用,请设置[com.catchpig.annotation.StatusBar.enabled]为true
- * --------------状态栏----------------
+ * --------------状态栏----------------<br/>
+ * 请使用注解[com.catchpig.annotation.StatusBar]<br/>
+ * 想让注解不可用,请设置[com.catchpig.annotation.StatusBar.enabled]为false<br/>
+ * --------------状态栏----------------<br/>
+ * <br/>
+ * --------------标题栏----------------<br/>
+ * 请使用注解[com.catchpig.annotation.Title]<br/>
+ * --------------标题栏----------------<br/>
+ * <br/>
+ * --------------标题栏右边按钮点击事件---------------<br/>
+ * 第一个文字按钮点击事件,请方法上实现以下注解<br/>
+ * @[com.catchpig.annotation.OnClickFirstText]<br/>
+ * <br/>
+ * 第一个图标按钮的点击事件,请方法上实现以下注解<br/>
+ * @[com.catchpig.annotation.OnClickFirstDrawable]<br/>
+ * <br/>
+ * 第二个文字按钮的点击事件,请方法上实现以下注解<br/>
+ * @[com.catchpig.annotation.OnClickSecondText]<br/>
  *
- * --------------标题栏----------------
- * 请使用注解[com.catchpig.annotation.Title]
- * --------------标题栏----------------
- *
- * --------------标题栏右边按钮点击事件---------------
- * 第一个文字按钮点击事件,请方法上实现以下注解
- * @[com.catchpig.annotation.OnClickFirstText]
- *
- * 第一个图标按钮的点击事件,请方法上实现以下注解
- * @[com.catchpig.annotation.OnClickFirstDrawable]
- *
- * 第二个文字按钮的点击事件,请方法上实现以下注解
- * @[com.catchpig.annotation.OnClickSecondText]
- *
- * 第二个图标按钮的点击事件,请方法上实现以下注解
- * @[com.catchpig.annotation.OnClickSecondDrawable]
- * --------------标题栏右边按钮点击事件---------------
+ * 第二个图标按钮的点击事件,请方法上实现以下注解<br/>
+ * @[com.catchpig.annotation.OnClickSecondDrawable]<br/>
+ * --------------标题栏右边按钮点击事件---------------<br/>
  *
  * @author catchpig
  * @date 2019/4/4 00:09
@@ -112,7 +112,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
 
     override fun removeFailedView() {
         failedBinding?.let {
-            rootBinding{
+            rootBinding {
                 if (layoutBody.contains(it.root)) {
                     layoutBody.removeView(it.root)
                 }

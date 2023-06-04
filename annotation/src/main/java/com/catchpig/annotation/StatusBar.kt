@@ -14,7 +14,9 @@ annotation class StatusBar(
          */
         val hide: Boolean = false,
         /**
-         * 状态栏注解是否可用
+         * 状态栏注解是否可用<br/>
+         * true:可用<br/>
+         * false:不可用<br/>
          */
         val enabled: Boolean = true,
         /**
