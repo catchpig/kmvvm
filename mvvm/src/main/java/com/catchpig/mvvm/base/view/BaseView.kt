@@ -1,13 +1,21 @@
 package com.catchpig.mvvm.base.view
 
+import android.view.Gravity
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.viewbinding.ViewBinding
+import com.catchpig.mvvm.R
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
+import com.catchpig.utils.ext.showSnackBar
 
 interface BaseView {
 
     fun scope(): LifecycleCoroutineScope
+
+    fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM)
+
+    fun snackBar(@StringRes textRes: Int, gravity: Int = Gravity.BOTTOM)
 
     fun showFailedView()
 

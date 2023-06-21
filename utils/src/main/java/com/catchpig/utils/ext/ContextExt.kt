@@ -57,6 +57,22 @@ fun Context.copyClipboard(charSequence: CharSequence) {
     clipboardManager.setPrimaryClip(clipData)
 }
 
+/**
+ * 获取剪切板数据
+ * @receiver Context
+ * @return String
+ */
+fun Context.getClipboard(): String? {
+    val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clipData = clipboardManager.primaryClip
+    val value = clipData?.run {
+        getItemAt(0).text.toString()
+    }.also {
+        null
+    }
+    return value
+}
+
 fun Context.layoutInflater(): LayoutInflater {
     return LayoutInflater.from(this);
 }

@@ -83,9 +83,6 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                 startKtActivity<InstallApkActivity>()
             }
             R.id.handler_error -> {
-                lifecycleFlowLoadingDialog(viewModel.handlerError(),{
-
-                }){}
                 viewModel.handlerError().lifecycleLoadingDialog(this, errorCallback = {
                     if (it is HttpServerException) {
                         snackBar(it.message!!)

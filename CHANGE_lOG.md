@@ -1,4 +1,9 @@
 # CHANGE LOG
+### v1.0.9(2023.6.21)
+
++ 删除lifecycle相关的废弃方法
++ BaseView中增加snackBar接口
+
 ### v1.0.8(2023.6.4)
 
 + 调整状态的enable属性默认值

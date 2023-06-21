@@ -167,11 +167,11 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         titleText.setText(title)
     }
 
-    fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM) {
+    override fun snackBar(text: CharSequence, gravity: Int) {
         bodyBinding.root.showSnackBar(text, R.drawable.snackbar_bg, gravity)
     }
 
-    fun snackBar(@StringRes textRes: Int, gravity: Int = Gravity.BOTTOM) {
+    override fun snackBar(@StringRes textRes: Int, gravity: Int) {
         bodyBinding.root.showSnackBar(textRes, R.drawable.snackbar_bg, gravity)
     }
 

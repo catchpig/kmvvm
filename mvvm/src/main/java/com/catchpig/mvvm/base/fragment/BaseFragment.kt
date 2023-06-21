@@ -111,11 +111,11 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         return rootBinding.root
     }
 
-    fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM) {
+    override fun snackBar(text: CharSequence, gravity: Int) {
         bodyBinding.root.showSnackBar(text, R.drawable.snackbar_bg, gravity)
     }
 
-    fun snackBar(@StringRes textRes: Int, gravity: Int = Gravity.BOTTOM) {
+    override fun snackBar(@StringRes textRes: Int, gravity: Int) {
         bodyBinding.root.showSnackBar(textRes, R.drawable.snackbar_bg, gravity)
     }
 

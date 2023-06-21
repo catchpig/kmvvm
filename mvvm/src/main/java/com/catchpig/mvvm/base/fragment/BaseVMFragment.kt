@@ -30,7 +30,7 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
     protected val viewModel: VM by lazy {
         var type = javaClass.genericSuperclass
         var modelClass: Class<VM> = (type as ParameterizedType).actualTypeArguments[1] as Class<VM>
-        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(modelClass)
+        ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[modelClass]
     }
 
     @CallSuper
@@ -40,110 +40,5 @@ abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragme
         lifecycle.addObserver(viewModel)
         initView()
         initFlow()
-    }
-
-    @Deprecated(
-        "当前方法已废弃,请使用FlowExt.lifecycleRefresh()",
-        replaceWith = ReplaceWith(
-            expression = "flow.lifecycleRefresh(this,refresh)}"
-        )
-    )
-    override fun <T> lifecycleFlowRefresh(
-        flow: Flow<MutableList<T>>,
-        refresh: RefreshRecyclerView
-    ) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            flow.flowOn(Dispatchers.IO).catch {
-                refresh.updateError()
-            }.onCompletion {
-                "lifecycleFlowRefresh:onCompletion".logd(fullTag)
-            }.collect {
-                refresh.updateData(it)
-            }
-        }
-    }
-
-    @Deprecated(
-        "当前方法已废弃,请使用FlowExt.lifecycle()",
-        replaceWith = ReplaceWith(
-            expression = "flow.lifecycle(this,{\n\n}){\n\n}"
-        )
-    )
-    override fun <T> lifecycleFlow(
-        flow: Flow<T>,
-        errorCallback: ((t: Throwable) -> Unit)?,
-        callback: T.() -> Unit
-    ) {
-        lifecycleScope.launch(Dispatchers.Main)
-        {
-            flow.flowOn(Dispatchers.IO).catch { t: Throwable ->
-                KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
-            }.onCompletion {
-                "lifecycleFlow:onCompletion".logd(fullTag)
-            }.catch { t ->
-                errorCallback?.let {
-                    errorCallback(t)
-                }
-            }.collect {
-                callback(it)
-            }
-        }
-    }
-
-    @Deprecated(
-        "当前方法已废弃,请使用FlowExt.lifecycleLoadingView()",
-        replaceWith = ReplaceWith(
-            expression = "flow.lifecycleLoadingView(this,{\n\n}){\n\n}"
-        )
-    )
-    override fun <T> lifecycleFlowLoadingView(
-        flow: Flow<T>,
-        errorCallback: ((t: Throwable) -> Unit)?,
-        callback: T.() -> Unit
-    ) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            flow.flowOn(Dispatchers.IO).onStart {
-                loadingView()
-            }.onCompletion {
-                "lifecycleFlowLoadingView:onCompletion".logd(fullTag)
-                hideLoading()
-            }.catch { t ->
-                KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
-                errorCallback?.let {
-                    errorCallback(t)
-                }
-            }.collect {
-                callback(it)
-            }
-        }
-
-    }
-
-    @Deprecated(
-        "当前方法已废弃,请使用FlowExt.lifecycleLoadingDialog()",
-        replaceWith = ReplaceWith(
-            expression = "flow.lifecycleLoadingDialog(this,{\n\n}){\n\n}"
-        )
-    )
-    override fun <T> lifecycleFlowLoadingDialog(
-        flow: Flow<T>,
-        errorCallback: ((t: Throwable) -> Unit)?,
-        callback: T.() -> Unit
-    ) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            flow.flowOn(Dispatchers.IO).onStart {
-                loadingDialog()
-            }.onCompletion {
-                "lifecycleFlowLoadingDialog:onCompletion".logd(this@BaseVMFragment.javaClass.simpleName)
-                hideLoading()
-            }.catch { t ->
-                KotlinMvvmCompiler.onError(this@BaseVMFragment, t)
-                errorCallback?.let {
-                    errorCallback(t)
-                }
-            }.collect {
-                callback(it)
-            }
-        }
     }
 }
