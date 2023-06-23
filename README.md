@@ -146,6 +146,13 @@ interface IGlobalConfig {
     fun getTitleTextColor(): Int
 
     /**
+     * 标题字体样式
+     * @return Int
+     */
+    @TextStyle
+    fun getTitleTextStyle(): Int
+
+    /**
      * 标题栏下方是否需要横线
      * @return Boolean
      */

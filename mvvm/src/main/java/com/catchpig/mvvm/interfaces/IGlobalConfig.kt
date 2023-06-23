@@ -40,7 +40,7 @@ interface IGlobalConfig {
     fun getTitleTextColor(): Int
 
     /**
-     * 标题字体演示
+     * 标题字体样式
      * @return Int
      */
     @TextStyle

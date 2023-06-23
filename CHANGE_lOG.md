@@ -1,4 +1,8 @@
 # CHANGE LOG
+### v1.1.0(2023.6.23)
+
++ 增加DialogFragment基类
+
 ### v1.0.9(2023.6.21)
 
 + 删除lifecycle相关的废弃方法
