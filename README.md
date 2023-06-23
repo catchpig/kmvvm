@@ -58,10 +58,10 @@
 ### 1. 在根目录的build.gradle中添加
 ```groovy
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "1.7.20" apply false
-    id 'org.jetbrains.kotlin.multiplatform' version '1.7.20' apply false
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20' apply false
-    id 'com.google.devtools.ksp' version '1.7.20-1.0.7' apply false
+    id 'org.jetbrains.kotlin.jvm' version "1.8.0" apply false
+    id 'org.jetbrains.kotlin.multiplatform' version '1.8.0' apply false
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0' apply false
+    id 'com.google.devtools.ksp' version '1.8.21-1.0.11' apply false
 }
 ```
 ### 2. 在app的build.gradle中添加
@@ -236,6 +236,10 @@ class MvvmGlobalConfig : IGlobalConfig {
 
     override fun getTitleTextColor(): Int {
         return R.color.white
+    }
+
+    override fun getTitleTextStyle(): Int {
+      return TextStyle.BOLD
     }
 
     override fun isShowTitleLine(): Boolean {

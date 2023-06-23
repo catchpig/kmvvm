@@ -10,8 +10,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewbinding.ViewBinding
+import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.TYPE_EMPTY
+import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.TYPE_FOOTER
+import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.TYPE_HEADER
+import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.TYPE_NORMAL
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
-import com.catchpig.mvvm.base.adapter.RecyclerAdapter.ItemViewType.*
+import java.lang.reflect.ParameterizedType
 
 
 /**
@@ -304,9 +308,11 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
             TYPE_HEADER -> {
                 headerView!!
             }
+
             TYPE_FOOTER -> {
                 footerView!!
             }
+
             TYPE_EMPTY -> {
                 if (emptyView == null) {
                     emptyView =
@@ -314,14 +320,25 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
                 }
                 emptyView!!
             }
+
             else -> {
-                return CommonViewHolder(viewBinding(parent))
+                return CommonViewHolder(viewBinding(LayoutInflater.from(parent.context), parent))
             }
         }
         return CommonViewHolder(view)
     }
 
-    abstract fun viewBinding(parent: ViewGroup): VB
+    open fun viewBinding(layoutInflater: LayoutInflater, parent: ViewGroup): VB {
+        var type = javaClass.genericSuperclass
+        var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[1] as Class<VB>
+        val method = vbClass.getDeclaredMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+        return method.invoke(this, layoutInflater, parent, false) as VB
+    }
 
     override fun onBindViewHolder(holder: CommonViewHolder<VB>, position: Int) {
         var index = position
@@ -332,6 +349,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
                  */
                 return
             }
+
             TYPE_EMPTY -> {
                 //第一次加载数据,不展示空页面
                 if (firstLoad) {
@@ -341,6 +359,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
                 }
                 return
             }
+
             else -> {
                 if (headerView != null) {
                     /*
@@ -377,6 +396,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
                         TYPE_HEADER, TYPE_EMPTY, TYPE_FOOTER -> {
                             manager.spanCount
                         }
+
                         else -> {
                             1
                         }
