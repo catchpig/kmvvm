@@ -4,6 +4,8 @@
 ![](https://img.shields.io/badge/maven--central-snapshot-green)
 ![](https://img.shields.io/badge/dynamic/json?style=social&logo=github&color=yellow&label=stars&query=%24.stargazers_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
 ![](https://img.shields.io/badge/dynamic/json?style=social&logo=github&color=yellowgreen&label=forks&query=%24.forks&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
+![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgitee.com%2Fapi%2Fv5%2Frepos%2Fcatchpig%2Fkmvvm%3F_%3D1687704607696&query=stargazers_count&style=social&logo=gitee&label=stars&color=red)
+![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgitee.com%2Fapi%2Fv5%2Frepos%2Fcatchpig%2Fkmvvm%3F_%3D1687704607696&query=forks_count&style=social&logo=gitee&label=forks&color=red)
 
 ## 技术要点
 
