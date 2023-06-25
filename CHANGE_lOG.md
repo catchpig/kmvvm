@@ -1,4 +1,10 @@
 # CHANGE LOG
+### v1.1.1(2023.6.25)
+
++ ContextExt增加readTextFromAssets扩展方法
++ StringExt增加isConnected扩展方法
++ NetManager的getService方法增加baseUrl的参数
+
 ### v1.1.0(2023.6.23)
 
 + 增加DialogFragment基类
