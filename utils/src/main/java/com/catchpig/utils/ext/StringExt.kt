@@ -1,5 +1,6 @@
 package com.catchpig.utils.ext
 
+import java.net.URL
 import java.util.regex.Pattern
 
 /**
@@ -22,5 +23,23 @@ fun CharSequence?.isNumber(): Boolean {
     var pattern = Pattern.compile("[0-9]*")
     val matcher = pattern.matcher(this)
     return matcher.matches()
+}
+
+
+/**
+ * 网络地址对否可连接
+ * 此函数必须在子线程中执行
+ * @receiver String
+ * @return Boolean
+ */
+fun String.isConnected(): Boolean {
+    val url = URL(this)
+    try {
+        url.openConnection().connect()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return false
+    }
+    return true
 }
 

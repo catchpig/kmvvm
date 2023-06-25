@@ -76,3 +76,15 @@ fun Context.getClipboard(): String? {
 fun Context.layoutInflater(): LayoutInflater {
     return LayoutInflater.from(this);
 }
+
+/**
+ * 读取assets下的文本
+ * @receiver Context
+ * @param fileName String
+ * @return String
+ */
+fun Context.readTextFromAssets(fileName: String): String {
+    return assets.open(fileName).bufferedReader().use {
+        it.readText()
+    }
+}

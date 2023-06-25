@@ -1,7 +1,7 @@
 package com.catchpig.mvvm.network.manager
 
-import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.entity.ServiceParam
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.network.factory.SerializationConverterFactory
 import com.catchpig.utils.ext.logd
 import okhttp3.OkHttpClient
@@ -29,14 +29,15 @@ class NetManager private constructor() {
         this.debug = debug
     }
 
-    fun <S : Any> getService(serviceClass: Class<S>): S {
+    fun <S : Any> getService(serviceClass: Class<S>, baseUrl: String? = null): S {
         val className = serviceClass.name
         val service = serviceMap[className]
         return if (service == null) {
             val serviceParam = KotlinMvvmCompiler.getServiceParam(className)
+            val url = baseUrl?:serviceParam.baseUrl
             var builder = Retrofit
                 .Builder()
-                .baseUrl(serviceParam.baseUrl)
+                .baseUrl(url)
                 .client(getClient(serviceParam))
                 .addConverterFactory(SerializationConverterFactory.create(className))
             if (serviceParam.rxJava) {

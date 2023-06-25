@@ -40,7 +40,7 @@ class KotlinMvpApp : Application() {
     /**
      * 不是必须要设置下载路径,内部有默认的下载路径,如果需要变下载路径,请重新设置
      */
-    private fun initDownload(){
+    private fun initDownload() {
         val downloadPath = "${applicationContext.externalCacheDir!!.absolutePath}/kmvvmDownload"
         DownloadManager.setDownloadPath(downloadPath)
     }
