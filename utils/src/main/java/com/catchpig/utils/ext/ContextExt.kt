@@ -88,3 +88,27 @@ fun Context.readTextFromAssets(fileName: String): String {
         it.readText()
     }
 }
+
+/**
+ * 获取版本号
+ * @receiver Context
+ * @return String
+ */
+fun Context.versionName(): String {
+    val packageInfo = packageManager.getPackageInfo(packageName, 0)
+    return packageInfo.versionName
+}
+
+/**
+ * 获取版本号
+ * @receiver Context
+ * @return Long
+ */
+fun Context.versionCode(): Long {
+    val packageInfo = packageManager.getPackageInfo(packageName, 0)
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        packageInfo.longVersionCode
+    } else {
+        packageInfo.versionCode as Long
+    }
+}

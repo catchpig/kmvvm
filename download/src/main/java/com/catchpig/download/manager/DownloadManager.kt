@@ -30,7 +30,7 @@ open class DownloadManager {
         /**
          * 读取数据超时时间(分钟)
          */
-        private const val READ_TIMEOUT = 10L
+        private const val READ_TIMEOUT = 30L
 
         /**
          * 下载路径
@@ -60,11 +60,12 @@ open class DownloadManager {
                      */
                     .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                     /**
-                     * 读取数据超时时间10分钟
+                     * 读取数据超时时间30分钟
                      */
                     .readTimeout(READ_TIMEOUT, TimeUnit.MINUTES)
                     .addInterceptor(logInterceptor)
                     .addInterceptor(downloadInterceptor)
+                    .retryOnConnectionFailure(true)
                     .build()
             }
         }
@@ -116,7 +117,7 @@ open class DownloadManager {
             downloadProgressListener: DownloadProgressListener,
             rxJava: Boolean
         ): DownloadService {
-            val baseUrl = "${url.protocol}://${url.host}/"
+            val baseUrl = "${url.protocol}://${url.authority}/"
             var downloadService = downloadServiceMap[baseUrl]
             downloadService = downloadService.run {
                 getDownloadService(baseUrl, rxJava)

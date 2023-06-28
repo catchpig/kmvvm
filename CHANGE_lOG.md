@@ -1,4 +1,9 @@
 # CHANGE LOG
+### v1.1.2(2023.6.28)
+
++ 增加versionCode和versionName的扩展函数
++ 解决下载地址有端口下载不成功的问题
+
 ### v1.1.1(2023.6.25)
 
 + ContextExt增加readTextFromAssets扩展方法
