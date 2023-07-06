@@ -29,7 +29,8 @@ fun Context.installApk(apkPath: String) {
     intent.action = Intent.ACTION_VIEW
     val uri: Uri
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         uri = FileProvider.getUriForFile(this, "$packageName.fileProvider", pFile)
     } else {
         uri = Uri.fromFile(pFile)

@@ -1,4 +1,9 @@
 # CHANGE LOG
+### v1.1.3(2023.7.6)
+
++ instalApk增加flag:FLAG_ACTIVITY_NEW_TASK
++ BaseDialogFragment增加OnDismissListener和OnShowListener回调
+
 ### v1.1.2(2023.6.28)
 
 + 增加versionCode和versionName的扩展函数
