@@ -9,11 +9,13 @@ def ossrhPassword = properties.getProperty("ossrhPassword")
 if (project.plugins.hasPlugin("java-library")) {
     task javadocJar(type: Jar) {
         from javadoc
-        classifier = 'javadoc'
+        archiveClassifier.convention("javadoc")
+        archiveClassifier.set("javadoc")
     }
     task javaSourcesJar(type: Jar) {
         from sourceSets.main.java.srcDirs
-        classifier = 'sources'
+        archiveClassifier.convention("sources")
+        archiveClassifier.set("sources")
     }
 } else if (project.plugins.hasPlugin("com.android.library")) {
     task androidSourcesJar(type: Jar) {
