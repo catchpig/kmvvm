@@ -56,8 +56,8 @@ dependencies {
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:${dependenciesVersion["lifecycle"]}"
     api "androidx.lifecycle:lifecycle-runtime-ktx:${dependenciesVersion["lifecycle"]}"
 
-    api project(path: ':annotation')
-    api project(path: ':utils')
+    api project(':annotation')
+    api project(':utils')
 
     //okhttp3
     api "com.squareup.okhttp3:okhttp:${dependenciesVersion["okhttp3"]}"

@@ -12,12 +12,11 @@ java {
 
 def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
-    api project(path: ':annotation')
+    api project(path: ':annotation', configuration: 'default')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.google.devtools.ksp:symbol-processing-api:${dependenciesVersion["ksp"]}"
     implementation "com.squareup:kotlinpoet:${dependenciesVersion["kotlinpoet"]}"
     implementation "com.squareup:kotlinpoet-ksp:${dependenciesVersion["kotlinpoet"]}"
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${dependenciesVersion["kotlin"]}"
     implementation("com.squareup.okhttp3:logging-interceptor:${dependenciesVersion["okhttp3"]}")
-    api project(path: ':annotation')
 }

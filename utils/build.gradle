@@ -33,7 +33,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${dependenciesVersion["kotlin"]}"
     api("com.google.android.material:material:${dependenciesVersion["material"]}")
 
-    api project(path: ':annotation')
+    api project(':annotation')
     //gson
     api "com.google.code.gson:gson:${dependenciesVersion["gson"]}"
 

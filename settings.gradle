@@ -1,16 +1,5 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
-        mavenCentral() {
-            allowInsecureProtocol = true
-        }
-        google() {
-            allowInsecureProtocol = true
-        }
-        maven { url 'https://jitpack.io' }
-        maven {
-            url 'https://maven.aliyun.com/repository/google'
-        }
         maven {
             url "https://maven.aliyun.com/repository/central"
         }
@@ -20,6 +9,14 @@ pluginManagement {
         maven {
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
+        gradlePluginPortal()
+        mavenCentral() {
+            allowInsecureProtocol = true
+        }
+        google() {
+            allowInsecureProtocol = true
+        }
+        maven { url 'https://jitpack.io' }
     }
 }
 dependencyResolutionManagement {
@@ -27,6 +24,15 @@ dependencyResolutionManagement {
     repositories {
         maven {
             url "${rootProject.projectDir}/build/"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
         maven {
             // mavenCentral的快照地址
@@ -39,18 +45,6 @@ dependencyResolutionManagement {
             allowInsecureProtocol = true
         }
         maven { url 'https://jitpack.io' }
-        maven {
-            url 'https://maven.aliyun.com/repository/google'
-        }
-        maven {
-            url "https://maven.aliyun.com/repository/central"
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/public'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/gradle-plugin'
-        }
     }
 }
 

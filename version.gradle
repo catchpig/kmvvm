@@ -1,7 +1,7 @@
 ext {
     sdkVersion = [
-            "compile"   : 33,
-            "buildTools": '33.0.0',
+            "compile"   : 34,
+            "buildTools": '34.0.0',
             "min"       : 21,
             "target"    : 33
     ]

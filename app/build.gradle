@@ -13,7 +13,6 @@ plugins {
 def sdkVersion = rootProject.sdkVersion
 android {
     compileSdk sdkVersion["compile"]
-    buildToolsVersion sdkVersion["buildTools"]
     defaultConfig {
         applicationId "com.catchpig.kmvvm"
         minSdkVersion sdkVersion["min"]
@@ -28,7 +27,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -41,6 +40,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig true
     }
     namespace 'com.catchpig.kmvvm'
 
@@ -59,9 +59,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     if (rootProject.frame["importSourceCode"]) {
-        implementation project(path: ':download')
-        implementation project(path: ':mvvm')
-        ksp project(path: ':compiler')
+        implementation project(':download')
+        implementation project(':mvvm')
+        ksp project(':compiler')
     } else {
         def kmvvm_version = rootProject.kmvvmVersion
         implementation "io.github.catchpig.kmvvm:download:$kmvvm_version"

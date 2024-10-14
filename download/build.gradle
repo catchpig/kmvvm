@@ -37,7 +37,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    api project(path: ':utils')
+    api project(':utils')
 
     implementation "androidx.appcompat:appcompat:${dependenciesVersion["appcompat"]}"
     implementation "androidx.core:core-ktx:${dependenciesVersion["core_ktx"]}"
