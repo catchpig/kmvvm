@@ -4,14 +4,20 @@ import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 import com.catchpig.mvvm.lifecycle.ActivityLifeCycleCallbacksImpl
-import com.catchpig.utils.manager.ContextManager
 import com.catchpig.utils.LogUtils
+import com.catchpig.utils.ext.logd
+import com.catchpig.utils.manager.ContextManager
 
-internal class KotlinMvvmInitializer : Initializer<Boolean> {
+class KotlinMvvmInitializer : Initializer<Boolean> {
+    companion object {
+        private const val TAG = "KotlinMvvmInitializer"
+    }
+
     override fun create(context: Context): Boolean {
         val applicationContext = context!!.applicationContext
-        initContext(applicationContext)
         initLog(applicationContext)
+        initContext(applicationContext)
+        "create".logd(TAG)
         return true
     }
 

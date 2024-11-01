@@ -74,12 +74,16 @@ afterEvaluate {
                 url "${rootProject.buildDir}"
             }
             maven {
-                name 'mavenCentral'
-                if (kmvvm_version.endsWith("SNAPSHOT")) {
-                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                } else {
-                    url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                name 'mavenCentralSnapshot'
+                url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
                 }
+            }
+            maven {
+                name 'mavenCentral'
+                url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
                 credentials {
                     username = ossrhUsername
                     password = ossrhPassword
