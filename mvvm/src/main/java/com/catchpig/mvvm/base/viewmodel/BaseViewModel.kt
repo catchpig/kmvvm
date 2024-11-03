@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.disposables.Disposable
  *
  */
 open class BaseViewModel : ViewModel(), IBaseViewModel {
-    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val compositeDisposable by lazy { CompositeDisposable() }
     internal val loadingDialogLiveData = MutableLiveData(false)
     internal val loadingViewLiveData = MutableLiveData(false)
     internal val hideLoadingLiveData = MutableLiveData(false)

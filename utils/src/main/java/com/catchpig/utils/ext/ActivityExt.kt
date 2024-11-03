@@ -1,12 +1,29 @@
 package com.catchpig.utils.ext
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.activity.result.ActivityResult
+
+@RequiresApi(Build.VERSION_CODES.O)
+inline fun <reified T : Activity> Context.startKtActivity(
+    displayId: Int,
+    intent: Intent = Intent()
+) {
+    val activityOptions = ActivityOptions.makeBasic()
+    activityOptions.launchDisplayId = displayId
+    intent.setClass(this, T::class.java)
+    if (this !is Activity) {
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    startActivity(intent, activityOptions.toBundle())
+}
 
 inline fun <reified T : Activity> Context.startKtActivity(
     intent: Intent = Intent()
