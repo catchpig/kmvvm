@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'kotlin'
 }
-apply from: '../publish_aar_jar.gradle'
+apply from: '../publish_jitpack_aar_jar.gradle'
 
 def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {

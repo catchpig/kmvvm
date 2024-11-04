@@ -1,0 +1,48 @@
+apply plugin: 'maven-publish'
+
+if (project.plugins.hasPlugin("java-library")) {
+    task javadocJar(type: Jar) {
+        from javadoc
+        archiveClassifier.convention("javadoc")
+        archiveClassifier.set("javadoc")
+    }
+    task javaSourcesJar(type: Jar) {
+        from sourceSets.main.java.srcDirs
+        archiveClassifier.convention("sources")
+        archiveClassifier.set("sources")
+    }
+} else if (project.plugins.hasPlugin("com.android.library")) {
+    task androidSourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+//        classifier = 'sources'
+    }
+}
+
+def kmvvm_version = rootProject.kmvvmVersion
+
+afterEvaluate {
+    publishing {
+        publications {
+            jitpack(MavenPublication) {
+                if (project.plugins.hasPlugin("com.android.library")) {
+                    from components.release
+                    artifact androidSourcesJar
+                } else if (project.plugins.hasPlugin("java-library")) {
+                    from components.java
+                    artifact javadocJar
+                    artifact javaSourcesJar
+                }
+                def projectName = project.name
+                groupId = 'com.github.catchpig.kmvvm'
+                artifactId = projectName
+                version = kmvvm_version
+            }
+        }
+        repositories {
+            maven {
+                name 'local'
+                url "${rootProject.buildDir}"
+            }
+        }
+    }
+}
