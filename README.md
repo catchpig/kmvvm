@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/license-Apache--2.0-blue)
 ![](https://img.shields.io/badge/android-21%2B-brightgreen?logo=android)
-![](https://img.shields.io/badge/jitpack%20-%20a)
+![](https://img.shields.io/badge/jitpack-release-green?logo=jitpack)
 ![](https://img.shields.io/badge/dynamic/json?style=social&logo=github&color=yellow&label=stars&query=%24.stargazers_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
 ![](https://img.shields.io/badge/dynamic/json?style=social&logo=github&color=yellowgreen&label=forks&query=%24.forks&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fcatchpig%2Fkmvvm)
 ![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgitee.com%2Fapi%2Fv5%2Frepos%2Fcatchpig%2Fkmvvm%3F_%3D1687704607696&query=stargazers_count&style=social&logo=gitee&label=stars&color=red)
