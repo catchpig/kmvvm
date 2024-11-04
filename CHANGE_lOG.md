@@ -1,4 +1,8 @@
 # CHANGE LOG
+### v1.1.6
++ BaseViewModel的CompositeDisposable改成懒加载
++ 新增通过屏幕id打开activity的扩展方法
+
 ### v1.1.3(2023.7.6)
 
 + instalApk增加flag:FLAG_ACTIVITY_NEW_TASK
