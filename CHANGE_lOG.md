@@ -1,4 +1,7 @@
 # CHANGE LOG
+### v1.1.7
++ 全屏情况下解决状态栏顶部白条问题
+
 ### v1.1.6
 + BaseViewModel的CompositeDisposable改成懒加载
 + 新增通过屏幕id打开activity的扩展方法
