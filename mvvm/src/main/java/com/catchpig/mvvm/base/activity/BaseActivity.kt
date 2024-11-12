@@ -2,7 +2,6 @@ package com.catchpig.mvvm.base.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,22 +60,23 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         ViewRootBinding.inflate(layoutInflater)
     }
 
-    private lateinit var loadingViewController: LoadingViewController
+    private val loadingViewController: LoadingViewController by lazy {
+        LoadingViewController(
+            this,
+            rootBinding
+        )
+    }
 
-    private lateinit var statusBarController: StatusBarController
+    private var statusBarController: StatusBarController? = null
 
     private var failedBinding: ViewBinding? = null
-
-    fun initLoadingViewController(loadingViewController: LoadingViewController) {
-        this.loadingViewController = loadingViewController
-    }
 
     fun initStatusBarController(statusBarController: StatusBarController) {
         this.statusBarController = statusBarController
     }
 
     fun resetStatusBar() {
-        statusBarController.checkStatusBar()
+        statusBarController?.checkStatusBar()
     }
 
     fun getRootBanding(): ViewRootBinding {

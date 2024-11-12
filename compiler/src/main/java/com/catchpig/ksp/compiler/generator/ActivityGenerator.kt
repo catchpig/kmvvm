@@ -37,8 +37,6 @@ class ActivityGenerator(
         private val TYPE_TEXT_VIEW = ClassName("android.widget", "TextView")
         private val TYPE_IMAGE_VIEW = ClassName("android.widget", "ImageView")
         private val TYPE_VIEW = ClassName("android.view", "View")
-        private val CLASS_NAME_LOADING_VIEW_CONTROLLER =
-            ClassName("com.catchpig.mvvm.controller", "LoadingViewController")
     }
 
     override fun process(resolver: Resolver) {
@@ -286,10 +284,6 @@ class ActivityGenerator(
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
             .addParameter("activity", CLASS_NAME_ACTIVITY)
             .addStatement("val baseActivity = activity as %T<*>", CLASS_NAME_BASE_ACTIVITY)
-            .addStatement(
-                "baseActivity.initLoadingViewController(%T(baseActivity,baseActivity.getRootBanding()))",
-                CLASS_NAME_LOADING_VIEW_CONTROLLER
-            )
             .addStatement("//加载标题栏")
             .addStatement("title?.let{")
             .addStatement(
