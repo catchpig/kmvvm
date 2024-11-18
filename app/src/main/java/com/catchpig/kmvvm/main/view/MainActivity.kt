@@ -7,8 +7,10 @@ import com.catchpig.kmvvm.databinding.ActivityMainBinding
 import com.catchpig.kmvvm.entity.UserSharedPrefs
 import com.catchpig.kmvvm.main.viewmodel.MainViewModel
 import com.catchpig.mvvm.base.activity.BaseVMActivity
+import com.catchpig.mvvm.ext.lifecycleNull
 import com.catchpig.utils.ext.logd
 import com.gyf.immersionbar.ktx.immersionBar
+import kotlinx.coroutines.flow.flow
 
 @StatusBar(transparent = true)
 class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
@@ -37,6 +39,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun initFlow() {
         "initFlow".logd(TAG)
+        flow<Int?> {
+            emit(null)
+        }.lifecycleNull(this) {
+            "initFlow->flow:${this}".logd(TAG)
+        }
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -50,11 +57,13 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
                     statusBarDarkFont(true, 0.5f)
                 }
             }
+
             1 -> {
                 immersionBar {
                     statusBarDarkFont(true, 0.2f)
                 }
             }
+
             else -> {
             }
         }
