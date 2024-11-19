@@ -1,4 +1,13 @@
 # CHANGE LOG
+### v1.2.1
++ FlowExt增加lifecycleNull的函数
+
+### v1.2.0
++ 升级material版本,解决高版本反射崩溃问题
+
+### v1.1.8
++ 解决LoadingViewController和StatusBarController空指针问题
+
 ### v1.1.7
 + 全屏情况下解决状态栏顶部白条问题
 
