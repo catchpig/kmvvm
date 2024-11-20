@@ -10,7 +10,9 @@ import com.catchpig.mvvm.base.adapter.RecyclerAdapter
  * @author TLi2
  **/
 class UserAdapter : RecyclerAdapter<User, ItemUserBinding>() {
-
+    init {
+//        setShowEmptyEnabled(false)
+    }
     override fun bindViewHolder(holder: CommonViewHolder<ItemUserBinding>, m: User, position: Int) {
         holder.viewBanding {
             name.text = m.username

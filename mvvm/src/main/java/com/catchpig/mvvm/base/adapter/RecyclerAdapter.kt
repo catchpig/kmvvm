@@ -75,6 +75,11 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     var footerView: View? = null
 
     /**
+     * 空页面是否可用
+     */
+    private var showEmptyEnabled = true
+
+    /**
      * 是否展示空页面
      */
     private var showEmpty: Boolean = false
@@ -87,6 +92,14 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     private var firstLoad = true
 
     private var onItemClickListener: OnItemClickListener<M>? = null
+
+    /**
+     * 设置空页面是否可用
+     * @param showEmptyEnabled Boolean
+     */
+    fun setShowEmptyEnabled(showEmptyEnabled: Boolean) {
+        this.showEmptyEnabled = showEmptyEnabled
+    }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener<M>) {
         this.onItemClickListener = onItemClickListener
@@ -215,7 +228,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
         if (footerView != null) {
             size++
         }
-        if (size == 0) {
+        if (size == 0 && showEmptyEnabled) {
             showEmpty = true
             size = 1
         } else {

@@ -1,17 +1,26 @@
 # CHANGE LOG
+### v1.2.2
+
++ RecyclerAdapter增加空页面是否可用的配置
+
 ### v1.2.1
+
 + FlowExt增加lifecycleNull的函数
 
 ### v1.2.0
+
 + 升级material版本,解决高版本反射崩溃问题
 
 ### v1.1.8
+
 + 解决LoadingViewController和StatusBarController空指针问题
 
 ### v1.1.7
+
 + 全屏情况下解决状态栏顶部白条问题
 
 ### v1.1.6
+
 + BaseViewModel的CompositeDisposable改成懒加载
 + 新增通过屏幕id打开activity的扩展方法
 
@@ -137,7 +146,6 @@
 ### v0.4.0(2021.12.19)
 
 + 优化代码
-
 
 ### v0.3.9(2021.12.17)
 
