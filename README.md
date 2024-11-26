@@ -478,8 +478,7 @@ class UserAdapter(iPageControl: IPageControl) :
 ### 5.刷新分页控件([RefreshRecyclerView](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshRecyclerView.kt))
 
 + RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
-+
-不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
++ 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
 + 只需要设置LayoutManager和RecyclerAdapter,提供了setLayoutManager和setAdapter方法
 + 在获取到数据的时候调用updateData方法
 + 获取数据失败的时候调用updateError方法
