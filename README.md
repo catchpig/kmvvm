@@ -455,6 +455,7 @@ private fun loadBanners(){
 ### 4. RecycleView
 
 + Adapter可以继承[RecycleAdapter](./mvvm/src/main/java/com/catchpig/mvvm/base/adapter/RecyclerAdapter.kt)来使用,RecycleAdapter使用了ViewBanding,只需要实现以下两个个方法
++ RecyclerAdapter可以调用setShowEmptyEnabled()方法来设置全局的空页面是否可用
 
 > 使用示例
 
@@ -477,8 +478,7 @@ class UserAdapter(iPageControl: IPageControl) :
 ### 5.刷新分页控件([RefreshRecyclerView](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshRecyclerView.kt))
 
 + RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
-+
-不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
++ 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
 + 只需要设置LayoutManager和RecyclerAdapter,提供了setLayoutManager和setAdapter方法
 + 在获取到数据的时候调用updateData方法
 + 获取数据失败的时候调用updateError方法
