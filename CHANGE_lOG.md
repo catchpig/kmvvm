@@ -1,6 +1,6 @@
 # CHANGE LOG
 
-### v1.2.4
+### v1.2.5
 
 + Flow.lifecycleRefresh增加回调函数
 
