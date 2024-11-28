@@ -1,13 +1,25 @@
 package com.catchpig.utils.ext
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+
+/**
+ * 毫秒数转化为时间字符串
+ * @receiver Long
+ * @param format String
+ * @return String
+ */
+fun Long.format(format: String = DATE_FORMAT): String {
+    return Date(this).format(format)
+}
+
 /**
  * 字符串转化为时间
  */
-fun String.date(format:String=DATE_FORMAT):Date{
+fun String.date(format: String = DATE_FORMAT): Date {
     val dateFormat = SimpleDateFormat(format)
     return dateFormat.parse(this)!!
 }
@@ -22,7 +34,7 @@ fun Date.format(format: String = DATE_FORMAT): String {
     return dateFormat.format(this)
 }
 
-fun Date.calendar():Calendar{
+fun Date.calendar(): Calendar {
     val calendar = Calendar.getInstance()
     calendar.time = this
     return calendar
@@ -31,7 +43,7 @@ fun Date.calendar():Calendar{
 /**
  * 获取年
  */
-fun Date.year():Int{
+fun Date.year(): Int {
     return calendar().year()
 }
 
@@ -59,13 +71,13 @@ fun Date.hour(): Int {
 /**
  * 获取分钟数
  */
-fun Date.minute():Int{
+fun Date.minute(): Int {
     return calendar().minute()
 }
 
 /**
  * 获取秒数
  */
-fun Date.second():Int{
+fun Date.second(): Int {
     return calendar().second()
 }

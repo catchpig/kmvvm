@@ -35,6 +35,7 @@
 
 ## DateExt
 
++ Long.format - 时间戳转字符串
 + String.date - 字符串转时间Date
 + Date.format - 时间Date转字符串
 + Date.calendar - Date转Calendar
