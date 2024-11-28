@@ -16,7 +16,6 @@ pluginManagement {
         google() {
             allowInsecureProtocol = true
         }
-        maven { url 'https://jitpack.io' }
     }
 }
 dependencyResolutionManagement {
@@ -25,6 +24,7 @@ dependencyResolutionManagement {
         maven {
             url "${rootProject.projectDir}/build/"
         }
+        maven { url 'https://jitpack.io' }
         maven {
             url "https://maven.aliyun.com/repository/central"
         }
@@ -44,7 +44,7 @@ dependencyResolutionManagement {
         google() {
             allowInsecureProtocol = true
         }
-        maven { url 'https://jitpack.io' }
+
     }
 }
 

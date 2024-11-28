@@ -1,4 +1,9 @@
 # CHANGE LOG
+
+### v1.2.3
+
++ 升级刷新库版本
+
 ### v1.2.2
 
 + RecyclerAdapter增加空页面是否可用的配置

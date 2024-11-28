@@ -64,9 +64,9 @@ dependencies {
         ksp project(':compiler')
     } else {
         def kmvvm_version = rootProject.kmvvmVersion
-        implementation "io.github.catchpig.kmvvm:download:$kmvvm_version"
-        implementation "io.github.catchpig.kmvvm:mvvm:$kmvvm_version"
-        ksp "io.github.catchpig.kmvvm:compiler:$kmvvm_version"
+        implementation "com.github.catchpig.kmvvm:download:$kmvvm_version"
+        implementation "com.github.catchpig.kmvvm:mvvm:$kmvvm_version"
+        ksp "com.github.catchpig.kmvvm:compiler:$kmvvm_version"
     }
 
 
@@ -75,6 +75,8 @@ dependencies {
     //rxjava3
     implementation "io.reactivex.rxjava3:rxjava:${dependenciesVersion["rxjava"]}"
     implementation "io.reactivex.rxjava3:rxandroid:${dependenciesVersion["rxandroid"]}"
+    //刷新
+    implementation "io.github.scwang90:refresh-layout-kernel:${dependenciesVersion["SmartRefreshLayout"]}"
     //刷新-头部
     implementation "io.github.scwang90:refresh-header-material:${dependenciesVersion["SmartRefreshLayout"]}"
     //刷新-底部

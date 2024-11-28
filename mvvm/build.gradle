@@ -82,7 +82,7 @@ dependencies {
     // kotlin扩展（可选）
     api "com.geyifeng.immersionbar:immersionbar-ktx:${dependenciesVersion["immersionbar"]}"
     //刷新
-    api "io.github.scwang90:refresh-layout-kernel:${dependenciesVersion["SmartRefreshLayout"]}"
+    compileOnly "io.github.scwang90:refresh-layout-kernel:${dependenciesVersion["SmartRefreshLayout"]}"
 }
 
 apply from: '../publish_jitpack_aar_jar.gradle'
