@@ -24,15 +24,19 @@ private const val TAG = "FlowExt"
  */
 fun <T> Flow<MutableList<T>>.lifecycleRefresh(
     base: BaseView,
-    refreshLayoutWrapper: RefreshRecyclerView
+    refreshLayoutWrapper: RefreshRecyclerView,
+    callback: (MutableList<T>.() -> Unit)? = null
 ) {
     base.scope().launch(Dispatchers.Main) {
         this@lifecycleRefresh.flowOn(Dispatchers.IO).catch {
             refreshLayoutWrapper.updateError()
         }.onCompletion {
             "$TAG:lifecycleRefresh:onCompletion".logd(base::class.simpleName!!)
-        }.collect {
-            refreshLayoutWrapper.updateData(it)
+        }.collect { list ->
+            refreshLayoutWrapper.updateData(list)
+            callback?.let {
+                it(list)
+            }
         }
     }
 }
