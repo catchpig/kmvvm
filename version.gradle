@@ -18,7 +18,7 @@ ext {
     ]
     kmvvmVersion = kmvvmVersion()
     dependenciesVersion = [
-            'kotlin'            : '1.9.0',
+            'kotlin'            : '2.0.21',
             'support'           : '30.0.0',
             'appcompat'         : '1.4.1',
             'startup_runtime'   : '1.1.1',
@@ -45,7 +45,7 @@ ext {
             'coroutines'        : '1.6.4',
             'serialization'     : '1.4.1',
             'lifecycle'         : '2.6.1',
-            "ksp"               : '1.9.23-1.0.19'
+            "ksp"               : '2.0.21-1.0.26'
     ]
 }
 

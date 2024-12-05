@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id 'java-library'
     id 'kotlin'
+    id 'org.jetbrains.kotlin.jvm'
 }
 apply from: '../publish_jitpack_aar_jar.gradle'
 
@@ -13,3 +17,14 @@ dependencies {
     compileOnly("com.squareup.okhttp3:okhttp:${dependenciesVersion["okhttp3"]}")
     compileOnly "org.jetbrains.kotlinx:kotlinx-serialization-json:${dependenciesVersion["serialization"]}"
 }
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    compilerOptions{
+        jvmTarget = JvmTarget.JVM_17
+    }
+}
+
