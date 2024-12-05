@@ -1,7 +1,7 @@
 ext {
     sdkVersion = [
             "compile": 34,
-            "min"    : 21,
+            "min"    : 23,
             "target" : 33
     ]
     frame = [

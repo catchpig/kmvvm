@@ -382,10 +382,10 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
                     index--
                 }
                 val m = data[index]
-                //设置item的点击回调事件
-                holder.itemView.setOnClickListener {
-                    onItemClickListener?.let {
-                        it.itemClick(recyclerView.id, m, index)
+                onItemClickListener?.let { listener ->
+                    //设置item的点击回调事件
+                    holder.itemView.setOnClickListener {
+                        listener.itemClick(recyclerView.id, m, index)
                     }
                 }
                 bindViewHolder(holder, m, position)

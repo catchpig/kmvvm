@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+### v1.2.6
+
++ 升级最低兼容版本至23
++ RecyclerAdapter调整OnItemClickListener
++ loadingDialog跟随activity变化状态栏和导航栏
+
 ### v1.2.5
 
 + Flow.lifecycleRefresh增加回调函数

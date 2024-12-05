@@ -5,14 +5,13 @@ import android.app.Dialog
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.catchpig.loading.view.LoadingView
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
-import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.interfaces.IGlobalConfig
-import com.gyf.immersionbar.ImmersionBar
-import com.gyf.immersionbar.ktx.destroyImmersionBar
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 
 /**
  *
@@ -62,23 +61,36 @@ class LoadingViewController(
             val loadingView = findViewById<LoadingView>(R.id.loading_view)
             loadingFrame.visibility = View.VISIBLE
             loadingView.setLoadColor(globalConfig.getLoadingColor())
-            ImmersionBar.with(activity, this).transparentStatusBar().init()
+            setupSystemBar(activity, this)
             show()
-            setOnDismissListener {
-                activity.destroyImmersionBar(this)
-                if (activity is BaseActivity<*>) {
-                    activity.resetStatusBar()
-                }
-
-            }
             window?.run {
-                var layoutParams = attributes
+                val layoutParams = attributes
                 layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
                 layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
                 decorView.setPadding(0, 0, 0, 0)
                 attributes = layoutParams
             }
         }
+    }
+
+    private fun setupSystemBar(activity: Activity, dialog: Dialog) {
+        dialog.window?.run {
+            val windowInsetsControllerCompat =
+                WindowInsetsControllerCompat(this, decorView)
+            val windowInsetsCompat =
+                WindowInsetsCompat.toWindowInsetsCompat(activity.window.decorView.rootWindowInsets)
+            if (windowInsetsCompat.isVisible(WindowInsetsCompat.Type.statusBars())) {
+                windowInsetsControllerCompat.show(WindowInsetsCompat.Type.statusBars())
+            } else {
+                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.statusBars())
+            }
+            if (windowInsetsCompat.isVisible(WindowInsetsCompat.Type.navigationBars())) {
+                windowInsetsControllerCompat.show(WindowInsetsCompat.Type.navigationBars())
+            } else {
+                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.navigationBars())
+            }
+        }
+
     }
 
     fun hideLoading() {
