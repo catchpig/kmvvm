@@ -7,18 +7,18 @@ def ossrhUsername = properties.getProperty("ossrhUsername")
 def ossrhPassword = properties.getProperty("ossrhPassword")
 
 if (project.plugins.hasPlugin("java-library")) {
-    task javadocJar(type: Jar) {
+    tasks.register('javadocJar', Jar) {
         from javadoc
         archiveClassifier.convention("javadoc")
         archiveClassifier.set("javadoc")
     }
-    task javaSourcesJar(type: Jar) {
+    tasks.register('javaSourcesJar', Jar) {
         from sourceSets.main.java.srcDirs
         archiveClassifier.convention("sources")
         archiveClassifier.set("sources")
     }
 } else if (project.plugins.hasPlugin("com.android.library")) {
-    task androidSourcesJar(type: Jar) {
+    tasks.register('androidSourcesJar', Jar) {
         from android.sourceSets.main.java.srcDirs
 //        classifier = 'sources'
     }
