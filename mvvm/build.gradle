@@ -36,7 +36,7 @@ android {
         viewBinding = true
     }
 }
-
+Properties
 def dependenciesVersion = rootProject.dependenciesVersion
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

@@ -4,9 +4,10 @@ import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 import com.catchpig.mvvm.lifecycle.ActivityLifeCycleCallbacksImpl
-import com.catchpig.utils.LogUtils
 import com.catchpig.utils.ext.logd
 import com.catchpig.utils.manager.ContextManager
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 
 class KotlinMvvmInitializer : Initializer<Boolean> {
     companion object {
@@ -14,8 +15,8 @@ class KotlinMvvmInitializer : Initializer<Boolean> {
     }
 
     override fun create(context: Context): Boolean {
-        val applicationContext = context!!.applicationContext
-        initLog(applicationContext)
+        val applicationContext = context.applicationContext
+        initLog()
         initContext(applicationContext)
         "create".logd(TAG)
         return true
@@ -27,8 +28,8 @@ class KotlinMvvmInitializer : Initializer<Boolean> {
         application.registerActivityLifecycleCallbacks(ActivityLifeCycleCallbacksImpl())
     }
 
-    private fun initLog(context: Context) {
-        LogUtils.getInstance().init(context)
+    private fun initLog() {
+        Logger.addLogAdapter(AndroidLogAdapter())
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

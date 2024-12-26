@@ -40,6 +40,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${dependenciesVersion["appcompat"]}"
     implementation "androidx.core:core-ktx:${dependenciesVersion["core_ktx"]}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${dependenciesVersion["kotlin"]}"
+    api "com.orhanobut:logger:${dependenciesVersion["logger"]}"
     api("com.google.android.material:material:${dependenciesVersion["material"]}")
 
     api project(':annotation')

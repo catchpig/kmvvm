@@ -5,7 +5,7 @@ import com.catchpig.download.manager.DownloadManager
 import com.catchpig.kmvvm.BuildConfig
 import com.catchpig.kmvvm.R
 import com.catchpig.mvvm.network.manager.NetManager
-import com.catchpig.utils.LogUtils
+import com.catchpig.utils.ext.initLogger
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -15,6 +15,9 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * @date 2019/8/18 00:18
  */
 class KotlinMvpApp : Application() {
+    companion object {
+        private const val TAG = "KotlinMvpApp"
+    }
 
     init {
         //设置全局的Header构建器
@@ -31,10 +34,14 @@ class KotlinMvpApp : Application() {
     override fun onCreate() {
         super.onCreate()
         val debug = BuildConfig.DEBUG
-        // 框架内部已经初始化了,如果不需要打印日志的代码行数,就不需要再次初始化
-        LogUtils.getInstance().showLineNumber(debug)
+        initLogger()
         NetManager.getInstance().setDebug(debug)
         initDownload()
+    }
+
+    private fun initLogger() {
+        val path = "${externalCacheDir?.absolutePath}/logs"
+        initLogger(path, "kmvvm")
     }
 
     /**

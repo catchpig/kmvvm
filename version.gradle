@@ -45,7 +45,8 @@ ext {
             'coroutines'        : '1.6.4',
             'serialization'     : '1.4.1',
             'lifecycle'         : '2.6.1',
-            "ksp"               : '2.0.21-1.0.26'
+            "ksp"               : '2.0.21-1.0.26',
+            "logger"            : "2.2.0"
     ]
 }
 
