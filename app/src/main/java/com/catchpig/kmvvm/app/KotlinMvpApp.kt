@@ -5,7 +5,7 @@ import com.catchpig.download.manager.DownloadManager
 import com.catchpig.kmvvm.BuildConfig
 import com.catchpig.kmvvm.R
 import com.catchpig.mvvm.network.manager.NetManager
-import com.catchpig.utils.ext.initLogger
+import com.catchpig.utils.LogUtils
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -41,7 +41,7 @@ class KotlinMvpApp : Application() {
 
     private fun initLogger() {
         val path = "${externalCacheDir?.absolutePath}/logs"
-        initLogger(path, "kmvvm")
+        LogUtils.init("kmvvm", path)
     }
 
     /**
