@@ -53,26 +53,18 @@ if (isWindows) {
 } else {
     pluginManagement {
         repositories {
+            google()
+            mavenCentral()
             gradlePluginPortal()
-            mavenCentral() {
-                allowInsecureProtocol = true
-            }
-            google() {
-                allowInsecureProtocol = true
-            }
+            maven { url 'https://jitpack.io' }
         }
     }
     dependencyResolutionManagement {
         repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
         repositories {
+            google()
+            mavenCentral()
             maven { url 'https://jitpack.io' }
-            mavenCentral() {
-                allowInsecureProtocol = true
-            }
-            google() {
-                allowInsecureProtocol = true
-            }
-
         }
     }
 }
