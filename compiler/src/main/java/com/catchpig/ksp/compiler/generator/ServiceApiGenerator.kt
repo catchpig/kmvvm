@@ -115,13 +115,14 @@ class ServiceApiGenerator(
                 }
             }
             constructorBuilder = constructorBuilder.addStatement(
-                "serviceMap.put(%S, %T(%S, %L, %L, $interceptorName,$debugInterceptorName,%L))",
+                "serviceMap.put(%S, %T(%S, %L, %L, $interceptorName,$debugInterceptorName,%L,%L))",
                 "$packageName.$className",
                 CLASS_NAME_SERVICE_PARAM,
                 service.baseUrl,
                 service.connectTimeout,
                 service.readTimeout,
-                service.rxJava
+                service.rxJava,
+                service.debug
             )
         }
         return constructorBuilder.build()

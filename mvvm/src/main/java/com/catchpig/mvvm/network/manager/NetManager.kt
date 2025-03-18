@@ -22,19 +22,14 @@ class NetManager private constructor() {
         val holder = NetManager()
     }
 
-    private var debug = false
     private val serviceMap = hashMapOf<String, Any>()
-
-    fun setDebug(debug: Boolean) {
-        this.debug = debug
-    }
 
     fun <S : Any> getService(serviceClass: Class<S>, baseUrl: String? = null): S {
         val className = serviceClass.name
         val service = serviceMap[className]
         return if (service == null) {
             val serviceParam = KotlinMvvmCompiler.getServiceParam(className)
-            val url = baseUrl?:serviceParam.baseUrl
+            val url = baseUrl ?: serviceParam.baseUrl
             var builder = Retrofit
                 .Builder()
                 .baseUrl(url)
@@ -62,7 +57,7 @@ class NetManager private constructor() {
              * 读取数据超时时间
              */
             .readTimeout(serviceParam.readTimeout, TimeUnit.MILLISECONDS)
-        if (debug) {
+        if (serviceParam.debug) {
             serviceParam.debugInterceptors.forEach {
                 builder = builder.addInterceptor(it)
             }

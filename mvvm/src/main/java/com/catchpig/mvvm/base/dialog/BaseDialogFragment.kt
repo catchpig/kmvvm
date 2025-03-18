@@ -39,8 +39,8 @@ open class BaseDialogFragment<VB : ViewBinding> : DialogFragment(), OnShowListen
     }
 
     protected val bodyBinding: VB by lazy {
-        var type = javaClass.genericSuperclass
-        var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val type = javaClass.genericSuperclass
+        val vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         method.invoke(this, layoutInflater) as VB
     }
@@ -60,15 +60,11 @@ open class BaseDialogFragment<VB : ViewBinding> : DialogFragment(), OnShowListen
     }
 
     override fun onShow(dialog: DialogInterface) {
-        onShowListener?.let {
-            it.onShow(dialog)
-        }
+        onShowListener?.onShow(dialog)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        onDismissListener?.let {
-            it.onDismiss(dialog)
-        }
+        onDismissListener?.onDismiss(dialog)
         super.onDismiss(dialog)
     }
 

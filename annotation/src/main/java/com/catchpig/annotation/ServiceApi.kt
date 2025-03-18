@@ -40,6 +40,10 @@ annotation class ServiceApi(
     /**
      * 是否使用RxJava做转换器
      */
-    val rxJava: Boolean = false
+    val rxJava: Boolean = false,
+    /**
+     * 是否要添加debug拦截器
+     */
+    val debug: Boolean = false
 )
 

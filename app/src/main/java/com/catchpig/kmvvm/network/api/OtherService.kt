@@ -9,7 +9,8 @@ import retrofit2.http.GET
 @ServiceApi(
     baseUrl = "https://www.wanandroid.com/",
     responseConverter = SerializationResponseBodyConverter::class,
-    debugInterceptors = [OkHttpProfilerInterceptor::class]
+    debugInterceptors = [OkHttpProfilerInterceptor::class],
+    debug = true
 )
 interface OtherService {
     @GET("banner/json")

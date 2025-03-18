@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.hardware.display.DisplayManager
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
@@ -14,6 +15,18 @@ import androidx.core.content.FileProvider
 import java.io.File
 
 private const val TAG = "ContextExt"
+
+/**
+ * 根据屏幕Id创建上下文
+ * @receiver Context
+ * @param displayId Int
+ * @return Context
+ */
+fun Context.createDisplayContext(displayId: Int): Context {
+    val displayManager = getSystemService(DisplayManager::class.java)
+    val display = displayManager.getDisplay(displayId)
+    return createDisplayContext(display);
+}
 
 /**
  * 安装apk

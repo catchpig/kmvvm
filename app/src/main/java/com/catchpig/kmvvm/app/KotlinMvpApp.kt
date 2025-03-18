@@ -33,9 +33,7 @@ class KotlinMvpApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val debug = BuildConfig.DEBUG
         initLogger()
-        NetManager.getInstance().setDebug(debug)
         initDownload()
     }
 
