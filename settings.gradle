@@ -57,6 +57,9 @@ if (isWindows) {
             mavenCentral()
             gradlePluginPortal()
             maven { url 'https://jitpack.io' }
+            maven {
+                url 'https://maven.aliyun.com/repository/public'
+            }
         }
     }
     dependencyResolutionManagement {
@@ -65,6 +68,9 @@ if (isWindows) {
             google()
             mavenCentral()
             maven { url 'https://jitpack.io' }
+            maven {
+                url 'https://maven.aliyun.com/repository/public'
+            }
         }
     }
 }
