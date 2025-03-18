@@ -38,7 +38,7 @@ ext {
             'SmartRefreshLayout': '3.0.0-alpha',
             'auto_service'      : '1.0.1',
             'kotlinpoet'        : '1.12.0',
-            'rxpermissions'     : '0.12',
+            'xxpermissions'     : "20.0",
             'recycleview'       : '1.2.1',
             'UIViewPager'       : '0.1.8',
             'okhttpprofiler'    : '1.0.8',

@@ -85,7 +85,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:${dependenciesVersion["glide"]}"
     kapt "com.github.bumptech.glide:compiler:${dependenciesVersion["glide"]}"
     //权限
-    implementation "com.github.tbruyelle:rxpermissions:${dependenciesVersion["rxpermissions"]}"
+    implementation "com.github.getActivity:XXPermissions:${dependenciesVersion["xxpermissions"]}"
     implementation "com.gitee.catchpig:UIViewPager:${dependenciesVersion["UIViewPager"]}"
     implementation "com.localebro:okhttpprofiler:${dependenciesVersion["okhttpprofiler"]}"
 }
