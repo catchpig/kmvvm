@@ -61,3 +61,5 @@
 
 # @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
+
+-keep class com.hjq.permissions.** {*;}
