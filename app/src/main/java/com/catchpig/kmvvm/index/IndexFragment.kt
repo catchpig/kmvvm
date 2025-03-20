@@ -6,6 +6,7 @@ import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.apk.view.InstallApkActivity
 import com.catchpig.kmvvm.child.ChildActivity
 import com.catchpig.kmvvm.databinding.FragmentIndexBinding
+import com.catchpig.kmvvm.dialog.ConfirmDialogFragment
 import com.catchpig.kmvvm.exception.HttpServerException
 import com.catchpig.kmvvm.fullscreen.FullScreenActivity
 import com.catchpig.kmvvm.recycle.RecycleActivity
@@ -42,6 +43,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
             recycle.setOnClickListener(this@IndexFragment)
             installApk.setOnClickListener(this@IndexFragment)
             handlerError.setOnClickListener(this@IndexFragment)
+            openDialog.setOnClickListener(this@IndexFragment)
         }
 
     }
@@ -88,6 +90,9 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                         snackBar(it.message!!)
                     }
                 }) {}
+            }
+            R.id.open_dialog -> {
+                ConfirmDialogFragment.newInstance().show(childFragmentManager, "ConfirmDialogFragment")
             }
             else -> {
             }

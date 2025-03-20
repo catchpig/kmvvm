@@ -14,7 +14,7 @@ ext {
              * 是否是快照版本
              */
             "snapshot"        : false,
-            "kmvvm"           : '1.3.0'
+            "kmvvm"           : '1.3.6'
     ]
     kmvvmVersion = kmvvmVersion()
     dependenciesVersion = [
