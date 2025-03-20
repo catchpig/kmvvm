@@ -1,4 +1,7 @@
 # CHANGE LOG
+### v1.3.6
+
++ 优化DialogFragment,去除弹窗的默认边距
 
 ### v1.2.7
 
