@@ -18,8 +18,6 @@ if (project.plugins.hasPlugin("java-library")) {
     }
 }
 
-def kmvvm_version = rootProject.kmvvmVersion
-
 afterEvaluate {
     publishing {
         publications {
@@ -35,7 +33,7 @@ afterEvaluate {
                 def projectName = project.name
                 groupId = 'com.github.catchpig.kmvvm'
                 artifactId = projectName
-                version = kmvvm_version
+                version = "1.3.6"
             }
         }
         repositories {

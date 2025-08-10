@@ -7,7 +7,7 @@ import com.catchpig.kmvvm.entity.PageData
 import com.catchpig.kmvvm.entity.User
 import com.catchpig.kmvvm.network.ResponseBodyConverter
 import com.catchpig.kmvvm.network.interceptor.RequestInterceptor
-import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
+import io.nerdythings.okhttp.profiler.OkHttpProfilerInterceptor
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

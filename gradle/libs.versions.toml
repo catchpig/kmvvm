@@ -1,0 +1,94 @@
+[versions]
+compileSdk = "34"
+minSdk = "23"
+targetSdk = "34"
+agp = "8.12.0"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.26"
+kmvvm = "1.3.6"
+coreKtx = "1.10.1"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+appcompat = "1.6.1"
+material = "1.10.0"
+okhttpprofilter = "1.1.1"
+startupruntime = "1.1.1"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
+coordinatorlayout = "1.2.0"
+activity-ktx = "1.8.0"
+fragment-ktx = "1.5.7"
+rxjava = "3.1.11"
+rxandroid = "3.0.2"
+smartrefreshlayout = "3.0.0-alpha"
+xxpermissions = "20.0"
+glide = "4.14.2"
+uiviewpager = "0.1.8"
+retrofit2 = "3.0.0"
+okhttp3 = "4.10.0"
+annotation = "1.3.0"
+kotlinpoet = "1.12.0"
+lifecycle = "2.6.1"
+loadingview = "1.0.2"
+immersionbar = "3.2.2"
+logger = "2.2.0"
+gson = "2.10"
+kotlinx-serialization = "1.4.1"
+recyclerview = "1.2.1"
+
+[libraries]
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+logger = { group = "com.orhanobut", name = "logger", version.ref = "logger" }
+immersionbar = { group = "com.geyifeng.immersionbar", name = "immersionbar", version.ref = "immersionbar" }
+immersionbar-ktx = { group = "com.geyifeng.immersionbar", name = "immersionbar-ktx", version.ref = "immersionbar" }
+loadingview = { group = "com.github.catch-pig", name = "LoadingView", version.ref = "loadingview" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+uiviewpager = { group = "com.gitee.catchpig", name = "UIViewPager", version.ref = "uiviewpager" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+kapt-glide = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+xxpermissions = { group = "com.github.getActivity", name = "XXPermissions", version.ref = "xxpermissions" }
+smartrefreshlayout = { group = "io.github.scwang90", name = "refresh-layout-kernel", version.ref = "smartrefreshlayout" }
+smartrefreshlayout-header = { group = "io.github.scwang90", name = "refresh-header-material", version.ref = "smartrefreshlayout" }
+smartrefreshlayout-footer = { group = "io.github.scwang90", name = "refresh-footer-classics", version.ref = "smartrefreshlayout" }
+rxandroid = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxandroid" }
+rxjava = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxjava" }
+fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment-ktx" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
+startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "startupruntime" }
+okhttpprofilter = { group = "io.nerdythings", name = "okhttp-profiler", version.ref = "okhttpprofilter" }
+kmvvm = { group = "com.github.catchpig.kmvvm", name = "mvvm", version.ref = "kmvvm" }
+kmvvm-download = { group = "com.github.catchpig.kmvvm", name = "download", version.ref = "kmvvm" }
+ksp-kmvvm = { group = "com.github.catchpig.kmvvm", name = "compiler", version.ref = "kmvvm" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+coordinatorlayout = { group = "androidx.coordinatorlayout", name = "coordinatorlayout", version.ref = "coordinatorlayout" }
+retrofit2-adapter-rxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit2" }
+retrofit2-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
+retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
+okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
+symbol-processing-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
+kotlinpoet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoet" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+
