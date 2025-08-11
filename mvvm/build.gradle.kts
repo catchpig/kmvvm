@@ -49,10 +49,10 @@ dependencies {
     implementation(libs.okhttp3.logging.interceptor)
 
     compileOnly(libs.retrofit2)
-    api(libs.retrofit2.adapter.rxjava3)
+    compileOnly(libs.retrofit2.adapter.rxjava3)
     api(libs.retrofit2.converter.gson)
-    implementation(libs.rxandroid)
-    implementation(libs.rxjava)
+    compileOnly(libs.rxandroid)
+    compileOnly(libs.rxjava)
     api(libs.loadingview)
     api(libs.immersionbar)
     api(libs.immersionbar.ktx)

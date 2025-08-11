@@ -135,7 +135,7 @@ open class DownloadManager {
      */
     protected fun localFileName(downloadUrl: String): String {
         val fileName = downloadUrl.replace("/", "").replace("\\", "")
-        var cashDir = getDownloadFilePath()
+        val cashDir = getDownloadFilePath()
         return "$cashDir/$fileName"
     }
 
@@ -166,7 +166,7 @@ open class DownloadManager {
      */
     @Throws(IOException::class)
     protected fun writeCache(responseBody: ResponseBody, fileName: String): String {
-        var file = File(fileName)
+        val file = File(fileName)
         if (!file.parentFile.exists()) {
             file.parentFile.mkdirs()
         } else if (file.exists()) {

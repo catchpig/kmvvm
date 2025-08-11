@@ -1,4 +1,13 @@
 # CHANGE LOG
+### v1.3.8
+
++ 升级依赖库版本
+
+
+### v1.3.7
+
++ gradle转gradle.kts
+
 ### v1.3.6
 
 + 优化DialogFragment,去除弹窗的默认边距

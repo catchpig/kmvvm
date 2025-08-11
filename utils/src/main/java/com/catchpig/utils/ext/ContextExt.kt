@@ -110,7 +110,7 @@ fun Context.readTextFromAssets(fileName: String): String {
  */
 fun Context.versionName(): String {
     val packageInfo = packageManager.getPackageInfo(packageName, 0)
-    return packageInfo.versionName
+    return packageInfo.versionName ?: ""
 }
 
 /**
@@ -123,6 +123,6 @@ fun Context.versionCode(): Long {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
         packageInfo.longVersionCode
     } else {
-        packageInfo.versionCode as Long
+        packageInfo.versionCode.toLong()
     }
 }
