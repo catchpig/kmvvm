@@ -39,7 +39,7 @@ class NetManager private constructor() {
                 builder = builder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             }
             val newService = builder.build().create(serviceClass)
-            serviceMap[className] = newService!!
+            serviceMap[className] = newService
             newService
         } else {
             service as S

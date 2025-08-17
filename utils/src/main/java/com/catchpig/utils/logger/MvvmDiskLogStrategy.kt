@@ -8,7 +8,7 @@ import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 
-class MvvmDishLogStrategy(private val handler: WriteHandler) : LogStrategy {
+class MvvmDiskLogStrategy(private val handler: WriteHandler) : LogStrategy {
     companion object {
         private const val TAG = "MvvmDishLogStrategy"
     }
@@ -18,7 +18,7 @@ class MvvmDishLogStrategy(private val handler: WriteHandler) : LogStrategy {
     }
 
     class WriteHandler(
-        private val looper: Looper,
+        looper: Looper,
         private val folder: String,
         private val maxFileSize: Int = 10 * 1024 * 1024
     ) : Handler(looper) {
