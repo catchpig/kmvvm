@@ -27,15 +27,14 @@
 + ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
 
 ## 架构图
+
 <image src="./images/架构图.png" style="zoom:80%;"/>
 
 ## 最低兼容:21
 
-
 ## release版本
 
 [![](https://jitpack.io/v/catchpig/kmvvm.svg)](https://jitpack.io/#catchpig/kmvvm)
-
 
 # [Gitee](https://gitee.com/catchpig/kmvvm)
 
@@ -46,6 +45,7 @@
 ## Gradle
 
 ### 1. 在根目录的build.gradle中添加
+
 ```groovy
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.8.0" apply false
@@ -54,6 +54,7 @@ plugins {
     id 'com.google.devtools.ksp' version '1.8.21-1.0.11' apply false
 }
 ```
+
 ### 2. 在app的build.gradle中添加
 
 ```groovy
@@ -67,6 +68,7 @@ plugins {
 ### 3. 在app的gradle.properties中添加
 
 + 停用ksp增量编译
+
 ```properties
 ksp.incremental=false
 ```
@@ -91,7 +93,6 @@ ksp "com.github.catchpig.kmvvm:compiler:last_version"
 ```groovy
 implementation "com.github.catchpig.kmvvm:download:last_version"
 ```
-
 
 ## 使用
 
@@ -182,7 +183,7 @@ interface IGlobalConfig {
      */
     @IdRes
     fun onFailedReloadClickId(): Int
-    
+
     /**
      * 刷新每页加载个数
      * @return Int
@@ -221,7 +222,7 @@ class MvvmGlobalConfig : IGlobalConfig {
     }
 
     override fun getTitleTextStyle(): Int {
-      return TextStyle.BOLD
+        return TextStyle.BOLD
     }
 
     override fun isShowTitleLine(): Boolean {
@@ -243,7 +244,7 @@ class MvvmGlobalConfig : IGlobalConfig {
     override fun getRecyclerEmptyBanding(parent: ViewGroup): ViewBinding {
         return LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
-    
+
     override fun getFailedBinding(layoutInflater: LayoutInflater, any: Any): ViewBinding? {
         return when (any) {
             is BaseActivity<*> -> {
@@ -367,7 +368,8 @@ fun clickSecondDrawable(v: View) {
 
 + 网络请求失败可展示失败页面,并有刷新按钮可以重新加载数据
 + 在lifecycleLoadingView扩展函数中将showFailedView设置为true,数据请求失败了,就会显示失败页面
-+ 在[onFailedReload](./mvvm/src/main/java/com/catchpig/mvvm/base/view/BaseView.kt)的闭包中再次调用网络请求的接口,就可以重新再加载数据了
++ 在[onFailedReload](./mvvm/src/main/java/com/catchpig/mvvm/base/view/BaseView.kt)
+  的闭包中再次调用网络请求的接口,就可以重新再加载数据了
 
 ```kotlin
 /**
@@ -375,7 +377,7 @@ fun clickSecondDrawable(v: View) {
  * @param autoFirstLoad Boolean 第一次是否自动加载
  * @param block [@kotlin.ExtensionFunctionType] Function1<View, Unit>
  */
-fun onFailedReload(autoFirstLoad: Boolean = true, block: View.() -> Unit){
+fun onFailedReload(autoFirstLoad: Boolean = true, block: View.() -> Unit) {
     .....
 }
 ```
@@ -416,7 +418,8 @@ snackbar.setOnClickListener {
 
 + 网络请求失败可展示失败页面,并有刷新按钮可以重新加载数据
 + 在lifecycleLoadingView扩展函数中将showFailedView设置为true,数据请求失败了,就会显示失败页面
-+ 在[onFailedReload](./mvvm/src/main/java/com/catchpig/mvvm/base/view/BaseView.kt)的闭包中再次调用网络请求的接口,就可以重新再加载数据了
++ 在[onFailedReload](./mvvm/src/main/java/com/catchpig/mvvm/base/view/BaseView.kt)
+  的闭包中再次调用网络请求的接口,就可以重新再加载数据了
 
 ```kotlin
 /**
@@ -424,7 +427,7 @@ snackbar.setOnClickListener {
  * @param autoFirstLoad Boolean 第一次是否自动加载
  * @param block [@kotlin.ExtensionFunctionType] Function1<View, Unit>
  */
-fun onFailedReload(autoFirstLoad: Boolean = true, block: View.() -> Unit){
+fun onFailedReload(autoFirstLoad: Boolean = true, block: View.() -> Unit) {
     .....
 }
 ```
@@ -436,7 +439,7 @@ override fun initFlow() {
     }
 }
 
-private fun loadBanners(){
+private fun loadBanners() {
     viewModel.queryBanners().lifecycleLoadingDialog(this, true) {
         val images = mutableListOf<String>()
         this.forEach {
@@ -454,7 +457,11 @@ private fun loadBanners(){
 
 ### 4. RecycleView
 
-+ Adapter可以继承[RecycleAdapter](./mvvm/src/main/java/com/catchpig/mvvm/base/adapter/RecyclerAdapter.kt)来使用,RecycleAdapter使用了ViewBanding,只需要实现以下两个个方法
++
+
+Adapter可以继承[RecycleAdapter](./mvvm/src/main/java/com/catchpig/mvvm/base/adapter/RecyclerAdapter.kt)
+来使用,RecycleAdapter使用了ViewBanding,只需要实现以下两个个方法
+
 + RecyclerAdapter可以调用setShowEmptyEnabled()方法来设置全局的空页面是否可用
 
 > 使用示例
@@ -462,7 +469,7 @@ private fun loadBanners(){
 ```kotlin
 class UserAdapter(iPageControl: IPageControl) :
     RecyclerAdapter<User, ItemUserBinding>(iPageControl) {
-    
+
     override fun viewBinding(parent: ViewGroup): ItemUserBinding {
         return ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
@@ -478,7 +485,10 @@ class UserAdapter(iPageControl: IPageControl) :
 ### 5.刷新分页控件([RefreshRecyclerView](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshRecyclerView.kt))
 
 + RefreshRecyclerView集成了RefreshLayoutWrapper+RecyclerView
-+ 不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
++
+
+不用关心分页的逻辑,分页的刷新逻辑实现都在[RefreshLayoutWrapper](./mvvm/src/main/java/com/catchpig/mvvm/widget/refresh/RefreshLayoutWrapper.kt)
+
 + 只需要设置LayoutManager和RecyclerAdapter,提供了setLayoutManager和setAdapter方法
 + 在获取到数据的时候调用updateData方法
 + 获取数据失败的时候调用updateError方法
@@ -496,17 +506,16 @@ class UserAdapter(iPageControl: IPageControl) :
 ```xml
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-              android:layout_height="match_parent" android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
 
     <TextView android:layout_width="match_parent" android:layout_height="50dp"
-              android:background="@color/colorPrimary" android:gravity="center" android:text="文章"
-              android:textColor="@color/color_white"/>
+        android:background="@color/colorPrimary" android:gravity="center" android:text="文章"
+        android:textColor="@color/color_white" />
 
     <com.catchpig.mvvm.widget.refresh.RefreshRecyclerView android:id="@+id/refresh"
-                                                          android:layout_width="match_parent"
-                                                          android:layout_height="match_parent"
-                                                          app:recycler_background="#445467">
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        app:recycler_background="#445467">
 
     </com.catchpig.mvvm.widget.refresh.RefreshRecyclerView>
 </LinearLayout>
@@ -515,7 +524,7 @@ class UserAdapter(iPageControl: IPageControl) :
 ```kotlin
 bodyBinding.refresh.run {
     setOnRefreshLoadMoreListener { nextPageIndex ->
-        viewModel.queryArticles(nextPageIndex).lifecycleRefresh(this@ArticleFragment,this)
+        viewModel.queryArticles(nextPageIndex).lifecycleRefresh(this@ArticleFragment, this)
     }
 }
 ```
@@ -618,53 +627,127 @@ class ResponseBodyConverter :
 ##### 6.2.4 如果想直接拿response的结果作为网络请求的返回值,可以直接将[SerializationResponseBodyConverter](./mvvm/src/main/java/com/catchpig/mvvm/network/converter/SerializationResponseBodyConverter.kt)加到ServiceApi注解的responseConverter属性上
 
 #### 6.3 FlowExt中扩展了网络请求方法(带lifecycleScope)
+
 + 刷新+RecycleView的网络请求封装
-  - lifecycleRefresh(
-      base: BaseView, refreshLayoutWrapper: RefreshRecyclerView
-  )
+    - lifecycleRefresh(
+      base: BaseView,
+      refreshLayoutWrapper: RefreshRecyclerView,
+      callback: (MutableList<T>.() -> Unit)? = null
+      )
+    - repeatOnLifecycleRefresh(
+      base: BaseView,
+      refreshLayoutWrapper: RefreshRecyclerView,
+      state: Lifecycle.State = Lifecycle.State.STARTED,
+      callback: (MutableList<T>.() -> Unit)? = null
+      )
 + 不带loading的网络请求封装
-  - lifecycle(
-    base: BaseView,
-    showFailedView: Boolean = false,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-    )
-  - lifecycle(
-    baseViewModel: BaseViewModel,
-    showFailedView: Boolean = false,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-    )
+    - lifecycleNull(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T?.() -> Unit
+      )
+    - repeatOnLifecycleNull(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      state: Lifecycle.State = Lifecycle.State.STARTED,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T?.() -> Unit
+      )
+    - lifecycle(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
+    - repeatOnLifecycle(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      state: Lifecycle.State = Lifecycle.State.STARTED,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
+    - lifecycle(
+      baseViewModel: BaseViewModel,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
 + 带loadingView的网络请求封装
-  - lifecycleLoadingDialog(
-    base: BaseView,
-    showFailedView: Boolean = false,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-  )
-  - lifecycleLoadingDialog(
-    baseViewModel: BaseViewModel,
-    showFailedView: Boolean = false,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-  )
+    - lifecycleLoadingDialogNull(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T?.() -> Unit
+      )
+    - repeatOnLifecycleLoadingDialogNull(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      state: Lifecycle.State = Lifecycle.State.STARTED,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T?.() -> Unit
+      )
+    - lifecycleLoadingDialog(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
+    - repeatOnLifecycleLoadingDialog(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      state: Lifecycle.State = Lifecycle.State.STARTED,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
+    - lifecycleLoadingDialog(
+      baseViewModel: BaseViewModel,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
+
 + 带loadingDialog的网络请求封装
-  - lifecycleLoadingView(
-    base: BaseView,
-    showFailedView: Boolean = false,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-    )
-  - lifecycleLoadingView(
-    baseViewModel: BaseViewModel,
-    showFailedView: Boolean = false,
-    errorCallback: ((t: Throwable) -> Unit)? = null,
-    callback: T.() -> Unit
-    )
+    - lifecycleLoadingViewNull(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T?.() -> Unit
+      )
+    - repeatOnLifecycleLoadingViewNull(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      state: Lifecycle.State = Lifecycle.State.STARTED,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T?.() -> Unit
+      )
+    - lifecycleLoadingView(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
+    - repeatOnLifecycleLoadingView(
+      base: BaseView,
+      showFailedView: Boolean = false,
+      state: Lifecycle.State = Lifecycle.State.STARTED,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
+    - lifecycleLoadingView(
+      baseViewModel: BaseViewModel,
+      showFailedView: Boolean = false,
+      errorCallback: ((t: Throwable) -> Unit)? = null,
+      callback: T.() -> Unit
+      )
 
 ### 7. 日志
 
-+ 不需要在Application中初始化,因为LogUtils已经在[KotlinMvvmInitializer](./mvvm/src/main/java/com/catchpig/mvvm/initializer/KotlinMvvmInitializer.kt)中初始化了
++
+
+不需要在Application中初始化,因为LogUtils已经在[KotlinMvvmInitializer](./mvvm/src/main/java/com/catchpig/mvvm/initializer/KotlinMvvmInitializer.kt)
+中初始化了
+
 + 可以使用LogUtils.getInstance().i,LogUtils.getInstance().d等打印日志(不建议)
 + 也可以使用LogExt的扩展方法打印日志(建议)
 
