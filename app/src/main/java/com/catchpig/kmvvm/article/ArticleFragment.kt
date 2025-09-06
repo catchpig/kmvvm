@@ -6,6 +6,7 @@ import com.catchpig.kmvvm.adapter.ArticleAdapter
 import com.catchpig.kmvvm.databinding.FragmentArticleBinding
 import com.catchpig.mvvm.base.fragment.BaseVMFragment
 import com.catchpig.mvvm.ext.lifecycleRefresh
+import com.catchpig.mvvm.ext.repeatOnLifecycleRefresh
 import com.gyf.immersionbar.ktx.statusBarHeight
 
 class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>() {
@@ -50,7 +51,7 @@ class ArticleFragment : BaseVMFragment<FragmentArticleBinding, ArticleViewModel>
         bodyBinding.refreshView.run {
             setOnRefreshLoadMoreListener { nextPageIndex ->
                 viewModel.queryArticles(nextPageIndex)
-                    .lifecycleRefresh(this@ArticleFragment, this)
+                    .repeatOnLifecycleRefresh(this@ArticleFragment, this)
             }
         }
     }

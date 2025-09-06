@@ -10,8 +10,10 @@ import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.contains
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.view.BaseView
@@ -20,7 +22,10 @@ import com.catchpig.mvvm.controller.StatusBarController
 import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.utils.ext.showSnackBar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
+import kotlin.coroutines.CoroutineContext
 
 /**
  * --------------状态栏----------------<br/>
@@ -96,8 +101,25 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         return failedBinding
     }
 
-    override fun scope(): LifecycleCoroutineScope {
-        return lifecycleScope
+    override fun launcherOnLifecycle(
+        context: CoroutineContext,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        lifecycleScope.launch(context) {
+            block()
+        }
+    }
+
+    override fun repeatLauncherOnLifecycle(
+        context: CoroutineContext,
+        state: Lifecycle.State,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        lifecycleScope.launch(context) {
+            repeatOnLifecycle(state) {
+                block()
+            }
+        }
     }
 
     override fun showFailedView() {

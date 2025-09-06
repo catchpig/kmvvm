@@ -3,15 +3,25 @@ package com.catchpig.mvvm.base.view
 import android.view.Gravity
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.R
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
-import com.catchpig.utils.ext.showSnackBar
+import kotlinx.coroutines.CoroutineScope
+import kotlin.coroutines.CoroutineContext
 
 interface BaseView {
 
-    fun scope(): LifecycleCoroutineScope
+    fun launcherOnLifecycle(
+        context: CoroutineContext,
+        block: suspend CoroutineScope.() -> Unit
+    )
+
+    fun repeatLauncherOnLifecycle(
+        context: CoroutineContext,
+        state: Lifecycle.State,
+        block: suspend CoroutineScope.() -> Unit
+    )
 
     fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM)
 

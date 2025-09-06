@@ -1,25 +1,27 @@
 package com.catchpig.mvvm.base.fragment
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.annotation.Nullable
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.R
-import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.activity.BaseActivity
 import com.catchpig.mvvm.base.view.BaseView
 import com.catchpig.mvvm.controller.LoadingViewController
 import com.catchpig.mvvm.databinding.ViewRootBinding
+import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.utils.ext.showSnackBar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Fragment封装基类
@@ -67,8 +69,25 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         }
     }
 
-    override fun scope(): LifecycleCoroutineScope {
-        return lifecycleScope
+    override fun launcherOnLifecycle(
+        context: CoroutineContext,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        lifecycleScope.launch(context) {
+            block()
+        }
+    }
+
+    override fun repeatLauncherOnLifecycle(
+        context: CoroutineContext,
+        state: Lifecycle.State,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        lifecycleScope.launch(context) {
+            repeatOnLifecycle(state) {
+                block()
+            }
+        }
     }
 
     override fun showFailedView() {
@@ -93,13 +112,12 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
     }
 
     @CallSuper
-    @Nullable
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootBinding = ViewRootBinding.inflate(inflater,container,false)
+        rootBinding = ViewRootBinding.inflate(inflater, container, false)
         rootBinding.layoutBody.addView(
             bodyBinding.root,
             0,

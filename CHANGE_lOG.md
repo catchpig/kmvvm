@@ -1,4 +1,9 @@
 # CHANGE LOG
+### v1.4.0
+
++ 优化Flow的lifecycle回调
++ 增加只有Activity和Fragment只有在前台时才收到回调,处于后台是暂停回调
+
 ### v1.3.9
 
 + 优化日志打印
