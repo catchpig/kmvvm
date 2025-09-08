@@ -24,6 +24,8 @@ class NetManager private constructor() {
 
     private val serviceMap = hashMapOf<String, Any>()
 
+    private var debug: Boolean = false
+
     fun <S : Any> getService(serviceClass: Class<S>, baseUrl: String? = null): S {
         val className = serviceClass.name
         val service = serviceMap[className]
@@ -46,6 +48,10 @@ class NetManager private constructor() {
         }
     }
 
+    fun setDebug(debug: Boolean) {
+        this.debug = debug
+    }
+
     private fun getClient(serviceParam: ServiceParam): OkHttpClient {
         var builder = OkHttpClient
             .Builder()
@@ -57,7 +63,7 @@ class NetManager private constructor() {
              * 读取数据超时时间
              */
             .readTimeout(serviceParam.readTimeout, TimeUnit.MILLISECONDS)
-        if (serviceParam.debug) {
+        if (debug && serviceParam.debug) {
             serviceParam.debugInterceptors.forEach {
                 builder = builder.addInterceptor(it)
             }

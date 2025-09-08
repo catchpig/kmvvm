@@ -1,4 +1,8 @@
 # CHANGE LOG
+### v1.4.1
+
++ 增加网络请求打印的总开关debug
+
 ### v1.4.0
 
 + 优化Flow的lifecycle回调
