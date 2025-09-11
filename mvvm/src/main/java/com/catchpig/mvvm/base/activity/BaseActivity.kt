@@ -11,7 +11,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.contains
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
@@ -23,6 +22,7 @@ import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.utils.ext.showSnackBar
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 import kotlin.coroutines.CoroutineContext
@@ -104,8 +104,8 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
     override fun launcherOnLifecycle(
         context: CoroutineContext,
         block: suspend CoroutineScope.() -> Unit
-    ) {
-        lifecycleScope.launch(context) {
+    ): Job {
+        return lifecycleScope.launch(context) {
             block()
         }
     }
@@ -114,8 +114,8 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         context: CoroutineContext,
         state: Lifecycle.State,
         block: suspend CoroutineScope.() -> Unit
-    ) {
-        lifecycleScope.launch(context) {
+    ): Job {
+        return lifecycleScope.launch(context) {
             repeatOnLifecycle(state) {
                 block()
             }

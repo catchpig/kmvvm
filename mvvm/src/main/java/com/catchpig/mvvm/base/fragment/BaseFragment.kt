@@ -19,6 +19,7 @@ import com.catchpig.mvvm.databinding.ViewRootBinding
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.utils.ext.showSnackBar
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 import kotlin.coroutines.CoroutineContext
@@ -72,8 +73,8 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
     override fun launcherOnLifecycle(
         context: CoroutineContext,
         block: suspend CoroutineScope.() -> Unit
-    ) {
-        lifecycleScope.launch(context) {
+    ): Job {
+        return lifecycleScope.launch(context) {
             block()
         }
     }
@@ -82,8 +83,8 @@ open class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
         context: CoroutineContext,
         state: Lifecycle.State,
         block: suspend CoroutineScope.() -> Unit
-    ) {
-        lifecycleScope.launch(context) {
+    ): Job {
+        return lifecycleScope.launch(context) {
             repeatOnLifecycle(state) {
                 block()
             }

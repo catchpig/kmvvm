@@ -8,6 +8,7 @@ import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
 import com.catchpig.utils.ext.logd
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -28,8 +29,8 @@ fun <T> Flow<MutableList<T>>.lifecycleRefresh(
     base: BaseView,
     refreshLayoutWrapper: RefreshRecyclerView,
     callback: (MutableList<T>.() -> Unit)? = null
-) {
-    base.launcherOnLifecycle(Dispatchers.Main) {
+): Job {
+    return base.launcherOnLifecycle(Dispatchers.Main) {
         lifecycleRefresh(
             this@lifecycleRefresh,
             base::class.simpleName!!,
@@ -52,8 +53,8 @@ fun <T> Flow<MutableList<T>>.repeatOnLifecycleRefresh(
     refreshLayoutWrapper: RefreshRecyclerView,
     state: Lifecycle.State = Lifecycle.State.STARTED,
     callback: (MutableList<T>.() -> Unit)? = null
-) {
-    base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
+): Job {
+    return base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
         lifecycleRefresh(
             this@repeatOnLifecycleRefresh,
             base::class.simpleName!!,
@@ -94,8 +95,8 @@ fun <T> Flow<T?>.lifecycleNull(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    base.launcherOnLifecycle(Dispatchers.Main) {
+): Job {
+    return base.launcherOnLifecycle(Dispatchers.Main) {
         lifecycleNull(this@lifecycleNull, base, showFailedView, errorCallback, callback)
     }
 }
@@ -115,8 +116,8 @@ fun <T> Flow<T?>.repeatOnLifecycleNull(
     state: Lifecycle.State = Lifecycle.State.STARTED,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
+): Job {
+    return base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
         lifecycleNull(this@repeatOnLifecycleNull, base, showFailedView, errorCallback, callback)
     }
 }
@@ -156,8 +157,8 @@ fun <T> Flow<T>.lifecycle(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    base.launcherOnLifecycle(Dispatchers.Main) {
+): Job {
+    return base.launcherOnLifecycle(Dispatchers.Main) {
         lifecycle(this@lifecycle, base, showFailedView, errorCallback, callback)
     }
 }
@@ -177,8 +178,8 @@ fun <T> Flow<T>.repeatOnLifecycle(
     state: Lifecycle.State = Lifecycle.State.STARTED,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
+): Job {
+    return base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
         lifecycle(this@repeatOnLifecycle, base, showFailedView, errorCallback, callback)
     }
 }
@@ -218,8 +219,8 @@ fun <T> Flow<T?>.lifecycleLoadingDialogNull(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    base.launcherOnLifecycle(Dispatchers.Main) {
+): Job {
+    return base.launcherOnLifecycle(Dispatchers.Main) {
         lifecycleLoadingDialogNull(
             this@lifecycleLoadingDialogNull,
             base,
@@ -245,8 +246,8 @@ fun <T> Flow<T?>.repeatOnLifecycleLoadingDialogNull(
     state: Lifecycle.State = Lifecycle.State.STARTED,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
+): Job {
+    return base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
         lifecycleLoadingDialogNull(
             this@repeatOnLifecycleLoadingDialogNull,
             base,
@@ -298,8 +299,8 @@ fun <T> Flow<T>.lifecycleLoadingDialog(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    base.launcherOnLifecycle(Dispatchers.Main) {
+): Job {
+    return base.launcherOnLifecycle(Dispatchers.Main) {
         lifecycleLoadingDialog(
             this@lifecycleLoadingDialog,
             base,
@@ -325,8 +326,8 @@ fun <T> Flow<T>.repeatOnLifecycleLoadingDialog(
     state: Lifecycle.State = Lifecycle.State.STARTED,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
+): Job {
+    return base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
         lifecycleLoadingDialog(
             this@repeatOnLifecycleLoadingDialog,
             base,
@@ -378,8 +379,8 @@ fun <T> Flow<T?>.lifecycleLoadingViewNull(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    base.launcherOnLifecycle(Dispatchers.Main) {
+): Job {
+    return base.launcherOnLifecycle(Dispatchers.Main) {
         lifecycleLoadingViewNull(
             this@lifecycleLoadingViewNull,
             base,
@@ -405,8 +406,8 @@ fun <T> Flow<T?>.repeatOnLifecycleLoadingViewNull(
     state: Lifecycle.State = Lifecycle.State.STARTED,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
+): Job {
+    return base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
         lifecycleLoadingViewNull(
             this@repeatOnLifecycleLoadingViewNull,
             base,
@@ -458,8 +459,8 @@ fun <T> Flow<T>.lifecycleLoadingView(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    base.launcherOnLifecycle(Dispatchers.Main) {
+): Job {
+    return base.launcherOnLifecycle(Dispatchers.Main) {
         lifecycleLoadingView(
             this@lifecycleLoadingView,
             base,
@@ -485,8 +486,8 @@ fun <T> Flow<T>.repeatOnLifecycleLoadingView(
     state: Lifecycle.State = Lifecycle.State.STARTED,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
+): Job {
+    return base.repeatLauncherOnLifecycle(Dispatchers.Main, state) {
         lifecycleLoadingView(
             this@repeatOnLifecycleLoadingView,
             base,
@@ -538,8 +539,8 @@ fun <T> Flow<T?>.lifecycleNull(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    baseViewModel.viewModelScope.launch(Dispatchers.Main) {
+): Job {
+    return baseViewModel.viewModelScope.launch(Dispatchers.Main) {
         this@lifecycleNull.flowOn(Dispatchers.IO).onCompletion {
             "$TAG:lifecycle:onCompletion".logd(baseViewModel::class.simpleName!!)
         }.catch { t ->
@@ -569,8 +570,8 @@ fun <T> Flow<T>.lifecycle(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    baseViewModel.viewModelScope.launch(Dispatchers.Main) {
+): Job {
+    return baseViewModel.viewModelScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
             "$TAG:lifecycle:onCompletion".logd(baseViewModel::class.simpleName!!)
         }.catch { t ->
@@ -600,8 +601,8 @@ fun <T> Flow<T?>.lifecycleLoadingViewNull(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    baseViewModel.viewModelScope.launch(Dispatchers.Main) {
+): Job {
+    return baseViewModel.viewModelScope.launch(Dispatchers.Main) {
         this@lifecycleLoadingViewNull.flowOn(Dispatchers.IO).onStart {
             baseViewModel.loadingViewLiveData.value = true
             if (showFailedView) {
@@ -638,8 +639,8 @@ fun <T> Flow<T>.lifecycleLoadingView(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    baseViewModel.viewModelScope.launch(Dispatchers.Main) {
+): Job {
+    return baseViewModel.viewModelScope.launch(Dispatchers.Main) {
         this@lifecycleLoadingView.flowOn(Dispatchers.IO).onStart {
             baseViewModel.loadingViewLiveData.value = true
             if (showFailedView) {
@@ -676,8 +677,8 @@ fun <T> Flow<T?>.lifecycleLoadingDialogNull(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T?.() -> Unit
-) {
-    baseViewModel.viewModelScope.launch(Dispatchers.Main) {
+): Job {
+    return baseViewModel.viewModelScope.launch(Dispatchers.Main) {
         this@lifecycleLoadingDialogNull.flowOn(Dispatchers.IO).onStart {
             baseViewModel.loadingDialogLiveData.value = true
             if (showFailedView) {
@@ -714,8 +715,8 @@ fun <T> Flow<T>.lifecycleLoadingDialog(
     showFailedView: Boolean = false,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     callback: T.() -> Unit
-) {
-    baseViewModel.viewModelScope.launch(Dispatchers.Main) {
+): Job {
+    return baseViewModel.viewModelScope.launch(Dispatchers.Main) {
         this@lifecycleLoadingDialog.flowOn(Dispatchers.IO).onStart {
             baseViewModel.loadingDialogLiveData.value = true
             if (showFailedView) {

@@ -4,10 +4,10 @@ import android.view.Gravity
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 interface BaseView {
@@ -15,13 +15,13 @@ interface BaseView {
     fun launcherOnLifecycle(
         context: CoroutineContext,
         block: suspend CoroutineScope.() -> Unit
-    )
+    ): Job
 
     fun repeatLauncherOnLifecycle(
         context: CoroutineContext,
         state: Lifecycle.State,
         block: suspend CoroutineScope.() -> Unit
-    )
+    ): Job
 
     fun snackBar(text: CharSequence, gravity: Int = Gravity.BOTTOM)
 
