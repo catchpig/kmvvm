@@ -14,7 +14,6 @@ if (project.plugins.hasPlugin("java-library")) {
 } else if (project.plugins.hasPlugin("com.android.library")) {
     tasks.register('androidSourcesJar', Jar) {
         from android.sourceSets.main.java.srcDirs
-//        classifier = 'sources'
     }
 }
 

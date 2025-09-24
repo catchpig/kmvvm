@@ -20,14 +20,13 @@ if (project.plugins.hasPlugin("java-library")) {
 } else if (project.plugins.hasPlugin("com.android.library")) {
     tasks.register('androidSourcesJar', Jar) {
         from android.sourceSets.main.java.srcDirs
-//        classifier = 'sources'
     }
 }
 
 afterEvaluate {
     publishing {
         publications {
-            release(MavenPublication) {
+            singleVariant("release") {
                 if (project.plugins.hasPlugin("com.android.library")) {
                     from components.release
                     artifact androidSourcesJar

@@ -1,0 +1,23 @@
+if (project.plugins.hasPlugin(libs.plugins.android.library.get().getPluginId())|| project.plugins.contains(libs.plugins.android.application.get().getPluginId())) {
+    println("android:$project.name")
+    android {
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
+        }
+        kotlin {
+            jvmToolchain(libs.versions.javaVersion.get().toInteger())
+        }
+    }
+}else if (project.plugins.hasPlugin("java-library")) {
+    println("java:$project.name")
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlin {
+        jvmToolchain(libs.versions.javaVersion.get().toInteger())
+    }
+}
+
+
