@@ -34,6 +34,9 @@ android {
             )
         }
     }
+    kotlin {
+        jvmToolchain(libs.versions.javaVersion.get().toInt())
+    }
     buildFeatures {
         viewBinding = true
         buildConfig = true

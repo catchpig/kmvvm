@@ -4,17 +4,11 @@ if (project.plugins.hasPlugin(libs.plugins.android.library.get().getPluginId())|
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
-        kotlin {
-            jvmToolchain(libs.versions.javaVersion.get().toInteger())
-        }
     }
 }else if (project.plugins.hasPlugin("java-library")) {
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        jvmToolchain(libs.versions.javaVersion.get().toInteger())
     }
 }
 

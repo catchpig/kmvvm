@@ -5,6 +5,10 @@ plugins {
 apply(from = "../publish_jitpack_aar_jar.gradle")
 apply(from = "../common.gradle")
 
+kotlin {
+    jvmToolchain(libs.versions.javaVersion.get().toInt())
+}
+
 dependencies {
     api(project(":annotation"))
     implementation(libs.symbol.processing.api)
