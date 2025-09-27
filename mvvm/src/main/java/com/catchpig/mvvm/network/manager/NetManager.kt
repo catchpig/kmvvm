@@ -9,6 +9,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 class NetManager private constructor() {
     companion object {
@@ -22,6 +24,7 @@ class NetManager private constructor() {
         val holder = NetManager()
     }
 
+    private val sslParamMap = hashMapOf<Class<*>, SslParam>()
     private val serviceMap = hashMapOf<String, Any>()
 
     private var debug: Boolean = false
@@ -35,7 +38,7 @@ class NetManager private constructor() {
             var builder = Retrofit
                 .Builder()
                 .baseUrl(url)
-                .client(getClient(serviceParam))
+                .client(getClient(serviceParam, serviceClass))
                 .addConverterFactory(SerializationConverterFactory.create(className))
             if (serviceParam.rxJava) {
                 builder = builder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
@@ -48,11 +51,25 @@ class NetManager private constructor() {
         }
     }
 
+    /**
+     * 设置SSL证书
+     * @param serviceClass 使用了@ServiceApi注解的class
+     * @param sslSocketFactory
+     * @param trustManager
+     */
+    fun setSslSocketFactory(
+        serviceClass: Class<*>,
+        sslSocketFactory: SSLSocketFactory,
+        trustManager: X509TrustManager
+    ) {
+        sslParamMap[serviceClass] = SslParam(sslSocketFactory, trustManager)
+    }
+
     fun setDebug(debug: Boolean) {
         this.debug = debug
     }
 
-    private fun getClient(serviceParam: ServiceParam): OkHttpClient {
+    private fun getClient(serviceParam: ServiceParam, serviceClass: Class<*>): OkHttpClient {
         var builder = OkHttpClient
             .Builder()
             /**
@@ -73,9 +90,20 @@ class NetManager private constructor() {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             builder = builder.addInterceptor(loggingInterceptor)
         }
+        if (sslParamMap.contains(serviceClass)) {
+            val sslParam = sslParamMap[serviceClass]
+            sslParam?.let {
+                builder.sslSocketFactory(it.sslSocketFactory, it.trustManager)
+            }
+        }
         serviceParam.interceptors.forEach {
             builder = builder.addInterceptor(it)
         }
         return builder.build()
     }
+
+    private data class SslParam(
+        val sslSocketFactory: SSLSocketFactory,
+        val trustManager: X509TrustManager
+    )
 }

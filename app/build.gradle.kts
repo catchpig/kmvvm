@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.smartrefreshlayout.header)
     implementation(libs.smartrefreshlayout.footer)
     implementation(libs.glide)
-    kapt(libs.kapt.glide)
+    ksp(libs.glide.ksp)
     implementation(libs.xxpermissions)
     implementation(libs.uiviewpager)
     implementation(libs.okhttpprofilter)

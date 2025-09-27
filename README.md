@@ -542,6 +542,11 @@ bodyBinding.refresh.run {
   implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
   implementation "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
   ```
++ 设置SSL证书
+  - NetManager.setSslSocketFactory(
+        serviceClass: Class<*>, //使用了@ServiceApi注解的class
+        sslSocketFactory: SSLSocketFactory,
+        trustManager: X509TrustManager)
 
 > 使用示例
 

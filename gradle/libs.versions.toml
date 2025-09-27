@@ -21,7 +21,7 @@ rxjava = "3.1.11"
 rxandroid = "3.0.2"
 smartrefreshlayout = "3.0.0-alpha"
 xxpermissions = "20.0"
-glide = "4.16.0"
+glide = "5.0.5"
 uiviewpager = "0.1.8"
 retrofit2 = "3.0.0"
 okhttp3 = "5.1.0"
@@ -48,7 +48,7 @@ lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtim
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 uiviewpager = { group = "com.gitee.catchpig", name = "UIViewPager", version.ref = "uiviewpager" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
-kapt-glide = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+glide-ksp = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
 xxpermissions = { group = "com.github.getActivity", name = "XXPermissions", version.ref = "xxpermissions" }
 smartrefreshlayout = { group = "io.github.scwang90", name = "refresh-layout-kernel", version.ref = "smartrefreshlayout" }
 smartrefreshlayout-header = { group = "io.github.scwang90", name = "refresh-header-material", version.ref = "smartrefreshlayout" }
