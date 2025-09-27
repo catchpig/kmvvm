@@ -1,8 +1,10 @@
 package com.catchpig.utils.ext
 
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
@@ -20,7 +22,7 @@ fun Long.format(format: String = DATE_FORMAT): String {
  * 字符串转化为时间
  */
 fun String.date(format: String = DATE_FORMAT): Date {
-    val dateFormat = SimpleDateFormat(format)
+    val dateFormat = SimpleDateFormat(format, Locale.US)
     return dateFormat.parse(this)!!
 }
 
@@ -30,7 +32,7 @@ fun String.date(format: String = DATE_FORMAT): Date {
  * @return
  */
 fun Date.format(format: String = DATE_FORMAT): String {
-    val dateFormat = SimpleDateFormat(format)
+    val dateFormat = SimpleDateFormat(format, Locale.US)
     return dateFormat.format(this)
 }
 

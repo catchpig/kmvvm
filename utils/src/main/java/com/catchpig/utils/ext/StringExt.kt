@@ -20,7 +20,7 @@ fun CharSequence?.isNumber(): Boolean {
     if (this == null) {
         return false
     }
-    var pattern = Pattern.compile("[0-9]*")
+    val pattern = Pattern.compile("[0-9]*")
     val matcher = pattern.matcher(this)
     return matcher.matches()
 }
