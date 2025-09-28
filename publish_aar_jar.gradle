@@ -68,7 +68,7 @@ afterEvaluate {
                 name = "GitHubPackages"
                 url = "https://maven.pkg.github.com/catchpig/kmvvm"
                 credentials {
-                    username = "catchpig"
+                    username = System.getenv("USERNAME")
                     password = System.getenv("GITHUB_TOKEN")
                 }
             }
