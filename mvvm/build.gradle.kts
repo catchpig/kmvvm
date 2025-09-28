@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.plugin.serialization)
 }
+apply(from = "../publish_aar_jar.gradle")
 apply(from = "../common.gradle")
 
 android {
@@ -55,5 +56,3 @@ dependencies {
     api(libs.immersionbar.ktx)
     compileOnly(libs.smartrefreshlayout)
 }
-
-apply(from = "../publish_jitpack_aar_jar.gradle")

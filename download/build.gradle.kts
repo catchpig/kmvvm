@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+apply(from = "../publish_aar_jar.gradle")
 apply(from = "../common.gradle")
 
 android {
@@ -47,5 +48,3 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
-
-apply(from = "../publish_jitpack_aar_jar.gradle")

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+apply(from = "../publish_aar_jar.gradle")
 apply(from = "../common.gradle")
 
 android {
@@ -40,5 +41,3 @@ dependencies {
 
     api(project(":annotation"))
 }
-
-apply(from = "../publish_jitpack_aar_jar.gradle")

@@ -2,7 +2,7 @@ plugins {
     id("java-library")
     alias(libs.plugins.kotlin.jvm)
 }
-apply(from = "../publish_jitpack_aar_jar.gradle")
+apply(from = "../publish_aar_jar.gradle")
 apply(from = "../common.gradle")
 
 kotlin {
