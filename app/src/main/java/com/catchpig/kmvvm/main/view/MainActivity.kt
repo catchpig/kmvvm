@@ -1,8 +1,5 @@
 package com.catchpig.kmvvm.main.view
 
-import android.view.WindowInsets
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager.widget.ViewPager
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kmvvm.adapter.MainAdapter
@@ -30,11 +27,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun initView() {
-        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
-            val statusBarInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-            statusbavi
-            insets
-        }
         UserSharedPrefs.isMan()
         mainAdapter = MainAdapter(supportFragmentManager)
         bodyBinding.run {

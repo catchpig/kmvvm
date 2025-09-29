@@ -17,6 +17,15 @@ if (project.plugins.hasPlugin("java-library")) {
     }
 }
 
+def getPublishVersion(){
+    def isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows()
+    if (isWindows) {
+        return libs.versions.kmvvm.get()
+    }else{
+        System.getenv("VERSION")
+    }
+}
+
 afterEvaluate {
     publishing {
         publications {
@@ -32,7 +41,7 @@ afterEvaluate {
                 def projectName = project.name
                 groupId = 'io.github.catchpig.kmvvm'
                 artifactId = projectName
-                version = libs.versions.kmvvm.get()
+                version = getPublishVersion()
 
                 pom {
                     name = 'kmvvm'
