@@ -12,17 +12,26 @@ if (project.plugins.hasPlugin("java-library")) {
         archiveClassifier.set("sources")
     }
 } else if (project.plugins.hasPlugin("com.android.library")) {
+    android {
+        publishing {
+            singleVariant("release") {
+                withSourcesJar()
+                withJavadocJar()
+            }
+        }
+    }
     tasks.register('androidSourcesJar', Jar) {
         from android.sourceSets.main.java.srcDirs
     }
 }
 
-def getPublishVersion(){
+def getPublishVersion() {
     def isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows()
     if (isWindows) {
         return libs.versions.kmvvm.get()
-    }else{
+    } else {
         System.getenv("VERSION")
+        println("userName:${System.getenv("USERNAME")},ppp:${System.getenv("GITHUB_TOKEN")}")
     }
 }
 
