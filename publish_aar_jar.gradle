@@ -31,7 +31,7 @@ def getPublishVersion() {
         return libs.versions.kmvvm.get()
     } else {
         System.getenv("VERSION")
-        println("userName:${System.getenv("USERNAME")},ppp:${System.getenv("GITHUB_TOKEN")}")
+        println("version:${System.getenv("VERSION")},userName:${System.getenv("USERNAME")},ppp:${System.getenv("GITHUB_TOKEN")}")
     }
 }
 
