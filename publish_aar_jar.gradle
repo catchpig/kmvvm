@@ -31,7 +31,6 @@ def getPublishVersion() {
         return libs.versions.kmvvm.get()
     } else {
         System.getenv("VERSION")
-        println("version:${System.getenv("VERSION")},userName:${System.getenv("USERNAME")},ppp:${System.getenv("GITHUB_TOKEN")}")
     }
 }
 
@@ -50,6 +49,7 @@ afterEvaluate {
                 def projectName = project.name
                 groupId = 'io.github.catchpig.kmvvm'
                 artifactId = projectName
+                println("version:${System.getenv("VERSION")},userName:${System.getenv("USERNAME")},ppp:${System.getenv("GITHUB_TOKEN")}")
                 version = getPublishVersion()
 
                 pom {
