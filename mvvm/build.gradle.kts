@@ -34,7 +34,7 @@ android {
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.core.ktx)
-    implementation(libs.startup.runtime)
+    api(libs.startup.runtime)
     api(libs.lifecycle.viewmodel.ktx)
     api(libs.lifecycle.runtime.ktx)
     api(libs.recyclerview)

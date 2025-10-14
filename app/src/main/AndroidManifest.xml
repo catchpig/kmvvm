@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <!--安装apk权限-->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
@@ -20,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.catchpig.kmvvm.recycle.RecycleActivity"></activity>
+        <activity android:name="com.catchpig.kmvvm.recycle.RecycleActivity" />
         <activity android:name="com.catchpig.kmvvm.fullscreen.FullScreenActivity" />
         <activity android:name="com.catchpig.kmvvm.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
         <activity
@@ -42,6 +44,15 @@
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false">
+            <meta-data
+                android:name="com.catchpig.kmvvm.initializer.KmvvmInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 
     <dist:module dist:instant="true" />

@@ -38,6 +38,9 @@ if (isWindows) {
             maven {
                 url = uri("https://mirrors.cloud.tencent.com/repository/maven-public/")
             }
+            maven {
+                url = uri("https://repo1.maven.org/maven2/")
+            }
 
             mavenCentral()
             google()
@@ -64,9 +67,9 @@ if (isWindows) {
 
 
 rootProject.name = "kmvvm"
-include (":app")
-include (":mvvm")
-include (":annotation")
-include (":compiler")
-include (":download")
-include (":utils")
+include(":app")
+include(":mvvm")
+include(":annotation")
+include(":compiler")
+include(":download")
+include(":utils")

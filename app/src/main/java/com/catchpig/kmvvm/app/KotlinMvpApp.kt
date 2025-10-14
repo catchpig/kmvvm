@@ -31,14 +31,7 @@ class KotlinMvpApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initLogger()
         initDownload()
-    }
-
-    private fun initLogger() {
-        val path = "${externalCacheDir?.absolutePath}/logs"
-//        LogUtils.init(path, "kmvvm")
-        LogUtils.init("kmvvm")
     }
 
     /**

@@ -33,7 +33,6 @@ android {
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.core.ktx)
-    api(libs.logger)
     api(libs.gson)
     compileOnly(libs.material)
     compileOnly(libs.rxandroid)
