@@ -23,7 +23,7 @@ fun String.logw(tag: String, t: Throwable? = null) {
     LogFactory.w(tag, this, t)
 }
 
-fun String.loge(tag: String) = {
+fun String.loge(tag: String) {
     LogFactory.e(tag, this)
 }
 
