@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlin.reflect.KClass
 
 class ResponseBodyConverter :
-        BaseResponseBodyConverter() {
+    BaseResponseBodyConverter() {
     override var json: Json = Json {
         ignoreUnknownKeys = true
     }
@@ -17,7 +17,7 @@ class ResponseBodyConverter :
         return Result::class
     }
 
-    override fun handlerErrorCode(errorCode: String, msg: String): Exception {
-        return HttpServerException(errorCode,msg)
+    override fun handlerErrorCode(errorCode: String, msg: String, data: Any): Exception {
+        return HttpServerException(errorCode, msg)
     }
 }
