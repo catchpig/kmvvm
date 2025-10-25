@@ -17,7 +17,7 @@ class ResponseBodyConverter :
         return Result::class
     }
 
-    override fun handlerErrorCode(errorCode: String, msg: String, data: Any): Exception {
+    override fun handlerErrorCode(errorCode: String, msg: String, data: Any?): Exception {
         return HttpServerException(errorCode, msg)
     }
 }

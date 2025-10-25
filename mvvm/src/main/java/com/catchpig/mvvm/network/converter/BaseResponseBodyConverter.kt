@@ -31,25 +31,31 @@ open abstract class BaseResponseBodyConverter :
         val result: IResponseData<JsonElement> =
             json.decodeFromString(kSerializer, valueString) as IResponseData<JsonElement>
         val data = result.data()
-        val resultData = if (data == null) {
-            json.decodeFromString(serializer(type), checkType(type))
-        } else {
-            json.decodeFromString(serializer(type), json.encodeToString(data))
-        }
+
         when (result.getErrorCode()) {
             result.isSuccess() -> {
-                return resultData
+                return if (data == null) {
+                    json.decodeFromString(serializer(type), checkType(type))
+                } else {
+                    json.decodeFromString(serializer(type), json.encodeToString(data))
+                }
             }
 
-            else -> throw handlerErrorCode(
-                result.getErrorCode(),
-                result.getErrorMessage(),
-                resultData
-            )
+            else -> {
+                var resultData: Any? = null
+                if (data != null) {
+                    resultData = json.decodeFromString(serializer(type), json.encodeToString(data))
+                }
+                throw handlerErrorCode(
+                    result.getErrorCode(),
+                    result.getErrorMessage(),
+                    resultData
+                )
+            }
         }
     }
 
-    abstract fun handlerErrorCode(errorCode: String, msg: String, data: Any): Exception
+    abstract fun handlerErrorCode(errorCode: String, msg: String, data: Any?): Exception
 
     private fun checkType(type: Type): String {
         return when (type) {
