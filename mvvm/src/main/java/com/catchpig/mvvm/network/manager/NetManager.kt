@@ -3,7 +3,7 @@ package com.catchpig.mvvm.network.manager
 import com.catchpig.mvvm.entity.ServiceParam
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.network.factory.SerializationConverterFactory
-import com.catchpig.utils.ext.logd
+import com.catchpig.utils.ext.logi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -80,15 +80,15 @@ class NetManager private constructor() {
              * 读取数据超时时间
              */
             .readTimeout(serviceParam.readTimeout, TimeUnit.MILLISECONDS)
+        val loggingInterceptor = HttpLoggingInterceptor {
+            it.logi(TAG)
+        }
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        builder = builder.addInterceptor(loggingInterceptor)
         if (debug && serviceParam.debug) {
             serviceParam.debugInterceptors.forEach {
                 builder = builder.addInterceptor(it)
             }
-            val loggingInterceptor = HttpLoggingInterceptor {
-                it.logd(TAG)
-            }
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-            builder = builder.addInterceptor(loggingInterceptor)
         }
         if (sslParamMap.contains(serviceClass)) {
             val sslParam = sslParamMap[serviceClass]
