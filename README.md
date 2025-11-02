@@ -556,7 +556,8 @@ bodyBinding.refresh.run {
     responseConverter = ResponseBodyConverter::class,
     interceptors = [RequestInterceptor::class],
     debugInterceptors = [OkHttpProfilerInterceptor::class],
-    rxJava = true
+    rxJava = true,
+    debug = true //debugInterceptors是否生效,NetManager.setDebug(true)和debug都为true的时候,debugInterceptors才生效
 )
 interface WanAndroidService {
     @GET("banner/json")
@@ -621,7 +622,14 @@ class ResponseBodyConverter :
         return Result::class
     }
 
-    override fun handlerErrorCode(errorCode: String, msg: String): Exception {
+    /**
+     * 错误处理
+     * @param errorCode 错误码
+     * @param msg 错误信息
+     * @param data 错误数据
+     * @return Exception
+     */
+    override fun handlerErrorCode(errorCode: String, msg: String, data: Any?): Exception {
         return NullPointerException()
     }
 }

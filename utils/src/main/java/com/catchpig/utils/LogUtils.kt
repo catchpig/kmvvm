@@ -10,7 +10,7 @@ object LogUtils {
     /**
      * 初始化日志
      * @param tag String
-     * @param methodCount Int 方法数
+     * @param logAdapter LogAdapter? 日志打印适配器
      */
     fun init(tag: String = DEFAULT_TAG, logAdapter: LogAdapter? = null) {
         LogFactory.setTag(tag)

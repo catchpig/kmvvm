@@ -29,9 +29,15 @@
 
 ## ContextExt
 
++ Context.createDisplayContext - 根据屏幕id创建上下文
 + Context.installApk - 安装apk
 + Context.colorResToInt - ColorRes转ColorInt
 + Context.copyClipboard - 复制文本到剪切板
++ Context.getClipboard - 获取剪切板文本
++ Context.layoutInflater - 获取LayoutInflater
++ Context.readTextFromAssets - 读取assets下文件的文本信息
++ Context.versionName - 获取版本名称
++ Context.versionCode - 获取版本号
 
 ## DateExt
 
@@ -58,6 +64,12 @@
 + String.md5 - md5加密
 + ByteArray.md5 - md5加密
 
+## FileExt
+
++ File.deleteAll - 删除所有文件
++ File.deleteFile - 删除文件
++ File.deleteChildFiles - 删除所有子文件
+
 ## GsonExt
 
 + String.jsonToClass - json转实体
@@ -67,11 +79,13 @@
 
 + 日志工具类
 + 需在application的onCreate方式中调用LogUtils.init()方法
++ 可自定义日志打印适配(默认适配器AndroidLogAdapter)
 
 ## LogExt(日志打印)
 
 + String.logv - Log.v的日志
 + String.logd - Log.d的日志
++ String.logdTrack - Log.d的日志(可打印堆栈信息)
 + String.logi - Log.i的日志
 + String.logw - Log.w的日志
 + String.loge - Log.e的日志
@@ -82,14 +96,26 @@
 + Snackbar.setBackgroundResource - 设置背景色
 + Snackbar.setMargin - 设置外边框距
 
+## SoftInputExt
+
++ Activity.hideSoftInput - 隐藏软键盘
++ View.hideSoftInput - 隐藏软键盘
++ EditText.hideSoftInput - 隐藏软键盘
+
 ## StringExt
 
 + CharSequence?.isNotNull - 不为null
 + CharSequence?.isNumber - 是否为数字
++ String.isConnected - 网络地址对否可连接(此函数必须在子线程中执行)
 
 ## TextViewExt
 
 + TextView.setTextColorRes - 设置文本颜色
+
+## ToastExt
+
++ Context.longToast - 长时间显示Toast
++ Context.shotToast - 长时间显示Toast
 
 ## TransformExt
 
@@ -99,3 +125,11 @@
 + Bitmap.toDrawable - Bitmap转Drawable
 + Drawable.toByteArray - Drawable转ByteArray
 + ByteArray.toDrawable - ByteArray转Drawable
+
+## ViewExt
+
++ View.quickClickListener - 防快点点击事件
+
+## ViewGroupExt
+
++ ViewGroup.layoutInflater - 获取LayoutInflater

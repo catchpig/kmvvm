@@ -2,10 +2,17 @@ package com.catchpig.utils.ext
 
 import java.io.File
 
+/**
+ * 删除当前文件下的所有文件和文件夹
+ */
 fun File.deleteAll() {
     deleteFile(this)
 }
 
+/**
+ * 删除文件
+ * @receiver File
+ */
 private fun deleteFile(file: File) {
     if (file.isFile) {
         file.delete()

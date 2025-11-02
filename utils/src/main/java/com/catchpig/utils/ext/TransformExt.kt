@@ -7,10 +7,8 @@ import android.graphics.Canvas
 import android.graphics.PixelFormat
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import androidx.core.graphics.createBitmap
 import java.io.ByteArrayOutputStream
-import java.util.*
-import kotlin.experimental.or
-import kotlin.math.absoluteValue
 
 
 /**
@@ -40,13 +38,13 @@ fun Drawable.toBitmap(): Bitmap {
     if (this is BitmapDrawable) return bitmap
 
     val bitmap = if (intrinsicHeight <= 0 || intrinsicWidth <= 0) {
-        Bitmap.createBitmap(
+        createBitmap(
             1,
             1,
             if (opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
         )
     } else {
-        Bitmap.createBitmap(
+        createBitmap(
             intrinsicWidth,
             intrinsicHeight,
             if (opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565

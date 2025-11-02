@@ -67,13 +67,13 @@
 
 #### 12. [ServiceApi](./src/main/java/com/catchpig/annotation/ServiceApi.kt)-网络请求接口注解类
 
-| 属性                | 类型          | 必须  | 默认          | 说明                                 |
-|:------------------|:------------|:----|:------------|:-----------------------------------|
-| baseUrl           | String      | 是   | 无           | retrofit的baseurl                   |
-| responseConverter | Converter   | 是   | 无           | 接收数据转换器                            |
-| connectTimeout    | Long        | 否   | 5000        | http的超时时间                          |
-| readTimeout       | Long        | 否   | 5000        | http读取超时时间                         |
-| interceptors      | Interceptor | 否   | Interceptor | http拦截器                            |
-| debugInterceptors | Interceptor | 否   | Interceptor | debug模式下的http拦截器,只有debug=true,才会生效 |
-| rxJava            | Boolean     | 是   | false       | 是否使用RxJava接收网络请求数据                 |
-| debug             | Boolean     | 是   | false       | debug拦截器是否生效                       |
+| 属性                | 类型          | 必须 | 默认          | 说明                                          |
+|:------------------|:------------|:---|:------------|:--------------------------------------------|
+| baseUrl           | String      | 是  | 无           | retrofit的baseurl                            |
+| responseConverter | Converter   | 是  | 无           | 接收数据转换器                                     |
+| connectTimeout    | Long        | 否  | 5000        | http的超时时间                                   |
+| readTimeout       | Long        | 否  | 5000        | http读取超时时间                                  |
+| interceptors      | Interceptor | 否  | Interceptor | http拦截器                                     |
+| debugInterceptors | Interceptor | 否  | Interceptor | debug模式下的http拦截器,只有debug=true,才会生效          |
+| rxJava            | Boolean     | 是  | false       | 是否使用RxJava接收网络请求数据                          |
+| debug             | Boolean     | 是  | false       | debug拦截器是否生效,NetManager.setDebug(true),才能生效 |

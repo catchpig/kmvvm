@@ -55,6 +55,13 @@ open abstract class BaseResponseBodyConverter :
         }
     }
 
+    /**
+     * 错误处理
+     * @param errorCode 错误码
+     * @param msg 错误信息
+     * @param data 错误数据
+     * @return Exception
+     */
     abstract fun handlerErrorCode(errorCode: String, msg: String, data: Any?): Exception
 
     private fun checkType(type: Type): String {

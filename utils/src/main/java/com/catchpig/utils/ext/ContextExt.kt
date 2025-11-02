@@ -104,7 +104,7 @@ fun Context.readTextFromAssets(fileName: String): String {
 }
 
 /**
- * 获取版本号
+ * 获取版本名称
  * @receiver Context
  * @return String
  */
