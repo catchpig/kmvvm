@@ -767,6 +767,7 @@ class ResponseBodyConverter :
 
 + 可以使用LogUtils.getInstance().i,LogUtils.getInstance().d等打印日志(不建议)
 + 也可以使用LogExt的扩展方法打印日志(建议)
++ 可自定义日志打印适配(默认适配器AndroidLogAdapter)
 
 ### 8. [注解使用](./annotation/REMARD_ANNOTATION.md)
 
