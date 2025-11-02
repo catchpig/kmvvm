@@ -24,7 +24,7 @@
 
 + ### KSP(编译时注解)封装注解：Title、OnClickFirstDrawable、OnClickFirstText、OnClickSecondDrawable、OnClickSecondText、Prefs、PrefsField、StatusBar、FlowError、GlobalConfig、ServiceApi
 
-+ ### 封装工具扩展类：CalendarExt、ContextExt、DateExt、EditTextExt、GsonExt、RxJavaExt、StringExt、SnackbarExt
++ ### 封装工具扩展类：ActivityExt、AnnotationExt、CalendarExt、CommonExt,ContextExt、DateExt、EditTextExt、EncryptionExt、FileExt、GsonExt、LogExt、RxJavaExt、SnackbarExt、SoftInputExt、StringExt、TextViewExt、ToastExt、TransformExt、ViewExt、ViewGroupExt
 
 ## 架构图
 
@@ -48,10 +48,14 @@
 
 ```groovy
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "1.8.0" apply false
-    id 'org.jetbrains.kotlin.multiplatform' version '1.8.0' apply false
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0' apply false
-    id 'com.google.devtools.ksp' version '1.8.21-1.0.11' apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kapt) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.plugin.serialization) apply false
 }
 ```
 
@@ -59,9 +63,9 @@ plugins {
 
 ```groovy
 plugins {
-    id 'kotlinx-serialization'
-
-    id 'com.google.devtools.ksp'
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 ```
 
