@@ -5,7 +5,6 @@ import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.adapter.ArticleAdapter
 import com.catchpig.kmvvm.databinding.FragmentArticleBinding
 import com.catchpig.mvvm.base.fragment.BaseVMFragment
-import com.catchpig.mvvm.ext.lifecycleRefresh
 import com.catchpig.mvvm.ext.repeatOnLifecycleRefresh
 import com.gyf.immersionbar.ktx.statusBarHeight
 

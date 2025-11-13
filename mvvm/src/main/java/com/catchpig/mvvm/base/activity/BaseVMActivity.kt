@@ -21,13 +21,6 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivity<VB>(),
     BaseVMView {
-    companion object {
-        private const val TAG = "BaseVMActivity"
-    }
-
-    private val fullTag by lazy {
-        "${javaClass.simpleName}_${TAG}"
-    }
 
     val viewModel: VM by lazy {
         var type = javaClass.genericSuperclass

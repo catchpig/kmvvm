@@ -1,9 +1,10 @@
 package com.catchpig.kmvvm.app
 
 import android.app.Application
+import android.content.res.Configuration
 import com.catchpig.download.manager.DownloadManager
 import com.catchpig.kmvvm.R
-import com.catchpig.utils.LogUtils
+import com.catchpig.utils.ext.logi
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -40,5 +41,15 @@ class KotlinMvpApp : Application() {
     private fun initDownload() {
         val downloadPath = "${applicationContext.externalCacheDir!!.absolutePath}/kmvvmDownload"
         DownloadManager.setDownloadPath(downloadPath)
+    }
+
+    private var lastConfig: Configuration? = null
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (lastConfig != null) {
+            val changed = newConfig.compareTo(lastConfig)
+            "onConfigurationChanged->changed:$changed".logi(TAG)
+        }
+        lastConfig = newConfig
     }
 }

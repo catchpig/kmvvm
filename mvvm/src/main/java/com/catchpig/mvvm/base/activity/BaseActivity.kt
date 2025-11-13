@@ -177,7 +177,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
      * 改变title文字
      */
     fun updateTitle(title: String) {
-        var titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
+        val titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
         titleText.text = title
     }
 
@@ -185,7 +185,7 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
      * 改变title文字
      */
     fun updateTitle(@StringRes title: Int) {
-        var titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
+        val titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
         titleText.setText(title)
     }
 

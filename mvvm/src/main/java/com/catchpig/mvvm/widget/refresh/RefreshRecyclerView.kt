@@ -10,6 +10,7 @@ import com.catchpig.mvvm.R
 import com.catchpig.mvvm.base.adapter.RecyclerAdapter
 import com.catchpig.utils.ext.logi
 import com.scwang.smart.refresh.layout.constant.RefreshState
+import androidx.core.content.withStyledAttributes
 
 
 class RefreshRecyclerView(
@@ -20,17 +21,16 @@ class RefreshRecyclerView(
         private const val TAG = "RefreshRecyclerView"
     }
 
-    private var recyclerBackground: Int
+    private var recyclerBackground: Int = Color.TRANSPARENT
     private val recyclerView: RecyclerView
 
     init {
-        val typedArray =
-            context.obtainStyledAttributes(attrs, R.styleable.RefreshRecyclerView)
-        recyclerBackground = typedArray.getColor(
-            R.styleable.RefreshRecyclerView_recycler_background,
-            Color.TRANSPARENT
-        )
-        typedArray.recycle()
+        context.withStyledAttributes(attrs, R.styleable.RefreshRecyclerView) {
+            recyclerBackground = getColor(
+                R.styleable.RefreshRecyclerView_recycler_background,
+                Color.TRANSPARENT
+            )
+        }
         recyclerView = RecyclerView(context, attrs)
         recyclerView.layoutParams =
             LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)

@@ -3,7 +3,7 @@ package com.catchpig.mvvm.lifecycle
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import com.catchpig.mvvm.manager.KTActivityManager
+import com.catchpig.mvvm.manager.ActivityManager
 import com.catchpig.utils.ext.logd
 
 /**
@@ -20,11 +20,12 @@ class ActivityLifeCycleCallbacksImpl : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityStarted(activity: Activity) {
         "${activity::class.java.simpleName}->onStart".logd(TAG)
+        ActivityManager.addVisibleActivity()
     }
 
     override fun onActivityDestroyed(activity: Activity) {
         "${activity::class.java.simpleName}->onDestroy".logd(TAG)
-        KTActivityManager.getInstance().removeActivity(activity)
+        ActivityManager.removeActivity(activity)
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, p1: Bundle) {
@@ -33,11 +34,12 @@ class ActivityLifeCycleCallbacksImpl : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityStopped(activity: Activity) {
         "${activity::class.java.simpleName}->onStop".logd(TAG)
+        ActivityManager.removeVisibleActivity()
     }
 
     override fun onActivityCreated(activity: Activity, p1: Bundle?) {
         "${activity::class.java.simpleName}->onCreate".logd(TAG)
-        KTActivityManager.getInstance().addActivity(activity)
+        ActivityManager.addActivity(activity)
     }
 
     override fun onActivityResumed(activity: Activity) {

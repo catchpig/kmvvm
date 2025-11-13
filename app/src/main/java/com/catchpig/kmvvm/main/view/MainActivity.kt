@@ -1,5 +1,6 @@
 package com.catchpig.kmvvm.main.view
 
+import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import com.catchpig.annotation.StatusBar
 import com.catchpig.kmvvm.adapter.MainAdapter
@@ -71,5 +72,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun onPageScrollStateChanged(state: Int) {
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        //一定要在super.onSaveInstanceState之前将viewPager的adapter设置为null,否则会崩溃
+        bodyBinding.viewPager.adapter = null
+        super.onSaveInstanceState(outState)
     }
 }

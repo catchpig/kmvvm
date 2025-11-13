@@ -62,7 +62,7 @@ open class RefreshLayoutWrapper(
             //设置加载更多不可用
             setEnableLoadMore(false)
         } else {
-            list?.apply {
+            list.apply {
                 if (size < pageSize) {
                     //设置加载更多不可用
                     setEnableLoadMore(false)

@@ -27,6 +27,7 @@
         <activity android:name="com.catchpig.kmvvm.transparent.TransparentActivity" /> <!-- 适配华为（huawei）刘海屏 -->
         <activity
             android:name="com.catchpig.kmvvm.main.view.MainActivity"
+            android:configChanges="uiMode|screenLayout|keyboard|keyboardHidden|navigation"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
