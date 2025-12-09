@@ -6,7 +6,7 @@ import com.catchpig.kmvvm.R
 import com.catchpig.kmvvm.apk.view.InstallApkActivity
 import com.catchpig.kmvvm.child.ChildActivity
 import com.catchpig.kmvvm.databinding.FragmentIndexBinding
-import com.catchpig.kmvvm.dialog.ConfirmDialogFragment
+import com.catchpig.kmvvm.dialog.ConfirmVMDialogFragment
 import com.catchpig.kmvvm.exception.HttpServerException
 import com.catchpig.kmvvm.fullscreen.FullScreenActivity
 import com.catchpig.kmvvm.recycle.RecycleActivity
@@ -54,7 +54,7 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
         }
     }
 
-    private fun loadBanners(){
+    private fun loadBanners() {
         viewModel.queryBanners().lifecycleLoadingDialog(this, true) {
             val images = mutableListOf<String>()
             this.forEach {
@@ -72,18 +72,23 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
             R.id.open_title -> {
                 startKtActivity<ChildActivity>()
             }
+
             R.id.transparent -> {
                 startKtActivity<TransparentActivity>()
             }
+
             R.id.full_screen -> {
                 startKtActivity<FullScreenActivity>()
             }
+
             R.id.recycle -> {
                 startKtActivity<RecycleActivity>()
             }
+
             R.id.installApk -> {
                 startKtActivity<InstallApkActivity>()
             }
+
             R.id.handler_error -> {
                 viewModel.handlerError().lifecycleLoadingDialog(this, errorCallback = {
                     if (it is HttpServerException) {
@@ -91,9 +96,13 @@ class IndexFragment : BaseVMFragment<FragmentIndexBinding, IndexViewModel>(), Vi
                     }
                 }) {}
             }
+
             R.id.open_dialog -> {
-                ConfirmDialogFragment.newInstance().show(childFragmentManager, "ConfirmDialogFragment")
+//                ConfirmDialogFragment.newInstance().show(childFragmentManager, "ConfirmDialogFragment")
+                ConfirmVMDialogFragment.newInstance()
+                    .show(childFragmentManager, "ConfirmVMDialogFragment")
             }
+
             else -> {
             }
         }

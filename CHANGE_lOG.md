@@ -1,4 +1,7 @@
 # CHANGE LOG
+### 1.5.4
+
++ BaseVMDialogFragment增加lifecycle
 
 ### 1.5.3
 
