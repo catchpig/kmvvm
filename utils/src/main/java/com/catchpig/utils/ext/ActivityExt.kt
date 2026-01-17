@@ -14,13 +14,15 @@ import androidx.fragment.app.Fragment
 @RequiresApi(Build.VERSION_CODES.O)
 inline fun <reified T : Activity> Context.startKtActivity(
     displayId: Int,
+    flags: Int = 0,
     intent: Intent = Intent()
 ) {
     val activityOptions = ActivityOptions.makeBasic()
     activityOptions.launchDisplayId = displayId
     intent.setClass(this, T::class.java)
-    if (this !is Activity) {
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    if (flags != 0) {
+        intent.addFlags(flags)
     }
     startActivity(intent, activityOptions.toBundle())
 }
