@@ -38,7 +38,9 @@ object ActivityManager {
         if (displayAppStatusListener.containsKey(displayId)) {
             return displayAppStatusListener[displayId]!!
         }
-        return mutableListOf()
+        val mutableList = mutableListOf<OnAppStatusListener>()
+        displayAppStatusListener[displayId] = mutableList
+        return mutableList
     }
 
     /**
@@ -98,8 +100,11 @@ object ActivityManager {
     private fun getActivities(displayId: Int): MutableList<Activity> {
         if (displayActivities.containsKey(displayId)) {
             return displayActivities[displayId]!!
+
         }
-        return mutableListOf()
+        val mutableList = mutableListOf<Activity>()
+        displayActivities[displayId] = mutableList
+        return mutableList
     }
 
     /**

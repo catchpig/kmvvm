@@ -1,4 +1,8 @@
 # CHANGE LOG
+### 1.5.7
+
++ 修复前后台回调监听消息不回调的问题
+
 ### 1.5.6
 
 + 优化ActivityManager,支持多屏Activity

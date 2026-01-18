@@ -9,7 +9,9 @@ import com.catchpig.kmvvm.entity.UserSharedPrefs
 import com.catchpig.kmvvm.main.viewmodel.MainViewModel
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.catchpig.mvvm.ext.lifecycleNull
+import com.catchpig.mvvm.manager.ActivityManager
 import com.catchpig.utils.ext.logd
+import com.catchpig.utils.ext.logi
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.flow.flow
 
@@ -25,6 +27,15 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, MainViewModel>(),
         immersionBar {
             statusBarDarkFont(true, 0.5f)
         }
+        ActivityManager.addAppStatusListener(object : ActivityManager.OnAppStatusListener {
+            override fun onForeground(displayId: Int) {
+                "onForeground->displayId:$displayId".logi(TAG)
+            }
+
+            override fun onBackground(displayId: Int) {
+                "onBackground->displayId:$displayId".logi(TAG)
+            }
+        })
     }
 
     override fun initView() {
