@@ -1,4 +1,12 @@
 # CHANGE LOG
+### 1.5.6
+
++ 优化ActivityManager,支持多屏Activity
+
+### 1.5.5
+
++ 优化多屏启动activity方式
+
 ### 1.5.4
 
 + BaseVMDialogFragment增加lifecycle

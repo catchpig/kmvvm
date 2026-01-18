@@ -7,6 +7,7 @@ import android.content.Intent
 import android.hardware.display.DisplayManager
 import android.net.Uri
 import android.os.Build
+import android.view.Display
 import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -15,6 +16,14 @@ import androidx.core.content.FileProvider
 import java.io.File
 
 private const val TAG = "ContextExt"
+
+fun Context.getDisplayId(): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        display.displayId
+    } else {
+        Display.DEFAULT_DISPLAY
+    }
+}
 
 /**
  * 根据屏幕Id创建上下文

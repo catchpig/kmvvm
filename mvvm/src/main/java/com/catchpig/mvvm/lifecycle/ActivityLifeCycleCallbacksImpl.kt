@@ -20,7 +20,7 @@ class ActivityLifeCycleCallbacksImpl : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityStarted(activity: Activity) {
         "${activity::class.java.simpleName}->onStart".logd(TAG)
-        ActivityManager.addVisibleActivity()
+        ActivityManager.addVisibleActivity(activity)
     }
 
     override fun onActivityDestroyed(activity: Activity) {
@@ -34,7 +34,7 @@ class ActivityLifeCycleCallbacksImpl : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityStopped(activity: Activity) {
         "${activity::class.java.simpleName}->onStop".logd(TAG)
-        ActivityManager.removeVisibleActivity()
+        ActivityManager.removeVisibleActivity(activity)
     }
 
     override fun onActivityCreated(activity: Activity, p1: Bundle?) {
