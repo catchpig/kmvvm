@@ -3,16 +3,10 @@ package com.catchpig.mvvm.base.activity
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.catchpig.mvvm.base.view.BaseVMView
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
 import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
-import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
-import com.catchpig.utils.ext.logd
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -23,8 +17,8 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
     BaseVMView {
 
     val viewModel: VM by lazy {
-        var type = javaClass.genericSuperclass
-        var modelClass: Class<VM> = (type as ParameterizedType).actualTypeArguments[1] as Class<VM>
+        @Suppress("UNCHECKED_CAST")
+        val modelClass = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
         ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[modelClass]
     }
 
@@ -39,32 +33,14 @@ abstract class BaseVMActivity<VB : ViewBinding, VM : BaseViewModel> : BaseActivi
     }
 
     private fun initLoadingObserver() {
-        viewModel.loadingDialogLiveData.observe(this) {
-            if (it) {
-                loadingDialog()
-            }
+        viewModel.loadingDialogLiveData.observe(this) { if (it) loadingDialog() }
+        viewModel.loadingViewLiveData.observe(this) { if (it) loadingView() }
+        viewModel.hideLoadingLiveData.observe(this) { if (it) hideLoading() }
+        viewModel.errorLiveData.observe(this) { error ->
+            error?.let { KotlinMvvmCompiler.onError(this, it) }
         }
-        viewModel.loadingViewLiveData.observe(this) {
-            if (it) {
-                loadingView()
-            }
-        }
-        viewModel.hideLoadingLiveData.observe(this) {
-            if (it) {
-                hideLoading()
-            }
-        }
-        viewModel.errorLiveData.observe(this) {
-            if (it != null) {
-                KotlinMvvmCompiler.onError(this, it)
-            }
-        }
-        viewModel.showFailedViewLiveData.observe(this){
-            if (it) {
-                showFailedView()
-            }else{
-                removeFailedView()
-            }
+        viewModel.showFailedViewLiveData.observe(this) { show ->
+            if (show) showFailedView() else removeFailedView()
         }
     }
 }

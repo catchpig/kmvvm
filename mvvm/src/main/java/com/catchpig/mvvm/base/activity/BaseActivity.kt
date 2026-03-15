@@ -54,14 +54,15 @@ import kotlin.coroutines.CoroutineContext
  * @author catchpig
  * @date 2019/4/4 00:09
  */
+@Suppress("UNCHECKED_CAST")
 open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
     protected val bodyBinding: VB by lazy {
-        var type = javaClass.genericSuperclass
-        var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
-        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-        method.invoke(this, layoutInflater) as VB
+        val vbClass =
+            (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+            .invoke(this, layoutInflater) as VB
     }
-    private val rootBinding: ViewRootBinding by lazy {
+    val rootBinding: ViewRootBinding by lazy {
         ViewRootBinding.inflate(layoutInflater)
     }
 
@@ -84,21 +85,14 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         statusBarController?.checkStatusBar()
     }
 
-    fun getRootBanding(): ViewRootBinding {
-        return rootBinding
-    }
-
     inline fun <reified FVB : ViewBinding> failedBinding(block: FVB.() -> Unit) {
-        getFailedBinding()?.let {
-            (it as FVB).run(block)
-        }
+        (getFailedBinding() as? FVB)?.block()
     }
 
     override fun getFailedBinding(): ViewBinding? {
-        if (failedBinding == null) {
-            failedBinding = KotlinMvvmCompiler.globalConfig().getFailedBinding(layoutInflater, this)
-        }
-        return failedBinding
+        return failedBinding ?: KotlinMvvmCompiler.globalConfig()
+            .getFailedBinding(layoutInflater, this)
+            .also { failedBinding = it }
     }
 
     override fun launcherOnLifecycle(
@@ -123,20 +117,20 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
     }
 
     override fun showFailedView() {
-        getFailedBinding()?.let {
+        getFailedBinding()?.let { binding ->
             rootBinding {
-                if (!layoutBody.contains(it.root)) {
-                    layoutBody.addView(it.root)
+                if (!layoutBody.contains(binding.root)) {
+                    layoutBody.addView(binding.root)
                 }
             }
         }
     }
 
     override fun removeFailedView() {
-        failedBinding?.let {
+        failedBinding?.let { binding ->
             rootBinding {
-                if (layoutBody.contains(it.root)) {
-                    layoutBody.removeView(it.root)
+                if (layoutBody.contains(binding.root)) {
+                    layoutBody.removeView(binding.root)
                 }
             }
         }
@@ -173,20 +167,17 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
         }
     }
 
-    /**
-     * 改变title文字
-     */
+    private val titleTextView: TextView?
+        get() = rootBinding.root.findViewById(R.id.title_text)
+
+    /** 改变 title 文字 */
     fun updateTitle(title: String) {
-        val titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
-        titleText.text = title
+        titleTextView?.text = title
     }
 
-    /**
-     * 改变title文字
-     */
+    /** 改变 title 文字 */
     fun updateTitle(@StringRes title: Int) {
-        val titleText = rootBinding.root.findViewById<TextView>(R.id.title_text)
-        titleText.setText(title)
+        titleTextView?.setText(title)
     }
 
     override fun snackBar(text: CharSequence, gravity: Int) {
@@ -198,21 +189,15 @@ open class BaseActivity<VB : ViewBinding> : AppCompatActivity(), BaseView {
     }
 
     override fun loadingDialog() {
-        loadingViewController.let {
-            it.loadingDialog()
-        }
+        loadingViewController.loadingDialog()
     }
 
     override fun loadingView() {
-        loadingViewController.let {
-            it.loadingView()
-        }
+        loadingViewController.loadingView()
     }
 
     override fun hideLoading() {
-        loadingViewController.let {
-            it.hideLoading()
-        }
+        loadingViewController.hideLoading()
     }
 
     fun closeActivity() {

@@ -1,5 +1,6 @@
 package com.catchpig.mvvm.base.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,12 +53,9 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
 
         companion object {
             fun enumOfValue(value: Int): ItemViewType {
-                values().forEach {
-                    if (it.value == value) {
-                        return it
-                    }
-                }
-                return TYPE_NORMAL
+                return entries.find {
+                    it.value == value
+                } ?: TYPE_NORMAL
             }
         }
     }
@@ -110,7 +108,6 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
             override fun itemClick(id: Int, m: M, position: Int) {
                 listener(id, m, position)
             }
-
         }.also { onItemClickListener = it }
     }
 
@@ -130,9 +127,9 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
         }.also { onItemClickListener = it }
     }
 
-    inline fun <reified EVB : ViewBinding> emptyView(empty: EVB.() -> Unit) {
-        val viewBindingClass = EVB::class.java
-        val method = viewBindingClass.getDeclaredMethod(
+    @Suppress("UNCHECKED_CAST")
+    fun <IVB : ViewBinding> invokeInflate(cls: Class<IVB>): IVB {
+        val method = cls.getDeclaredMethod(
             "inflate",
             LayoutInflater::class.java,
             ViewGroup::class.java,
@@ -143,7 +140,12 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
             LayoutInflater.from(recyclerView.context),
             recyclerView,
             false
-        ) as EVB
+        ) as IVB
+        return emptyViewBinding
+    }
+
+    inline fun <reified EVB : ViewBinding> emptyView(empty: EVB.() -> Unit) {
+        val emptyViewBinding = invokeInflate(EVB::class.java)
         emptyView = emptyViewBinding.root
         empty(emptyViewBinding)
     }
@@ -155,37 +157,13 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     }
 
     inline fun <reified HVB : ViewBinding> headerView(header: HVB.() -> Unit) {
-        val viewBindingClass = HVB::class.java
-        val method = viewBindingClass.getDeclaredMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java
-        )
-        val headerViewBinding = method.invoke(
-            this,
-            LayoutInflater.from(recyclerView.context),
-            recyclerView,
-            false
-        ) as HVB
+        val headerViewBinding = invokeInflate(HVB::class.java)
         headerView = headerViewBinding.root
         header(headerViewBinding)
     }
 
     inline fun <reified FVB : ViewBinding> footerView(header: FVB.() -> Unit) {
-        val viewBindingClass = FVB::class.java
-        val method = viewBindingClass.getDeclaredMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java
-        )
-        val headerViewBinding = method.invoke(
-            this,
-            LayoutInflater.from(recyclerView.context),
-            recyclerView,
-            false
-        ) as FVB
+        val headerViewBinding = invokeInflate(FVB::class.java)
         footerView = headerViewBinding.root
         header(headerViewBinding)
     }
@@ -200,9 +178,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
      * 获取数据源
      * @return MutableList<M>
      */
-    fun getData(): MutableList<M> {
-        return data
-    }
+    fun getData(): MutableList<M> = data
 
     /**
      * 设置数据源
@@ -281,7 +257,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
             if (position == 0 && headerView != null) {
                 //当前view是头部信息
                 TYPE_HEADER.value
-            } else if (position == 0 && headerView == null) {
+            } else if (position == 0) {
                 //当前数据空位,展示空页面
                 TYPE_EMPTY.value
             } else if (position == 1 && headerView != null) {
@@ -342,8 +318,8 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
     }
 
     open fun viewBinding(layoutInflater: LayoutInflater, parent: ViewGroup): VB {
-        var type = javaClass.genericSuperclass
-        var vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[1] as Class<VB>
+        val type = javaClass.genericSuperclass
+        val vbClass: Class<VB> = (type as ParameterizedType).actualTypeArguments[1] as Class<VB>
         val method = vbClass.getDeclaredMethod(
             "inflate",
             LayoutInflater::class.java,
@@ -419,6 +395,7 @@ abstract class RecyclerAdapter<M, VB : ViewBinding> :
         }
     }
 
+    @Suppress("DEPRECATED_IDENTITY_EQUALS")
     override fun onViewAttachedToWindow(holder: CommonViewHolder<VB>) {
         super.onViewAttachedToWindow(holder)
         val lp = holder.itemView.layoutParams
