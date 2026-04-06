@@ -1,15 +1,10 @@
 package com.catchpig.mvvm.ext
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Build
 import android.util.TypedValue
-import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.LayoutRes
 import com.catchpig.mvvm.R
-import com.catchpig.utils.ext.logd
 
 private const val TAG = "ContextExt"
 /**

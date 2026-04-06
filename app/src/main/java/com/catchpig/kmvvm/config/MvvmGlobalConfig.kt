@@ -1,6 +1,5 @@
 package com.catchpig.kmvvm.config
 
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding

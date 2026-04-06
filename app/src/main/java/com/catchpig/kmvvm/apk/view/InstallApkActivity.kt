@@ -7,7 +7,6 @@ import com.catchpig.kmvvm.databinding.ActivityInstallApkBinding
 import com.catchpig.mvvm.base.activity.BaseVMActivity
 import com.catchpig.utils.ext.installApk
 import com.catchpig.utils.ext.logd
-import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 

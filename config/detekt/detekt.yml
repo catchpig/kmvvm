@@ -1,0 +1,1014 @@
+# Detekt 静态代码分析配置文件
+# 文档: https://detekt.dev/
+
+build:
+  # 最大允许的问题数量，超过则构建失败
+  maxIssues: 0
+  # 是否排除可自动修正的问题
+  excludeCorrectable: false
+  # 规则权重配置（用于计算总分数）
+  weights:
+    # complexity: 2
+    # LongParameterList: 1
+    # style: 1
+    # comments: 1
+
+config:
+  # 是否验证配置文件本身的有效性
+  validation: true
+  # 是否将所有警告视为错误
+  warningsAsErrors: false
+  # 检查规则是否穷尽了所有情况
+  checkExhaustiveness: false
+  # 排除特定属性路径，例如: 'my_rule_set,.*>.*>[my_property]'
+  excludes: ''
+
+processors:
+  active: true
+  exclude:
+    - 'DetektProgressListener'
+  # - 'KtFileCountProcessor'          # 统计 Kotlin 文件数量
+  # - 'PackageCountProcessor'          # 统计包数量
+  # - 'ClassCountProcessor'            # 统计类数量
+  # - 'FunctionCountProcessor'         # 统计函数数量
+  # - 'PropertyCountProcessor'         # 统计属性数量
+  # - 'ProjectComplexityProcessor'     # 项目复杂度
+  # - 'ProjectCognitiveComplexityProcessor'  # 认知复杂度
+  # - 'ProjectLLOCProcessor'           # 项目逻辑代码行数
+  # - 'ProjectCLOCProcessor'          # 项目注释行数
+  # - 'ProjectLOCProcessor'           # 项目总代码行数
+  # - 'ProjectSLOCProcessor'          # 项目源代码行数
+  # - 'LicenseHeaderLoaderExtension'  # 许可证头加载器
+
+console-reports:
+  active: true
+  exclude:
+     - 'ProjectStatisticsReport'      # 项目统计报告
+     - 'ComplexityReport'             # 复杂度报告
+     - 'NotificationReport'           # 通知报告
+     - 'FindingsReport'              # 问题报告
+     - 'FileBasedFindingsReport'      # 基于文件的问题报告
+  #  - 'LiteFindingsReport'          # 简化问题报告
+
+output-reports:
+  active: true
+  exclude:
+  # - 'TxtOutputReport'               # 文本格式报告
+  # - 'XmlOutputReport'               # XML 格式报告
+  # - 'HtmlOutputReport'              # HTML 格式报告
+  # - 'MdOutputReport'                # Markdown 格式报告
+  # - 'SarifOutputReport'             # SARIF 格式报告（用于 CI/CD）
+
+comments:
+  active: true
+  # 文件缺少许可证头
+  AbsentOrWrongFileLicense:
+    active: false
+    licenseTemplateFile: 'license.template'
+    licenseTemplateIsRegex: false
+  # 私有函数上有注释
+  CommentOverPrivateFunction:
+    active: false
+  # 私有属性上有注释
+  CommentOverPrivateProperty:
+    active: false
+  # 使用了废弃的块标签
+  DeprecatedBlockTag:
+    active: false
+  # 句末格式不正确
+  EndOfSentenceFormat:
+    active: false
+    endOfSentenceFormat: '([.?!][ \t\n\r\f<])|([.?!:]$)'
+  # KDoc 引用了非公开属性
+  KDocReferencesNonPublicProperty:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+  # 文档过时
+  OutdatedDocumentation:
+    active: false
+    matchTypeParameters: true
+    matchDeclarationsOrder: true
+    allowParamOnConstructorProperties: false
+  # 公开类缺少文档
+  UndocumentedPublicClass:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    searchInNestedClass: true
+    searchInInnerClass: true
+    searchInInnerObject: true
+    searchInInnerInterface: true
+    searchInProtectedClass: false
+    ignoreDefaultCompanionObject: false
+  # 公开函数缺少文档
+  UndocumentedPublicFunction:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    searchProtectedFunction: false
+  # 公开属性缺少文档
+  UndocumentedPublicProperty:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    searchProtectedProperty: false
+
+complexity:
+  active: true
+  # 方法认知复杂度过高
+  CognitiveComplexMethod:
+    active: false
+    threshold: 15
+  # 条件表达式过于复杂
+  ComplexCondition:
+    active: true
+    threshold: 4
+  # 接口过于复杂
+  ComplexInterface:
+    active: false
+    threshold: 10
+    includeStaticDeclarations: false
+    includePrivateDeclarations: false
+    ignoreOverloaded: false
+  # 圈复杂度过高
+  CyclomaticComplexMethod:
+    active: false
+    ignoreSingleWhenExpression: false
+    ignoreSimpleWhenEntries: false
+    ignoreNestingFunctions: false
+    nestingFunctions:
+      - 'also'
+      - 'apply'
+      - 'forEach'
+      - 'isNotNull'
+      - 'ifNull'
+      - 'let'
+      - 'run'
+      - 'use'
+      - 'with'
+  # 标签表达式
+  LabeledExpression:
+    active: false
+    ignoredLabels: []
+  # 类过长
+  LargeClass:
+    active: true
+    threshold: 600
+  # 方法过长
+  LongMethod:
+    active: false
+  # 参数列表过长
+  LongParameterList:
+    active: true
+    functionThreshold: 6
+    constructorThreshold: 7
+    ignoreDefaultParameters: false
+    ignoreDataClasses: true
+    ignoreAnnotatedParameter: []
+    excludes: ['**/annotation/**']
+  # 方法重载过多
+  MethodOverloading:
+    active: false
+    threshold: 6
+  # 命名参数过多
+  NamedArguments:
+    active: false
+    threshold: 3
+    ignoreArgumentsMatchingNames: false
+  # 嵌套块过深
+  NestedBlockDepth:
+    active: false
+  # Scope 函数嵌套过多
+  NestedScopeFunctions:
+    active: false
+    threshold: 1
+    functions:
+      - 'kotlin.apply'
+      - 'kotlin.run'
+      - 'kotlin.with'
+      - 'kotlin.let'
+      - 'kotlin.also'
+  # 用 run 替代安全调用链
+  ReplaceSafeCallChainWithRun:
+    active: false
+  # 字符串字面量重复
+  StringLiteralDuplication:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    threshold: 3
+    ignoreAnnotation: true
+    excludeStringsWithLessThan5Characters: true
+    ignoreStringsRegex: '$^'
+  # 函数过多
+  TooManyFunctions:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    thresholdInFiles: 11
+    thresholdInClasses: 11
+    thresholdInInterfaces: 11
+    thresholdInObjects: 11
+    thresholdInEnums: 11
+    ignoreDeprecated: false
+    ignorePrivate: false
+    ignoreOverridden: false
+    ignoreAnnotatedFunctions: []
+
+coroutines:
+  active: true
+  # 使用全局协程
+  GlobalCoroutineUsage:
+    active: false
+  # 注入错误的调度器
+  InjectDispatcher:
+    active: true
+    dispatcherNames:
+      - 'IO'
+      - 'Default'
+      - 'Unconfined'
+  # 冗余的 suspend 修饰符
+  RedundantSuspendModifier:
+    active: true
+  # 使用 Thread.sleep 而不是 delay
+  SleepInsteadOfDelay:
+    active: true
+  # 协程作用域中被吞掉的取消异常
+  SuspendFunSwallowedCancellation:
+    active: false
+  # suspend 函数使用协程作用域作为接收者
+  SuspendFunWithCoroutineScopeReceiver:
+    active: false
+  # suspend 函数返回 Flow
+  SuspendFunWithFlowReturnType:
+    active: true
+
+empty-blocks:
+  active: true
+  # 空的 catch 块
+  EmptyCatchBlock:
+    active: true
+    allowedExceptionNameRegex: '_|(ignore|expected).*'
+  # 空的类块
+  EmptyClassBlock:
+    active: false
+  # 空的默认构造函数
+  EmptyDefaultConstructor:
+    active: true
+  # 空的 do-while 块
+  EmptyDoWhileBlock:
+    active: true
+  # 空的 else 块
+  EmptyElseBlock:
+    active: true
+  # 空的 finally 块
+  EmptyFinallyBlock:
+    active: true
+  # 空的 for 块
+  EmptyForBlock:
+    active: true
+  # 空的函数块
+  EmptyFunctionBlock:
+    active: true
+    ignoreOverridden: true
+  # 空的 if 块
+  EmptyIfBlock:
+    active: true
+  # 空的 init 块
+  EmptyInitBlock:
+    active: true
+  # 空的 Kotlin 文件
+  EmptyKtFile:
+    active: true
+  # 空的次构造函数
+  EmptySecondaryConstructor:
+    active: true
+  # 空的 try 块
+  EmptyTryBlock:
+    active: true
+  # 空的 when 块
+  EmptyWhenBlock:
+    active: true
+  # 空的 while 块
+  EmptyWhileBlock:
+    active: true
+
+exceptions:
+  active: true
+  # 在意外位置抛出异常
+  ExceptionRaisedInUnexpectedLocation:
+    active: true
+    methodNames:
+      - 'equals'
+      - 'finalize'
+      - 'hashCode'
+      - 'toString'
+  # 用 instanceof 检查异常类型
+  InstanceOfCheckForException:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+  # 使用 NotImplementedDeclaration
+  NotImplementedDeclaration:
+    active: false
+  # Object 继承 Throwable
+  ObjectExtendsThrowable:
+    active: false
+  # 打印堆栈跟踪
+  PrintStackTrace:
+    active: false
+  # 在 catch 中重新抛出异常
+  RethrowCaughtException:
+    active: true
+  # 从 finally 返回
+  ReturnFromFinally:
+    active: true
+    ignoreLabeled: false
+  # 吞掉异常
+  SwallowedException:
+    active: false
+    ignoredExceptionTypes:
+      - 'InterruptedException'
+      - 'MalformedURLException'
+      - 'NumberFormatException'
+      - 'ParseException'
+    allowedExceptionNameRegex: '_|(ignore|expected).*'
+  # 在 finally 中抛出异常
+  ThrowingExceptionFromFinally:
+    active: true
+  # 在 main 函数中抛出异常
+  ThrowingExceptionInMain:
+    active: false
+  # 抛出的异常没有消息或原因
+  ThrowingExceptionsWithoutMessageOrCause:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    exceptions:
+      - 'ArrayIndexOutOfBoundsException'
+      - 'Exception'
+      - 'IllegalArgumentException'
+      - 'IllegalMonitorStateException'
+      - 'IllegalStateException'
+      - 'IndexOutOfBoundsException'
+      - 'NullPointerException'
+      - 'RuntimeException'
+      - 'Throwable'
+  # 抛出相同异常的实例
+  ThrowingNewInstanceOfSameException:
+    active: true
+  # catch 了太宽泛的异常
+  TooGenericExceptionCaught:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    exceptionNames:
+      - 'ArrayIndexOutOfBoundsException'
+      - 'Error'
+      - 'Exception'
+      - 'IllegalMonitorStateException'
+      - 'IndexOutOfBoundsException'
+      - 'NullPointerException'
+      - 'RuntimeException'
+      - 'Throwable'
+    allowedExceptionNameRegex: '_|(ignore|expected).*'
+  # 抛出太宽泛的异常
+  TooGenericExceptionThrown:
+    active: true
+    exceptionNames:
+      - 'Error'
+      - 'Exception'
+      - 'RuntimeException'
+      - 'Throwable'
+
+naming:
+  active: true
+  # 布尔属性命名（应使用 is/has/are 前缀）
+  BooleanPropertyNaming:
+    active: false
+    allowedPattern: '^(is|has|are)'
+  # 类命名（应使用 PascalCase）
+  ClassNaming:
+    active: true
+    classPattern: '[A-Z][a-zA-Z0-9]*'
+  # 构造函数参数命名
+  ConstructorParameterNaming:
+    active: true
+    parameterPattern: '[a-z][A-Za-z0-9]*'
+    privateParameterPattern: '[a-z][A-Za-z0-9]*'
+    excludeClassPattern: '$^'
+  # 枚举命名
+  EnumNaming:
+    active: true
+    enumEntryPattern: '[A-Z][_a-zA-Z0-9]*'
+  # 禁止的类名
+  ForbiddenClassName:
+    active: false
+    forbiddenName: []
+  # 函数名最大长度
+  FunctionMaxLength:
+    active: false
+    maximumFunctionNameLength: 30
+  # 函数名最小长度
+  FunctionMinLength:
+    active: false
+    minimumFunctionNameLength: 3
+  # 函数命名（应使用 camelCase）
+  FunctionNaming:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    functionPattern: '[a-z][a-zA-Z0-9]*'
+    excludeClassPattern: '$^'
+  # 函数参数命名
+  FunctionParameterNaming:
+    active: true
+    parameterPattern: '[a-z][A-Za-z0-9]*'
+    excludeClassPattern: '$^'
+  # 包声明无效
+  InvalidPackageDeclaration:
+    active: true
+    rootPackage: ''
+    requireRootInDeclaration: false
+  # Lambda 参数命名
+  LambdaParameterNaming:
+    active: false
+    parameterPattern: '[a-z][A-Za-z0-9]*|_'
+  # 声明名称与文件名匹配
+  MatchingDeclarationName:
+    active: true
+    mustBeFirst: true
+    multiplatformTargets:
+      - 'ios'
+      - 'android'
+      - 'js'
+      - 'jvm'
+      - 'native'
+      - 'iosArm64'
+      - 'iosX64'
+      - 'macosX64'
+      - 'mingwX64'
+      - 'linuxX64'
+  # 成员名与类名相同
+  MemberNameEqualsClassName:
+    active: true
+    ignoreOverridden: true
+  # 禁止名称遮蔽
+  NoNameShadowing:
+    active: true
+  # 非布尔属性使用 is 前缀
+  NonBooleanPropertyPrefixedWithIs:
+    active: false
+  # 对象属性命名
+  ObjectPropertyNaming:
+    active: true
+    constantPattern: '[A-Za-z][_A-Za-z0-9]*'
+    propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
+    privatePropertyPattern: '(_)?[A-Za-z][_A-Za-z0-9]*'
+  # 包命名（应使用小写字母）
+  PackageNaming:
+    active: true
+    packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9]*)*'
+  # 顶层属性命名
+  TopLevelPropertyNaming:
+    active: true
+    constantPattern: '[A-Z][_A-Z0-9]*'
+    propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
+    privatePropertyPattern: '_?[A-Za-z][_A-Za-z0-9]*'
+  # 变量名最大长度
+  VariableMaxLength:
+    active: false
+    maximumVariableNameLength: 64
+  # 变量名最小长度
+  VariableMinLength:
+    active: false
+    minimumVariableNameLength: 1
+  # 变量命名（应使用 camelCase）
+  VariableNaming:
+    active: true
+    variablePattern: '[a-z][_A-Za-z0-9]*'
+    privateVariablePattern: '(_)?[a-z][_A-Za-z0-9]*'
+    excludeClassPattern: '$^'
+
+performance:
+  active: true
+  # 使用数组而非数组包装
+  ArrayPrimitive:
+    active: true
+  # 可以改为序列
+  CouldBeSequence:
+    active: false
+    threshold: 3
+  # 在 Range 上使用 forEach
+  ForEachOnRange:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+  # 使用 spread 操作符
+  SpreadOperator:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+  # 不必要的二进制表达式部分
+  UnnecessaryPartOfBinaryExpression:
+    active: false
+  # 不必要的临时对象创建
+  UnnecessaryTemporaryInstantiation:
+    active: true
+
+potential-bugs:
+  active: true
+  # 使用引用相等而非值相等
+  AvoidReferentialEquality:
+    active: true
+    forbiddenTypePatterns:
+      - 'kotlin.String'
+  # 将可空类型强制转换
+  CastNullableToNonNullableType:
+    active: false
+  # 强制转换为可空类型
+  CastToNullableType:
+    active: false
+  # 使用已废弃的 API
+  Deprecation:
+    active: false
+  # 向下转型集合类型
+  DontDowncastCollectionTypes:
+    active: false
+  # 集合双重可变
+  DoubleMutabilityForCollection:
+    active: true
+    mutableTypes:
+      - 'kotlin.collections.MutableList'
+      - 'kotlin.collections.MutableMap'
+      - 'kotlin.collections.MutableSet'
+      - 'java.util.ArrayList'
+      - 'java.util.LinkedHashSet'
+      - 'java.util.HashSet'
+      - 'java.util.LinkedHashMap'
+      - 'java.util.HashMap'
+  # 使用 else 而非穷举 when
+  ElseCaseInsteadOfExhaustiveWhen:
+    active: false
+    ignoredSubjectTypes: []
+  # equals 总是返回 true 或 false
+  EqualsAlwaysReturnsTrueOrFalse:
+    active: true
+  # 重写了 equals 但没有重写 hashCode
+  EqualsWithHashCodeExist:
+    active: true
+  # 在 main 函数外退出
+  ExitOutsideMain:
+    active: false
+  # 显式调用垃圾回收
+  ExplicitGarbageCollectionCall:
+    active: true
+  # 平台类型
+  HasPlatformType:
+    active: true
+  # 忽略返回值
+  IgnoredReturnValue:
+    active: true
+    restrictToConfig: true
+    returnValueAnnotations:
+      - 'CheckResult'
+      - '*.CheckResult'
+      - 'CheckReturnValue'
+      - '*.CheckReturnValue'
+    ignoreReturnValueAnnotations:
+      - 'CanIgnoreReturnValue'
+      - '*.CanIgnoreReturnValue'
+    returnValueTypes:
+      - 'kotlin.sequences.Sequence'
+      - 'kotlinx.coroutines.flow.*Flow'
+      - 'java.util.stream.*Stream'
+    ignoreFunctionCall: []
+  # 隐式默认区域设置
+  ImplicitDefaultLocale:
+    active: true
+  # 隐式 Unit 返回类型
+  ImplicitUnitReturnType:
+    active: false
+    allowExplicitReturnType: true
+  # 无效范围
+  InvalidRange:
+    active: true
+  # Iterator hasNext 调用 next
+  IteratorHasNextCallsNextMethod:
+    active: true
+  # Iterator 不抛出 NoSuchElementException
+  IteratorNotThrowingNoSuchElementException:
+    active: true
+  # 使用 lateinit
+  LateinitUsage:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    ignoreOnClassesPattern: ''
+  # Map get 使用非空断言
+  MapGetWithNotNullAssertionOperator:
+    active: true
+  # 缺少包声明
+  MissingPackageDeclaration:
+    active: false
+    excludes: ['**/*.kts']
+  # 可变属性的空检查
+  NullCheckOnMutableProperty:
+    active: false
+  # 可空类型的 toString
+  NullableToStringCall:
+    active: false
+  # 在声明前使用属性
+  PropertyUsedBeforeDeclaration:
+    active: false
+  # 循环中的无条件跳转
+  UnconditionalJumpStatementInLoop:
+    active: false
+  # 不必要的不为空检查
+  UnnecessaryNotNullCheck:
+    active: false
+  # 不必要的不为空操作符
+  UnnecessaryNotNullOperator:
+    active: true
+  # 不必要的安全调用
+  UnnecessarySafeCall:
+    active: true
+  # 不可达的 catch 块
+  UnreachableCatchBlock:
+    active: true
+  # 不可达代码
+  UnreachableCode:
+    active: true
+  # 在可空类型上不安全调用
+  UnsafeCallOnNullableType:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+  # 不安全的强制转换
+  UnsafeCast:
+    active: true
+  # 未使用的一元操作符
+  UnusedUnaryOperator:
+    active: true
+  # 无用的后缀表达式
+  UselessPostfixExpression:
+    active: true
+  # equals 参数类型错误
+  WrongEqualsTypeParameter:
+    active: true
+
+style:
+  active: true
+  # also 可以改为 apply
+  AlsoCouldBeApply:
+    active: false
+  # if 语句大括号
+  BracesOnIfStatements:
+    active: false
+    singleLine: 'never'
+    multiLine: 'always'
+  # when 语句大括号
+  BracesOnWhenStatements:
+    active: false
+    singleLine: 'necessary'
+    multiLine: 'consistent'
+  # 可以非空
+  CanBeNonNullable:
+    active: false
+  # 级联调用包装
+  CascadingCallWrapping:
+    active: false
+    includeElvis: true
+  # 类成员排序
+  ClassOrdering:
+    active: false
+  # 可合并的 if 语句
+  CollapsibleIfStatements:
+    active: false
+  # Data class 包含函数
+  DataClassContainsFunctions:
+    active: false
+    conversionFunctionPrefix:
+      - 'to'
+    allowOperators: false
+  # Data class 应该是不可变的
+  DataClassShouldBeImmutable:
+    active: false
+  # 解构声明条目过多
+  DestructuringDeclarationWithTooManyEntries:
+    active: true
+    maxDestructuringEntries: 3
+  # 双负 lambda
+  DoubleNegativeLambda:
+    active: false
+    negativeFunctions:
+      - reason: 'Use `takeIf` instead.'
+        value: 'takeUnless'
+      - reason: 'Use `all` instead.'
+        value: 'none'
+    negativeFunctionNameParts:
+      - 'not'
+      - 'non'
+  # equals 与 null 比较
+  EqualsNullCall:
+    active: true
+  # equals 在签名行
+  EqualsOnSignatureLine:
+    active: false
+  # 显式集合元素访问方法
+  ExplicitCollectionElementAccessMethod:
+    active: false
+  # 显式 it lambda 参数
+  ExplicitItLambdaParameter:
+    active: true
+  # 表达式体语法
+  ExpressionBodySyntax:
+    active: false
+    includeLineWrapping: false
+  # 禁止的注解
+  ForbiddenAnnotation:
+    active: false
+    annotations:
+      - reason: 'it is a java annotation. Use `Suppress` instead.'
+        value: 'java.lang.SuppressWarnings'
+      - reason: 'it is a java annotation. Use `kotlin.Deprecated` instead.'
+        value: 'java.lang.Deprecated'
+      - reason: 'it is a java annotation. Use `kotlin.annotation.MustBeDocumented` instead.'
+        value: 'java.lang.annotation.Documented'
+      - reason: 'it is a java annotation. Use `kotlin.annotation.Target` instead.'
+        value: 'java.lang.annotation.Target'
+      - reason: 'it is a java annotation. Use `kotlin.annotation.Retention` instead.'
+        value: 'java.lang.annotation.Retention'
+      - reason: 'it is a java annotation. Use `kotlin.annotation.Repeatable` instead.'
+        value: 'java.lang.annotation.Repeatable'
+      - reason: 'Kotlin does not support @Inherited annotation, see https://youtrack.jetbrains.com/issue/KT-22265'
+        value: 'java.lang.annotation.Inherited'
+  # 禁止的注释
+  ForbiddenComment:
+    active: true
+    comments:
+      - reason: 'Forbidden FIXME todo marker in comment, please fix the problem.'
+        value: 'FIXME:'
+      - reason: 'Forbidden STOPSHIP todo marker in comment, please address the problem before shipping the code.'
+        value: 'STOPSHIP:'
+      - reason: 'Forbidden TODO todo marker in comment, please do the changes.'
+        value: 'TODO:'
+    allowedPatterns: ''
+  # 禁止的导入
+  ForbiddenImport:
+    active: false
+    imports: []
+    forbiddenPatterns: ''
+  # 禁止的方法调用
+  ForbiddenMethodCall:
+    active: false
+    methods:
+      - reason: 'print does not allow you to configure the output stream. Use a logger instead.'
+        value: 'kotlin.io.print'
+      - reason: 'println does not allow you to configure the output stream. Use a logger instead.'
+        value: 'kotlin.io.println'
+  # 禁止的 suppress
+  ForbiddenSuppress:
+    active: false
+    rules: []
+  # 禁止 void
+  ForbiddenVoid:
+    active: true
+    ignoreOverridden: false
+    ignoreUsageInGenerics: false
+  # 只返回常量的函数
+  FunctionOnlyReturningConstant:
+    active: true
+    ignoreOverridableFunction: true
+    ignoreActualFunction: true
+    excludedFunctions: []
+  # 循环跳转语句过多
+  LoopWithTooManyJumpStatements:
+    active: true
+    maxJumpCount: 1
+  # 魔数（硬编码数字）
+  MagicNumber:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**', '**/*.kts', '**/annotation/**']
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+    ignoreHashCodeFunction: true
+    ignorePropertyDeclaration: false
+    ignoreLocalVariableDeclaration: false
+    ignoreConstantDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreAnnotation: false
+    ignoreNamedArgument: true
+    ignoreEnums: false
+    ignoreRanges: false
+    ignoreExtensionFunctions: true
+  # 循环强制使用大括号
+  MandatoryBracesLoops:
+    active: false
+  # 同一行链式调用过多
+  MaxChainedCallsOnSameLine:
+    active: false
+    maxChainedCalls: 5
+  # 最大行长度
+  MaxLineLength:
+    active: false
+    maxLineLength: 120
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludeCommentStatements: false
+    excludeRawStrings: true
+  # 可以用 const
+  MayBeConst:
+    active: true
+  # 修饰符顺序
+  ModifierOrder:
+    active: true
+  # 多行 lambda it 参数
+  MultilineLambdaItParameter:
+    active: false
+  # 多行原始字符串缩进
+  MultilineRawStringIndentation:
+    active: false
+    indentSize: 4
+    trimmingMethods:
+      - 'trimIndent'
+      - 'trimMargin'
+  # 嵌套类可见性
+  NestedClassesVisibility:
+    active: true
+  # 文件末尾换行
+  NewLineAtEndOfFile:
+    active: false
+  # 不使用 Tab
+  NoTabs:
+    active: false
+  # 可空布尔检查
+  NullableBooleanCheck:
+    active: false
+  # 对象字面量转 Lambda
+  ObjectLiteralToLambda:
+    active: true
+  # 可选的 abstract 关键字
+  OptionalAbstractKeyword:
+    active: true
+  # 可选的 Unit
+  OptionalUnit:
+    active: false
+  # 使用 to 替代 Pair 语法
+  PreferToOverPairSyntax:
+    active: false
+  # Final 类中有 protected 成员
+  ProtectedMemberInFinalClass:
+    active: true
+  # 冗余的显式类型
+  RedundantExplicitType:
+    active: false
+  # 冗余的更高阶 map 使用
+  RedundantHigherOrderMapUsage:
+    active: true
+  # 冗余的可见性修饰符
+  RedundantVisibilityModifierRule:
+    active: false
+  # 返回计数
+  ReturnCount:
+    active: false
+    max: 2
+    excludedFunctions:
+      - 'equals'
+    excludeLabeled: false
+    excludeReturnFromLambda: true
+    excludeGuardClauses: false
+  # 安全转换
+  SafeCast:
+    active: true
+  # Serializable 类缺少 serialVersionUID
+  SerialVersionUIDInSerializableClass:
+    active: true
+  # 包声明和导入之间需要空行
+  SpacingBetweenPackageAndImports:
+    active: false
+  # 字符串应该是原始字符串
+  StringShouldBeRawString:
+    active: false
+    maxEscapedCharacterCount: 2
+    ignoredCharacters: []
+  # 抛出计数
+  ThrowsCount:
+    active: true
+    max: 2
+    excludeGuardClauses: false
+  # 尾随空白
+  TrailingWhitespace:
+    active: false
+  # 修剪多行原始字符串
+  TrimMultilineRawString:
+    active: false
+    trimmingMethods:
+      - 'trimIndent'
+      - 'trimMargin'
+  # 数字字面量中的下划线
+  UnderscoresInNumericLiterals:
+    active: false
+    acceptableLength: 4
+    allowNonStandardGrouping: false
+  # 不必要的抽象类
+  UnnecessaryAbstractClass:
+    active: true
+  # 不必要的注解使用目标
+  UnnecessaryAnnotationUseSiteTarget:
+    active: false
+  # 不必要的 apply
+  UnnecessaryApply:
+    active: true
+  # 不必要的反引号
+  UnnecessaryBackticks:
+    active: false
+  # 尾随 lambda 周围不必要的花括号
+  UnnecessaryBracesAroundTrailingLambda:
+    active: false
+  # 不必要的 filter
+  UnnecessaryFilter:
+    active: true
+  # 不必要的继承
+  UnnecessaryInheritance:
+    active: true
+  # 不必要的内部类
+  UnnecessaryInnerClass:
+    active: false
+  # 不必要的 let
+  UnnecessaryLet:
+    active: false
+  # 不必要的括号
+  UnnecessaryParentheses:
+    active: false
+    allowForUnclearPrecedence: false
+  # 使用 until 而非 rangeTo
+  UntilInsteadOfRangeTo:
+    active: false
+  # 未使用的导入
+  UnusedImports:
+    active: true
+  # 未使用的参数
+  UnusedParameter:
+    active: false
+    allowedNames: 'ignored|expected'
+  # 未使用的私有类
+  UnusedPrivateClass:
+    active: true
+  # 未使用的私有成员
+  UnusedPrivateMember:
+    active: false
+    allowedNames: ''
+  # 未使用的私有属性
+  UnusedPrivateProperty:
+    active: false
+    allowedNames: '_|ignored|expected|serialVersionUID'
+  # 使用 anyOrNone 而非 find
+  UseAnyOrNoneInsteadOfFind:
+    active: true
+  # 在注解中使用数组字面量
+  UseArrayLiteralsInAnnotations:
+    active: true
+  # 使用 checkNotNull
+  UseCheckNotNull:
+    active: true
+  # 使用 check 或 error
+  UseCheckOrError:
+    active: true
+  # 使用 data class
+  UseDataClass:
+    active: false
+    allowVars: false
+  # 使用空对应物
+  UseEmptyCounterpart:
+    active: false
+  # 使用 ifEmpty 或 ifBlank
+  UseIfEmptyOrIfBlank:
+    active: false
+  # 使用 if 而非 when
+  UseIfInsteadOfWhen:
+    active: false
+    ignoreWhenContainingVariableDeclaration: false
+  # 使用 isNullOrEmpty
+  UseIsNullOrEmpty:
+    active: true
+  # 使用 let
+  UseLet:
+    active: false
+  # 使用 orEmpty
+  UseOrEmpty:
+    active: true
+  # 使用 require
+  UseRequire:
+    active: true
+  # 使用 requireNotNull
+  UseRequireNotNull:
+    active: true
+  # 使用 sumOf 而非 flatMap + size
+  UseSumOfInsteadOfFlatMapSize:
+    active: false
+  # 对非空调用无用
+  UselessCallOnNotNull:
+    active: true
+  # 工具类是公开构造函数
+  UtilityClassWithPublicConstructor:
+    active: true
+  # var 可以改为 val
+  VarCouldBeVal:
+    active: true
+    ignoreLateinitVar: false
+  # 通配符导入
+  WildcardImport:
+    active: false
+    excludeImports:
+      - 'java.util.*'

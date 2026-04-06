@@ -3,7 +3,7 @@ package com.catchpig.utils.logger.adapter
 import android.util.Log
 
 
-abstract class LogAdapter() {
+abstract class LogAdapter {
     companion object {
         private const val MAX_SIZE = 200
     }

@@ -4,8 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.catchpig.kmvvm.entity.Banner
 import com.catchpig.kmvvm.repository.WanAndroidRepository
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
-import com.catchpig.mvvm.ext.lifecycle
-import com.catchpig.mvvm.ext.lifecycleLoadingDialog
 import com.catchpig.mvvm.ext.lifecycleLoadingView
 
 class TransparentViewModel : BaseViewModel() {

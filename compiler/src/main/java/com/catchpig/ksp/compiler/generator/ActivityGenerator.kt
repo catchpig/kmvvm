@@ -4,7 +4,7 @@ import com.catchpig.annotation.*
 import com.catchpig.ksp.compiler.ext.getAnnotation
 import com.catchpig.ksp.compiler.ext.getAnnotations
 import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
-import com.catchpig.ksp.compiler.getAnnotation
+import com.catchpig.ksp.compiler.ext.getAnnotation
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver

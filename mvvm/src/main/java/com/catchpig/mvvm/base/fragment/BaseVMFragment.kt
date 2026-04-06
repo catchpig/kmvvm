@@ -4,23 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import com.catchpig.mvvm.ksp.KotlinMvvmCompiler
 import com.catchpig.mvvm.base.view.BaseVMView
 import com.catchpig.mvvm.base.viewmodel.BaseViewModel
-import com.catchpig.mvvm.widget.refresh.RefreshRecyclerView
-import com.catchpig.utils.ext.logd
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 /**
  * @author catchpig
  * @date 2019/4/6 11:25
  */
-abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragment<VB>(), BaseVMView {
+abstract class BaseVMFragment<VB : ViewBinding, VM : BaseViewModel> : BaseFragment<VB>(),
+    BaseVMView {
     companion object {
         private const val TAG = "BaseVMFragment"
     }

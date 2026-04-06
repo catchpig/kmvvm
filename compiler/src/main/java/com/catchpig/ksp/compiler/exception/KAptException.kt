@@ -1,4 +1,4 @@
-package com.catchpig.compiler.exception
+package com.catchpig.ksp.compiler.exception
 
 /**
  *

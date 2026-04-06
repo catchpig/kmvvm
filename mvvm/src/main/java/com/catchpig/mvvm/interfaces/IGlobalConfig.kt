@@ -1,6 +1,5 @@
 package com.catchpig.mvvm.interfaces
 
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.ColorRes

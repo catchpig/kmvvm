@@ -1,0 +1,8 @@
+subprojects {
+    apply plugin: "io.gitlab.arturbosch.detekt"
+    detekt {
+        buildUponDefaultConfig = true
+        allRules = false
+        config.setFrom(rootProject.file("config/detekt/detekt.yml"))
+    }
+}

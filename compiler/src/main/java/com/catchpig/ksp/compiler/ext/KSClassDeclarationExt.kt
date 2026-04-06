@@ -1,4 +1,4 @@
-package com.catchpig.ksp.compiler
+package com.catchpig.ksp.compiler.ext
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getAnnotationsByType

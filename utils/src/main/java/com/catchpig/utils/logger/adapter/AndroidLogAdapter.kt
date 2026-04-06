@@ -2,7 +2,7 @@ package com.catchpig.utils.logger.adapter
 
 import android.util.Log
 
-class AndroidLogAdapter() : LogAdapter() {
+class AndroidLogAdapter : LogAdapter() {
     override fun logi(tag: String, message: String) {
         Log.i(tag, message)
     }

@@ -2,7 +2,7 @@ package com.catchpig.ksp.compiler.generator
 
 import com.catchpig.annotation.ServiceApi
 import com.catchpig.ksp.compiler.ext.getKSClassDeclarations
-import com.catchpig.ksp.compiler.getAnnotation
+import com.catchpig.ksp.compiler.ext.getAnnotation
 import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
