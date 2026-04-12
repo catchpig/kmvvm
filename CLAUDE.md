@@ -137,3 +137,13 @@ app ──────> mvvm ──────> annotation
          │
          └──> download ────> utils
 ```
+
+## detekt 静态代码分析
+
+本项目使用 `com.github.catchpig.detekt-plugin` 插件进行 Kotlin 静态代码分析。
+
+**插件来源**: 远程 Maven 库（版本 `1.0.0`，定义于 `gradle/libs.versions.toml`）
+
+**配置**: 插件配置位于 `config/detekt/detekt.yml`
+
+**构建时自动执行**: 插件会在构建时自动运行，无需手动触发。
