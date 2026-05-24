@@ -66,7 +66,7 @@ dependencies {
     implementation(libs.xxpermissions)
     implementation(libs.uiviewpager)
     implementation(libs.okhttpprofilter)
-    implementation(libs.diagnose.logger)
+    compileOnly(libs.diagnose.logger)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
